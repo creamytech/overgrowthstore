@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Special+Elite&display=swap');
+
+:root {
+  --color-dark-green: #1a472a;
+  --color-cream: #f4f1ea;
+  --color-rust-orange: #c05a34;
+  --color-ink-black: #1a1a1a;
+
+  --font-heading: 'Cinzel Decorative', serif; /* Caslon Antique alternative */
+  --font-body: 'Special Elite', monospace; /* Typewriter alternative */
+
+  --z-background: -1;
+  --z-content: 10;
+  --z-frame: 50;
+  --z-overlay: 999;
+  --z-nav: 1000;
+}
+
+/* Global Reset & Base Styles */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-cream);
+  color: var(--color-ink-black);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 1. THE GLOBAL "CANVAS" */
+
+/* Background Layer */
+.canvas-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: var(--z-background);
+  background-image: url('/assets/texture_archive_paper.jpg');
+  background-repeat: repeat;
+  background-size: 500px; /* Adjust based on texture resolution */
+  pointer-events: none;
+}
+
+/* Film Grain Overlay */
+/* Film Grain Overlay - Removed per user request
+.canvas-grain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: var(--z-overlay);
+  background-image: url('/assets/overlay_ink_flecks.jpg');
+  background-repeat: repeat;
+  background-size: cover;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+*/
+
+/* Viewport Frame */
+.canvas-frame {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: var(--z-frame);
+  pointer-events: none;
+  background-image: url('/assets/frame_vine_border_portrait.svg');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Typography Utilities */
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.text-dark-green { color: var(--color-dark-green); }
+.text-cream { color: var(--color-cream); }
+.text-rust { color: var(--color-rust-orange); }
+
+.bg-dark-green { background-color: var(--color-dark-green); }
+.bg-cream { background-color: var(--color-cream); }
+.bg-rust { background-color: var(--color-rust-orange); }
+
+/* Navigation Styles */
+.nav-container {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 3rem;
+  /* No background, transparent to show paper texture */
+}
+
+.nav-logo {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-dark-green);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.nav-icon {
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.nav-icon:hover {
+  transform: scale(1.1);
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Button Styles */
+.btn-growth {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-heading);
+  color: white;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  background-image: url('/assets/btn_primary_growth.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  min-width: 200px;
+  min-height: 60px;
+  transition: transform 0.2s ease;
+}
+
+.btn-growth:hover {
+  transform: scale(1.02);
+}
+
+.btn-growth:active {
+  transform: scale(0.98);
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+.animate-wiggle {
+  animation: wiggle 0.5s ease-in-out infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3a5f4a;
+  border-radius: 3px;
+}
