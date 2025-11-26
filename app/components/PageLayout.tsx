@@ -110,7 +110,7 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
         role="banner" 
         className={`fixed top-0 left-0 w-full transition-all duration-500 z-[1000] flex justify-between items-center px-12 ${
             isScrolled 
-            ? 'bg-[rgba(244,241,234,0.8)] backdrop-blur-md py-4 shadow-sm border-b border-[#1a472a]/10' 
+            ? 'bg-[rgba(244,241,234,0.6)] backdrop-blur-lg py-4 shadow-sm border-b border-[#1a472a]/10' 
             : 'bg-transparent py-6 border-b border-transparent'
         }`}
       >
