@@ -74,7 +74,7 @@ export default function AllProducts() {
       {/* Custom Header */}
       <div className="text-center mb-12">
         <h1 className="font-heading text-4xl md:text-6xl text-dark-green tracking-widest mb-2">
-          ALL SPECIMENS
+          ALL SALVAGE
         </h1>
         <p className="font-body text-[#c05a34] text-lg tracking-widest uppercase">
           COMPLETE CATALOG

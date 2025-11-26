@@ -40,7 +40,7 @@ export function DropTeaser({product, index}: {product: any; index: number}) {
         <div className="w-full md:w-1/2 text-center md:text-left space-y-6">
           <div className="space-y-2">
             <span className="font-mono text-xs text-moss tracking-widest uppercase">
-              Specimen No. 00{index + 1}
+              Salvage No. 00{index + 1}
             </span>
             <h3 className="font-serif text-4xl text-ink boiling-line">
               {title}
@@ -55,7 +55,7 @@ export function DropTeaser({product, index}: {product: any; index: number}) {
           </p>
 
           <Link to={`/products/${handle}`} className="btn-stamp inline-block">
-            Examine Specimen
+            Examine Salvage
           </Link>
         </div>
       </div>

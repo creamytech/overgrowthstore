@@ -238,7 +238,7 @@ export default function Product() {
         >
           {(products) => (
             <div className="mt-24 border-t border-dark-green/20 pt-12">
-                <h3 className="font-heading text-2xl text-dark-green mb-8 text-center">Related Specimens</h3>
+                <h3 className="font-heading text-2xl text-dark-green mb-8 text-center">Related Salvage</h3>
                 <ProductSwimlane title="" products={products} />
             </div>
           )}
@@ -313,7 +313,7 @@ export function ProductForm({
         <div className="mt-4">
           {isOutOfStock ? (
             <Button variant="secondary" disabled className="w-full py-4 bg-gray-200 text-ink/50 font-heading tracking-widest uppercase cursor-not-allowed">
-              Specimen Archived
+              Salvage Archived
             </Button>
           ) : (
             <AddToCartButton
@@ -334,7 +334,7 @@ export function ProductForm({
               {/* Text Content */}
               <span className="relative z-30 flex items-center justify-center h-full w-full gap-4 group-hover:text-[#f4f1ea] transition-colors duration-300">
                 <span className="font-heading text-xl tracking-[0.2em] uppercase text-dark-green group-hover:text-[#f4f1ea] transition-colors duration-300">
-                  Acquire Specimen
+                  Acquire Salvage
                 </span>
                 <span className="font-body text-[10px] opacity-60 group-hover:opacity-100 group-hover:text-[#f4f1ea]/80 transition-all duration-300 translate-y-0.5">
                   [FIG. {product.id.substring(product.id.length - 3)}]

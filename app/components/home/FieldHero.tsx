@@ -1,4 +1,4 @@
-import {useEffect, useRef} from 'react';
+import {useRef} from 'react';
 import {motion, useScroll, useTransform} from 'framer-motion';
 
 export function FieldHero() {
@@ -17,13 +17,15 @@ export function FieldHero() {
       {/* Single Hero Layer - Horse sits ON TOP of the border (z-40 vs z-30) */}
       <motion.div 
         style={{y: ySkeleton}}
-        className="absolute inset-0 flex items-center justify-center z-40 pb-48"
+        className="absolute inset-0 flex items-center justify-center z-40 pb-48 pointer-events-none"
       >
-        <img 
-          src="/assets/horse homepage.png" 
-          alt="The Reclaimed World" 
-          className="max-h-[80vh] w-auto object-contain"
-        />
+        <div className="h-[50vh] w-auto flex items-center justify-center">
+            <img
+                src="/assets/horseweb.png"
+                alt="The Reclaimed World"
+                className="h-full w-auto object-contain"
+            />
+        </div>
       </motion.div>
 
       {/* Hero Text Overlay */}

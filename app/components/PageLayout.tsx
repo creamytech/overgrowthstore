@@ -88,14 +88,22 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
   // Scroll State for Sticky Header
   const [isScrolled, setIsScrolled] = useState(false);
 
+  // Use IntersectionObserver to detect scroll
+  // This is more robust than window.scrollY as it works regardless of what container is scrolling
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY || document.documentElement.scrollTop;
-      setIsScrolled(scrollPosition > 50);
-    };
+    const sentinel = document.getElementById('scroll-sentinel');
+    if (!sentinel) return;
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // If sentinel is NOT intersecting (out of view), we are scrolled down
+        setIsScrolled(!entry.isIntersecting);
+      },
+      {threshold: 0}
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -105,12 +113,15 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
         <MenuDrawer isOpen={isMenuOpen} onClose={closeMenu} menu={menu} />
       )}
 
+      {/* Scroll Sentinel - Invisible div at the very top */}
+      <div id="scroll-sentinel" className="absolute top-0 left-0 w-full h-px pointer-events-none opacity-0" />
+
       {/* Field Journal Navigation */}
       <header 
         role="banner" 
         className={`fixed top-0 left-0 w-full transition-all duration-500 z-[1000] flex justify-between items-center px-12 ${
             isScrolled 
-            ? 'bg-[rgba(244,241,234,0.6)] backdrop-blur-lg py-4 shadow-sm border-b border-[#1a472a]/10' 
+            ? 'bg-[#f4f1ea]/95 backdrop-blur-md py-4 shadow-md border-b border-dark-green/10' 
             : 'bg-transparent py-6 border-b border-transparent'
         }`}
       >
@@ -193,7 +204,7 @@ function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
   if (!rootData) return null;
 
   return (
-    <Drawer open={isOpen} onClose={onClose} heading="SPECIMENS" openFrom="right" variant="cart">
+    <Drawer open={isOpen} onClose={onClose} heading="SALVAGE" openFrom="right" variant="cart">
 
 
       <div className="relative z-10 grid h-full grid-rows-[1fr_auto]">

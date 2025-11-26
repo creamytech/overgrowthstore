@@ -117,7 +117,7 @@ export function Drawer({
                               <>
                                 <IconClose aria-label="Close panel" className="w-5 h-5" />
                                 <span className="font-heading text-sm tracking-[0.2em] border-b border-transparent hover:border-rust transition-all hidden md:inline">
-                                    EXIT SPECIMENS
+                                    EXIT SALVAGE
                                 </span>
                               </>
                           ) : (
