@@ -298,106 +298,180 @@ function MenuMobileNav({
 
 function Footer({menu}: {menu?: EnhancedMenu}) {
   const isHome = useIsHomePath();
-  const itemsCount = menu
-    ? menu?.items?.length + 1 > 4
-      ? 4
-      : menu?.items?.length + 1
-    : [];
-
+  
   return (
-    <footer className="relative bg-[#f4f1ea] text-dark-green pt-[620px] pb-24 overflow-visible">
-        {/* Root Transition Divider - The "Ceiling" */}
-        {/* Positioned to overlap the section above by ~50px and hang down */}
-        <div className="absolute -top-12 left-0 w-full h-[600px] z-10 pointer-events-none">
-            <img 
-                src="/assets/divider_root_transition.svg" 
-                alt="Root Transition" 
-                className="w-full h-full object-cover object-top mix-blend-multiply opacity-80"
-            />
+    <footer className="relative bg-[#f4f1ea] text-dark-green pt-32 pb-12 overflow-hidden">
+        {/* Top Border / Divider */}
+        <div className="absolute top-0 left-0 w-full h-px bg-dark-green/10" />
+        
+        <div className="relative z-20 w-full max-w-7xl mx-auto px-4 md:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr] gap-12 md:gap-24">
+                
+                {/* Column 1: Brand & Newsletter */}
+                <div className="space-y-8">
+                    <div className="max-w-xs">
+                        <Link to="/" className="block mb-6">
+                            <img src="/assets/logo_og_vines.png" alt="Overgrowth" className="h-12 object-contain" />
+                        </Link>
+                        <p className="font-body text-sm text-dark-green/70 leading-relaxed mb-6">
+                            Survival gear for the urban jungle. Reclaiming the world, one garment at a time.
+                        </p>
+                        
+                        <NewsletterForm />
+                    </div>
+                </div>
+
+                {/* Column 2: Navigation */}
+                <div>
+                    <Heading className="font-heading text-lg text-dark-green uppercase tracking-widest mb-6" size="lead" as="h3">
+                        Field Guide
+                    </Heading>
+                    <FooterMenu menu={menu} />
+                </div>
+
+                {/* Column 3: Legal / Info */}
+                <div>
+                    <Heading className="font-heading text-lg text-dark-green uppercase tracking-widest mb-6" size="lead" as="h3">
+                        Protocol
+                    </Heading>
+                    <nav className="grid gap-3 font-body text-sm text-dark-green/70">
+                        <Link to="/policies/privacy-policy" className="hover:text-rust transition-colors">Privacy Protocol</Link>
+                        <Link to="/policies/terms-of-service" className="hover:text-rust transition-colors">Terms of Engagement</Link>
+                        <Link to="/policies/shipping-policy" className="hover:text-rust transition-colors">Supply Lines</Link>
+                        <Link to="/policies/refund-policy" className="hover:text-rust transition-colors">Return Manifest</Link>
+                    </nav>
+                </div>
+
+            </div>
+
+            {/* Footer Bottom */}
+            <div className="mt-24 pt-8 border-t border-dark-green/10 flex flex-col md:flex-row justify-between items-center gap-4 opacity-50">
+                <p className="font-body text-xs tracking-widest uppercase">
+                    &copy; {new Date().getFullYear()} Overgrowth Industries.
+                </p>
+                <p className="font-body text-xs tracking-widest uppercase">
+                    All Rights Reserved.
+                </p>
+            </div>
         </div>
         
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-4">
-        <div className={`grid items-start grid-flow-row w-full gap-6 md:gap-8 lg:gap-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-${itemsCount}`}>
-            <FooterMenu menu={menu} />
-            <div className="grid gap-4">
-                <Heading className="font-heading text-xl text-dark-green" size="lead" as="h3">
-                    LOCATION
-                </Heading>
-                <CountrySelector />
-            </div>
-            
-            <div
-            className={`self-end pt-8 opacity-50 md:col-span-2 lg:col-span-${itemsCount} font-body text-sm`}
-            >
-            &copy; {new Date().getFullYear()} / OVERGROWTH. All rights reserved.
-            </div>
-        </div>
-      </div>
+        {/* Background Texture */}
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[url('/assets/topo-pattern.png')] opacity-[0.03] pointer-events-none" />
     </footer>
   );
+}
+
+function NewsletterForm() {
+    const [email, setEmail] = useState('');
+    const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+    const [message, setMessage] = useState('');
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setStatus('submitting');
+        
+        try {
+            const formData = new FormData();
+            formData.append('email', email);
+            
+            const response = await fetch('/api/newsletter', {
+                method: 'POST',
+                body: formData,
+            });
+            
+            const data = await response.json() as {success?: boolean; message?: string; error?: string};
+            
+            if (response.ok && data.success) {
+                setStatus('success');
+                setMessage(data.message || 'Subscribed successfully.');
+                setEmail('');
+            } else {
+                setStatus('error');
+                setMessage(data.error || 'Transmission failed.');
+            }
+        } catch (err) {
+            setStatus('error');
+            setMessage('Network error. Try again.');
+        }
+    };
+
+    return (
+        <div className="relative">
+            <h4 className="font-heading text-sm text-rust uppercase tracking-widest mb-3">
+                Join the Resistance
+            </h4>
+            
+            {status === 'success' ? (
+                <div className="p-4 border border-dark-green/20 bg-dark-green/5 text-dark-green text-sm font-body">
+                    {message}
+                </div>
+            ) : (
+                <form onSubmit={handleSubmit} className="relative">
+                    <input 
+                        type="email" 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="ENTER FREQUENCY (EMAIL)" 
+                        required
+                        className="w-full bg-transparent border-b border-dark-green/30 py-3 pr-12 text-dark-green placeholder:text-dark-green/40 font-body text-sm focus:outline-none focus:border-rust transition-colors"
+                    />
+                    <button 
+                        type="submit" 
+                        disabled={status === 'submitting'}
+                        className="absolute right-0 top-0 h-full text-rust hover:text-dark-green transition-colors font-heading text-xs uppercase tracking-widest disabled:opacity-50"
+                    >
+                        {status === 'submitting' ? 'SENDING...' : 'TRANSMIT'}
+                    </button>
+                    {status === 'error' && (
+                        <p className="absolute -bottom-6 left-0 text-xs text-red-800 font-body">{message}</p>
+                    )}
+                </form>
+            )}
+        </div>
+    );
 }
 
 function FooterLink({item}: {item: ChildEnhancedMenuItem}) {
   if (item.to.startsWith('http')) {
     return (
-      <a href={item.to} target={item.target} rel="noopener noreferrer" className="hover:text-rust transition-colors">
+      <a href={item.to} target={item.target} rel="noopener noreferrer" className="hover:text-rust transition-colors block py-1">
         {item.title}
       </a>
     );
   }
 
   return (
-    <Link to={item.to} target={item.target} prefetch="intent" className="hover:text-rust transition-colors">
+    <Link to={item.to} target={item.target} prefetch="intent" className="hover:text-rust transition-colors block py-1">
       {item.title}
     </Link>
   );
 }
 
 function FooterMenu({menu}: {menu?: EnhancedMenu}) {
-  const styles = {
-    section: 'grid gap-4',
-    nav: 'grid gap-2 pb-6 font-body',
-  };
-
   return (
-    <>
+    <nav className="grid gap-2 font-body text-sm text-dark-green/70">
       {(menu?.items || []).map((item) => (
-        <section key={item.id} className={styles.section}>
-          <Disclosure>
-            {({open}) => (
-              <>
-                <Disclosure.Button className="text-left md:cursor-default">
-                  <Heading className="flex justify-between font-heading text-xl text-dark-green" size="lead" as="h3">
-                    {item.title}
-                    {item?.items?.length > 0 && (
-                      <span className="md:hidden">
-                        <IconCaret direction={open ? 'up' : 'down'} />
-                      </span>
-                    )}
-                  </Heading>
-                </Disclosure.Button>
-                {item?.items?.length > 0 ? (
-                  <div
-                    className={`${
-                      open ? `max-h-48 h-fit` : `max-h-0 md:max-h-fit`
-                    } overflow-hidden transition-all duration-300`}
-                  >
-                    <Suspense data-comment="This suspense fixes a hydration bug in Disclosure.Panel with static prop">
-                      <Disclosure.Panel static>
-                        <nav className={styles.nav}>
-                          {item.items.map((subItem: ChildEnhancedMenuItem) => (
+        <div key={item.id}>
+            {/* If it has sub-items, render them flattened or as a group? 
+                For this design, let's assume a flat list or simple hierarchy. 
+                The previous design used Disclosure, but for a cleaner footer we might just list them.
+                Let's stick to simple links for top level if they have no children, or render children if they do.
+            */}
+            
+            {item.items && item.items.length > 0 ? (
+                <div className="mb-4">
+                    <span className="block font-bold text-dark-green mb-2">{item.title}</span>
+                    <div className="pl-2 border-l border-dark-green/10">
+                        {item.items.map((subItem: ChildEnhancedMenuItem) => (
                             <FooterLink key={subItem.id} item={subItem} />
-                          ))}
-                        </nav>
-                      </Disclosure.Panel>
-                    </Suspense>
-                  </div>
-                ) : null}
-              </>
+                        ))}
+                    </div>
+                </div>
+            ) : (
+                <FooterLink item={item} />
             )}
-          </Disclosure>
-        </section>
+        </div>
       ))}
-    </>
+    </nav>
   );
 }
