@@ -67,7 +67,21 @@ export function Drawer({
               >
                 <Dialog.Panel className={`w-screen max-w-lg text-left align-middle transition-all transform shadow-xl h-screen-dynamic ${variant === 'default' ? 'bg-contrast' : 'bg-transparent'}`}>
                   
-                  {/* SVG Backgrounds Removed - Handled by parent components */}
+                  {/* Vellum Background for Menu/Cart */}
+                  {(variant === 'menu' || variant === 'cart') && (
+                    <>
+                        <div 
+                            className="absolute inset-0 z-0"
+                            style={{
+                                backgroundImage: "url('/assets/ui_menu_vellum_bg.jpg')",
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                opacity: 0.98,
+                            }}
+                        />
+                        <div className="absolute inset-0 z-0 backdrop-blur-md bg-white/30" />
+                    </>
+                  )}
 
                   <div className={`relative z-10 h-full flex flex-col ${variant === 'menu' || variant === 'cart' ? 'px-12 py-24' : ''}`}>
                       <header

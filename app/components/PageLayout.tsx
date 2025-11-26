@@ -194,18 +194,7 @@ function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
 
   return (
     <Drawer open={isOpen} onClose={onClose} heading="SPECIMENS" openFrom="right" variant="cart">
-      {/* Container Background - Vellum (Matches Menu) */}
-      <div 
-        className="absolute inset-0 z-0"
-        style={{
-            backgroundImage: "url('/assets/ui_menu_vellum_bg.jpg')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            opacity: 0.98,
-        }}
-      />
-      {/* Backdrop Blur overlay */}
-      <div className="absolute inset-0 z-0 backdrop-blur-md bg-white/30" />
+
 
       <div className="relative z-10 grid h-full grid-rows-[1fr_auto]">
         <Suspense fallback={<CartLoading />}>
@@ -229,18 +218,7 @@ export function MenuDrawer({
 }) {
   return (
     <Drawer open={isOpen} onClose={onClose} openFrom="left" heading="FIELD GUIDE" variant="menu">
-      <div 
-        className="absolute inset-0 z-0"
-        style={{
-            backgroundImage: "url('/assets/ui_menu_vellum_bg.jpg')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            opacity: 0.98,
-            filter: 'blur(0px)' // Backdrop blur is handled by the container usually, but here we simulate the layer
-        }}
-      />
-      {/* Backdrop Blur overlay if supported, or just rely on the image */}
-      <div className="absolute inset-0 z-0 backdrop-blur-md bg-white/30" />
+
 
       <div className="relative z-10 grid h-full content-between pb-8">
         <MenuMobileNav menu={menu} onClose={onClose} />
