@@ -9,7 +9,7 @@
   --font-heading: 'Cinzel Decorative', serif; /* Caslon Antique alternative */
   --font-body: 'Special Elite', monospace; /* Typewriter alternative */
 
-  --z-background: -1;
+  --z-background: 0;
   --z-content: 10;
   --z-frame: 50;
   --z-overlay: 999;
@@ -38,7 +38,7 @@ html, body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: var(--z-background);
+  z-index: 50;
   background-image: url('/assets/texture_archive_paper.jpg');
   background-repeat: no-repeat;
   background-size: cover;

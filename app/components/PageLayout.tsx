@@ -133,7 +133,7 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
           onMouseEnter={() => setIsHoveringMenu(true)}
           onMouseLeave={() => setIsHoveringMenu(false)}
         >
-          <div className="relative w-12 h-12">
+          <div className="relative w-10 h-10">
              {/* Bud (Default) */}
              <img 
                src="/assets/icon_menu_bud.png" 
@@ -154,7 +154,7 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
           <img 
             src="/assets/logo_og_vines.png" 
             alt={title} 
-            className={`object-contain transition-all duration-500 ${isScrolled ? 'h-12' : 'h-16'}`}
+            className={`object-contain transition-all duration-500 ${isScrolled ? 'h-14' : 'h-20'}`}
           />
         </Link>
 
@@ -164,7 +164,7 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
           className="menu-toggle"
           aria-label="Open Cart"
         >
-           <div className="relative w-12 h-12">
+           <div className="relative w-10 h-10">
              <img 
                src="/assets/icon_cart_woven.png" 
                alt="Cart" 

@@ -29,7 +29,7 @@ export function FieldHero() {
       </motion.div>
 
       {/* Hero Text Overlay */}
-      <div className="absolute bottom-56 left-1/2 -translate-x-1/2 z-20 text-center pt-8">
+      <div className="absolute bottom-24 md:bottom-56 left-1/2 -translate-x-1/2 z-20 text-center pt-8">
         <h2 className="font-heading text-4xl md:text-6xl text-dark-green tracking-widest mb-4">
           THE RECLAIMED WORLD
         </h2>
