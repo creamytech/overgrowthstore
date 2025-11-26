@@ -69,7 +69,7 @@ export function Drawer({
                   
                   {/* SVG Backgrounds Removed - Handled by parent components */}
 
-                  <div className={`relative z-10 h-full flex flex-col ${variant === 'menu' ? 'px-12 py-24' : variant === 'cart' ? 'px-16 py-20' : ''}`}>
+                  <div className={`relative z-10 h-full flex flex-col ${variant === 'menu' || variant === 'cart' ? 'px-12 py-24' : ''}`}>
                       <header
                         className={`flex items-center ${
                           variant === 'default' ? 'px-6 h-nav sm:px-8 md:px-12' : 'mb-4'
@@ -77,7 +77,7 @@ export function Drawer({
                       >
                         {heading !== null && (
                           <Dialog.Title>
-                            <Heading as="span" size="lead" id="cart-contents" className={`${variant !== 'default' ? 'font-serif text-3xl tracking-wide text-ink' : ''}`}>
+                            <Heading as="span" size="lead" id="cart-contents" className={`${variant !== 'default' ? 'font-serif text-3xl tracking-wide text-dark-green' : ''}`}>
                               {heading}
                             </Heading>
                           </Dialog.Title>
@@ -85,11 +85,9 @@ export function Drawer({
                         <button
                           type="button"
                           className={`p-4 -m-4 transition ${
-                            variant === 'cart' 
-                                ? 'text-[#f4f1ea] hover:text-rust' 
-                                : variant === 'menu'
-                                    ? 'text-dark-green hover:text-rust'
-                                    : 'text-primary hover:text-primary/50'
+                            variant === 'cart' || variant === 'menu'
+                                ? 'text-dark-green hover:text-rust' 
+                                : 'text-primary hover:text-primary/50'
                           }`}
                           onClick={onClose}
                           data-test="close-cart"
@@ -99,8 +97,8 @@ export function Drawer({
                                   EXIT GUIDE
                               </span>
                           ) : variant === 'cart' ? (
-                              <span className="font-body text-xs tracking-widest opacity-80 hover:opacity-100 transition-all">
-                                  [EXIT]
+                              <span className="font-heading text-sm tracking-[0.2em] border-b border-transparent hover:border-rust transition-all">
+                                  EXIT SPECIMENS
                               </span>
                           ) : (
                               <IconClose aria-label="Close panel" />

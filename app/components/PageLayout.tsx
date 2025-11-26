@@ -187,9 +187,6 @@ function CartBadge({count}: {count: number}) {
     );
 }
 
-function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
-  const rootData = useRouteLoaderData<RootLoader>('root');
-  if (!rootData) return null;
 
 function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
   const rootData = useRouteLoaderData<RootLoader>('root');
@@ -197,44 +194,20 @@ function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
 
   return (
     <Drawer open={isOpen} onClose={onClose} heading="SPECIMENS" openFrom="right" variant="cart">
-      {/* Container Background - Matte Paper */}
+      {/* Container Background - Vellum (Matches Menu) */}
       <div 
-        className="absolute inset-0 z-0 bg-[#1a3b2a]"
+        className="absolute inset-0 z-0"
         style={{
-            backgroundImage: "url('/assets/ui_cart_matte_paper_dark.jpg')",
+            backgroundImage: "url('/assets/ui_menu_vellum_bg.jpg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            opacity: 0.98,
         }}
       />
-      
-      {/* Vertical Ruler - Left Edge (CSS Generated for seamless loop) */}
-      <div 
-        className="absolute top-0 left-0 h-full w-12 z-10 pointer-events-none border-r border-white/20"
-        style={{
-            background: `
-                linear-gradient(to bottom, 
-                    transparent 0px, 
-                    transparent 19px, 
-                    rgba(255,255,255,0.3) 19px, 
-                    rgba(255,255,255,0.3) 20px
-                )
-            `,
-            backgroundSize: '100% 20px'
-        }}
-      >
-        {/* Optional: Add numbers if needed, but for now just ticks as requested */}
-      </div>
+      {/* Backdrop Blur overlay */}
+      <div className="absolute inset-0 z-0 backdrop-blur-md bg-white/30" />
 
-      <div className="relative z-10 grid h-full grid-rows-[auto_1fr_auto] pl-12">
-        {/* Header - Requisition Stamp */}
-        <div className="flex justify-center pt-8 pb-4">
-            <img 
-                src="/assets/ui_cart_stamp_requisition.png" 
-                alt="Requisition" 
-                className="w-72 h-auto object-contain opacity-90 mix-blend-screen" 
-            />
-        </div>
-
+      <div className="relative z-10 grid h-full grid-rows-[1fr_auto]">
         <Suspense fallback={<CartLoading />}>
           <Await resolve={rootData?.cart}>
             {(cart) => <Cart layout="drawer" onClose={onClose} cart={cart} />}

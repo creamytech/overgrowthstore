@@ -55,7 +55,7 @@ export function CartDetails({
   // @todo: get optimistic cart cost
   const cartHasItems = !!cart && cart.totalQuantity > 0;
   const container = {
-    drawer: 'grid grid-cols-1 h-screen-no-nav grid-rows-[1fr_auto] bg-transparent text-[#fcfbf4] font-body', 
+    drawer: 'grid grid-cols-1 h-screen-no-nav grid-rows-[1fr_auto] bg-transparent text-dark-green font-body', 
     page: 'w-full pb-12 grid md:grid-cols-2 md:items-start gap-8 md:gap-8 lg:gap-12',
   };
 
@@ -111,13 +111,13 @@ function CartDiscounts({
           )}
         >
           <input
-            className="bg-white/90 text-black border border-white/20 px-4 py-2 w-full font-body tracking-widest placeholder:text-black/50 focus:outline-none focus:border-white"
+            className="bg-transparent text-dark-green border-b border-dark-green/20 px-0 py-2 w-full font-body tracking-widest placeholder:text-dark-green/50 focus:outline-none focus:border-dark-green"
             type="text"
             name="discountCode"
             placeholder="DISCOUNT CODE"
           />
-          <button className="flex justify-end font-medium whitespace-nowrap">
-            Apply Discount
+          <button className="flex justify-end font-medium whitespace-nowrap hover:text-rust transition-colors">
+            Apply
           </button>
         </div>
       </UpdateDiscountForm>
@@ -158,10 +158,10 @@ function CartLines({
   const {y} = useScroll(scrollRef);
 
   const className = clsx([
-    y > 0 ? 'border-t border-white/10' : '',
+    y > 0 ? 'border-t border-dark-green/10' : '',
     layout === 'page'
       ? 'flex-grow md:translate-y-4'
-      : 'px-6 pb-6 sm-max:pt-2 overflow-auto transition md:px-12',
+      : 'pb-6 sm-max:pt-2 overflow-auto transition',
   ]);
 
   return (
@@ -185,7 +185,7 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
   return (
     <div className="flex flex-col mt-4">
       <a href={checkoutUrl} target="_self" className="group relative">
-        <Button as="span" width="full" className="relative bg-white text-dark-green font-heading tracking-[2px] uppercase hover:bg-white/90 transition-colors flex items-center justify-center gap-2 py-4">
+        <Button as="span" width="full" className="relative bg-dark-green text-[#f4f1ea] font-heading tracking-[2px] uppercase hover:bg-rust transition-colors flex items-center justify-center gap-2 py-4">
           ACQUIRE
         </Button>
       </a>
@@ -204,7 +204,7 @@ function CartSummary({
   layout: Layouts;
 }) {
   const summary = {
-    drawer: 'grid gap-4 p-6 border-t border-white/10 md:px-12 bg-black/20 backdrop-blur-sm',
+    drawer: 'grid gap-4 pt-6 border-t border-dark-green/10',
     page: 'sticky top-nav grid gap-6 p-4 md:px-6 md:translate-y-4 bg-primary/5 rounded w-full',
   };
 
@@ -214,7 +214,7 @@ function CartSummary({
         Order summary
       </h2>
       <dl className="grid">
-        <div className="flex items-center justify-between font-medium text-white">
+        <div className="flex items-center justify-between font-medium text-dark-green">
           <Text as="dt">Subtotal</Text>
           <Text as="dd" data-test="subtotal">
             {cost?.subtotalAmount?.amount ? (
@@ -248,7 +248,7 @@ function CartLineItem({line}: {line: CartLine}) {
   return (
     <li
       key={id}
-      className="flex gap-4 p-4 border-b border-[#fcfbf4]/30 border-dotted relative group transition-transform hover:bg-white/5"
+      className="flex gap-4 p-4 border-b border-dark-green/10 border-dotted relative group transition-transform hover:bg-dark-green/5"
       style={{
         display: optimisticData?.action === 'remove' ? 'none' : 'flex',
       }}
@@ -259,7 +259,7 @@ function CartLineItem({line}: {line: CartLine}) {
             width={110}
             height={110}
             data={merchandise.image}
-            className="object-cover object-center w-24 h-24 rounded-[4px] border border-[#fcfbf4]/20 md:w-28 md:h-28 grayscale-[0.3] group-hover:grayscale-0 transition-all duration-300"
+            className="object-cover object-center w-24 h-24 rounded-[2px] border border-dark-green/20 md:w-28 md:h-28 grayscale-[0.3] group-hover:grayscale-0 transition-all duration-300"
             alt={merchandise.title}
           />
         )}
@@ -267,7 +267,7 @@ function CartLineItem({line}: {line: CartLine}) {
 
       <div className="flex justify-between flex-grow">
         <div className="grid gap-2">
-          <Heading as="h3" size="copy" className="font-body tracking-wide text-[#fcfbf4] uppercase text-lg">
+          <Heading as="h3" size="copy" className="font-body tracking-wide text-dark-green uppercase text-lg">
             {merchandise?.product?.handle ? (
               <Link to={`/products/${merchandise.product.handle}`}>
                 {merchandise?.product?.title || ''}
@@ -279,7 +279,7 @@ function CartLineItem({line}: {line: CartLine}) {
 
           <div className="grid pb-2">
             {(merchandise?.selectedOptions || []).map((option) => (
-              <Text color="subtle" key={option.name} className="text-[#fcfbf4]/70 font-body text-xs uppercase tracking-wider">
+              <Text color="subtle" key={option.name} className="text-dark-green/70 font-body text-xs uppercase tracking-wider">
                 {option.name}: {option.value}
               </Text>
             ))}
@@ -292,7 +292,7 @@ function CartLineItem({line}: {line: CartLine}) {
             <ItemRemoveButton lineId={id} />
           </div>
         </div>
-        <Text className="font-body text-[#fcfbf4] font-bold">
+        <Text className="font-body text-dark-green font-bold">
           <CartLinePrice line={line} as="span" />
         </Text>
       </div>
@@ -310,7 +310,7 @@ function ItemRemoveButton({lineId}: {lineId: CartLine['id']}) {
       }}
     >
       <button
-        className="flex items-center justify-center w-10 h-10 border rounded"
+        className="flex items-center justify-center w-10 h-10 border border-dark-green/20 rounded hover:border-rust hover:text-rust transition-colors"
         type="submit"
       >
         <span className="sr-only">Remove</span>
@@ -338,12 +338,12 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
       <label htmlFor={`quantity-${lineId}`} className="sr-only">
         Quantity, {optimisticQuantity}
       </label>
-      <div className="flex items-center border rounded">
+      <div className="flex items-center border border-dark-green/20 rounded">
         <UpdateCartButton lines={[{id: lineId, quantity: prevQuantity}]}>
           <button
             name="decrease-quantity"
             aria-label="Decrease quantity"
-            className="w-10 h-10 transition text-primary/50 hover:text-primary disabled:text-primary/10"
+            className="w-10 h-10 transition text-dark-green/50 hover:text-dark-green disabled:text-dark-green/10"
             value={prevQuantity}
             disabled={optimisticQuantity <= 1}
           >
@@ -355,13 +355,13 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
           </button>
         </UpdateCartButton>
 
-        <div className="px-2 text-center" data-test="item-quantity">
+        <div className="px-2 text-center text-dark-green" data-test="item-quantity">
           {optimisticQuantity}
         </div>
 
         <UpdateCartButton lines={[{id: lineId, quantity: nextQuantity}]}>
           <button
-            className="w-10 h-10 transition text-primary/50 hover:text-primary"
+            className="w-10 h-10 transition text-dark-green/50 hover:text-dark-green"
             name="increase-quantity"
             value={nextQuantity}
             aria-label="Increase quantity"
@@ -435,8 +435,8 @@ export function CartEmpty({
 
   const container = {
     drawer: clsx([
-      'content-start gap-4 px-6 pb-8 transition overflow-y-scroll md:gap-12 md:px-12 h-screen-no-nav md:pb-12 text-[#fcfbf4] font-body',
-      y > 0 ? 'border-t' : '',
+      'content-start gap-4 pb-8 transition overflow-y-scroll md:gap-12 h-screen-no-nav md:pb-12 text-dark-green font-body',
+      y > 0 ? 'border-t border-dark-green/10' : '',
     ]),
     page: clsx([
       hidden ? '' : 'grid',
@@ -446,19 +446,29 @@ export function CartEmpty({
 
   return (
     <div ref={scrollRef} className={container[layout]} hidden={hidden}>
-      <section className="grid gap-6">
-        <Text format>
-          Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you
-          started!
+      <section className="grid gap-6 text-center justify-items-center pt-12">
+        <div className="w-24 h-24 opacity-30 mb-4">
+             {/* Empty Backpack / Crossed Circle Icon */}
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-full h-full text-dark-green">
+                 <circle cx="12" cy="12" r="10" />
+                 <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+             </svg>
+        </div>
+        <Text format className="font-typewriter text-xl md:text-2xl leading-relaxed max-w-md mx-auto">
+          Looks like you haven&rsquo;t added anything yet...
+          <br/>
+          <span className="text-sm opacity-70">Begin your requisition.</span>
         </Text>
         <div>
-          <Button onClick={onClose}>Continue shopping</Button>
+          <Button onClick={onClose} className="bg-dark-green text-[#EFEBD6] font-heading tracking-widest px-8 py-3 hover:bg-rust transition-colors">
+              INITIATE SEARCH
+          </Button>
         </div>
       </section>
-      <section className="grid gap-8 pt-16">
+      <section className="grid gap-8 pt-16 border-t border-dark-green/10 mt-8">
         <FeaturedProducts
           count={4}
-          heading="Shop Best Sellers"
+          heading="STANDARD ISSUE"
           layout={layout}
           onClose={onClose}
           sortKey="BEST_SELLING"
