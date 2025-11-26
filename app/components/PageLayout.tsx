@@ -300,9 +300,19 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
   const isHome = useIsHomePath();
   
   return (
-    <footer className="relative bg-[#f4f1ea] text-dark-green pt-32 pb-12 overflow-hidden">
-        {/* Top Border / Divider */}
-        <div className="absolute top-0 left-0 w-full h-px bg-dark-green/10" />
+    <footer className="relative bg-[#f4f1ea] text-dark-green pt-[620px] pb-12 overflow-visible">
+        {/* Root Transition Divider - The "Ceiling" */}
+        {/* Positioned to overlap the section above by ~50px and hang down */}
+        <div className="absolute -top-12 left-0 w-full h-[600px] z-10 pointer-events-none">
+            <img 
+                src="/assets/divider_root_transition.svg" 
+                alt="Root Transition" 
+                className="w-full h-full object-cover object-top mix-blend-multiply opacity-80"
+            />
+        </div>
+
+        {/* Top Border / Divider (Optional now, maybe redundant with the root transition, but keeping for structure if needed below the image) */}
+        {/* <div className="absolute top-0 left-0 w-full h-px bg-dark-green/10" /> */}
         
         <div className="relative z-20 w-full max-w-7xl mx-auto px-4 md:px-8">
             <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr] gap-12 md:gap-24">
