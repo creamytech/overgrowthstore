@@ -270,3 +270,13 @@ export function IconFilters(props: IconProps) {
     </Icon>
   );
 }
+
+export function IconTicket(props: IconProps) {
+  return (
+    <Icon {...props} fill="transparent" stroke={props.stroke || 'currentColor'}>
+      <title>Ticket</title>
+      <path d="M2 5C2 4.44772 2.44772 4 3 4H17C17.5523 4 18 4.44772 18 5V8.5C17.1716 8.5 16.5 9.17157 16.5 10C16.5 10.8284 17.1716 11.5 18 11.5V15C18 15.5523 17.5523 16 17 16H3C2.44772 16 2 15.5523 2 15V11.5C2.82843 11.5 3.5 10.8284 3.5 10C3.5 9.17157 2.82843 8.5 2 8.5V5Z" strokeWidth="1.25" />
+      <line x1="6.5" y1="10" x2="13.5" y2="10" strokeWidth="1.25" strokeDasharray="2 2" />
+    </Icon>
+  );
+}

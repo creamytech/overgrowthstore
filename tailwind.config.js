@@ -16,6 +16,11 @@ export default {
         moss: '#4A5D23',
         decay: '#8B9B78',
       },
+      fontFamily: {
+        heading: ['var(--font-heading)', 'serif'],
+        body: ['var(--font-body)', 'monospace'],
+        handwritten: ['Pinyon Script', 'cursive'],
+      },
       screens: {
         sm: '32em',
         md: '48em',

@@ -62,38 +62,40 @@ export function ProductCard({
             prefetch="viewport"
             className="flex flex-row gap-4 items-center border-b border-[#fcfbf4]/30 border-dotted pb-4"
           >
-            {/* Drawer Image - Small, Rounded, Grayscale */}
-            <div className="relative w-16 h-16 flex-shrink-0">
-                {image && (
-                <Image
-                    className={`object-cover w-full h-full rounded-[4px] border border-[#fcfbf4]/20 transition-all duration-300 ${isSoldOut ? 'grayscale opacity-50' : 'grayscale-[0.3] group-hover:grayscale-0'}`}
-                    sizes="64px"
-                    aspectRatio="1/1"
-                    data={image}
-                    alt={image.altText || `Picture of ${product.title}`}
-                    loading={loading}
-                />
-                )}
-                 {/* Sold Out Overlay - Simplified for Drawer */}
+            {/* Drawer Image - Polaroid Style */}
+            <div className="relative w-20 h-24 flex-shrink-0 rotate-2 transition-transform duration-300 group-hover:rotate-0 group-hover:scale-105">
+                <div className="absolute inset-0 bg-white shadow-md p-1.5 pb-4 transform transition-transform">
+                    {image && (
+                    <Image
+                        className={`object-cover w-full h-full border border-gray-100 ${isSoldOut ? 'grayscale opacity-50' : 'grayscale-[0.2]'}`}
+                        sizes="80px"
+                        aspectRatio="1/1"
+                        data={image}
+                        alt={image.altText || `Picture of ${product.title}`}
+                        loading={loading}
+                    />
+                    )}
+                </div>
+                 {/* Sold Out Overlay */}
                 {isSoldOut && (
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-black/50 rounded-[4px]">
-                        <span className="text-[#c05a34] font-body text-[10px] font-bold tracking-widest uppercase">SOLD</span>
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                        <span className="text-[#c05a34] font-body text-[10px] font-bold tracking-widest uppercase bg-white/90 px-1">SOLD</span>
                     </div>
                 )}
             </div>
 
             {/* Drawer Content - Typewriter, White */}
             <div className="flex-grow text-left">
-                <h3 className="font-body text-sm text-[#fcfbf4] uppercase tracking-wide group-hover:text-white transition-colors">
+                <h3 className="font-body text-sm text-dark-green uppercase tracking-wide group-hover:text-rust transition-colors">
                     {product.title}
                 </h3>
                 <div className="flex items-center gap-2 mt-1">
-                    <Text className="font-body text-xs text-[#fcfbf4] font-bold">
+                    <Text className="font-body text-xs text-dark-green font-bold">
                         <Money withoutTrailingZeros data={price!} />
                     </Text>
                      {isDiscounted(price as MoneyV2, compareAtPrice as MoneyV2) && (
                         <CompareAtPrice
-                        className={'opacity-50 line-through text-[#fcfbf4] text-xs'}
+                        className={'opacity-50 line-through text-dark-green text-xs'}
                         data={compareAtPrice as MoneyV2}
                         />
                     )}

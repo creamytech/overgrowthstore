@@ -4,8 +4,8 @@ import {
   type MetaArgs,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-import {useLoaderData, useNavigate} from '@remix-run/react';
-import {useInView} from 'react-intersection-observer';
+import {useLoaderData} from '@remix-run/react';
+
 import type {
   Filter,
   ProductCollectionSortKeys,
@@ -20,11 +20,10 @@ import {
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 
-import {PageHeader, Section, Text} from '~/components/Text';
-import {Grid} from '~/components/Grid';
-import {Button} from '~/components/Button';
+import {Section} from '~/components/Text';
+
 import {ProductCard} from '~/components/ProductCard';
-import {SortFilter, type SortParam} from '~/components/SortFilter';
+import {type SortParam} from '~/components/SortFilter';
 import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 import {routeHeaders} from '~/data/cache';
 import {seoPayload} from '~/lib/seo.server';
@@ -141,8 +140,7 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
-import {SpecimenGrid} from '~/components/shop/SpecimenGrid';
-import {TreeFilter} from '~/components/shop/TreeFilter';
+
 
 // ...
 
@@ -150,79 +148,61 @@ export default function Collection() {
   const {collection} = useLoaderData<typeof loader>();
 
   return (
-    <div className="bg-paper min-h-screen pt-32 pb-20">
-      <div className="container mx-auto px-4">
-        {/* Header */}
-        <div className="mb-12 text-center">
-            <h1 className="text-6xl font-serif text-ink mb-4 boiling-line">{collection.title}</h1>
-            <p className="max-w-xl mx-auto text-moss font-serif italic">
-                {collection.description}
+    <div className="w-full max-w-7xl mx-auto px-4 pt-32 pb-16">
+      {/* Custom Header */}
+      <div className="text-center mb-12">
+        <h1 className="font-heading text-4xl md:text-6xl text-dark-green tracking-widest mb-2 uppercase">
+          {collection.title}
+        </h1>
+        {collection.description && (
+            <p className="font-body text-[#c05a34] text-lg tracking-widest uppercase max-w-2xl mx-auto">
+            {collection.description}
             </p>
-        </div>
-
-        <div className="flex flex-col lg:flex-row gap-12">
-            {/* Sidebar Filter */}
-            <div className="w-full lg:w-64 flex-shrink-0">
-                <TreeFilter />
-            </div>
-
-            {/* Main Grid */}
-            <div className="flex-grow">
-                <Pagination connection={collection.products}>
-                {({nodes, isLoading, PreviousLink, NextLink}) => (
-                    <>
-                    <div className="flex justify-center mb-8">
-                        <PreviousLink className="btn-stamp text-sm">
-                            {isLoading ? 'Loading...' : '↑ Load Previous Specimens'}
-                        </PreviousLink>
-                    </div>
-                    
-                    <SpecimenGrid products={nodes} />
-                    
-                    <div className="flex justify-center mt-8">
-                        <NextLink className="btn-stamp text-sm">
-                            {isLoading ? 'Loading...' : '↓ Load More Specimens'}
-                        </NextLink>
-                    </div>
-                    </>
-                )}
-                </Pagination>
-            </div>
-        </div>
+        )}
+        <div className="w-24 h-1 bg-[#c05a34] mx-auto mt-6" />
       </div>
+
+      <Section padding="x">
+        <Pagination connection={collection.products}>
+          {({nodes, isLoading, NextLink, PreviousLink}) => {
+            const itemsMarkup = nodes.map((product, i) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                loading={getImageLoadingPriority(i)}
+                index={i}
+              />
+            ));
+
+            return (
+              <>
+                <div className="flex items-center justify-center mb-12">
+                  <PreviousLink className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-heading font-bold text-dark-green transition-all duration-300 bg-transparent border-2 border-dark-green hover:text-[#f4f1ea]">
+                    <span className="absolute inset-0 w-full h-full bg-dark-green transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+                    <span className="relative z-10">{isLoading ? 'LOADING...' : 'PREVIOUS PAGE'}</span>
+                  </PreviousLink>
+                </div>
+                
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                    {itemsMarkup}
+                </div>
+
+                <div className="flex items-center justify-center mt-12">
+                  <NextLink className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-heading font-bold text-dark-green transition-all duration-300 bg-transparent border-2 border-dark-green hover:text-[#f4f1ea]">
+                    <span className="absolute inset-0 w-full h-full bg-dark-green transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+                    <span className="relative z-10">{isLoading ? 'LOADING...' : 'NEXT PAGE'}</span>
+                  </NextLink>
+                </div>
+              </>
+            );
+          }}
+        </Pagination>
+      </Section>
     </div>
   );
 }
 
-function ProductsLoadedOnScroll({
-  nodes,
-  inView,
-  nextPageUrl,
-  hasNextPage,
-  state,
-}: {
-  nodes: any;
-  inView: boolean;
-  nextPageUrl: string;
-  hasNextPage: boolean;
-  state: any;
-}) {
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      navigate(nextPageUrl, {
-        replace: true,
-        preventScrollReset: true,
-        state,
-      });
-    }
-  }, [inView, navigate, state, nextPageUrl, hasNextPage]);
-
-  return (
-    <SpecimenGrid products={nodes} />
-  );
-}
 
 const COLLECTION_QUERY = `#graphql
   query CollectionDetails(

@@ -41,7 +41,7 @@ export function FieldHero() {
 
       {/* Divider at the bottom */}
       <div 
-        className="absolute bottom-0 left-0 w-full h-48 z-30 pointer-events-none"
+        className="absolute bottom-0 left-0 w-full h-24 md:h-48 z-30 pointer-events-none"
         style={{
             backgroundImage: "url('/assets/divider_ornamental_vine.png')",
             backgroundSize: 'auto 100%',

@@ -86,12 +86,12 @@ export function Drawer({
                   <div className={`relative z-10 h-full flex flex-col ${variant === 'menu' || variant === 'cart' ? 'px-12 py-24' : ''}`}>
                       <header
                         className={`flex items-center ${
-                          variant === 'default' ? 'px-6 h-nav sm:px-8 md:px-12' : 'mb-4'
-                        } ${heading ? 'justify-between' : 'justify-end'}`}
+                          variant === 'default' ? 'px-6 h-nav sm:px-8 md:px-12 justify-between' : 'mb-4 relative justify-center'
+                        }`}
                       >
                         {heading !== null && (
                           <Dialog.Title>
-                            <Heading as="span" size="lead" id="cart-contents" className={`${variant !== 'default' ? 'font-serif text-3xl tracking-wide text-dark-green' : ''}`}>
+                            <Heading as="span" size="lead" id="cart-contents" className={`${variant !== 'default' ? 'font-heading text-4xl tracking-widest text-dark-green' : ''}`}>
                               {heading}
                             </Heading>
                           </Dialog.Title>
@@ -99,6 +99,8 @@ export function Drawer({
                         <button
                           type="button"
                           className={`p-4 -m-4 transition flex items-center gap-2 ${
+                            variant !== 'default' ? 'absolute right-0' : ''
+                          } ${
                             variant === 'cart' || variant === 'menu'
                                 ? 'text-dark-green hover:text-rust' 
                                 : 'text-primary hover:text-primary/50'
@@ -106,23 +108,7 @@ export function Drawer({
                           onClick={onClose}
                           data-test="close-cart"
                         >
-                          {variant === 'menu' ? (
-                              <>
-                                <IconClose aria-label="Close panel" className="w-5 h-5" />
-                                <span className="font-heading text-sm tracking-[0.2em] border-b border-transparent hover:border-rust transition-all hidden md:inline">
-                                    EXIT GUIDE
-                                </span>
-                              </>
-                          ) : variant === 'cart' ? (
-                              <>
-                                <IconClose aria-label="Close panel" className="w-5 h-5" />
-                                <span className="font-heading text-sm tracking-[0.2em] border-b border-transparent hover:border-rust transition-all hidden md:inline">
-                                    EXIT SALVAGE
-                                </span>
-                              </>
-                          ) : (
-                              <IconClose aria-label="Close panel" />
-                          )}
+                          <IconClose aria-label="Close panel" className="w-6 h-6" />
                         </button>
                       </header>
                       <div className="flex-grow overflow-y-auto">

@@ -250,29 +250,48 @@ function MenuMobileNav({
   onClose: () => void;
 }) {
   return (
-    <nav className="grid gap-0 p-6 sm:px-12 sm:py-8 text-center">
+    <nav className="grid gap-6 p-6 sm:px-12 sm:py-8 w-full max-w-md mx-auto">
       {/* Top level menu items */}
       {(menu?.items || []).map((item, index) => (
-        <div key={item.id} className="flex flex-col items-center w-full">
-          {index > 0 && (
-            <div className="w-1/2 h-px bg-dark-green/20 my-4" />
-          )}
+        <div key={item.id} className="w-full">
           <Link
             to={item.to}
             target={item.target}
             onClick={onClose}
             className={({isActive}) =>
-              `block font-heading text-3xl md:text-4xl tracking-widest text-dark-green hover:text-rust transition-colors duration-300 ${
+              `group flex items-baseline justify-between border-b border-dark-green/10 pb-2 hover:border-dark-green/40 transition-all duration-300 ${
                 isActive ? 'opacity-100' : 'opacity-80'
               }`
             }
           >
-            <span className="relative inline-block py-2">
-                {item.title}
+            <div className="flex items-baseline gap-4">
+                {/* Chapter Number */}
+                <span className="font-typewriter text-xs text-dark-green/40 group-hover:text-rust transition-colors">
+                    {(index + 1).toString().padStart(2, '0')}.
+                </span>
+                
+                {/* Title */}
+                <span className="font-heading text-3xl md:text-4xl tracking-widest text-dark-green group-hover:translate-x-2 transition-transform duration-300">
+                    {item.title}
+                </span>
+            </div>
+
+            {/* Hover Arrow / Active Indicator */}
+            <span className="font-handwritten text-xl text-rust opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                &rarr;
             </span>
           </Link>
+          
+          {/* Active State Note */}
+          {/* We can't easily check isActive here without the render prop, so we'll skip the note for now or use a match hook if needed. 
+              For simplicity in this component structure, we'll rely on the visual opacity/color change. */}
         </div>
       ))}
+      
+      {/* Decorative End Mark */}
+      <div className="flex justify-center pt-8 opacity-30">
+          <img src="/assets/icon_leaf_small.png" alt="End" className="w-6 h-6" />
+      </div>
     </nav>
   );
 }

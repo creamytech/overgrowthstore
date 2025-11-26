@@ -3,11 +3,12 @@
 @tailwind utilities;
 
 /* Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IM+Fell+English+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IM+Fell+English+SC&family=Pinyon+Script&display=swap');
 
 :root {
   --font-heading: 'IM Fell English SC', serif;
   --font-body: 'Courier Prime', monospace;
+  --font-handwritten: 'Pinyon Script', cursive;
   --color-paper: #f4f1ea;
   --color-ink: #1c1c1c;
   --color-moss: #4a5d23;
@@ -91,6 +92,10 @@ h1, h2, h3, h4, h5, h6 {
 /* Cart Drawer Utilities */
 .font-typewriter {
   font-family: 'Courier Prime', 'Courier New', monospace;
+}
+
+.font-handwritten {
+  font-family: 'Pinyon Script', cursive;
 }
 
 .mask-grunge {

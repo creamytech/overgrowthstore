@@ -20,7 +20,7 @@ import type {
 import {Button} from '~/components/Button';
 import {Text, Heading} from '~/components/Text';
 import {Link} from '~/components/Link';
-import {IconRemove} from '~/components/Icon';
+import {IconRemove, IconTicket} from '~/components/Icon';
 import {FeaturedProducts} from '~/components/FeaturedProducts';
 import {getInputStyleClasses} from '~/lib/utils';
 
@@ -104,21 +104,29 @@ function CartDiscounts({
 
       {/* Show an input to apply a discount */}
       <UpdateDiscountForm discountCodes={codes}>
-        <div
-          className={clsx(
-            'flex',
-            'items-center gap-4 justify-between text-copy',
-          )}
-        >
-          <input
-            className="bg-transparent text-dark-green border-b border-dark-green/20 px-0 py-2 w-full font-body tracking-widest placeholder:text-dark-green/50 focus:outline-none focus:border-dark-green"
-            type="text"
-            name="discountCode"
-            placeholder="DISCOUNT CODE"
-          />
-          <button className="flex justify-end font-medium whitespace-nowrap hover:text-rust transition-colors">
-            Apply
-          </button>
+        <div className="relative mt-4 border border-dark-green bg-[#e8e4d9]">
+            {/* Header Bar */}
+            <div className="bg-dark-green text-[#f4f1ea] px-3 py-1.5 flex items-center gap-2">
+                <IconTicket className="w-4 h-4 text-[#f4f1ea]" />
+                <span className="font-heading text-xs tracking-[0.2em] uppercase">
+                    Promo Code Authorization
+                </span>
+            </div>
+            
+            {/* Input Area */}
+            <div className="p-3 flex gap-2">
+                <div className="flex-grow bg-white border border-dark-green/20 p-2 shadow-inner">
+                    <input
+                        className="w-full bg-transparent font-typewriter text-sm text-dark-green placeholder:text-dark-green/30 focus:outline-none uppercase tracking-widest"
+                        type="text"
+                        name="discountCode"
+                        placeholder="ENTER_CODE_HERE..."
+                    />
+                </div>
+                <button className="font-heading text-sm tracking-widest text-[#f4f1ea] bg-dark-green px-4 hover:bg-rust transition-colors shadow-sm">
+                    APPLY
+                </button>
+            </div>
         </div>
       </UpdateDiscountForm>
     </>
@@ -248,26 +256,30 @@ function CartLineItem({line}: {line: CartLine}) {
   return (
     <li
       key={id}
-      className="flex gap-4 p-4 border-b border-dark-green/10 border-dotted relative group transition-transform hover:bg-dark-green/5"
+      className="flex gap-6 py-6 border-b-2 border-dashed border-dark-green/20 relative group transition-transform hover:bg-dark-green/5 items-start"
       style={{
         display: optimisticData?.action === 'remove' ? 'none' : 'flex',
       }}
     >
-      <div className="flex-shrink">
-        {merchandise.image && (
-          <Image
-            width={110}
-            height={110}
-            data={merchandise.image}
-            className="object-cover object-center w-24 h-24 rounded-[2px] border border-dark-green/20 md:w-28 md:h-28 grayscale-[0.3] group-hover:grayscale-0 transition-all duration-300"
-            alt={merchandise.title}
-          />
-        )}
+      {/* Polaroid Image */}
+      <div className="flex-shrink-0 relative w-24 h-28 rotate-[-2deg] transition-transform duration-300 group-hover:rotate-0 group-hover:scale-105">
+        <div className="absolute inset-0 bg-white shadow-md p-1.5 pb-5 transform transition-transform">
+            {merchandise.image && (
+            <Image
+                width={110}
+                height={110}
+                data={merchandise.image}
+                className="object-cover object-center w-full h-full border border-gray-100 grayscale-[0.2] group-hover:grayscale-0 transition-all duration-300"
+                alt={merchandise.title}
+            />
+            )}
+        </div>
       </div>
 
-      <div className="flex justify-between flex-grow">
-        <div className="grid gap-2">
-          <Heading as="h3" size="copy" className="font-body tracking-wide text-dark-green uppercase text-lg">
+      <div className="flex justify-between flex-grow gap-4">
+        <div className="grid gap-1">
+          {/* Handwritten Title */}
+          <Heading as="h3" size="copy" className="font-heading text-2xl tracking-widest text-dark-green leading-tight">
             {merchandise?.product?.handle ? (
               <Link to={`/products/${merchandise.product.handle}`}>
                 {merchandise?.product?.title || ''}
@@ -285,16 +297,19 @@ function CartLineItem({line}: {line: CartLine}) {
             ))}
           </div>
 
-          <div className="flex items-center gap-2">
-            <div className="flex justify-start text-copy">
+          <div className="flex items-center gap-4 mt-2">
+            <div className="flex justify-start text-copy scale-90 origin-left">
               <CartLineQuantityAdjust line={line} />
             </div>
             <ItemRemoveButton lineId={id} />
           </div>
         </div>
-        <Text className="font-body text-dark-green font-bold">
-          <CartLinePrice line={line} as="span" />
-        </Text>
+        
+        <div className="flex flex-col items-end">
+            <Text className="font-body text-dark-green font-bold text-lg">
+            <CartLinePrice line={line} as="span" />
+            </Text>
+        </div>
       </div>
     </li>
   );

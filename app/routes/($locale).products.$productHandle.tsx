@@ -1,4 +1,4 @@
-import {useRef, Suspense} from 'react';
+import {useRef, Suspense, useState, useEffect} from 'react';
 import {Disclosure, Listbox} from '@headlessui/react';
 import {
   defer,
@@ -143,35 +143,88 @@ export default function Product() {
   });
 
   const firstMedia = media.nodes[0];
-  const selectedImage = selectedVariant?.image || (firstMedia?.__typename === 'MediaImage' ? firstMedia.image : null);
+  const initialImage = selectedVariant?.image || (firstMedia?.__typename === 'MediaImage' ? firstMedia.image : null);
+  
+  const [activeImage, setActiveImage] = useState(initialImage);
+  const [isInspecting, setIsInspecting] = useState(false);
+
+  // Update active image when variant changes
+  useEffect(() => {
+    if (selectedVariant?.image) {
+      setActiveImage(selectedVariant.image);
+    }
+  }, [selectedVariant]);
 
   return (
     <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
         
         {/* Left Column: The Visual (Specimen) */}
-        <div className="relative w-full aspect-[4/5] bg-paper border border-dark-green/20 p-8 shadow-sm">
-            {/* Texture Overlay (Multiply) */}
+        <div className="flex flex-col gap-4">
             <div 
-                className="absolute inset-0 z-10 pointer-events-none mix-blend-multiply opacity-30"
-                style={{backgroundImage: "url('/assets/texture_archive_paper.jpg')", backgroundSize: '500px'}}
-            />
-            
-            {/* Product Image */}
-            <div className="relative w-full h-full z-0">
-                {selectedImage && (
-                    <Image
-                        data={selectedImage}
-                        sizes="(min-width: 1024px) 50vw, 100vw"
-                        className="w-full h-full object-contain mix-blend-multiply filter contrast-110 sepia-[0.1]"
-                    />
-                )}
+                className="relative w-full aspect-[4/5] bg-paper border border-dark-green/20 p-8 shadow-sm group cursor-crosshair transition-colors duration-300"
+                onClick={() => setIsInspecting(!isInspecting)}
+            >
+                {/* Texture Overlay (Multiply) - Fades out on hover or inspect */}
+                <div 
+                    className={`absolute inset-0 z-10 pointer-events-none mix-blend-multiply transition-opacity duration-500 ${isInspecting ? 'opacity-0' : 'opacity-30 group-hover:opacity-0'}`}
+                    style={{backgroundImage: "url('/assets/texture_archive_paper.jpg')", backgroundSize: '500px'}}
+                />
+                
+                {/* Product Image - Removes filters on hover or inspect */}
+                <div className="relative w-full h-full z-0">
+                    {activeImage && (
+                        <Image
+                            data={activeImage}
+                            sizes="(min-width: 1024px) 50vw, 100vw"
+                            className={`w-full h-full object-contain transition-all duration-500 ${isInspecting ? 'mix-blend-normal filter-none sepia-0' : 'mix-blend-multiply filter contrast-110 sepia-[0.1] group-hover:mix-blend-normal group-hover:filter-none group-hover:sepia-0'}`}
+                        />
+                    )}
+                </div>
+
+                {/* Corner Stamps/Marks */}
+                <div className={`absolute top-4 left-4 z-20 border border-dark-green/30 px-2 py-1 transition-opacity duration-300 ${isInspecting ? 'opacity-50' : 'group-hover:opacity-50'}`}>
+                    <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60">Fig. 1</span>
+                </div>
+
+                {/* Mobile Hint */}
+                <div className={`absolute bottom-4 right-4 z-20 transition-opacity duration-500 ${isInspecting ? 'opacity-0' : 'opacity-100 lg:opacity-0'}`}>
+                    <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/40 bg-paper/80 px-2 py-1 rounded-full">
+                        Tap to Inspect
+                    </span>
+                </div>
             </div>
 
-            {/* Corner Stamps/Marks */}
-            <div className="absolute top-4 left-4 z-20 border border-dark-green/30 px-2 py-1">
-                <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60">Fig. 1</span>
-            </div>
+            {/* Thumbnails */}
+            {media.nodes.length > 1 && (
+                <div className="flex gap-4 overflow-x-auto pb-2">
+                    {media.nodes.map((med, i) => {
+                        const image = med.__typename === 'MediaImage' ? med.image : null;
+                        if (!image) return null;
+                        
+                        const isActive = activeImage?.id === image.id;
+
+                        return (
+                            <button
+                                key={med.id || image.id}
+                                onClick={() => setActiveImage(image)}
+                                className={`relative w-20 h-24 flex-shrink-0 border transition-all duration-200 ${
+                                    isActive 
+                                    ? 'border-dark-green opacity-100 ring-1 ring-dark-green ring-offset-1 ring-offset-[#f4f1ea]' 
+                                    : 'border-dark-green/20 opacity-60 hover:opacity-100 hover:border-dark-green/50'
+                                }`}
+                            >
+                                <div className="absolute inset-0 bg-paper opacity-20 mix-blend-multiply pointer-events-none" />
+                                <Image
+                                    data={image}
+                                    sizes="80px"
+                                    className="w-full h-full object-cover grayscale-[0.2]"
+                                />
+                            </button>
+                        );
+                    })}
+                </div>
+            )}
         </div>
 
         {/* Right Column: The Data */}

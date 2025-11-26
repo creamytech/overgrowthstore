@@ -100,7 +100,7 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
   };
 }
 
-import {SporeCursor} from '~/components/ui/SporeCursor';
+
 import {GrowthLoader} from '~/components/ui/GrowthLoader';
 function loadDeferredData({context}: LoaderFunctionArgs) {
   const {cart, customerAccount} = context;
@@ -129,11 +129,11 @@ function Layout({children}: {children?: React.ReactNode}) {
         <Meta />
         <Links />
       </head>
-      <body className="antialiased text-ink bg-paper selection:bg-rust selection:text-paper cursor-none">
+      <body className="antialiased text-ink bg-paper selection:bg-rust selection:text-paper">
         {/* Global Field Journal Canvas */}
         <div className="canvas-background" />
 
-        <SporeCursor />
+
         
           {data ? (
             <Analytics.Provider
