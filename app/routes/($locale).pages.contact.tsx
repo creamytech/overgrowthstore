@@ -33,8 +33,7 @@ export default function Contact() {
   
   return (
     <div className="min-h-screen bg-[#f4f1ea] relative pt-32 pb-24 px-4 md:px-8">
-      {/* Background Texture */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
+
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 relative z-10">
         

@@ -40,8 +40,10 @@ html, body {
   height: 100vh;
   z-index: var(--z-background);
   background-image: url('/assets/texture_archive_paper.jpg');
-  background-repeat: repeat;
-  background-size: 500px; /* Adjust based on texture resolution */
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.2;
+  mix-blend-mode: multiply;
   pointer-events: none;
 }
 
