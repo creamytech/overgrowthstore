@@ -34,6 +34,12 @@ export function FieldHero() {
       ref={containerRef} 
       className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-[#f4f1ea]"
       onMouseMove={handleMouseMove}
+      onTouchMove={(e) => {
+        const {clientX, clientY} = e.touches[0];
+        const {innerWidth, innerHeight} = window;
+        mouseX.set(clientX / innerWidth - 0.5);
+        mouseY.set(clientY / innerHeight - 0.5);
+      }}
     >
       {/* Floating Spores/Dust Particles */}
       <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">

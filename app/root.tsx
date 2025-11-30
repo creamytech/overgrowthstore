@@ -122,7 +122,7 @@ function Layout({children}: {children?: React.ReactNode}) {
     <html lang={locale.language}>
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
         <link rel="stylesheet" href={styles}></link>
         <link rel="stylesheet" href={fieldJournalStyles}></link>

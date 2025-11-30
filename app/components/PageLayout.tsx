@@ -118,7 +118,7 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
       {/* Field Journal Navigation */}
       <header 
         role="banner" 
-        className={`fixed top-0 left-0 w-full transition-all duration-500 z-[1000] flex justify-between items-center px-12 ${
+        className={`fixed top-0 left-0 w-full transition-all duration-500 z-[1000] flex justify-between items-center px-4 md:px-12 pt-[env(safe-area-inset-top)] ${
             isScrolled 
             ? 'bg-[#f4f1ea]/90 backdrop-blur-md py-4 shadow-md border-b border-dark-green/10' 
             : 'bg-transparent py-6 border-b border-transparent'
