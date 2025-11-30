@@ -2,6 +2,7 @@ import {useParams, Form, Await, useRouteLoaderData} from '@remix-run/react';
 import useWindowScroll from 'react-use/esm/useWindowScroll';
 import {Disclosure} from '@headlessui/react';
 import {Suspense, useEffect, useMemo, useState} from 'react';
+import {useScroll, useMotionValueEvent} from 'framer-motion';
 import {CartForm} from '@shopify/hydrogen';
 
 import {type LayoutQuery} from 'storefrontapi.generated';
@@ -41,15 +42,15 @@ export function PageLayout({children, layout}: LayoutProps) {
   const {headerMenu, footerMenu} = layout || {};
   return (
     <>
+      {headerMenu && layout?.shop.name && (
+        <Header title={layout.shop.name} menu={headerMenu} />
+      )}
       <div className="flex flex-col min-h-screen relative z-10">
         <div className="">
           <a href="#mainContent" className="sr-only">
             Skip to content
           </a>
         </div>
-        {headerMenu && layout?.shop.name && (
-          <Header title={layout.shop.name} menu={headerMenu} />
-        )}
         <main role="main" id="mainContent" className="flex-grow">
           {children}
         </main>
@@ -88,8 +89,6 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
   // Scroll State for Sticky Header
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Use IntersectionObserver to detect scroll
-  // This is more robust than window.scrollY as it works regardless of what container is scrolling
   useEffect(() => {
     const sentinel = document.getElementById('scroll-sentinel');
     if (!sentinel) return;
@@ -121,7 +120,7 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
         role="banner" 
         className={`fixed top-0 left-0 w-full transition-all duration-500 z-[1000] flex justify-between items-center px-12 ${
             isScrolled 
-            ? 'bg-[#f4f1ea]/95 backdrop-blur-md py-4 shadow-md border-b border-dark-green/10' 
+            ? 'bg-[#f4f1ea]/90 backdrop-blur-md py-4 shadow-md border-b border-dark-green/10' 
             : 'bg-transparent py-6 border-b border-transparent'
         }`}
       >
@@ -249,48 +248,74 @@ function MenuMobileNav({
   menu: EnhancedMenu;
   onClose: () => void;
 }) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  // Map menu items to background images (conceptually)
+  const getBackgroundImage = (index: number) => {
+      const images = [
+          '/assets/texture_archive_paper.jpg',      // 0 - Home
+          '/assets/hero_horse_skeleton_isolated.png', // 1 - Catalog
+          '/assets/ui_menu_vellum_bg.jpg',          // 2 - Journal
+          '/assets/divider_root_transition.svg'     // 3 - Our Story
+      ];
+      return images[index % images.length];
+  };
+
   return (
-    <nav className="grid gap-6 p-6 sm:px-12 sm:py-8 w-full max-w-md mx-auto">
+    <nav className="relative grid gap-6 p-6 sm:px-12 sm:py-8 w-full max-w-md mx-auto z-20">
+      
+      {/* Background Image Area (Fixed/Absolute behind menu) */}
+      <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden opacity-10 transition-opacity duration-700">
+          {menu?.items?.map((_, index) => (
+              <div 
+                key={index}
+                className={`absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out mix-blend-multiply ${hoveredIndex === index ? 'opacity-100' : 'opacity-0'}`}
+                style={{backgroundImage: `url('${getBackgroundImage(index)}')`}}
+              />
+          ))}
+      </div>
+
       {/* Top level menu items */}
       {(menu?.items || []).map((item, index) => (
-        <div key={item.id} className="w-full">
+        <div 
+            key={item.id} 
+            className="w-full"
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+        >
           <Link
             to={item.to}
             target={item.target}
             onClick={onClose}
             className={({isActive}) =>
-              `group flex items-baseline justify-between border-b border-dark-green/10 pb-2 hover:border-dark-green/40 transition-all duration-300 ${
+              `group flex items-baseline justify-between border-b border-[#8B3A3A] pb-2 hover:border-[#8B3A3A] transition-all duration-100 steps(2) ${
                 isActive ? 'opacity-100' : 'opacity-80'
               }`
             }
           >
             <div className="flex items-baseline gap-4">
                 {/* Chapter Number */}
-                <span className="font-typewriter text-xs text-dark-green/40 group-hover:text-rust transition-colors">
+                <span className="font-typewriter text-xs text-dark-green/40 group-hover:text-rust transition-colors duration-100 steps(2)">
                     {(index + 1).toString().padStart(2, '0')}.
                 </span>
                 
                 {/* Title */}
-                <span className="font-heading text-3xl md:text-4xl tracking-widest text-dark-green group-hover:translate-x-2 transition-transform duration-300">
+                <span className="font-heading text-3xl md:text-4xl tracking-widest text-dark-green group-hover:translate-x-4 transition-transform duration-100 steps(4)">
                     {item.title}
                 </span>
             </div>
 
             {/* Hover Arrow / Active Indicator */}
-            <span className="font-handwritten text-xl text-rust opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+            <span className="font-handwritten text-xl text-rust opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-100 steps(4)">
                 &rarr;
             </span>
           </Link>
-          
-          {/* Active State Note */}
-          {/* We can't easily check isActive here without the render prop, so we'll skip the note for now or use a match hook if needed. 
-              For simplicity in this component structure, we'll rely on the visual opacity/color change. */}
         </div>
       ))}
       
       {/* Decorative End Mark */}
       <div className="flex justify-center pt-8 opacity-30">
-          <img src="/assets/icon_leaf_small.png" alt="End" className="w-6 h-6" />
+          <img src="/assets/icon_menu_bud.png" alt="End" className="w-6 h-6" />
       </div>
     </nav>
   );
@@ -423,7 +448,7 @@ function NewsletterForm() {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="ENTER FREQUENCY (EMAIL)" 
                         required
-                        className="w-full bg-transparent border-b border-dark-green/30 py-3 pr-12 text-dark-green placeholder:text-dark-green/40 font-body text-sm focus:outline-none focus:border-rust transition-colors"
+                        className="w-full bg-transparent border-b border-dark-green/30 py-3 pr-12 text-dark-green placeholder:text-dark-green/40 font-typewriter text-sm focus:outline-none focus:border-rust transition-colors"
                     />
                     <button 
                         type="submit" 
@@ -444,14 +469,14 @@ function NewsletterForm() {
 function FooterLink({item}: {item: ChildEnhancedMenuItem}) {
   if (item.to.startsWith('http')) {
     return (
-      <a href={item.to} target={item.target} rel="noopener noreferrer" className="hover:text-rust transition-colors block py-1">
+      <a href={item.to} target={item.target} rel="noopener noreferrer" className="hover-underline hover:text-rust transition-colors duration-100 steps(2) block py-1 w-fit">
         {item.title}
       </a>
     );
   }
 
   return (
-    <Link to={item.to} target={item.target} prefetch="intent" className="hover:text-rust transition-colors block py-1">
+    <Link to={item.to} target={item.target} prefetch="intent" className="hover-underline hover:text-rust transition-colors duration-100 steps(2) block py-1 w-fit">
       {item.title}
     </Link>
   );

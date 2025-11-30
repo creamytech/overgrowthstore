@@ -15,6 +15,7 @@ export default {
         void: '#0A0A0A',
         moss: '#4A5D23',
         decay: '#8B9B78',
+        rust: '#8B3A3A',
       },
       fontFamily: {
         heading: ['var(--font-heading)', 'serif'],

@@ -36,13 +36,13 @@ export function Drawer({
 
   return (
     <Transition appear show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-50" onClose={onClose}>
+      <Dialog as="div" className="relative z-[2000]" onClose={onClose}>
         <Transition.Child
           as={Fragment}
-          enter="ease-out duration-300"
+          enter="duration-100 steps(2)"
           enterFrom="opacity-0 left-0"
           enterTo="opacity-100"
-          leave="ease-in duration-200"
+          leave="duration-100 steps(2)"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
@@ -58,10 +58,10 @@ export function Drawer({
             >
               <Transition.Child
                 as={Fragment}
-                enter="transform transition ease-in-out duration-300"
+                enter="transform transition duration-100 steps(2)"
                 enterFrom={offScreen[openFrom]}
                 enterTo="translate-x-0"
-                leave="transform transition ease-in-out duration-300"
+                leave="transform transition duration-100 steps(2)"
                 leaveFrom="translate-x-0"
                 leaveTo={offScreen[openFrom]}
               >

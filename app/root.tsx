@@ -163,6 +163,8 @@ function Layout({children}: {children?: React.ReactNode}) {
   );
 }
 
+import {AnimatePresence, motion} from 'framer-motion';
+
 export default function App() {
   return (
     <Layout>

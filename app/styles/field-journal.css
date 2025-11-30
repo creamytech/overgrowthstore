@@ -21,7 +21,7 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   background-color: var(--color-cream);
   color: var(--color-ink-black);
   font-family: var(--font-body);
@@ -123,7 +123,7 @@ html, body {
   width: 48px;
   height: 48px;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.1s steps(2);
 }
 
 .nav-icon:hover {
@@ -156,7 +156,7 @@ html, body {
   background-repeat: no-repeat;
   min-width: 200px;
   min-height: 60px;
-  transition: transform 0.2s ease;
+  transition: transform 0.1s steps(2);
 }
 
 .btn-growth:hover {
@@ -173,7 +173,7 @@ html, body {
 }
 
 .animate-wiggle {
-  animation: wiggle 0.5s ease-in-out infinite;
+  animation: wiggle 0.4s steps(4) infinite;
 }
 
 /* Custom Scrollbar */

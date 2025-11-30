@@ -193,7 +193,7 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
   return (
     <div className="flex flex-col mt-4">
       <a href={checkoutUrl} target="_self" className="group relative">
-        <Button as="span" width="full" className="relative bg-dark-green text-[#f4f1ea] font-heading tracking-[2px] uppercase hover:bg-rust transition-colors flex items-center justify-center gap-2 py-4">
+        <Button as="span" width="full" className="relative bg-dark-green text-[#f4f1ea] font-heading tracking-[2px] uppercase hover:bg-rust transition-colors duration-100 steps(2) flex items-center justify-center gap-2 py-4">
           ACQUIRE
         </Button>
       </a>
@@ -256,20 +256,20 @@ function CartLineItem({line}: {line: CartLine}) {
   return (
     <li
       key={id}
-      className="flex gap-6 py-6 border-b-2 border-dashed border-dark-green/20 relative group transition-transform hover:bg-dark-green/5 items-start"
+      className="flex gap-6 py-6 border-b-2 border-dashed border-dark-green/20 relative group transition-transform duration-100 steps(2) hover:bg-dark-green/5 items-start"
       style={{
         display: optimisticData?.action === 'remove' ? 'none' : 'flex',
       }}
     >
       {/* Polaroid Image */}
-      <div className="flex-shrink-0 relative w-24 h-28 rotate-[-2deg] transition-transform duration-300 group-hover:rotate-0 group-hover:scale-105">
-        <div className="absolute inset-0 bg-white shadow-md p-1.5 pb-5 transform transition-transform">
+      <div className="flex-shrink-0 relative w-24 h-28 rotate-[-2deg] transition-transform duration-100 steps(2) group-hover:rotate-0 group-hover:scale-105">
+        <div className="absolute inset-0 bg-white shadow-md p-1.5 pb-5 transform transition-transform duration-100 steps(2)">
             {merchandise.image && (
             <Image
                 width={110}
                 height={110}
                 data={merchandise.image}
-                className="object-cover object-center w-full h-full border border-gray-100 grayscale-[0.2] group-hover:grayscale-0 transition-all duration-300"
+                className="object-cover object-center w-full h-full border border-gray-100 grayscale-[0.2] group-hover:grayscale-0 transition-all duration-100 steps(2)"
                 alt={merchandise.title}
             />
             )}
@@ -325,7 +325,7 @@ function ItemRemoveButton({lineId}: {lineId: CartLine['id']}) {
       }}
     >
       <button
-        className="flex items-center justify-center w-10 h-10 border border-dark-green/20 rounded hover:border-rust hover:text-rust transition-colors"
+        className="flex items-center justify-center w-10 h-10 border border-dark-green/20 rounded hover:border-rust hover:text-rust transition-colors duration-100 steps(2)"
         type="submit"
       >
         <span className="sr-only">Remove</span>
@@ -358,7 +358,7 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
           <button
             name="decrease-quantity"
             aria-label="Decrease quantity"
-            className="w-10 h-10 transition text-dark-green/50 hover:text-dark-green disabled:text-dark-green/10"
+            className="w-10 h-10 transition duration-100 steps(2) text-dark-green/50 hover:text-dark-green disabled:text-dark-green/10"
             value={prevQuantity}
             disabled={optimisticQuantity <= 1}
           >
@@ -475,7 +475,7 @@ export function CartEmpty({
           <span className="text-sm opacity-70">Begin your requisition.</span>
         </Text>
         <div>
-          <Button onClick={onClose} className="bg-dark-green text-[#EFEBD6] font-heading tracking-widest px-8 py-3 hover:bg-rust transition-colors">
+          <Button onClick={onClose} className="bg-dark-green text-[#EFEBD6] font-heading tracking-widest px-8 py-3 hover:bg-rust transition-colors duration-100 steps(2)">
               INITIATE SEARCH
           </Button>
         </div>

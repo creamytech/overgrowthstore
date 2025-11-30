@@ -162,12 +162,12 @@ export default function Product() {
         {/* Left Column: The Visual (Specimen) */}
         <div className="flex flex-col gap-4">
             <div 
-                className="relative w-full aspect-[4/5] bg-paper border border-dark-green/20 p-8 shadow-sm group cursor-crosshair transition-colors duration-300"
+                className="relative w-full aspect-[4/5] bg-paper border border-dark-green/20 p-8 shadow-sm group cursor-crosshair transition-colors duration-100 steps(2)"
                 onClick={() => setIsInspecting(!isInspecting)}
             >
                 {/* Texture Overlay (Multiply) - Fades out on hover or inspect */}
                 <div 
-                    className={`absolute inset-0 z-10 pointer-events-none mix-blend-multiply transition-opacity duration-500 ${isInspecting ? 'opacity-0' : 'opacity-30 group-hover:opacity-0'}`}
+                    className={`absolute inset-0 z-10 pointer-events-none mix-blend-multiply transition-opacity duration-100 steps(2) ${isInspecting ? 'opacity-0' : 'opacity-30 group-hover:opacity-0'}`}
                     style={{backgroundImage: "url('/assets/texture_archive_paper.jpg')", backgroundSize: '500px'}}
                 />
                 
@@ -177,18 +177,20 @@ export default function Product() {
                         <Image
                             data={activeImage}
                             sizes="(min-width: 1024px) 50vw, 100vw"
-                            className={`w-full h-full object-contain transition-all duration-500 ${isInspecting ? 'mix-blend-normal filter-none sepia-0' : 'mix-blend-multiply filter contrast-110 sepia-[0.1] group-hover:mix-blend-normal group-hover:filter-none group-hover:sepia-0'}`}
+                            className={`w-full h-full object-contain transition-all duration-100 steps(2) ${isInspecting ? 'mix-blend-normal filter-none sepia-0' : 'mix-blend-multiply filter contrast-110 sepia-[0.1] group-hover:mix-blend-normal group-hover:filter-none group-hover:sepia-0'}`}
                         />
                     )}
                 </div>
 
                 {/* Corner Stamps/Marks */}
-                <div className={`absolute top-4 left-4 z-20 border border-dark-green/30 px-2 py-1 transition-opacity duration-300 ${isInspecting ? 'opacity-50' : 'group-hover:opacity-50'}`}>
-                    <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60">Fig. 1</span>
+                <div className={`absolute top-4 left-4 z-20 border border-dark-green/30 px-2 py-1 transition-opacity duration-100 steps(2) ${isInspecting ? 'opacity-50' : 'group-hover:opacity-50'}`}>
+                    <span className="font-typewriter text-[10px] uppercase tracking-widest text-dark-green/60">
+                        Fig. {product.id.substring(product.id.length - 3)}
+                    </span>
                 </div>
 
                 {/* Mobile Hint */}
-                <div className={`absolute bottom-4 right-4 z-20 transition-opacity duration-500 ${isInspecting ? 'opacity-0' : 'opacity-100 lg:opacity-0'}`}>
+                <div className={`absolute bottom-4 right-4 z-20 transition-opacity duration-100 steps(2) ${isInspecting ? 'opacity-0' : 'opacity-100 lg:opacity-0'}`}>
                     <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/40 bg-paper/80 px-2 py-1 rounded-full">
                         Tap to Inspect
                     </span>
@@ -208,7 +210,7 @@ export default function Product() {
                             <button
                                 key={med.id || image.id}
                                 onClick={() => setActiveImage(image)}
-                                className={`relative w-20 h-24 flex-shrink-0 border transition-all duration-200 ${
+                                className={`relative w-20 h-24 flex-shrink-0 border transition-all duration-100 steps(2) ${
                                     isActive 
                                     ? 'border-dark-green opacity-100 ring-1 ring-dark-green ring-offset-1 ring-offset-[#f4f1ea]' 
                                     : 'border-dark-green/20 opacity-60 hover:opacity-100 hover:border-dark-green/50'
@@ -347,7 +349,7 @@ export function ProductForm({
                     prefetch="intent"
                     replace
                     className={clsx(
-                      'min-w-[3rem] px-3 py-2 font-body text-sm border transition-all duration-200 text-center',
+                      'min-w-[3rem] px-3 py-2 font-body text-sm border transition-all duration-100 steps(2) text-center',
                       selected 
                         ? 'border-dark-green bg-dark-green text-cream' 
                         : 'border-dark-green/30 text-dark-green hover:border-dark-green',
@@ -362,37 +364,40 @@ export function ProductForm({
         ))}
       </div>
 
-      {selectedVariant && (
-        <div className="mt-4">
+          {selectedVariant && (
+        <div className="mt-8">
           {isOutOfStock ? (
-            <Button variant="secondary" disabled className="w-full py-4 bg-gray-200 text-ink/50 font-heading tracking-widest uppercase cursor-not-allowed">
-              Salvage Archived
+            <Button variant="secondary" disabled className="w-full py-4 bg-gray-200 text-ink/50 font-heading tracking-widest uppercase cursor-not-allowed border border-dashed border-ink/20">
+              Salvage Archived // Depleted
             </Button>
           ) : (
             <AddToCartButton
               lines={[{merchandiseId: selectedVariant.id!, quantity: 1}]}
               variant="primary"
-              className="group relative w-full h-16 bg-transparent overflow-hidden transition-all duration-300 hover:shadow-lg"
+              className="group relative w-full h-20 overflow-hidden transition-all duration-100 steps(2)"
             >
-              {/* Background Fill Animation (Slide Up) */}
-              <div className="absolute inset-0 bg-dark-green transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0" />
-              
-              {/* Border (Static) */}
-              <div className="absolute inset-0 border border-dark-green z-20 pointer-events-none" />
+              {/* Button Container - Stamped Look */}
+              <div className="absolute inset-0 bg-dark-green border-2 border-dark-green transition-all duration-100 steps(2) group-hover:bg-rust group-hover:border-rust">
+                 {/* Inner Border */}
+                 <div className="absolute inset-1 border border-[#f4f1ea]/30 group-hover:border-[#f4f1ea]/50" />
+              </div>
 
-              {/* Corner Accents (Top-Left & Bottom-Right) */}
-              <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-dark-green z-20 group-hover:border-cream transition-colors duration-300" />
-              <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-dark-green z-20 group-hover:border-cream transition-colors duration-300" />
+              {/* Content */}
+              <div className="relative z-10 flex flex-col items-center justify-center h-full gap-1">
+                 <span className="font-heading text-2xl tracking-[0.25em] uppercase text-[#f4f1ea] transition-colors duration-100 steps(2)">
+                    Acquire Salvage
+                 </span>
+                 <div className="flex items-center gap-3 opacity-60 group-hover:opacity-100 transition-opacity duration-100 steps(2)">
+                    <span className="h-px w-8 bg-[#f4f1ea] transition-colors" />
+                    <span className="font-typewriter text-[10px] text-[#f4f1ea] transition-colors uppercase tracking-widest">
+                        FIG. {product.id.substring(product.id.length - 3)}
+                    </span>
+                    <span className="h-px w-8 bg-[#f4f1ea] transition-colors" />
+                 </div>
+              </div>
 
-              {/* Text Content */}
-              <span className="relative z-30 flex items-center justify-center h-full w-full gap-4 group-hover:text-[#f4f1ea] transition-colors duration-300">
-                <span className="font-heading text-xl tracking-[0.2em] uppercase text-dark-green group-hover:text-[#f4f1ea] transition-colors duration-300">
-                  Acquire Salvage
-                </span>
-                <span className="font-body text-[10px] opacity-60 group-hover:opacity-100 group-hover:text-[#f4f1ea]/80 transition-all duration-300 translate-y-0.5">
-                  [FIG. {product.id.substring(product.id.length - 3)}]
-                </span>
-              </span>
+              {/* Hover Effect - Stamp Mark */}
+              <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-[#f4f1ea] rounded-full blur-xl opacity-0 group-hover:opacity-10 transition-opacity duration-100 steps(2) pointer-events-none" />
             </AddToCartButton>
           )}
         </div>
@@ -446,7 +451,7 @@ function ProductDetail({
               </Text>
               <IconClose
                 className={clsx(
-                  'transition-transform transform-gpu duration-200',
+                  'transition-transform transform-gpu duration-100 steps(2)',
                   !open && 'rotate-[45deg]',
                 )}
               />

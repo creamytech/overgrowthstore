@@ -29,132 +29,165 @@ export default function OurStory() {
   const {page} = useLoaderData<typeof loader>();
 
   return (
-    <div className="min-h-screen bg-[#f4f1ea] relative pt-32 pb-24 px-4 md:px-8">
-      <div className="max-w-4xl mx-auto relative z-10">
+    <div className="min-h-screen bg-[#f4f1ea] relative pt-32 pb-24 px-4 md:px-8 overflow-hidden">
+      
+      {/* Background Texture - Coffee Rings & Dirt */}
+      <div className="fixed inset-0 pointer-events-none opacity-10 z-0">
+         <div className="absolute top-[10%] left-[5%] w-64 h-64 rounded-full border-[20px] border-rust blur-[2px] mask-grunge transform rotate-45" />
+         <div className="absolute bottom-[20%] right-[10%] w-48 h-48 rounded-full border-[10px] border-dark-green blur-[1px] mask-grunge" />
+      </div>
+
+      <div className="max-w-5xl mx-auto relative z-10">
         
         {/* Header Section */}
-        <div className="mb-12 text-center relative">
-            <div className="inline-block border-2 border-dark-green/20 p-6 bg-[#f4f1ea] relative">
+        <div className="mb-24 text-center relative">
+            <div className="inline-block relative">
                 {/* Stamps */}
-                <div className="absolute -top-4 -right-4 border-2 border-rust/30 text-rust/30 p-2 font-heading text-lg -rotate-12 pointer-events-none uppercase tracking-widest bg-[#f4f1ea]">
+                <div className="absolute -top-8 -right-12 border-4 border-rust text-rust px-4 py-1 font-heading text-xl -rotate-12 pointer-events-none uppercase tracking-widest mix-blend-multiply opacity-80 mask-grunge">
                     DECLASSIFIED
                 </div>
                 
-                <h1 className="font-heading text-4xl md:text-6xl text-dark-green mb-2 uppercase tracking-widest">
+                <h1 className="font-heading text-6xl md:text-8xl text-dark-green mb-4 uppercase tracking-widest relative z-10">
                     Mission Briefing
                 </h1>
-                <p className="font-body text-xs tracking-[0.3em] text-dark-green/60 uppercase">
-                    Subject: The Overgrowth Initiative
+                <div className="h-1 w-32 bg-rust mx-auto mb-4" />
+                <p className="font-typewriter text-sm tracking-[0.3em] text-dark-green/60 uppercase">
+                    Subject: The Overgrowth Initiative // Ref: 88-Z
                 </p>
             </div>
         </div>
 
-        {/* Content Container - File Folder Look */}
-        <div className="bg-[#f0ede6] border border-dark-green/10 p-8 md:p-16 shadow-sm relative overflow-hidden">
+        {/* Content Container */}
+        <div className="space-y-32">
             
-            {/* Background Elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[url('https://cdn.shopify.com/s/files/1/0849/6437/6882/files/topo-pattern.png?v=1732650000')] opacity-5 pointer-events-none" />
-            
-            <div className="space-y-16 relative z-10">
-                
-                {/* Section 1: Philosophy */}
-                <section className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 items-start border-b border-dark-green/10 pb-12">
-                    <div className="md:text-right">
-                        <h2 className="font-heading text-2xl text-dark-green uppercase tracking-wider">
+            {/* Section 1: Philosophy (Left Aligned) */}
+            <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div className="relative group">
+                    <div className="absolute inset-0 bg-dark-green/5 transform -rotate-2 group-hover:rotate-0 transition-transform duration-500" />
+                    <div className="relative border border-dark-green/20 p-8 bg-[#f4f1ea] shadow-sm transform rotate-1 group-hover:rotate-0 transition-transform duration-500">
+                        <h2 className="font-heading text-4xl text-dark-green uppercase tracking-wider mb-2">
                             01 // The Philosophy
                         </h2>
-                        <span className="font-body text-xs text-rust tracking-widest uppercase mt-2 block">
+                        <span className="font-typewriter text-xs text-rust tracking-widest uppercase mb-6 block">
                             Nature Reclaims All
                         </span>
-                    </div>
-                    <div className="prose prose-stone max-w-none">
-                        <p className="font-body text-dark-green/80 leading-relaxed text-lg">
-                            In a world where concrete meets canopy, Overgrowth represents the inevitable return of nature. We don't just make clothing; we design survival gear for the urban jungle, inspired by the resilience of life that thrives in the cracks of civilization.
+                        <p className="font-body text-dark-green/80 leading-relaxed text-lg mb-4">
+                            In a world where concrete meets canopy, <span className="font-bold text-dark-green">Overgrowth</span> represents the inevitable return of nature. We don't just make clothing; we design survival gear for the urban jungle.
                         </p>
-                        <p className="font-body text-dark-green/80 leading-relaxed mt-4">
-                            Our aesthetic is "Reclaimed World"—a vision of the future where the artificial and the organic have merged. It's not about the end of the world; it's about the beginning of a new one.
+                        <p className="font-body text-dark-green/80 leading-relaxed">
+                            Our aesthetic is <span className="bg-dark-green text-[#f4f1ea] px-1">"Reclaimed World"</span>—a vision of the future where the artificial and the organic have merged.
                         </p>
                     </div>
-                </section>
+                    {/* Decorative Tape */}
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-32 h-8 bg-[#e8e5d5] opacity-80 rotate-1 shadow-sm" />
+                </div>
+                
+                {/* Visual/Evidence */}
+                <div className="relative md:pl-12">
+                    <div className="aspect-[4/5] bg-gray-200 relative overflow-hidden shadow-xl transform rotate-3 hover:rotate-1 transition-transform duration-700">
+                         <img src="/assets/hero_horse_skeleton_isolated.png" alt="Evidence A" className="w-full h-full object-contain p-8 mix-blend-multiply filter sepia-[0.3] contrast-125" />
+                         <div className="absolute bottom-4 left-4 font-handwritten text-2xl text-rust">Fig. 1A</div>
+                    </div>
+                </div>
+            </section>
 
-                {/* Section 2: Aesthetic */}
-                <section className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 items-start border-b border-dark-green/10 pb-12">
-                    <div className="md:text-right">
-                        <h2 className="font-heading text-2xl text-dark-green uppercase tracking-wider">
+            {/* Section 2: Aesthetic (Right Aligned) */}
+            <section className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                {/* Visual/Evidence - Swapped order on desktop */}
+                <div className="relative md:pr-12 order-2 md:order-1">
+                    <div className="aspect-square bg-[#e8e5d5] relative overflow-hidden shadow-xl transform -rotate-2 hover:rotate-0 transition-transform duration-700 p-4">
+                         <div className="w-full h-full border-2 border-dashed border-dark-green/30 flex items-center justify-center">
+                            <div className="text-center">
+                                <span className="font-heading text-6xl text-dark-green/20 block mb-2">?</span>
+                                <span className="font-typewriter text-xs text-dark-green/40 uppercase tracking-widest">Image Missing</span>
+                            </div>
+                         </div>
+                         <div className="absolute top-4 right-4 font-handwritten text-xl text-dark-green rotate-12">Field Notes</div>
+                    </div>
+                </div>
+
+                <div className="relative group order-1 md:order-2">
+                    <div className="absolute inset-0 bg-rust/5 transform rotate-2 group-hover:rotate-0 transition-transform duration-500" />
+                    <div className="relative border border-rust/20 p-8 bg-[#f4f1ea] shadow-sm transform -rotate-1 group-hover:rotate-0 transition-transform duration-500">
+                        <h2 className="font-heading text-4xl text-dark-green uppercase tracking-wider mb-2">
                             02 // The Aesthetic
                         </h2>
-                        <span className="font-body text-xs text-rust tracking-widest uppercase mt-2 block">
+                        <span className="font-typewriter text-xs text-rust tracking-widest uppercase mb-6 block">
                             Form Follows Function
                         </span>
-                    </div>
-                    <div className="prose prose-stone max-w-none">
-                        <p className="font-body text-dark-green/80 leading-relaxed text-lg">
-                            Every piece is crafted with the utility of workwear and the soul of the wilderness. We use heavy-weight cottons, reinforced stitching, and earth-tone palettes derived from moss, rust, and stone.
+                        <p className="font-body text-dark-green/80 leading-relaxed text-lg mb-6">
+                            Every piece is crafted with the utility of workwear and the soul of the wilderness. We use heavy-weight cottons, reinforced stitching, and earth-tone palettes.
                         </p>
-                        <ul className="list-none space-y-2 mt-4 font-body text-dark-green/70 pl-0">
-                            <li className="flex items-center">
-                                <span className="w-2 h-2 bg-rust mr-3 rounded-full"></span>
-                                Tactical utility for everyday exploration
-                            </li>
-                            <li className="flex items-center">
-                                <span className="w-2 h-2 bg-rust mr-3 rounded-full"></span>
-                                Weathered textures that tell a story
-                            </li>
-                            <li className="flex items-center">
-                                <span className="w-2 h-2 bg-rust mr-3 rounded-full"></span>
-                                Silhouettes built for movement
-                            </li>
-                        </ul>
-                    </div>
-                </section>
-
-                {/* Section 3: Sustainability */}
-                <section className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 items-start">
-                    <div className="md:text-right">
-                        <h2 className="font-heading text-2xl text-dark-green uppercase tracking-wider">
-                            03 // Sustainability
-                        </h2>
-                        <span className="font-body text-xs text-rust tracking-widest uppercase mt-2 block">
-                            Leave No Trace
-                        </span>
-                    </div>
-                    <div className="prose prose-stone max-w-none">
-                        <p className="font-body text-dark-green/80 leading-relaxed text-lg">
-                            We believe in creating products that last longer than the trends they outlive. Our commitment to sustainability isn't a marketing tactic; it's a survival strategy.
-                        </p>
-                        <p className="font-body text-dark-green/80 leading-relaxed mt-4">
-                            We source organic cottons and recycled materials wherever possible, minimizing our footprint so the real overgrowth can continue to thrive.
-                        </p>
-                    </div>
-                </section>
-
-            </div>
-
-            {/* Footer Signature */}
-            <div className="mt-16 pt-8 border-t border-dark-green/20 flex justify-between items-end">
-                <div>
-                    <p className="font-body text-xs tracking-widest uppercase text-dark-green/50">
-                        Authorized By
-                    </p>
-                    <div className="font-heading text-xl text-dark-green mt-2 font-bold italic">
-                        The Director
+                        
+                        <div className="space-y-3 font-typewriter text-xs text-dark-green/70">
+                            <div className="flex items-center gap-3 group/item cursor-help">
+                                <span className="w-4 h-4 border border-rust flex items-center justify-center text-[8px] text-rust group-hover/item:bg-rust group-hover/item:text-[#f4f1ea] transition-colors">A</span>
+                                <span className="relative">
+                                    <span className="bg-dark-green text-transparent select-none group-hover/item:bg-transparent group-hover/item:text-dark-green transition-all duration-300">REDACTED</span>
+                                    <span className="absolute inset-0 group-hover/item:hidden">Tactical Utility</span>
+                                </span>
+                            </div>
+                            <div className="flex items-center gap-3 group/item cursor-help">
+                                <span className="w-4 h-4 border border-rust flex items-center justify-center text-[8px] text-rust group-hover/item:bg-rust group-hover/item:text-[#f4f1ea] transition-colors">B</span>
+                                <span>Weathered textures that tell a story</span>
+                            </div>
+                            <div className="flex items-center gap-3 group/item cursor-help">
+                                <span className="w-4 h-4 border border-rust flex items-center justify-center text-[8px] text-rust group-hover/item:bg-rust group-hover/item:text-[#f4f1ea] transition-colors">C</span>
+                                <span>Silhouettes built for movement</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="text-right">
-                    <p className="font-body text-xs tracking-widest uppercase text-dark-green/50">
-                        Date
-                    </p>
-                    <p className="font-body text-sm text-dark-green mt-1">
-                        {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </section>
+
+            {/* Section 3: Sustainability (Centered) */}
+            <section className="max-w-3xl mx-auto text-center relative">
+                <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-px h-12 bg-dark-green/20" />
+                
+                <h2 className="font-heading text-4xl text-dark-green uppercase tracking-wider mb-4">
+                    03 // Sustainability
+                </h2>
+                <span className="font-typewriter text-xs text-rust tracking-widest uppercase mb-8 block">
+                    Leave No Trace
+                </span>
+                
+                <div className="prose prose-lg prose-stone mx-auto">
+                    <p className="font-body text-dark-green/80 leading-relaxed">
+                        We believe in creating products that last longer than the trends they outlive. Our commitment to sustainability isn't a marketing tactic; it's a <span className="italic text-rust">survival strategy</span>.
                     </p>
                 </div>
-            </div>
+
+                <div className="mt-12 flex justify-center gap-8 opacity-60">
+                     <div className="w-16 h-16 border-2 border-dark-green rounded-full flex items-center justify-center">
+                        <span className="font-heading text-xs text-dark-green text-center leading-none">100%<br/>ORG</span>
+                     </div>
+                     <div className="w-16 h-16 border-2 border-dark-green rounded-full flex items-center justify-center">
+                        <span className="font-heading text-xs text-dark-green text-center leading-none">RE<br/>CYC</span>
+                     </div>
+                </div>
+            </section>
 
         </div>
-        
-        {/* Paper Stack Effect */}
-        <div className="absolute top-4 left-4 w-full h-full border border-dark-green/5 bg-[#f4f1ea] -z-10" />
-        <div className="absolute top-8 left-8 w-full h-full border border-dark-green/5 bg-[#f4f1ea] -z-20" />
+
+        {/* Footer Signature */}
+        <div className="mt-32 pt-12 border-t-2 border-dashed border-dark-green/20 flex justify-between items-end max-w-2xl mx-auto">
+            <div>
+                <p className="font-typewriter text-xs tracking-widest uppercase text-dark-green/50 mb-2">
+                    Authorized By
+                </p>
+                <div className="font-handwritten text-3xl text-dark-green -rotate-6">
+                    The Director
+                </div>
+            </div>
+            <div className="text-right">
+                <p className="font-typewriter text-xs tracking-widest uppercase text-dark-green/50 mb-2">
+                    Timestamp
+                </p>
+                <p className="font-typewriter text-sm text-dark-green">
+                    {new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                </p>
+            </div>
+        </div>
 
       </div>
     </div>
