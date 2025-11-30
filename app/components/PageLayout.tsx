@@ -118,7 +118,7 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
       {/* Field Journal Navigation */}
       <header 
         role="banner" 
-        className={`fixed top-0 left-0 w-full transition-all duration-500 z-[1000] flex justify-between items-center px-4 md:px-12 pt-[env(safe-area-inset-top)] ${
+        className={`fixed top-0 left-0 w-full transition-all duration-500 z-[1000] flex justify-between items-center px-4 md:px-12 ${
             isScrolled 
             ? 'bg-[#f4f1ea]/90 backdrop-blur-md py-4 shadow-md border-b border-dark-green/10' 
             : 'bg-transparent py-6 border-b border-transparent'
@@ -467,7 +467,16 @@ function NewsletterForm() {
 }
 
 function FooterLink({item}: {item: ChildEnhancedMenuItem}) {
-  if (item.to.startsWith('http')) {
+  // Force internal routing for Account/Orders to keep user in Hydrogen app
+  if (item.title === 'Account' || item.title === 'Orders' || item.url?.includes('/account')) {
+      return (
+        <Link to="/account" prefetch="intent" className="hover-underline hover:text-rust transition-colors duration-100 steps(2) block py-1 w-fit">
+          {item.title}
+        </Link>
+      );
+  }
+
+  if (item.to.startsWith('http') || item.target === '_blank') {
     return (
       <a href={item.to} target={item.target} rel="noopener noreferrer" className="hover-underline hover:text-rust transition-colors duration-100 steps(2) block py-1 w-fit">
         {item.title}

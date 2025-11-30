@@ -1,5 +1,11 @@
-import {useRef} from 'react';
+import {useRef, useState, useEffect} from 'react';
 import {motion, useScroll, useTransform, useMotionValue} from 'framer-motion';
+
+// Helper for stepped values (Moved outside to prevent hook violation)
+const useSteppedTransform = (value: any, input: number[], output: number[], stepSize: number) => {
+  const smooth = useTransform(value, input, output);
+  return useTransform(smooth, (v) => Math.floor(v / stepSize) * stepSize);
+};
 
 export function FieldHero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -16,12 +22,6 @@ export function FieldHero() {
     mouseY.set(clientY / innerHeight - 0.5);
   };
 
-  // Helper for stepped values
-  const useSteppedTransform = (value: any, input: number[], output: number[], stepSize: number) => {
-    const smooth = useTransform(value, input, output);
-    return useTransform(smooth, (v) => Math.floor(v / stepSize) * stepSize);
-  };
-
   const xMove = useSteppedTransform(mouseX, [-0.5, 0.5], [-20, 20], 5); // 5px steps
   const yMove = useSteppedTransform(mouseY, [-0.5, 0.5], [-20, 20], 5); // 5px steps
   
@@ -29,42 +29,54 @@ export function FieldHero() {
   const ySkeleton = useSteppedTransform(scrollY, [0, 500], [0, 100], 20); // 20px steps
   const yText = useSteppedTransform(scrollY, [0, 500], [0, 50], 10); // 10px steps
 
+  // Fix Hydration Error: Generate particles on client only
+  const [particles, setParticles] = useState<Array<{x: string, y: string, scale: number, opacity: number, duration: number, moveY: number, moveX: number, width: number, height: number}>>([]);
+
+  useEffect(() => {
+    const newParticles = [...Array(8)].map(() => ({
+        x: Math.random() * 100 + "%",
+        y: Math.random() * 100 + "%",
+        scale: Math.random() * 0.5 + 0.5,
+        opacity: Math.random() * 0.3 + 0.1,
+        duration: Math.random() * 20 + 10,
+        moveY: Math.random() * -100,
+        moveX: (Math.random() - 0.5) * 50,
+        width: Math.random() * 6 + 2,
+        height: Math.random() * 6 + 2
+    }));
+    setParticles(newParticles);
+  }, []);
+
   return (
     <section 
       ref={containerRef} 
-      className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-[#f4f1ea]"
+      className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-transparent"
       onMouseMove={handleMouseMove}
-      onTouchMove={(e) => {
-        const {clientX, clientY} = e.touches[0];
-        const {innerWidth, innerHeight} = window;
-        mouseX.set(clientX / innerWidth - 0.5);
-        mouseY.set(clientY / innerHeight - 0.5);
-      }}
     >
       {/* Floating Spores/Dust Particles */}
       <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
-          {[...Array(8)].map((_, i) => (
+          {particles.map((p, i) => (
               <motion.div
                   key={i}
                   className="absolute bg-dark-green/20 rounded-full blur-[1px]"
                   initial={{
-                      x: Math.random() * 100 + "%",
-                      y: Math.random() * 100 + "%",
-                      scale: Math.random() * 0.5 + 0.5,
-                      opacity: Math.random() * 0.3 + 0.1
+                      x: p.x,
+                      y: p.y,
+                      scale: p.scale,
+                      opacity: p.opacity
                   }}
                   animate={{
-                      y: [null, Math.random() * -100],
-                      x: [null, (Math.random() - 0.5) * 50],
+                      y: [null, p.moveY],
+                      x: [null, p.moveX],
                   }}
                   transition={{
-                      duration: Math.random() * 20 + 10,
+                      duration: p.duration,
                       repeat: Infinity,
                       ease: "linear"
                   }}
                   style={{
-                      width: Math.random() * 6 + 2 + "px",
-                      height: Math.random() * 6 + 2 + "px",
+                      width: p.width + "px",
+                      height: p.height + "px",
                   }}
               />
           ))}

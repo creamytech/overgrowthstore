@@ -50,9 +50,9 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
 
   const heading = customer
     ? customer.firstName
-      ? `Welcome, ${customer.firstName}.`
-      : `Welcome to your account.`
-    : 'Account Details';
+      ? `PERSONNEL FILE: ${customer.firstName.toUpperCase()}`
+      : `CLASSIFIED RECORD`
+    : 'PERSONNEL FILE';
 
   return defer(
     {
@@ -86,7 +86,7 @@ export default function Authenticated() {
           <Modal cancelLink="/account">
             <Outlet context={{customer: data.customer}} />
           </Modal>
-          <Account {...data} />
+          <Account {...data} customer={data.customer} />
         </>
       );
     } else {
@@ -94,7 +94,7 @@ export default function Authenticated() {
     }
   }
 
-  return <Account {...data} />;
+  return <Account {...data} customer={data.customer} />;
 }
 
 interface AccountType {
@@ -108,17 +108,73 @@ function Account({customer, heading, featuredDataPromise}: AccountType) {
   const addresses = flattenConnection(customer.addresses);
 
   return (
-    <>
-      <PageHeader heading={heading}>
+    <div className="min-h-screen pt-32 pb-24 px-4 md:px-12 max-w-7xl mx-auto">
+      
+      {/* Header Section */}
+      <div className="border-b-2 border-dark-green pb-6 mb-12 flex flex-col md:flex-row justify-between items-end gap-6">
+        <div>
+            <h1 className="font-heading text-4xl md:text-6xl text-dark-green tracking-widest uppercase mb-2">
+                {heading}
+            </h1>
+            <p className="font-typewriter text-sm text-rust tracking-widest uppercase">
+                STATUS: ACTIVE // CLEARANCE: LEVEL 4
+            </p>
+        </div>
+
         <Form method="post" action={usePrefixPathWithLocale('/account/logout')}>
-          <button type="submit" className="text-primary/50">
-            Sign out
+          <button type="submit" className="font-heading text-sm text-rust border border-rust px-6 py-2 hover:bg-rust hover:text-[#f4f1ea] transition-colors uppercase tracking-widest">
+            Discharge (Sign Out)
           </button>
         </Form>
-      </PageHeader>
-      {orders && <AccountOrderHistory orders={orders} />}
-      <AccountDetails customer={customer} />
-      <AccountAddressBook addresses={addresses} customer={customer} />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-12">
+          
+          {/* Left Column: Orders */}
+          <div>
+             <div className="flex items-center gap-4 mb-8">
+                <div className="w-8 h-8 bg-dark-green flex items-center justify-center text-[#f4f1ea] font-heading">A</div>
+                <h2 className="font-heading text-2xl text-dark-green uppercase tracking-widest">Supply Requisitions</h2>
+             </div>
+             
+             <div className="bg-[#f0eee6] border border-dark-green/20 p-6 md:p-8 relative">
+                {/* Texture */}
+                <div className="absolute inset-0 pointer-events-none opacity-20 mix-blend-multiply" style={{backgroundImage: "url('/assets/texture_archive_paper.jpg')"}} />
+                
+                <div className="relative z-10">
+                    {orders && <AccountOrderHistory orders={orders} />}
+                </div>
+             </div>
+          </div>
+
+          {/* Right Column: Addresses & Details */}
+          <div className="space-y-12">
+             
+             {/* Addresses */}
+             <div>
+                <div className="flex items-center gap-4 mb-8">
+                    <div className="w-8 h-8 bg-rust flex items-center justify-center text-[#f4f1ea] font-heading">B</div>
+                    <h2 className="font-heading text-2xl text-dark-green uppercase tracking-widest">Deployment Coordinates</h2>
+                </div>
+                <div className="bg-white/50 border border-dark-green/20 p-6 relative">
+                    <AccountAddressBook addresses={addresses} customer={customer} />
+                </div>
+             </div>
+
+             {/* Personal Details */}
+             <div>
+                <div className="flex items-center gap-4 mb-8">
+                    <div className="w-8 h-8 bg-dark-green/50 flex items-center justify-center text-[#f4f1ea] font-heading">C</div>
+                    <h2 className="font-heading text-2xl text-dark-green uppercase tracking-widest">Operative Data</h2>
+                </div>
+                <div className="bg-white/50 border border-dark-green/20 p-6 relative">
+                    <AccountDetails customer={customer} />
+                </div>
+             </div>
+
+          </div>
+      </div>
+
       {!orders.length && (
         <Suspense>
           <Await
@@ -126,18 +182,15 @@ function Account({customer, heading, featuredDataPromise}: AccountType) {
             errorElement="There was a problem loading featured products."
           >
             {(data) => (
-              <>
-                <FeaturedCollections
-                  title="Popular Collections"
-                  collections={data.featuredCollections}
-                />
+              <div className="mt-24 border-t border-dark-green/20 pt-12">
+                <h3 className="font-heading text-2xl text-dark-green mb-8 text-center uppercase tracking-widest">Recommended Equipment</h3>
                 <ProductSwimlane products={data.featuredProducts} />
-              </>
+              </div>
             )}
           </Await>
         </Suspense>
       )}
-    </>
+    </div>
   );
 }
 
@@ -147,28 +200,25 @@ type OrderCardsProps = {
 
 function AccountOrderHistory({orders}: OrderCardsProps) {
   return (
-    <div className="mt-6">
-      <div className="grid w-full gap-4 p-4 py-6 md:gap-8 md:p-8 lg:p-12">
-        <h2 className="font-bold text-lead">Order History</h2>
-        {orders?.length ? <Orders orders={orders} /> : <EmptyOrders />}
-      </div>
+    <div className="w-full">
+      {orders?.length ? <Orders orders={orders} /> : <EmptyOrders />}
     </div>
   );
 }
 
 function EmptyOrders() {
   return (
-    <div>
-      <Text className="mb-1" size="fine" width="narrow" as="p">
-        You haven&apos;t placed any orders yet.
+    <div className="text-center py-12">
+      <Text className="mb-4 font-typewriter text-dark-green/60" as="p">
+        No requisitions found in archive.
       </Text>
-      <div className="w-48">
+      <div className="w-full flex justify-center">
         <Button
-          className="w-full mt-2 text-sm"
+          className="btn-stamp text-sm"
           variant="secondary"
           to={usePrefixPathWithLocale('/')}
         >
-          Start Shopping
+          Initiate Requisition
         </Button>
       </div>
     </div>
@@ -177,7 +227,7 @@ function EmptyOrders() {
 
 function Orders({orders}: OrderCardsProps) {
   return (
-    <ul className="grid grid-flow-row grid-cols-1 gap-2 gap-y-6 md:gap-4 lg:gap-6 false sm:grid-cols-3">
+    <ul className="grid grid-flow-row grid-cols-1 gap-4">
       {orders.map((order) => (
         <OrderCard order={order} key={order.id} />
       ))}
