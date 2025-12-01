@@ -453,6 +453,7 @@ function NewsletterForm() {
     const [email, setEmail] = useState('');
     const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
     const [message, setMessage] = useState('');
+    const actionUrl = usePrefixPathWithLocale('/api/newsletter');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -461,8 +462,6 @@ function NewsletterForm() {
         try {
             const formData = new FormData();
             formData.append('email', email);
-            
-            const actionUrl = usePrefixPathWithLocale('/api/newsletter');
             
             const response = await fetch(actionUrl, {
                 method: 'POST',
