@@ -107,73 +107,88 @@ export function ProductCard({
     );
   }
 
-  // Grid Layout (Specimen Tag Style)
+  // Grid Layout (Tactical HUD Style)
   return (
     <div className={clsx('group relative perspective-1000', className)}>
       <Link
         onClick={onClick}
         to={`/products/${product.handle}`}
         prefetch="viewport"
-        className="block transform transition-transform duration-100 steps(2) group-hover:rotate-y-2 group-hover:rotate-x-2"
+        className="block"
       >
-        {/* Specimen Tag Container */}
-        <div className="relative aspect-[4/5] bg-[#f0eee6] overflow-hidden border-2 border-dark-green/10 p-4 shadow-sm transition-all duration-100 steps(2) group-hover:shadow-xl group-hover:border-dark-green/40 flex flex-col">
+        {/* Card Container */}
+        <div className="relative aspect-[4/5] bg-[#f4f1ea] overflow-hidden border border-dark-green/20 transition-all duration-300 group-hover:border-dark-green/60 group-hover:shadow-lg">
           
           {/* Paper Texture Overlay */}
           <div 
-              className="absolute inset-0 z-10 pointer-events-none mix-blend-multiply opacity-40"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E")`,
-                backgroundSize: '200px'
-              }}
+              className="absolute inset-0 z-10 pointer-events-none mix-blend-multiply opacity-20 bg-[url('/assets/texture_archive_paper.jpg')]" 
           />
 
-          {/* Top Label Bar */}
-          <div className="flex justify-between items-start mb-2 relative z-20 flex-shrink-0">
-             <div className="border border-dark-green/30 px-2 py-0.5 bg-[#f4f1ea]">
-                <span className="font-body text-[10px] tracking-widest text-dark-green uppercase">
-                    FIG. {(index || 0) + 1}
-                </span>
-            </div>
-            {cardLabel && (
-              <div className="border border-rust px-2 py-0.5 bg-rust/10">
-                 <span className="font-body text-[10px] tracking-widest text-rust uppercase">
-                    {cardLabel}
-                 </span>
-              </div>
-            )}
-          </div>
-
           {/* Product Image Area */}
-          <div className="relative flex-1 min-h-0 flex items-center justify-center z-0 my-2 border border-dark-green/5 bg-white/40 p-2">
+          <div className="relative w-full h-full p-4 flex items-center justify-center z-0">
             {image && (
               <Image
-                className={`object-contain w-full h-full transition-all duration-100 steps(2) mix-blend-multiply filter contrast-110 sepia-[0.1] ${isSoldOut ? 'grayscale opacity-70' : 'group-hover:scale-110'}`}
-                sizes="(min-width: 64em) 25vw, (min-width: 48em) 30vw, 45vw"
+                className={`object-contain w-full h-full transition-transform duration-500 group-hover:scale-105 mix-blend-multiply filter contrast-110 sepia-[0.1] ${isSoldOut ? 'grayscale opacity-70' : ''}`}
+                sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw"
+                width={800}
                 aspectRatio="4/5"
                 data={image}
                 alt={image.altText || `Picture of ${product.title}`}
                 loading={loading}
               />
             )}
-            
-            {/* Handwritten Note (Appears on Hover) */}
-            <div className="absolute -bottom-2 -right-2 transform rotate-[-5deg] opacity-0 group-hover:opacity-100 transition-all duration-100 steps(2) z-30 pointer-events-none">
-                <span className="font-handwritten text-xl text-rust">
-                    {isSoldOut ? 'Depleted' : 'Specimen A'}
-                </span>
-            </div>
           </div>
 
-          {/* Bottom Info Area */}
-          <div className="relative z-20 mt-2 border-t border-dark-green/10 pt-2 flex-shrink-0">
-             <h3 className="font-heading text-lg text-dark-green leading-tight group-hover:text-rust transition-colors duration-100 steps(2) truncate">
+          {/* HUD Overlay (Appears on Hover) */}
+          <div className="absolute inset-0 z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {/* Scan Line Animation */}
+                <div className="absolute top-0 left-0 w-full h-1 bg-rust/50 shadow-[0_0_10px_rgba(192,90,52,0.5)] animate-[scan_2s_linear_infinite]" />
+                
+                {/* Corner Brackets */}
+                <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-rust" />
+                <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-rust" />
+                <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-rust" />
+                <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-rust" />
+
+                {/* Data Readout */}
+                <div className="absolute bottom-4 left-0 w-full text-center">
+                    <div className="inline-block bg-rust/10 backdrop-blur-sm border border-rust/30 px-3 py-1">
+                        <span className="font-mono text-xs text-rust tracking-widest uppercase animate-pulse">
+                            {isSoldOut ? 'SIGNAL LOST' : 'SALVAGE DETECTED'}
+                        </span>
+                    </div>
+                </div>
+          </div>
+
+          {/* Static Info (Always Visible) */}
+          <div className="absolute top-0 left-0 w-full p-3 flex justify-between items-start z-20">
+             {cardLabel && (
+                <div className="bg-rust text-[#f4f1ea] px-2 py-0.5 text-[10px] tracking-widest uppercase font-bold">
+                    {cardLabel}
+                </div>
+             )}
+          </div>
+
+          {/* Sold Out Overlay */}
+          {isSoldOut && (
+              <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/5 pointer-events-none">
+                  <div className="border-2 border-dark-green text-dark-green px-4 py-2 font-heading text-xl tracking-widest uppercase rotate-[-12deg] bg-[#f4f1ea]/80 backdrop-blur-sm">
+                      DEPLETED
+                  </div>
+              </div>
+          )}
+
+        </div>
+
+        {/* Bottom Info */}
+        <div className="mt-3 px-1">
+             <h3 className="font-heading text-lg text-dark-green leading-tight group-hover:text-rust transition-colors duration-300 truncate uppercase">
                 {product.title}
              </h3>
-             <div className="flex justify-between items-end mt-2">
-                <Text className="font-body text-xs text-dark-green/70 tracking-widest">
-                  REF: {product.id.substring(product.id.length - 6)}
-                </Text>
+             <div className="flex justify-between items-center mt-1 border-t border-dark-green/10 pt-2">
+                <span className="font-mono text-[10px] text-dark-green/50 tracking-widest">
+                    ID: {product.id.substring(product.id.length - 4)}
+                </span>
                 <Text className="font-body text-sm text-dark-green font-bold tracking-widest">
                   <Money withoutTrailingZeros data={price!} />
                   {isDiscounted(price as MoneyV2, compareAtPrice as MoneyV2) && (
@@ -184,17 +199,6 @@ export function ProductCard({
                   )}
                 </Text>
              </div>
-          </div>
-
-          {/* Sold Out Stamp */}
-          {isSoldOut && (
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 pointer-events-none">
-                  <div className="border-4 border-rust text-rust px-6 py-2 font-heading text-xl tracking-widest uppercase rotate-[-15deg] opacity-80 mix-blend-multiply mask-grunge">
-                      SOLD OUT
-                  </div>
-              </div>
-          )}
-
         </div>
       </Link>
     </div>

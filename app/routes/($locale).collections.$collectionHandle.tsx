@@ -31,6 +31,7 @@ import {FILTER_URL_PREFIX} from '~/components/SortFilter';
 import {getImageLoadingPriority} from '~/lib/const';
 import {parseAsCurrency} from '~/lib/utils';
 
+
 export const headers = routeHeaders;
 
 export async function loader({params, request, context}: LoaderFunctionArgs) {
@@ -148,21 +149,27 @@ export default function Collection() {
   const {collection} = useLoaderData<typeof loader>();
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 pt-32 pb-16">
+    <div className="min-h-screen bg-[#f4f1ea] relative overflow-hidden">
+       {/* Texture Overlay */}
+       <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
+
       {/* Custom Header */}
-      <div className="text-center mb-12">
+      <div className="relative z-10 pt-32 pb-12 text-center">
         <h1 className="font-heading text-4xl md:text-6xl text-dark-green tracking-widest mb-2 uppercase">
-          {collection.title}
+            {collection.title}
         </h1>
+        <div className="font-body text-rust text-lg tracking-[0.3em] uppercase mb-4">
+            <span>SECTOR INVENTORY</span>
+        </div>
         {collection.description && (
-            <p className="font-body text-[#c05a34] text-lg tracking-widest uppercase max-w-2xl mx-auto">
-            {collection.description}
-            </p>
+            <div className="font-body text-dark-green/70 text-sm tracking-widest uppercase max-w-2xl mx-auto">
+                <p>{collection.description}</p>
+            </div>
         )}
-        <div className="w-24 h-1 bg-[#c05a34] mx-auto mt-6" />
+        <div className="w-24 h-1 bg-rust mx-auto mt-6" />
       </div>
 
-      <Section padding="x">
+      <Section padding="x" className="relative z-10">
         <Pagination connection={collection.products}>
           {({nodes, isLoading, NextLink, PreviousLink}) => {
             const itemsMarkup = nodes.map((product, i) => (

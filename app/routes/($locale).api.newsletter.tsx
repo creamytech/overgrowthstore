@@ -1,14 +1,14 @@
 import {json, type ActionFunctionArgs} from '@shopify/remix-oxygen';
 
 export async function action({request, context}: ActionFunctionArgs) {
-  const formData = await request.formData();
-  const email = formData.get('email');
-
-  if (!email || typeof email !== 'string') {
-    return json({error: 'Email is required'}, {status: 400});
-  }
-
   try {
+    const formData = await request.formData();
+    const email = formData.get('email');
+
+    if (!email || typeof email !== 'string') {
+      return json({error: 'Email is required'}, {status: 400});
+    }
+
     const {customerCreate} = await context.storefront.mutate(CUSTOMER_CREATE_MUTATION, {
       variables: {
         input: {
@@ -36,7 +36,8 @@ export async function action({request, context}: ActionFunctionArgs) {
 
     return json({success: true, message: 'Welcome to the resistance.'});
   } catch (error) {
-    return json({error: 'Failed to subscribe. Try again.'}, {status: 500});
+    console.error('Newsletter API Error:', error);
+    return json({error: 'Failed to subscribe. Check server logs.'}, {status: 500});
   }
 }
 

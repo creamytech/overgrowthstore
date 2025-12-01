@@ -70,19 +70,22 @@ export default function AllProducts() {
   const {products} = useLoaderData<typeof loader>();
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 pt-32 pb-16">
+    <div className="min-h-screen bg-[#f4f1ea] relative overflow-hidden">
+       {/* Texture Overlay */}
+       <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
+
       {/* Custom Header */}
-      <div className="text-center mb-12">
-        <h1 className="font-heading text-4xl md:text-6xl text-dark-green tracking-widest mb-2">
+      <div className="relative z-10 pt-32 pb-12 text-center">
+        <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-2">
           ALL SALVAGE
         </h1>
-        <p className="font-body text-[#c05a34] text-lg tracking-widest uppercase">
-          COMPLETE CATALOG
-        </p>
-        <div className="w-24 h-1 bg-[#c05a34] mx-auto mt-6" />
+        <div className="font-body text-rust text-lg tracking-[0.3em] uppercase">
+            <span>COMPLETE CATALOG</span>
+        </div>
+        <div className="w-24 h-1 bg-rust mx-auto mt-6" />
       </div>
 
-      <Section padding="x">
+      <Section padding="x" className="relative z-10 pb-32">
         <Pagination connection={products}>
           {({nodes, isLoading, NextLink, PreviousLink}) => {
             const itemsMarkup = nodes.map((product, i) => (

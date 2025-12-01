@@ -14,6 +14,7 @@ import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
 import type {ArticleFragment} from 'storefrontapi.generated';
 
+
 const BLOG_HANDLE = 'Journal';
 
 export const headers = routeHeaders;
@@ -61,14 +62,16 @@ export default function Journals() {
 
   return (
     <div className="min-h-screen bg-[#f4f1ea] relative overflow-hidden">
+       {/* Texture Overlay */}
+       <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
        {/* Header */}
        <div className="relative z-10 pt-32 pb-12 text-center">
             <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-2">
                 FIELD NOTES
             </h1>
-            <p className="font-body text-rust text-lg tracking-[0.3em] uppercase">
-                OBSERVATION LOGS
-            </p>
+            <div className="font-body text-rust text-lg tracking-[0.3em] uppercase">
+                <span>OBSERVATION LOGS</span>
+            </div>
             <div className="w-24 h-1 bg-rust mx-auto mt-6" />
        </div>
 

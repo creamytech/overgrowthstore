@@ -41,6 +41,7 @@ import type {Storefront} from '~/lib/type';
 import {routeHeaders} from '~/data/cache';
 import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 
+
 export const headers = routeHeaders;
 
 export async function loader(args: LoaderFunctionArgs) {
@@ -156,134 +157,198 @@ export default function Product() {
   }, [selectedVariant]);
 
   return (
-    <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
-        
-        {/* Left Column: The Visual (Specimen) */}
-        <div className="flex flex-col gap-4">
-            <div 
-                className="relative w-full aspect-[4/5] bg-paper border border-dark-green/20 p-8 shadow-sm group cursor-crosshair transition-colors duration-100 steps(2)"
-                onClick={() => setIsInspecting(!isInspecting)}
-            >
-                {/* Texture Overlay (Multiply) - Fades out on hover or inspect */}
-                <div 
-                    className={`absolute inset-0 z-10 pointer-events-none mix-blend-multiply transition-opacity duration-100 steps(2) ${isInspecting ? 'opacity-0' : 'opacity-30 group-hover:opacity-0'}`}
-                    style={{backgroundImage: "url('/assets/texture_archive_paper.jpg')", backgroundSize: '500px'}}
-                />
+    <div className="min-h-screen bg-[#f4f1ea] relative py-32 px-4 md:px-8">
+       {/* Texture Overlay */}
+       <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
+       
+       <div className="max-w-7xl mx-auto relative">
+            {/* Official Report Container */}
+            <div className="bg-[#f4f1ea] relative border border-dark-green/20 p-6 md:p-12 shadow-sm">
                 
-                {/* Product Image - Removes filters on hover or inspect */}
-                <div className="relative w-full h-full z-0">
-                    {activeImage && (
-                        <Image
-                            data={activeImage}
-                            sizes="(min-width: 1024px) 50vw, 100vw"
-                            className={`w-full h-full object-contain transition-all duration-100 steps(2) ${isInspecting ? 'mix-blend-normal filter-none sepia-0' : 'mix-blend-multiply filter contrast-110 sepia-[0.1] group-hover:mix-blend-normal group-hover:filter-none group-hover:sepia-0'}`}
-                        />
-                    )}
+                {/* Header Metadata */}
+                <div className="relative z-10 border-b-2 border-dark-green/20 pb-8 mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+                    <div className="flex-1">
+                        <div className="flex items-center gap-4 mb-4">
+                            <span className="inline-block px-2 py-1 border border-dark-green/30 font-body text-[10px] tracking-widest uppercase text-dark-green bg-[#f4f1ea]">
+                                SALVAGE ANALYSIS
+                            </span>
+                            <span className="font-body text-[10px] tracking-widest uppercase text-dark-green/60">
+                                REF ID #{product.id.substring(product.id.length - 6)}
+                            </span>
+                        </div>
+                        <h1 className="font-heading text-4xl md:text-5xl text-dark-green leading-tight">
+                            {title}
+                        </h1>
+                    </div>
+                    <div className="text-right flex flex-col items-end">
+                        <span className="block font-body text-[10px] tracking-widest uppercase text-dark-green/50 mb-1">
+                            Acquisition Date
+                        </span>
+                        <span className="font-body text-sm text-dark-green border-b border-dark-green/20 pb-1">
+                            {new Date(product.publishedAt).toLocaleDateString()}
+                        </span>
+                    </div>
                 </div>
 
-                {/* Corner Stamps/Marks */}
-                <div className={`absolute top-4 left-4 z-20 border border-dark-green/30 px-2 py-1 transition-opacity duration-100 steps(2) ${isInspecting ? 'opacity-50' : 'group-hover:opacity-50'}`}>
-                    <span className="font-typewriter text-[10px] uppercase tracking-widest text-dark-green/60">
-                        Fig. {product.id.substring(product.id.length - 3)}
-                    </span>
-                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start relative z-10">
+                    
+                    {/* Left Column: The Visual (Specimen) */}
+                    <div className="flex flex-col gap-4">
+                        <div 
+                            className="relative w-full aspect-[4/5] bg-paper border border-dark-green/20 p-8 shadow-sm group cursor-crosshair transition-colors duration-100 steps(2)"
+                            onClick={() => setIsInspecting(!isInspecting)}
+                        >
+                            {/* Texture Overlay (Multiply) - Fades out on hover or inspect */}
+                            <div 
+                                className={`absolute inset-0 z-10 pointer-events-none mix-blend-multiply transition-opacity duration-100 steps(2) ${isInspecting ? 'opacity-0' : 'opacity-30 group-hover:opacity-0'}`}
+                            />
+                            
+                            {/* Product Image - Removes filters on hover or inspect */}
+                            <div className="relative w-full h-full z-0">
+                                {activeImage && (
+                                    <Image
+                                        data={activeImage}
+                                        sizes="(min-width: 1024px) 60vw, 100vw"
+                                        className={`w-full h-full object-contain transition-all duration-100 steps(2) ${isInspecting ? 'mix-blend-normal filter-none sepia-0' : 'mix-blend-multiply filter contrast-110 sepia-[0.1] group-hover:mix-blend-normal group-hover:filter-none group-hover:sepia-0'}`}
+                                    />
+                                )}
+                            </div>
 
-                {/* Mobile Hint */}
-                <div className={`absolute bottom-4 right-4 z-20 transition-opacity duration-100 steps(2) ${isInspecting ? 'opacity-0' : 'opacity-100 lg:opacity-0'}`}>
-                    <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/40 bg-paper/80 px-2 py-1 rounded-full">
-                        Tap to Inspect
-                    </span>
-                </div>
-            </div>
+                            {/* Corner Stamps/Marks */}
+                            <div className={`absolute top-4 left-4 z-20 border border-dark-green/30 px-2 py-1 transition-opacity duration-100 steps(2) ${isInspecting ? 'opacity-50' : 'group-hover:opacity-50'}`}>
+                                <span className="font-typewriter text-[10px] uppercase tracking-widest text-dark-green/60">
+                                    Fig. A
+                                </span>
+                            </div>
+                             <div className={`absolute bottom-4 left-4 z-20 border border-dark-green/30 px-2 py-1 transition-opacity duration-100 steps(2) ${isInspecting ? 'opacity-50' : 'group-hover:opacity-50'}`}>
+                                <span className="font-typewriter text-[10px] uppercase tracking-widest text-dark-green/60">
+                                    ATTACHMENT 01
+                                </span>
+                            </div>
 
-            {/* Thumbnails */}
-            {media.nodes.length > 1 && (
-                <div className="flex gap-4 overflow-x-auto pb-2">
-                    {media.nodes.map((med, i) => {
-                        const image = med.__typename === 'MediaImage' ? med.image : null;
-                        if (!image) return null;
+                            {/* Mobile Hint */}
+                            <div className={`absolute bottom-4 right-4 z-20 transition-opacity duration-100 steps(2) ${isInspecting ? 'opacity-0' : 'opacity-100 lg:opacity-0'}`}>
+                                <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/40 bg-paper/80 px-2 py-1 rounded-full">
+                                    Tap to Inspect
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Thumbnails */}
+                        {media.nodes.length > 1 && (
+                            <div className="flex gap-4 overflow-x-auto pb-2">
+                                {media.nodes.map((med, i) => {
+                                    const image = med.__typename === 'MediaImage' ? med.image : null;
+                                    if (!image) return null;
+                                    
+                                    const isActive = activeImage?.id === image.id;
+
+                                    return (
+                                        <button
+                                            key={med.id || image.id}
+                                            onClick={() => setActiveImage(image)}
+                                            className={`relative w-20 h-24 flex-shrink-0 border transition-all duration-100 steps(2) ${
+                                                isActive 
+                                                ? 'border-dark-green opacity-100 ring-1 ring-dark-green ring-offset-1 ring-offset-[#f4f1ea]' 
+                                                : 'border-dark-green/20 opacity-60 hover:opacity-100 hover:border-dark-green/50'
+                                            }`}
+                                        >
+                                            <div className="absolute inset-0 bg-paper opacity-20 mix-blend-multiply pointer-events-none" />
+                                            <Image
+                                                data={image}
+                                                sizes="80px"
+                                                className="w-full h-full object-cover grayscale-[0.2]"
+                                            />
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Right Column: The Data */}
+                    <div className="flex flex-col gap-8 relative">
                         
-                        const isActive = activeImage?.id === image.id;
+                        {/* Price & Vendor */}
+                        <div className="flex items-center justify-between border-b border-dashed border-dark-green/20 pb-4">
+                             <div className="flex items-center gap-4 font-body text-sm text-rust tracking-widest uppercase">
+                                <span>{vendor}</span>
+                            </div>
+                             <div className="font-heading text-2xl text-dark-green">
+                                <Money withoutTrailingZeros data={selectedVariant?.price!} />
+                            </div>
+                        </div>
 
-                        return (
-                            <button
-                                key={med.id || image.id}
-                                onClick={() => setActiveImage(image)}
-                                className={`relative w-20 h-24 flex-shrink-0 border transition-all duration-100 steps(2) ${
-                                    isActive 
-                                    ? 'border-dark-green opacity-100 ring-1 ring-dark-green ring-offset-1 ring-offset-[#f4f1ea]' 
-                                    : 'border-dark-green/20 opacity-60 hover:opacity-100 hover:border-dark-green/50'
-                                }`}
-                            >
-                                <div className="absolute inset-0 bg-paper opacity-20 mix-blend-multiply pointer-events-none" />
-                                <Image
-                                    data={image}
-                                    sizes="80px"
-                                    className="w-full h-full object-cover grayscale-[0.2]"
-                                />
-                            </button>
-                        );
-                    })}
-                </div>
-            )}
-        </div>
+                        {/* Metadata Table */}
+                        <div className="grid gap-4 font-body text-sm text-ink/80">
+                            <div className="grid grid-cols-3 border-b border-dashed border-dark-green/20 pb-2">
+                                <span className="uppercase tracking-widest opacity-60">Origin</span>
+                                <span className="col-span-2">
+                                    Sector 7 (Reclaimed Zone)
+                                </span>
+                            </div>
+                            <div className="grid grid-cols-3 border-b border-dashed border-dark-green/20 pb-2">
+                                <span className="uppercase tracking-widest opacity-60">Material</span>
+                                <span className="col-span-2">
+                                    100% Organic Cotton (240 GSM)
+                                </span>
+                            </div>
+                            <div className="grid grid-cols-3 border-b border-dashed border-dark-green/20 pb-2">
+                                <span className="uppercase tracking-widest opacity-60">Status</span>
+                                <span className="col-span-2">
+                                    {selectedVariant?.availableForSale ? 'Available for Study' : 'Archived'}
+                                </span>
+                            </div>
+                        </div>
 
-        {/* Right Column: The Data */}
-        <div className="flex flex-col gap-8 relative">
-            {/* Header */}
-            <div className="border-b border-dark-green/20 pb-6">
-                <h1 className="font-heading text-4xl md:text-5xl text-dark-green mb-2">
-                    {title}
-                </h1>
-                <div className="flex items-center gap-4 font-body text-sm text-rust tracking-widest uppercase">
-                    <span>{vendor}</span>
-                    <span>—</span>
-                    <Money withoutTrailingZeros data={selectedVariant?.price!} />
+                        {/* Description */}
+                        <div className="prose prose-stone font-body text-sm leading-relaxed text-ink/90">
+                            <div dangerouslySetInnerHTML={{__html: descriptionHtml || ''}} />
+                        </div>
+
+                        {/* Divider */}
+                        <div 
+                            className="w-full h-32 my-2 opacity-60"
+                            style={{
+                                backgroundImage: "url('/assets/divider_ornamental_vine.png')",
+                                backgroundSize: 'auto 100%',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'center'
+                            }}
+                        />
+
+                        {/* Form & CTA */}
+                        <ProductForm
+                            productOptions={productOptions}
+                            selectedVariant={selectedVariant}
+                            storeDomain={storeDomain}
+                            product={product}
+                        />
+                    </div>
                 </div>
+
+                {/* Footer Signature */}
+                <div className="relative z-10 mt-16 pt-8 border-t border-dashed border-dark-green/30 flex justify-between items-end">
+                    <div>
+                         <span className="block font-body text-[10px] uppercase tracking-widest text-dark-green/50 mb-2">
+                            Clearance
+                        </span>
+                        <span className="font-heading text-lg text-dark-green">
+                            LEVEL 4 AUTHORIZED
+                        </span>
+                    </div>
+                    <div className="text-right">
+                        <span className="block font-body text-[10px] uppercase tracking-widest text-dark-green/50 mb-2">
+                            Verified By
+                        </span>
+                        <span className="font-heading text-xl text-dark-green block border-b border-dark-green/30 pb-1 px-4">
+                            The Quartermaster
+                        </span>
+                    </div>
+                </div>
+
             </div>
-
-            {/* Metadata Table */}
-            <div className="grid gap-4 font-body text-sm text-ink/80">
-                <div className="grid grid-cols-3 border-b border-dashed border-dark-green/20 pb-2">
-                    <span className="uppercase tracking-widest opacity-60">Origin</span>
-                    <span className="col-span-2">Sector 7 (Reclaimed Zone)</span>
-                </div>
-                <div className="grid grid-cols-3 border-b border-dashed border-dark-green/20 pb-2">
-                    <span className="uppercase tracking-widest opacity-60">Material</span>
-                    <span className="col-span-2">100% Organic Cotton (240 GSM)</span>
-                </div>
-                <div className="grid grid-cols-3 border-b border-dashed border-dark-green/20 pb-2">
-                    <span className="uppercase tracking-widest opacity-60">Status</span>
-                    <span className="col-span-2">{selectedVariant?.availableForSale ? 'Available for Study' : 'Archived'}</span>
-                </div>
-            </div>
-
-            {/* Description */}
-            <div className="prose prose-stone font-body text-sm leading-relaxed text-ink/90">
-                <div dangerouslySetInnerHTML={{__html: descriptionHtml || ''}} />
-            </div>
-
-            {/* Divider */}
-            <div 
-                className="w-full h-48 my-4"
-                style={{
-                    backgroundImage: "url('/assets/divider_ornamental_vine.png')",
-                    backgroundSize: 'auto 100%',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center'
-                }}
-            />
-
-            {/* Form & CTA */}
-            <ProductForm
-                productOptions={productOptions}
-                selectedVariant={selectedVariant}
-                storeDomain={storeDomain}
-                product={product}
-            />
-        </div>
-      </div>
+       </div>
 
       {/* Related Specimens */}
       <Suspense fallback={<Skeleton className="h-32 mt-12" />}>
@@ -292,8 +357,10 @@ export default function Product() {
           resolve={recommended}
         >
           {(products) => (
-            <div className="mt-24 border-t border-dark-green/20 pt-12">
-                <h3 className="font-heading text-2xl text-dark-green mb-8 text-center">Related Salvage</h3>
+            <div className="mt-24 border-t border-dark-green/20 pt-12 max-w-7xl mx-auto px-4">
+                <h3 className="font-heading text-2xl text-dark-green mb-8 text-center">
+                    Related Salvage
+                </h3>
                 <ProductSwimlane title="" products={products} />
             </div>
           )}

@@ -131,23 +131,6 @@ function Account({customer, heading, featuredDataPromise}: AccountType) {
       <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-12">
           
           {/* Left Column: Orders */}
-          <div>
-             <div className="flex items-center gap-4 mb-8">
-                <div className="w-8 h-8 bg-dark-green flex items-center justify-center text-[#f4f1ea] font-heading">A</div>
-                <h2 className="font-heading text-2xl text-dark-green uppercase tracking-widest">Supply Requisitions</h2>
-             </div>
-             
-             <div className="bg-[#f0eee6] border border-dark-green/20 p-6 md:p-8 relative">
-                {/* Texture */}
-                <div className="absolute inset-0 pointer-events-none opacity-20 mix-blend-multiply" style={{backgroundImage: "url('/assets/texture_archive_paper.jpg')"}} />
-                
-                <div className="relative z-10">
-                    {orders && <AccountOrderHistory orders={orders} />}
-                </div>
-             </div>
-          </div>
-
-          {/* Right Column: Addresses & Details */}
           <div className="space-y-12">
              
              {/* Addresses */}

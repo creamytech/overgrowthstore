@@ -1,6 +1,7 @@
 import {useRef, useState, useEffect} from 'react';
 import {motion, useScroll, useTransform, useMotionValue} from 'framer-motion';
 
+
 // Helper for stepped values (Moved outside to prevent hook violation)
 const useSteppedTransform = (value: any, input: number[], output: number[], stepSize: number) => {
   const smooth = useTransform(value, input, output);
@@ -10,20 +11,6 @@ const useSteppedTransform = (value: any, input: number[], output: number[], step
 export function FieldHero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const {scrollY} = useScroll();
-  
-  // Mouse Parallax
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const {clientX, clientY} = e;
-    const {innerWidth, innerHeight} = window;
-    mouseX.set(clientX / innerWidth - 0.5);
-    mouseY.set(clientY / innerHeight - 0.5);
-  };
-
-  const xMove = useSteppedTransform(mouseX, [-0.5, 0.5], [-20, 20], 5); // 5px steps
-  const yMove = useSteppedTransform(mouseY, [-0.5, 0.5], [-20, 20], 5); // 5px steps
   
   // Scroll Parallax
   const ySkeleton = useSteppedTransform(scrollY, [0, 500], [0, 100], 20); // 20px steps
@@ -51,7 +38,6 @@ export function FieldHero() {
     <section 
       ref={containerRef} 
       className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-transparent"
-      onMouseMove={handleMouseMove}
     >
       {/* Floating Spores/Dust Particles */}
       <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
@@ -84,7 +70,7 @@ export function FieldHero() {
 
       {/* Hero Layer - Horse */}
       <motion.div 
-        style={{y: ySkeleton, x: xMove, rotateX: yMove, rotateY: xMove}}
+        style={{y: ySkeleton}}
         className="absolute inset-0 flex items-center justify-center z-40 pb-48 pointer-events-none perspective-1000"
       >
         <div className="h-[50vh] w-auto flex items-center justify-center transition-transform duration-100 ease-out">
@@ -102,9 +88,9 @@ export function FieldHero() {
           <h2 className="font-heading text-4xl md:text-6xl text-dark-green tracking-widest mb-4">
             THE RECLAIMED WORLD
           </h2>
-          <p className="font-body text-[#c04e01] text-lg tracking-widest uppercase">
-            Figure 1.A: Equus Ferus Caballus
-          </p>
+          <div className="font-body text-[#c04e01] text-lg tracking-widest uppercase">
+             <span>Figure 1.A: Equus Ferus Caballus</span>
+          </div>
         </motion.div>
       </div>
 

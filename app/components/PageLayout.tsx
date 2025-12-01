@@ -25,6 +25,7 @@ import {
   type EnhancedMenu,
   type ChildEnhancedMenuItem,
   useIsHomePath,
+  usePrefixPathWithLocale,
 } from '~/lib/utils';
 import {useIsHydrated} from '~/hooks/useIsHydrated';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
@@ -118,60 +119,112 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
       {/* Field Journal Navigation */}
       <header 
         role="banner" 
-        className={`fixed top-0 left-0 w-full transition-all duration-500 z-[1000] flex justify-between items-center px-4 md:px-12 ${
+        className={`fixed top-0 left-0 w-full transition-all duration-500 z-[1000] px-4 md:px-12 ${
             isScrolled 
             ? 'bg-[#f4f1ea]/90 backdrop-blur-md py-4 shadow-md border-b border-dark-green/10' 
             : 'bg-transparent py-6 border-b border-transparent'
         }`}
       >
-        {/* Left: Hamburger Menu (Bud to Bloom) */}
-        <button
-          onClick={openMenu}
-          className="menu-toggle"
-          aria-label="Open Menu"
-          onMouseEnter={() => setIsHoveringMenu(true)}
-          onMouseLeave={() => setIsHoveringMenu(false)}
-        >
-          <div className="relative w-10 h-10">
-             {/* Bud (Default) */}
-             <img 
-               src="/assets/icon_menu_bud.png" 
-               alt="Menu" 
-               className={`absolute top-0 left-0 w-full h-full object-contain transition-opacity duration-300 ${isHoveringMenu ? 'opacity-0' : 'opacity-100'}`}
-             />
-             {/* Bloom (Hover) */}
-             <img 
-               src="/assets/icon_menu_bloom.png" 
-               alt="Menu Open" 
-               className={`absolute top-0 left-0 w-full h-full object-contain transition-opacity duration-300 ${isHoveringMenu ? 'opacity-100' : 'opacity-0'}`}
-             />
-          </div>
-        </button>
+        <div className="flex justify-between items-center w-full">
+            
+            {/* --- MOBILE HEADER (md:hidden) --- */}
+            <div className="flex md:hidden justify-between items-center w-full">
+                {/* Left: Hamburger Menu */}
+                <button
+                onClick={openMenu}
+                className="menu-toggle"
+                aria-label="Open Menu"
+                >
+                <div className="relative w-10 h-10">
+                    <img 
+                    src="/assets/icon_menu_bud.png" 
+                    alt="Menu" 
+                    className="w-full h-full object-contain"
+                    />
+                </div>
+                </button>
 
-        {/* Center: Logo */}
-        <Link to="/" prefetch="intent" className="nav-logo flex items-center justify-center">
-          <img 
-            src="/assets/logo_og_vines.png" 
-            alt={title} 
-            className={`object-contain transition-all duration-500 ${isScrolled ? 'h-14' : 'h-20'}`}
-          />
-        </Link>
+                {/* Center: Logo */}
+                <Link to="/" prefetch="intent" className="nav-logo flex items-center justify-center">
+                <img 
+                    src="/assets/logo_og_vines.png" 
+                    alt={title} 
+                    className={`object-contain transition-all duration-500 ${isScrolled ? 'h-12' : 'h-16'}`}
+                />
+                </Link>
 
-        {/* Right: Cart Icon */}
-        <button
-          onClick={openCart}
-          className="menu-toggle"
-          aria-label="Open Cart"
-        >
-           <div className="relative w-10 h-10">
-             <img 
-               src="/assets/icon_cart_woven.png" 
-               alt="Cart" 
-               className="w-full h-full object-contain nav-icon"
-             />
-             <CartBadge count={0} />
-           </div>
-        </button>
+                {/* Right: Cart Icon */}
+                <button
+                onClick={openCart}
+                className="menu-toggle"
+                aria-label="Open Cart"
+                >
+                <div className="relative w-10 h-10">
+                    <img 
+                    src="/assets/icon_cart_woven.png" 
+                    alt="Cart" 
+                    className="w-full h-full object-contain nav-icon"
+                    />
+                    <CartBadge count={0} />
+                </div>
+                </button>
+            </div>
+
+            {/* --- DESKTOP HEADER (hidden md:flex) --- */}
+            <div className="hidden md:grid grid-cols-3 items-center w-full">
+                
+                {/* Left: Navigation Links */}
+                <nav className="flex items-center gap-8 justify-start">
+                    {(menu?.items || []).map((item) => (
+                        <Link
+                            key={item.id}
+                            to={item.to}
+                            target={item.target}
+                            prefetch="intent"
+                            className={({isActive}: {isActive: boolean}) => 
+                                `font-heading text-sm uppercase tracking-[0.2em] text-dark-green hover:text-rust hover-underline transition-colors duration-200 ${isActive ? 'active-underline text-rust' : ''}`
+                            }
+                        >
+                            {item.title}
+                        </Link>
+                    ))}
+                </nav>
+
+                {/* Center: Logo */}
+                <div className="flex justify-center">
+                    <Link to="/" prefetch="intent" className="nav-logo">
+                        <img 
+                            src="/assets/Wordmark Logo.svg" 
+                            alt={title} 
+                            className={`object-contain transition-all duration-500 ${isScrolled ? 'h-16' : 'h-24'}`}
+                        />
+                    </Link>
+                </div>
+
+                {/* Right: Icons (Account, Cart) */}
+                <div className="flex items-center gap-6 justify-end">
+                    {/* Account */}
+                    <Link to="/account" className="w-6 h-6 text-dark-green hover:text-rust transition-colors">
+                        <IconAccount className="w-full h-full" />
+                    </Link>
+
+                    {/* Cart */}
+                    <button
+                        onClick={openCart}
+                        className="relative w-8 h-8 group"
+                        aria-label="Open Cart"
+                    >
+                        <img 
+                            src="/assets/icon_cart_woven.png" 
+                            alt="Cart" 
+                            className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity"
+                        />
+                        <CartBadge count={0} />
+                    </button>
+                </div>
+            </div>
+
+        </div>
       </header>
     </>
   );
@@ -253,7 +306,7 @@ function MenuMobileNav({
   // Map menu items to background images (conceptually)
   const getBackgroundImage = (index: number) => {
       const images = [
-          '/assets/texture_archive_paper.jpg',      // 0 - Home
+          // '/assets/texture_archive_paper.jpg',      // 0 - Home
           '/assets/hero_horse_skeleton_isolated.png', // 1 - Catalog
           '/assets/ui_menu_vellum_bg.jpg',          // 2 - Journal
           '/assets/divider_root_transition.svg'     // 3 - Our Story
@@ -409,14 +462,34 @@ function NewsletterForm() {
             const formData = new FormData();
             formData.append('email', email);
             
-            const response = await fetch('/api/newsletter', {
+            const actionUrl = usePrefixPathWithLocale('/api/newsletter');
+            
+            const response = await fetch(actionUrl, {
                 method: 'POST',
                 body: formData,
             });
+
+            if (!response.ok) {
+                console.error('Newsletter Error Status:', response.status, response.statusText);
+                const text = await response.text();
+                console.error('Newsletter Error Body:', text);
+                try {
+                    // Try to parse JSON error if available
+                    const jsonError = JSON.parse(text);
+                    setStatus('error');
+                    setMessage(jsonError.error || `Server Error: ${response.status}`);
+                    return;
+                } catch {
+                    // Fallback if not JSON
+                    setStatus('error');
+                    setMessage(`Server Error: ${response.status}`);
+                    return;
+                }
+            }
             
             const data = await response.json() as {success?: boolean; message?: string; error?: string};
             
-            if (response.ok && data.success) {
+            if (data.success) {
                 setStatus('success');
                 setMessage(data.message || 'Subscribed successfully.');
                 setEmail('');
@@ -425,8 +498,9 @@ function NewsletterForm() {
                 setMessage(data.error || 'Transmission failed.');
             }
         } catch (err) {
+            console.error('Newsletter Network Error:', err);
             setStatus('error');
-            setMessage('Network error. Try again.');
+            setMessage('Network error. Check console.');
         }
     };
 

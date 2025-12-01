@@ -4,6 +4,7 @@ import {getSeoMeta} from '@shopify/hydrogen';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
 
+
 export const headers = routeHeaders;
 
 export async function loader({request, context, params}: LoaderFunctionArgs) {
@@ -59,9 +60,9 @@ export default function Contact() {
                     </h1>
                     <div className="flex items-center gap-4">
                         <span className="h-px w-12 bg-rust" />
-                        <p className="font-typewriter text-xs tracking-[0.2em] text-dark-green/60 uppercase">
-                            TRANSMISSION CHANNEL: OPEN // FREQUENCY: 104.5 MHZ
-                        </p>
+                        <div className="font-typewriter text-xs tracking-[0.2em] text-dark-green/60 uppercase">
+                            <span>TRANSMISSION CHANNEL: OPEN // FREQUENCY: 104.5 MHZ</span>
+                        </div>
                     </div>
                 </div>
 
@@ -121,7 +122,7 @@ export default function Contact() {
                             <span className="text-xs opacity-50 group-hover:opacity-100 transition-opacity">&gt;&gt;</span>
                         </span>
                         {/* Button Texture */}
-                        <div className="absolute inset-0 opacity-10 bg-[url('/assets/texture_noise.png')] mix-blend-overlay" />
+                        {/* <div className="absolute inset-0 opacity-10 bg-[url('/assets/texture_noise.png')] mix-blend-overlay" /> */}
                     </button>
                 </Form>
             </div>
@@ -140,9 +141,9 @@ export default function Contact() {
                 <h2 className="font-heading text-3xl text-dark-green uppercase tracking-wider">
                     HEADQUARTERS
                 </h2>
-                <p className="font-body text-dark-green/80 leading-relaxed max-w-md text-lg">
-                    Our research facility is located in the deep overgrowth of the Pacific Northwest. Direct contact is limited due to atmospheric interference.
-                </p>
+                <div className="font-body text-dark-green/80 leading-relaxed max-w-md text-lg">
+                    <span>Our research facility is located in the deep overgrowth of the Pacific Northwest. Direct contact is limited due to atmospheric interference.</span>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 gap-10">

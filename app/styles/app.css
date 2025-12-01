@@ -133,7 +133,8 @@ h1, h2, h3, h4, h5, h6 {
   transition: transform 0.2s steps(2); /* Rigid underline */
 }
 
-.hover-underline:hover::after {
+.hover-underline:hover::after,
+.active-underline::after {
   transform: scaleX(1);
   transform-origin: bottom left;
 }

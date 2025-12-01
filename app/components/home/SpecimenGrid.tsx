@@ -2,12 +2,13 @@ import {Link} from '@remix-run/react';
 import {Image} from '@shopify/hydrogen';
 import type {Collection} from '@shopify/hydrogen/storefront-api-types';
 
+
 export function SpecimenGrid({collections}: {collections: Collection[]}) {
   return (
     <section className="w-full max-w-7xl mx-auto px-4 py-16">
       <div className="text-center mb-12">
         <h2 className="font-heading text-3xl md:text-5xl text-dark-green tracking-widest">
-          SALVAGE TRAY
+            SALVAGE TRAY
         </h2>
         <div className="w-24 h-1 bg-rust mx-auto mt-4" />
       </div>

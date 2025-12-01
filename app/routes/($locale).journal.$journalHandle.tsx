@@ -62,12 +62,14 @@ export default function Article() {
 
   return (
     <div className="min-h-screen bg-[#f4f1ea] relative py-32 px-4 md:px-8">
+       {/* Texture Overlay */}
+       <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
        <div className="max-w-3xl mx-auto relative">
             {/* Official Report Container */}
             <div className="bg-[#f4f1ea] relative border border-dark-green/20 p-8 md:p-16 shadow-sm">
                 
                 {/* Texture Overlay */}
-                <div className="absolute inset-0 opacity-30 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
+                {/* <div className="absolute inset-0 opacity-30 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" /> */}
 
                 {/* Header Metadata */}
                 <div className="relative z-10 border-b-2 border-dark-green/20 pb-8 mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
