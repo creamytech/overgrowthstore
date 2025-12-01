@@ -72,42 +72,22 @@ export default function FAQ() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f4f1ea] relative pt-32 pb-24 px-4 md:px-8 overflow-hidden">
-      
-      {/* Background Texture */}
-      <div className="fixed inset-0 pointer-events-none opacity-10 z-0">
-         <div className="absolute top-0 right-0 w-full h-full bg-[url('/assets/texture_paper_creased.jpg')] mix-blend-multiply" />
-         <div className="absolute bottom-12 left-12 w-64 h-64 rounded-full border-[1px] border-dark-green/30 blur-[1px]" />
-      </div>
-
-      <div className="max-w-4xl mx-auto relative z-10">
-        
-        {/* Header Section */}
-        <div className="mb-20 border-b-4 border-double border-dark-green/20 pb-8 relative">
-            <div className="absolute -top-6 -left-6 w-12 h-12 border-t-2 border-l-2 border-rust" />
-            <div className="absolute -bottom-2 -right-2 w-12 h-12 border-b-2 border-r-2 border-rust" />
-            
-            <div className="flex flex-col md:flex-row justify-between items-end gap-6">
-                <div>
-                    <div className="inline-block bg-rust text-[#f4f1ea] px-2 py-1 font-typewriter text-xs tracking-widest mb-4">
-                        RESTRICTED ACCESS
-                    </div>
-                    <h1 className="font-heading text-5xl md:text-7xl text-dark-green mb-2 uppercase tracking-widest">
-                        Field Manual
-                    </h1>
-                    <p className="font-typewriter text-sm tracking-[0.3em] text-dark-green/60 uppercase">
-                        Reference Guide: v2.4.0 // Auth: Command
-                    </p>
-                </div>
-                <div className="hidden md:block">
-                    <div className="w-24 h-24 border border-dashed border-dark-green/30 p-2 rotate-3">
-                        <div className="w-full h-full bg-dark-green/10 flex items-center justify-center">
-                            <span className="font-heading text-4xl text-dark-green/20">?</span>
-                        </div>
-                    </div>
-                </div>
+    <div className="min-h-screen bg-[#f4f1ea] relative overflow-hidden">
+       {/* Texture Overlay - Fixed to cover viewport */}
+       <div className="fixed inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')] z-0" />
+       
+       {/* Header */}
+       <div className="relative z-10 pt-32 pb-12 text-center">
+            <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-2">
+                FIELD MANUAL
+            </h1>
+            <div className="font-body text-rust text-lg tracking-[0.3em] uppercase">
+                <span>REFERENCE GUIDE</span>
             </div>
-        </div>
+            <div className="w-24 h-1 bg-rust mx-auto mt-6" />
+       </div>
+
+      <div className="max-w-4xl mx-auto relative z-10 px-4 md:px-8 pb-24">
 
         {/* FAQ Content */}
         <div className="space-y-16">

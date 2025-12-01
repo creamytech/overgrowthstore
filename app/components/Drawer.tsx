@@ -65,7 +65,7 @@ export function Drawer({
                 leaveFrom="translate-x-0"
                 leaveTo={offScreen[openFrom]}
               >
-                <Dialog.Panel className={`w-screen max-w-lg text-left align-middle transition-all transform shadow-xl h-screen-dynamic ${variant === 'default' ? 'bg-contrast' : 'bg-transparent'}`}>
+                <Dialog.Panel className={`w-screen max-w-lg text-left align-middle transition-all transform shadow-2xl h-screen-dynamic ${variant === 'default' ? 'bg-contrast' : 'bg-transparent'}`}>
                   
                   {/* Vellum Background for Menu/Cart */}
                   {(variant === 'menu' || variant === 'cart') && (
@@ -80,6 +80,14 @@ export function Drawer({
                             }}
                         />
                         <div className="absolute inset-0 z-0 backdrop-blur-md bg-white/30" />
+                        
+                        {/* Green Vignette Overlay */}
+                        <div 
+                            className="absolute inset-0 z-0 pointer-events-none"
+                            style={{
+                                background: 'radial-gradient(circle at center, transparent 0%, rgba(20, 50, 20, 0.08) 100%)'
+                            }}
+                        />
                     </>
                   )}
 

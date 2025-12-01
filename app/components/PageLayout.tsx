@@ -121,7 +121,7 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
         role="banner" 
         className={`fixed top-0 left-0 w-full transition-all duration-500 z-[1000] px-4 md:px-12 ${
             isScrolled 
-            ? 'bg-[#f4f1ea]/90 backdrop-blur-md py-4 shadow-md border-b border-dark-green/10' 
+            ? 'bg-[#f4f1ea]/90 backdrop-blur-md py-4 shadow-md border-b border-rust/20' 
             : 'bg-transparent py-6 border-b border-transparent'
         }`}
       >
@@ -240,7 +240,7 @@ function CartBadge({count}: {count: number}) {
                     const quantity = cart?.totalQuantity || 0;
                     if (quantity === 0) return null;
                     return (
-                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-white text-dark-green rounded-full flex items-center justify-center text-[10px] font-bold font-body border border-dark-green">
+                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-white text-dark-green rounded-full flex items-center justify-center text-[10px] font-bold font-body border border-rust">
                             {quantity}
                         </div>
                     );
@@ -378,68 +378,110 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
   const isHome = useIsHomePath();
   
   return (
-    <footer className="relative bg-[#f4f1ea] text-dark-green pt-[620px] pb-12 overflow-visible">
-        {/* Root Transition Divider - The "Ceiling" */}
-        {/* Positioned to overlap the section above by ~50px and hang down */}
-        <div className="absolute -top-12 left-0 w-full h-[600px] z-10 pointer-events-none">
+    <footer className="relative bg-[#f4f1ea] text-dark-green">
+        
+        {/* Roots Divider Graphic - Full Width */}
+        <div className="w-full h-[400px] md:h-[600px] relative z-10 -mb-40 md:-mb-48 pointer-events-none">
             <img 
                 src="/assets/divider_root_transition.svg" 
                 alt="Root Transition" 
-                className="w-full h-full object-cover object-top mix-blend-multiply opacity-80"
+                className="w-full h-full object-cover object-top"
             />
+            {/* Gradient to blend roots into footer bg */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#f4f1ea]/10 to-[#f4f1ea]"></div>
         </div>
 
-        {/* Top Border / Divider (Optional now, maybe redundant with the root transition, but keeping for structure if needed below the image) */}
-        {/* <div className="absolute top-0 left-0 w-full h-px bg-dark-green/10" /> */}
-        
-        <div className="relative z-20 w-full max-w-7xl mx-auto px-4 md:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr] gap-12 md:gap-24">
+        {/* Footer Panel */}
+        <div className="relative z-20 bg-[#f4f1ea] pt-8 pb-24 px-4 md:px-8">
+            <div className="max-w-4xl mx-auto text-center space-y-16">
                 
-                {/* Column 1: Brand & Newsletter */}
-                <div className="space-y-8">
-                    <div className="max-w-xs">
-                        <Link to="/" className="block mb-6">
-                            <img src="/assets/logo_og_vines.png" alt="Overgrowth" className="h-12 object-contain" />
-                        </Link>
-                        <p className="font-body text-sm text-dark-green/70 leading-relaxed mb-6">
-                            Survival gear for the urban jungle. Reclaiming the world, one garment at a time.
-                        </p>
-                        
+                {/* 1. Newsletter CTA */}
+                <div className="space-y-6">
+                    <h4 className="font-heading text-3xl md:text-4xl text-dark-green uppercase tracking-widest">
+                        Join the Resistance
+                    </h4>
+                    <p className="font-body text-dark-green/70">
+                        First drops. Field reports. Rewards.
+                    </p>
+                    <div className="flex justify-center">
                         <NewsletterForm />
                     </div>
                 </div>
 
-                {/* Column 2: Navigation */}
-                <div>
-                    <Heading className="font-heading text-lg text-dark-green uppercase tracking-widest mb-6" size="lead" as="h3">
-                        Field Guide
-                    </Heading>
-                    <FooterMenu menu={menu} />
-                </div>
+                {/* 2. Navigation Links */}
+                <div className="border-t-0 pt-9">
+                    {/* Micro-Divider */}
+                    <div className="flex justify-center pb-8">
+                        <div className="w-24 h-px bg-rust/55"></div>
+                    </div>
 
-                {/* Column 3: Legal / Info */}
-                <div>
-                    <Heading className="font-heading text-lg text-dark-green uppercase tracking-widest mb-6" size="lead" as="h3">
-                        Protocol
-                    </Heading>
-                    <nav className="grid gap-3 font-body text-sm text-dark-green/70">
-                        <Link to="/policies/privacy-policy" className="hover:text-rust transition-colors">Privacy Protocol</Link>
-                        <Link to="/policies/terms-of-service" className="hover:text-rust transition-colors">Terms of Engagement</Link>
-                        <Link to="/policies/shipping-policy" className="hover:text-rust transition-colors">Supply Lines</Link>
-                        <Link to="/policies/refund-policy" className="hover:text-rust transition-colors">Return Manifest</Link>
-                    </nav>
-                </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-3xl mx-auto">
+                    
+                    {/* Primary Links */}
+                    <div className="space-y-4 text-right md:text-right pr-4 md:pr-8">
+                        <h5 className="font-heading text-base text-dark-green font-bold uppercase tracking-[0.25em] mb-4">Protocol</h5>
+                        <nav className="flex flex-col gap-4 font-heading text-xl text-dark-green uppercase tracking-widest leading-relaxed items-end">
+                            <Link to="/products" className="group relative w-fit block">
+                                <span className="hover:text-rust transition-colors duration-500">Shop Salvage</span>
+                                <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+                            </Link>
+                            <Link to="/journal" className="group relative w-fit block">
+                                <span className="hover:text-rust transition-colors duration-500">Field Journal</span>
+                                <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+                            </Link>
+                            <Link to="/pages/ecosystem" className="group relative w-fit block">
+                                <span className="hover:text-rust transition-colors duration-500">The Ecosystem</span>
+                                <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+                            </Link>
+                        </nav>
+                    </div>
 
+                    {/* Secondary Links */}
+                    <div className="space-y-4 text-left md:text-left pl-4 md:pl-0">
+                        <h5 className="font-heading text-base text-dark-green font-bold uppercase tracking-[0.25em] mb-4">Support</h5>
+                        <nav className="flex flex-col gap-3 font-body text-sm text-dark-green/70 leading-relaxed items-start">
+                            <Link to="/account" className="group relative w-fit block">
+                                <span className="hover:text-rust transition-colors duration-500">Mission Log (Orders)</span>
+                                <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+                            </Link>
+                            <Link to="/pages/contact" className="group relative w-fit block">
+                                <span className="hover:text-rust transition-colors duration-500">Contact Command</span>
+                                <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+                            </Link>
+                            <Link to="/pages/faq" className="group relative w-fit block">
+                                <span className="hover:text-rust transition-colors duration-500">FAQ</span>
+                                <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+                            </Link>
+                            <Link to="/policies/privacy-policy" className="group relative w-fit block">
+                                <span className="hover:text-rust transition-colors duration-500">Privacy Protocol</span>
+                                <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+                            </Link>
+                        </nav>
+                    </div>
+                </div>
             </div>
 
-            {/* Footer Bottom */}
-            <div className="mt-24 pt-8 border-t border-dark-green/10 flex flex-col md:flex-row justify-between items-center gap-4 opacity-50">
-                <p className="font-body text-xs tracking-widest uppercase">
-                    &copy; {new Date().getFullYear()} Overgrowth Industries.
-                </p>
-                <p className="font-body text-xs tracking-widest uppercase">
-                    All Rights Reserved.
-                </p>
+                {/* 3. Social & Copyright */}
+                <div className="space-y-8 pt-12 border-t border-dark-green/10">
+                    {/* Social Icons */}
+                    <div className="flex justify-center gap-4">
+                        {['IG', 'TK', 'X'].map((social) => (
+                            <a key={social} href="#" className="w-10 h-10 border border-rust rounded-full flex items-center justify-center text-xs font-heading text-rust hover:border-dark-green hover:text-dark-green hover:bg-dark-green/5 hover:shadow-[0_0_15px_rgba(20,40,30,0.2)] transition-all duration-300">
+                                {social}
+                            </a>
+                        ))}
+                    </div>
+
+                    <div className="opacity-50 space-y-2">
+                        <p className="font-body text-xs tracking-widest uppercase">
+                            &copy; {new Date().getFullYear()} OVERGROWTH.
+                        </p>
+                        <p className="font-body text-[10px] tracking-widest uppercase">
+                            All Rights Reserved.
+                        </p>
+                    </div>
+                </div>
+
             </div>
         </div>
         
@@ -474,7 +516,7 @@ function NewsletterForm() {
                 console.error('Newsletter Error Body:', text);
                 try {
                     // Try to parse JSON error if available
-                    const jsonError = JSON.parse(text);
+                    const jsonError = JSON.parse(text) as {error?: string};
                     setStatus('error');
                     setMessage(jsonError.error || `Server Error: ${response.status}`);
                     return;
@@ -504,32 +546,30 @@ function NewsletterForm() {
     };
 
     return (
-        <div className="relative">
-            <h4 className="font-heading text-sm text-rust uppercase tracking-widest mb-3">
-                Join the Resistance
-            </h4>
-            
+        <div className="relative w-full max-w-md">
             {status === 'success' ? (
-                <div className="p-4 border border-dark-green/20 bg-dark-green/5 text-dark-green text-sm font-body">
+                <div className="p-4 border border-rust/20 bg-dark-green/5 text-dark-green text-sm font-body">
                     {message}
                 </div>
             ) : (
-                <form onSubmit={handleSubmit} className="relative">
-                    <input 
-                        type="email" 
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="ENTER FREQUENCY (EMAIL)" 
-                        required
-                        className="w-full bg-transparent border-b border-dark-green/30 py-3 pr-12 text-dark-green placeholder:text-dark-green/40 font-typewriter text-sm focus:outline-none focus:border-rust transition-colors"
-                    />
-                    <button 
-                        type="submit" 
-                        disabled={status === 'submitting'}
-                        className="absolute right-0 top-0 h-full text-rust hover:text-dark-green transition-colors font-heading text-xs uppercase tracking-widest disabled:opacity-50"
-                    >
-                        {status === 'submitting' ? 'SENDING...' : 'TRANSMIT'}
-                    </button>
+                <form onSubmit={handleSubmit} className="relative w-full translate-x-3">
+                    <div className="flex items-center gap-0 transition-colors rounded-[3px] overflow-hidden border border-dark-green/10">
+                        <input 
+                            type="email" 
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="ENTER FREQUENCY (EMAIL)" 
+                            required
+                            className="w-full bg-transparent py-5 px-4 text-dark-green placeholder:text-dark-green/40 font-typewriter text-sm focus:outline-none bg-dark-green/5 rounded-l-[3px]"
+                        />
+                        <button 
+                            type="submit" 
+                            disabled={status === 'submitting'}
+                            className="bg-dark-green text-[#f4f1ea] px-8 py-5 font-heading text-xs uppercase tracking-widest hover:bg-rust transition-all duration-300 disabled:opacity-50 whitespace-nowrap rounded-r-[3px] hover:shadow-[0_0_15px_rgba(139,58,58,0.4)]"
+                        >
+                            {status === 'submitting' ? 'SENDING...' : 'TRANSMIT'}
+                        </button>
+                    </div>
                     {status === 'error' && (
                         <p className="absolute -bottom-6 left-0 text-xs text-red-800 font-body">{message}</p>
                     )}
@@ -543,23 +583,26 @@ function FooterLink({item}: {item: ChildEnhancedMenuItem}) {
   // Force internal routing for Account/Orders to keep user in Hydrogen app
   if (item.title === 'Account' || item.title === 'Orders' || item.url?.includes('/account')) {
       return (
-        <Link to="/account" prefetch="intent" className="hover-underline hover:text-rust transition-colors duration-100 steps(2) block py-1 w-fit">
-          {item.title}
+        <Link to="/account" prefetch="intent" className="group relative w-fit block py-1">
+          <span className="hover:text-rust transition-colors duration-200">{item.title}</span>
+          <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
         </Link>
       );
   }
 
   if (item.to.startsWith('http') || item.target === '_blank') {
     return (
-      <a href={item.to} target={item.target} rel="noopener noreferrer" className="hover-underline hover:text-rust transition-colors duration-100 steps(2) block py-1 w-fit">
-        {item.title}
+      <a href={item.to} target={item.target} rel="noopener noreferrer" className="group relative w-fit block py-1">
+        <span className="hover:text-rust transition-colors duration-200">{item.title}</span>
+        <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
       </a>
     );
   }
 
   return (
-    <Link to={item.to} target={item.target} prefetch="intent" className="hover-underline hover:text-rust transition-colors duration-100 steps(2) block py-1 w-fit">
-      {item.title}
+    <Link to={item.to} target={item.target} prefetch="intent" className="group relative w-fit block py-1">
+      <span className="hover:text-rust transition-colors duration-200">{item.title}</span>
+      <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
     </Link>
   );
 }
@@ -578,7 +621,7 @@ function FooterMenu({menu}: {menu?: EnhancedMenu}) {
             {item.items && item.items.length > 0 ? (
                 <div className="mb-4">
                     <span className="block font-bold text-dark-green mb-2">{item.title}</span>
-                    <div className="pl-2 border-l border-dark-green/10">
+                    <div className="pl-2 border-l border-rust/20">
                         {item.items.map((subItem: ChildEnhancedMenuItem) => (
                             <FooterLink key={subItem.id} item={subItem} />
                         ))}

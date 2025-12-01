@@ -66,7 +66,7 @@ export default function EcosystemPage() {
                 The Ecosystem
             </h1>
             <div className="font-body text-rust text-lg tracking-[0.3em] uppercase">
-                <span>Cultivation Protocol</span>
+                <span>Artifact Index</span>
             </div>
             <div className="w-24 h-1 bg-rust mx-auto mt-6" />
        </div>
@@ -88,10 +88,10 @@ export default function EcosystemPage() {
             <div className="font-typewriter text-dark-green text-base md:text-lg max-w-2xl mx-auto mb-12 leading-relaxed text-justify">
                 <span className="bg-dark-green text-dark-green select-none mr-2">REDACTED</span> 
                 <span>We don't just want customers; we want </span>
-                <span className="font-bold underline decoration-rust decoration-2 underline-offset-4">Cultivators</span>. 
-                <span> The old world is crumbling. Join the reclamation efforts. Earn </span>
-                <span className="font-bold">Spores</span> 
-                <span> to unlock exclusive artifacts, deadstock access, and influence over future growth. </span>
+                <span className="font-bold underline decoration-rust decoration-2 underline-offset-4">Operatives</span>. 
+                <span> The old world is crumbling. Join the reclamation efforts. Recover </span>
+                <span className="font-bold">Artifacts</span> 
+                <span> to unlock exclusive gear, deadstock access, and influence over future growth. </span>
                 <span className="bg-dark-green text-dark-green select-none ml-2">REDACTED</span>
             </div>
 
@@ -104,28 +104,79 @@ export default function EcosystemPage() {
             
             <div className="mt-6">
                 <Link to="/account/login" className="font-typewriter text-xs text-dark-green hover:text-rust uppercase tracking-widest border-b border-dark-green/30 pb-1">
-                    // Already a Cultivator? Access Field Guide
+                    // Already an Operative? Access Field Guide
                 </Link>
             </div>
         </div>
       </Section>
 
-      {/* Mechanics Section - "The Brief" */}
+      {/* Tactical Brief (How it Works) */}
+      <Section className="py-16 px-4 relative z-10 border-b border-dark-green/10">
+          <div className="max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                  {/* Step 1 */}
+                  <div className="relative group">
+                      <div className="w-16 h-16 mx-auto mb-4 border-2 border-rust rounded-full flex items-center justify-center text-2xl text-rust group-hover:bg-rust group-hover:text-[#f4f1ea] transition-colors">
+                          1
+                      </div>
+                      <h3 className="font-heading text-xl text-dark-green mb-2">INITIATE</h3>
+                      <p className="font-body text-sm text-dark-green/70">Create your operative profile to begin tracking.</p>
+                  </div>
+                  {/* Step 2 */}
+                  <div className="relative group">
+                      <div className="w-16 h-16 mx-auto mb-4 border-2 border-rust rounded-full flex items-center justify-center text-2xl text-rust group-hover:bg-rust group-hover:text-[#f4f1ea] transition-colors">
+                          2
+                      </div>
+                      <h3 className="font-heading text-xl text-dark-green mb-2">SCAVENGE</h3>
+                      <p className="font-body text-sm text-dark-green/70">Recover 5 Artifacts for every $1 spent on supplies.</p>
+                  </div>
+                  {/* Step 3 */}
+                  <div className="relative group">
+                      <div className="w-16 h-16 mx-auto mb-4 border-2 border-rust rounded-full flex items-center justify-center text-2xl text-rust group-hover:bg-rust group-hover:text-[#f4f1ea] transition-colors">
+                          3
+                      </div>
+                      <h3 className="font-heading text-xl text-dark-green mb-2">RECLAIM</h3>
+                      <p className="font-body text-sm text-dark-green/70">Archive Artifacts for exclusive gear and access.</p>
+                  </div>
+              </div>
+          </div>
+      </Section>
+
+      {/* Cultivation Status (Progress Bar) */}
       <Section className="py-24 border-y-2 border-dark-green/10 bg-[#e8e4d9] relative z-10">
         <div className="absolute inset-0 opacity-5 pointer-events-none" style={{backgroundImage: 'url(/assets/topo-pattern.png)', backgroundSize: '200px'}}></div>
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-16 text-center md:text-left relative">
-            <div className="flex-1 text-center p-12 border border-dark-green/10 bg-[#f4f1ea]/50 backdrop-blur-sm shadow-sm md:rotate-1 transition-transform hover:rotate-0 duration-300">
-                <div className="font-typewriter text-xs text-dark-green/50 mb-2 uppercase tracking-widest">Objective 01</div>
-                <h3 className="font-heading text-4xl md:text-5xl text-dark-green mb-4">EARN SPORES</h3>
-                <p className="font-typewriter text-dark-green/80 text-lg">5 Spores / $1 USD</p>
-            </div>
+        <div className="max-w-4xl mx-auto px-4 text-center relative">
+            <h2 className="font-heading text-3xl text-dark-green mb-8 tracking-widest uppercase">
+                Artifact Index
+            </h2>
             
-            <div className="text-rust font-heading text-4xl opacity-50 rotate-45 md:rotate-0">+</div>
+            {/* Progress Bar UI */}
+            <div className="bg-[#f4f1ea] border border-dark-green/20 p-8 shadow-sm relative overflow-hidden">
+                <div className="flex justify-between items-end mb-4">
+                    <span className="font-typewriter text-xs text-dark-green/60 uppercase tracking-widest">Current Rank: GUEST</span>
+                    <span className="font-mono text-xl text-dark-green font-bold">0 / 500</span>
+                </div>
+                <div className="w-full h-4 bg-dark-green/10 rounded-full overflow-hidden relative">
+                    <div className="absolute top-0 left-0 h-full bg-rust w-[0%]"></div>
+                    {/* Segments */}
+                    <div className="absolute top-0 left-1/3 h-full w-px bg-[#f4f1ea]/50"></div>
+                    <div className="absolute top-0 left-2/3 h-full w-px bg-[#f4f1ea]/50"></div>
+                </div>
+                <div className="flex justify-between mt-2 font-typewriter text-[10px] text-dark-green/40 uppercase">
+                    <span>The Root</span>
+                    <span>The Vine</span>
+                    <span>The Canopy</span>
+                </div>
 
-            <div className="flex-1 text-center p-12 border border-dark-green/10 bg-[#f4f1ea]/50 backdrop-blur-sm shadow-sm md:-rotate-1 transition-transform hover:rotate-0 duration-300">
-                <div className="font-typewriter text-xs text-dark-green/50 mb-2 uppercase tracking-widest">Objective 02</div>
-                <h3 className="font-heading text-4xl md:text-5xl text-dark-green mb-4">CULTIVATE</h3>
-                <p className="font-typewriter text-dark-green/80 text-lg">Level Up & Reclaim Artifacts</p>
+                {/* Login CTA Overlay */}
+                <div className="absolute inset-0 bg-[#f4f1ea]/80 backdrop-blur-[2px] flex items-center justify-center z-10">
+                    <div className="text-center">
+                        <p className="font-heading text-dark-green mb-4 text-lg">IDENTIFICATION REQUIRED</p>
+                        <Link to="/account/login" className="inline-block bg-dark-green text-[#f4f1ea] px-6 py-2 font-heading text-sm tracking-widest hover:bg-rust transition-colors">
+                            ACCESS TERMINAL
+                        </Link>
+                    </div>
+                </div>
             </div>
         </div>
       </Section>
@@ -138,7 +189,7 @@ export default function EcosystemPage() {
                 {/* Tier I: The Root */}
                 <TierCard 
                     title="THE ROOT"
-                    range="0 - 499 SPORES"
+                    range="0 - 499 ARTIFACTS"
                     description="The seed has cracked the pavement. Initial reclamation phase."
                     icon="🌱"
                     benefits={[
@@ -153,7 +204,7 @@ export default function EcosystemPage() {
                 {/* Tier II: The Vine */}
                 <TierCard 
                     title="THE VINE"
-                    range="500 - 1,999 SPORES"
+                    range="500 - 1,999 ARTIFACTS"
                     description="Structural integrity compromised. Vegetation is climbing."
                     icon="🌿"
                     highlight
@@ -171,7 +222,7 @@ export default function EcosystemPage() {
                 {/* Tier III: The Canopy */}
                 <TierCard 
                     title="THE CANOPY"
-                    range="2,000+ SPORES"
+                    range="2,000+ ARTIFACTS"
                     description="Total reclamation. Skyline overtaken. Apex status confirmed."
                     icon="🌳"
                     benefits={[

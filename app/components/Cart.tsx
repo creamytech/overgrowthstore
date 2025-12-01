@@ -87,13 +87,14 @@ function CartDiscounts({
       {/* Have existing discount, display it with a remove option */}
       <dl className={codes && codes.length !== 0 ? 'grid' : 'hidden'}>
         <div className="flex items-center justify-between font-medium">
-          <Text as="dt">Discount(s)</Text>
+          <Text as="dt">Clearance Code(s)</Text>
           <div className="flex items-center justify-between">
             <UpdateDiscountForm>
               <button>
                 <IconRemove
                   aria-hidden="true"
                   style={{height: 18, marginRight: 4}}
+                  className="text-rust"
                 />
               </button>
             </UpdateDiscountForm>
@@ -103,31 +104,34 @@ function CartDiscounts({
       </dl>
 
       {/* Show an input to apply a discount */}
+      {/* Show an input to apply a discount */}
       <UpdateDiscountForm discountCodes={codes}>
-        <div className="relative mt-4 border border-dark-green bg-[#e8e4d9]">
-            {/* Header Bar */}
-            <div className="bg-dark-green text-[#f4f1ea] px-3 py-1.5 flex items-center gap-2">
+        <details className="group relative mt-4 border border-rust/30 bg-[#e8e4d9]">
+            {/* Header Bar - Clickable to expand */}
+            <summary className="bg-rust text-[#f4f1ea] px-3 py-1.5 flex items-center gap-2 cursor-pointer list-none">
                 <IconTicket className="w-4 h-4 text-[#f4f1ea]" />
-                <span className="font-heading text-xs tracking-[0.2em] uppercase">
-                    Promo Code Authorization
+                <span className="font-heading text-xs tracking-[0.2em] uppercase flex-grow">
+                    Clearance Code
                 </span>
-            </div>
+                <span className="text-[10px] opacity-70 group-open:hidden">(ENTER IF AUTHORIZED)</span>
+                <span className="transform transition-transform group-open:rotate-180">▼</span>
+            </summary>
             
-            {/* Input Area */}
+            {/* Input Area - Hidden by default until expanded */}
             <div className="p-3 flex gap-2">
-                <div className="flex-grow bg-white border border-dark-green/20 p-2 shadow-inner">
+                <div className="flex-grow bg-white border border-rust/20 p-2 shadow-inner">
                     <input
                         className="w-full bg-transparent font-typewriter text-sm text-dark-green placeholder:text-dark-green/30 focus:outline-none uppercase tracking-widest"
                         type="text"
                         name="discountCode"
-                        placeholder="ENTER_CODE_HERE..."
+                        placeholder="ENTER CODE..."
                     />
                 </div>
-                <button className="font-heading text-sm tracking-widest text-[#f4f1ea] bg-dark-green px-4 hover:bg-rust transition-colors shadow-sm">
+                <button className="font-heading text-sm tracking-widest text-[#f4f1ea] bg-rust px-4 hover:bg-dark-green transition-colors shadow-sm">
                     APPLY
                 </button>
             </div>
-        </div>
+        </details>
       </UpdateDiscountForm>
     </>
   );
@@ -191,12 +195,18 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
   if (!checkoutUrl) return null;
 
   return (
-    <div className="flex flex-col mt-4">
+    <div className="flex flex-col mt-4 gap-3">
       <a href={checkoutUrl} target="_self" className="group relative">
-        <Button as="span" width="full" className="relative bg-dark-green text-[#f4f1ea] font-heading tracking-[2px] uppercase hover:bg-rust transition-colors duration-100 steps(2) flex items-center justify-center gap-2 py-4">
-          ACQUIRE
+        <Button as="span" width="full" className="relative bg-dark-green text-[#f4f1ea] font-heading tracking-[2px] uppercase hover:bg-rust transition-colors duration-100 steps(2) flex items-center justify-center gap-2 py-4 shadow-lg">
+          SECURE THE ARTIFACT
         </Button>
       </a>
+      
+      <div className="text-center">
+        <Link to="/products" className="font-body text-xs text-dark-green/60 hover:text-rust underline decoration-dashed underline-offset-4 uppercase tracking-widest transition-colors">
+            Continue Salvage
+        </Link>
+      </div>
       {/* @todo: <CartShopPayButton cart={cart} /> */}
     </div>
   );
@@ -221,9 +231,9 @@ function CartSummary({
       <h2 id="summary-heading" className="sr-only">
         Order summary
       </h2>
-      <dl className="grid">
+      <dl className="grid gap-4">
         <div className="flex items-center justify-between font-medium text-dark-green">
-          <Text as="dt">Subtotal</Text>
+          <Text as="dt" className="font-heading text-sm tracking-widest uppercase">Mission Cost</Text>
           <Text as="dd" data-test="subtotal">
             {cost?.subtotalAmount?.amount ? (
               <Money data={cost?.subtotalAmount} />
@@ -232,7 +242,17 @@ function CartSummary({
             )}
           </Text>
         </div>
+        
+        {/* Rewards Teaser */}
+        {cost?.subtotalAmount?.amount && (
+            <div className="p-2 text-center mt-2">
+                <Text className="font-body text-xs text-dark-green/80">
+                    <span className="font-bold text-rust">+{Math.floor(parseFloat(cost.subtotalAmount.amount))} Artifacts recovered</span> from this requisition
+                </Text>
+            </div>
+        )}
       </dl>
+      
       {children}
     </section>
   );
@@ -256,7 +276,7 @@ function CartLineItem({line}: {line: CartLine}) {
   return (
     <li
       key={id}
-      className="flex gap-6 py-6 border-b-2 border-dashed border-dark-green/20 relative group transition-transform duration-100 steps(2) hover:bg-dark-green/5 items-start"
+      className="flex gap-6 py-6 border-b-2 border-dashed border-rust/20 relative group transition-transform duration-100 steps(2) hover:bg-dark-green/5 items-start"
       style={{
         display: optimisticData?.action === 'remove' ? 'none' : 'flex',
       }}
@@ -297,8 +317,8 @@ function CartLineItem({line}: {line: CartLine}) {
             ))}
           </div>
 
-          <div className="flex items-center gap-4 mt-2">
-            <div className="flex justify-start text-copy scale-90 origin-left">
+          <div className="flex items-center gap-6 mt-2">
+            <div className="flex justify-start text-copy origin-left">
               <CartLineQuantityAdjust line={line} />
             </div>
             <ItemRemoveButton lineId={id} />
@@ -325,11 +345,11 @@ function ItemRemoveButton({lineId}: {lineId: CartLine['id']}) {
       }}
     >
       <button
-        className="flex items-center justify-center w-10 h-10 border border-dark-green/20 rounded hover:border-rust hover:text-rust transition-colors duration-100 steps(2)"
+        className="flex items-center justify-center w-10 h-10 border border-rust/30 rounded hover:border-rust hover:text-rust transition-colors duration-100 steps(2)"
         type="submit"
       >
         <span className="sr-only">Remove</span>
-        <IconRemove aria-hidden="true" />
+        <IconRemove aria-hidden="true" className="text-rust/70 hover:text-rust" />
       </button>
       <OptimisticInput id={lineId} data={{action: 'remove'}} />
     </CartForm>
@@ -353,12 +373,12 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
       <label htmlFor={`quantity-${lineId}`} className="sr-only">
         Quantity, {optimisticQuantity}
       </label>
-      <div className="flex items-center border border-dark-green/20 rounded">
+      <div className="flex items-center bg-dark-green/5 rounded-full px-1 border border-rust/30 hover:border-rust transition-colors">
         <UpdateCartButton lines={[{id: lineId, quantity: prevQuantity}]}>
           <button
             name="decrease-quantity"
             aria-label="Decrease quantity"
-            className="w-10 h-10 transition duration-100 steps(2) text-dark-green/50 hover:text-dark-green disabled:text-dark-green/10"
+            className="w-8 h-8 flex items-center justify-center transition duration-100 steps(2) text-rust/70 hover:text-rust hover:bg-rust/10 rounded-full disabled:text-dark-green/10"
             value={prevQuantity}
             disabled={optimisticQuantity <= 1}
           >
@@ -370,13 +390,13 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
           </button>
         </UpdateCartButton>
 
-        <div className="px-2 text-center text-dark-green" data-test="item-quantity">
+        <div className="px-2 text-center text-dark-green font-typewriter text-sm min-w-[1.5rem]" data-test="item-quantity">
           {optimisticQuantity}
         </div>
 
         <UpdateCartButton lines={[{id: lineId, quantity: nextQuantity}]}>
           <button
-            className="w-10 h-10 transition text-dark-green/50 hover:text-dark-green"
+            className="w-8 h-8 flex items-center justify-center transition duration-100 steps(2) text-rust/70 hover:text-rust hover:bg-rust/10 rounded-full"
             name="increase-quantity"
             value={nextQuantity}
             aria-label="Increase quantity"
@@ -476,7 +496,7 @@ export function CartEmpty({
         </Text>
         <div>
           <Button onClick={onClose} className="bg-dark-green text-[#EFEBD6] font-heading tracking-widest px-8 py-3 hover:bg-rust transition-colors duration-100 steps(2)">
-              INITIATE SEARCH
+              CONTINUE SALVAGE
           </Button>
         </div>
       </section>

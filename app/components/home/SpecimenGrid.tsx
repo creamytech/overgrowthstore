@@ -20,7 +20,7 @@ export function SpecimenGrid({collections}: {collections: Collection[]}) {
             // For now, just render them all
             return (
                 <div key={collection.id} className="break-inside-avoid mb-6">
-                    <Link to={`/collections/${collection.handle}`} className="group block relative overflow-hidden border border-dark-green/20 bg-paper p-4 hover:border-rust transition-colors duration-300">
+                    <Link to={`/collections/${collection.handle}`} className="group block relative overflow-hidden border border-rust/20 bg-paper p-4 hover:border-rust transition-colors duration-300">
                         <div className="aspect-[3/4] overflow-hidden relative mb-4 grayscale group-hover:grayscale-0 transition-all duration-500">
                              {collection.image && (
                                 <Image
@@ -44,10 +44,10 @@ export function SpecimenGrid({collections}: {collections: Collection[]}) {
                         </div>
 
                         {/* Corner Accents */}
-                        <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-dark-green" />
-                        <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-dark-green" />
-                        <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-dark-green" />
-                        <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-dark-green" />
+                        <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-rust" />
+                        <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-rust" />
+                        <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-rust" />
+                        <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-rust" />
                     </Link>
                 </div>
             );

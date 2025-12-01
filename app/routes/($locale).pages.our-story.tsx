@@ -52,22 +52,49 @@ export default function OurStory() {
             </div>
 
             {/* Content Sections */}
-            <section className="mb-16">
-                 <h2 className="font-heading text-4xl text-dark-green uppercase tracking-wider mb-6 border-b border-dark-green/20 pb-2">
-                    01 // The Philosophy
-                </h2>
-                <div className="prose prose-stone font-body text-lg leading-relaxed text-dark-green/80 text-justify">
-                    <p>
-                        We believe in creating products that last longer than the trends they outlive. Our commitment to sustainability isn't a marketing tactic; it's a survival strategy.
-                    </p>
+            <section className="mb-24 grid md:grid-cols-2 gap-12 items-center">
+                <div className="order-2 md:order-1">
+                     <h2 className="font-heading text-4xl text-dark-green uppercase tracking-wider mb-6 border-b border-dark-green/20 pb-2">
+                        01 // The Philosophy
+                    </h2>
+                    <div className="prose prose-stone font-body text-lg leading-relaxed text-dark-green/80 text-justify">
+                        <p>
+                            We believe in creating products that last longer than the trends they outlive. Our commitment to sustainability isn't a marketing tactic; it's a survival strategy.
+                        </p>
+                    </div>
+                </div>
+                {/* Founder / Operative Section */}
+                <div className="order-1 md:order-2 relative group">
+                    <div className="aspect-[3/4] bg-dark-green/5 border border-dark-green/20 relative overflow-hidden">
+                         <img 
+                            src="/assets/hero_horse_skeleton_isolated.png" 
+                            alt="The Operative" 
+                            className="w-full h-full object-cover mix-blend-multiply opacity-80 filter grayscale contrast-125"
+                        />
+                        {/* Classified Overlay */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="border-4 border-rust/50 p-4 transform -rotate-12 bg-[#f4f1ea]/90 backdrop-blur-sm">
+                                <span className="font-heading text-4xl text-rust tracking-widest uppercase">
+                                    Classified
+                                </span>
+                            </div>
+                        </div>
+                        {/* HUD Elements */}
+                        <div className="absolute top-2 left-2 font-mono text-[10px] text-dark-green/60">
+                            SUBJ: OPERATIVE 001
+                        </div>
+                        <div className="absolute bottom-2 right-2 font-mono text-[10px] text-dark-green/60">
+                            STATUS: ACTIVE
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            <section className="mb-16">
+            <section className="mb-24">
                  <h2 className="font-heading text-4xl text-dark-green uppercase tracking-wider mb-6 border-b border-dark-green/20 pb-2">
                     02 // The Aesthetic
                 </h2>
-                <div className="prose prose-stone font-body text-lg leading-relaxed text-dark-green/80 text-justify">
+                <div className="prose prose-stone font-body text-lg leading-relaxed text-dark-green/80 text-justify max-w-2xl">
                     <p>
                         Inspired by the resilience of nature reclaiming the built environment. Our design language speaks in textures of decay, growth, and persistence. Every garment is a field note from a world after.
                     </p>
@@ -75,22 +102,55 @@ export default function OurStory() {
             </section>
 
             <section className="mb-16">
-                 <h2 className="font-heading text-4xl text-dark-green uppercase tracking-wider mb-6 border-b border-dark-green/20 pb-2">
-                    03 // Sustainability
+                 <h2 className="font-heading text-4xl text-dark-green uppercase tracking-wider mb-12 border-b border-dark-green/20 pb-2">
+                    03 // Weapons of Choice
                 </h2>
-                <div className="prose prose-stone font-body text-lg leading-relaxed text-dark-green/80 text-justify">
-                    <p>
-                        We utilize 100% organic cotton and recycled fibers. Our supply chain is as transparent as our intentions. We don't just minimize our footprint; we plant seeds in it.
-                    </p>
-                </div>
                 
-                 <div className="mt-12 flex justify-center gap-8 opacity-60">
-                     <div className="w-16 h-16 border-2 border-dark-green rounded-full flex items-center justify-center">
-                        <span className="font-heading text-xs text-dark-green text-center leading-none">100%<br/>ORG</span>
-                     </div>
-                     <div className="w-16 h-16 border-2 border-dark-green rounded-full flex items-center justify-center">
-                        <span className="font-heading text-xs text-dark-green text-center leading-none">RE<br/>CYC</span>
-                     </div>
+                {/* Technical Specs Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    {/* Spec 1 */}
+                    <div className="border border-dark-green/20 p-6 flex flex-col items-center text-center hover:border-rust transition-colors group">
+                        <div className="w-12 h-12 mb-4 border border-dark-green/30 rounded-full flex items-center justify-center group-hover:border-rust group-hover:text-rust transition-colors">
+                            <span className="font-heading text-xl">O</span>
+                        </div>
+                        <h3 className="font-heading text-sm text-dark-green tracking-widest mb-2">ORGANIC</h3>
+                        <p className="font-mono text-[10px] text-dark-green/60 uppercase">
+                            100% Certified Cotton
+                        </p>
+                    </div>
+
+                    {/* Spec 2 */}
+                    <div className="border border-dark-green/20 p-6 flex flex-col items-center text-center hover:border-rust transition-colors group">
+                        <div className="w-12 h-12 mb-4 border border-dark-green/30 rounded-full flex items-center justify-center group-hover:border-rust group-hover:text-rust transition-colors">
+                            <span className="font-heading text-xl">R</span>
+                        </div>
+                        <h3 className="font-heading text-sm text-dark-green tracking-widest mb-2">RECYCLED</h3>
+                        <p className="font-mono text-[10px] text-dark-green/60 uppercase">
+                            Post-Consumer Fiber
+                        </p>
+                    </div>
+
+                    {/* Spec 3 */}
+                    <div className="border border-dark-green/20 p-6 flex flex-col items-center text-center hover:border-rust transition-colors group">
+                        <div className="w-12 h-12 mb-4 border border-dark-green/30 rounded-full flex items-center justify-center group-hover:border-rust group-hover:text-rust transition-colors">
+                            <span className="font-heading text-xl">D</span>
+                        </div>
+                        <h3 className="font-heading text-sm text-dark-green tracking-widest mb-2">DURABLE</h3>
+                        <p className="font-mono text-[10px] text-dark-green/60 uppercase">
+                            Heavyweight Weave
+                        </p>
+                    </div>
+
+                    {/* Spec 4 */}
+                    <div className="border border-dark-green/20 p-6 flex flex-col items-center text-center hover:border-rust transition-colors group">
+                        <div className="w-12 h-12 mb-4 border border-dark-green/30 rounded-full flex items-center justify-center group-hover:border-rust group-hover:text-rust transition-colors">
+                            <span className="font-heading text-xl">E</span>
+                        </div>
+                        <h3 className="font-heading text-sm text-dark-green tracking-widest mb-2">ETHICAL</h3>
+                        <p className="font-mono text-[10px] text-dark-green/60 uppercase">
+                            Fair Labor Standards
+                        </p>
+                    </div>
                 </div>
             </section>
             

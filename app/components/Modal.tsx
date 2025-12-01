@@ -4,9 +4,11 @@ import {Link} from '~/components/Link';
 export function Modal({
   children,
   cancelLink,
+  close,
 }: {
   children: React.ReactNode;
-  cancelLink: string;
+  cancelLink?: string;
+  close?: () => void;
 }) {
   return (
     <div
@@ -16,7 +18,10 @@ export function Modal({
       aria-modal="true"
       id="modal-bg"
     >
-      <div className="fixed inset-0 transition-opacity bg-opacity-75 bg-primary/40"></div>
+      <div 
+        className="fixed inset-0 transition-opacity bg-opacity-75 bg-primary/40"
+        onClick={close}
+      ></div>
       <div className="fixed inset-0 z-50 overflow-y-auto">
         <div className="flex items-center justify-center min-h-full p-4 text-center sm:p-0">
           <div
@@ -31,12 +36,21 @@ export function Modal({
             tabIndex={0}
           >
             <div className="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
-              <Link
-                to={cancelLink}
-                className="p-4 -m-4 transition text-primary hover:text-primary/50"
-              >
-                <IconClose aria-label="Close panel" />
-              </Link>
+              {close ? (
+                  <button
+                    onClick={close}
+                    className="p-4 -m-4 transition text-primary hover:text-primary/50"
+                  >
+                    <IconClose aria-label="Close panel" />
+                  </button>
+              ) : (
+                  <Link
+                    to={cancelLink || '#'}
+                    className="p-4 -m-4 transition text-primary hover:text-primary/50"
+                  >
+                    <IconClose aria-label="Close panel" />
+                  </Link>
+              )}
             </div>
             {children}
           </div>

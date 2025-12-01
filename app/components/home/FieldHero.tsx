@@ -83,14 +83,18 @@ export function FieldHero() {
       </motion.div>
 
       {/* Hero Text Overlay */}
-      <div className="absolute bottom-24 md:bottom-56 left-1/2 -translate-x-1/2 z-20 text-center pt-8 w-full pointer-events-none">
+      <div className="absolute bottom-36 md:bottom-64 left-1/2 -translate-x-1/2 z-50 text-center pt-8 w-full pointer-events-auto">
         <motion.div style={{y: yText}}>
           <h2 className="font-heading text-4xl md:text-6xl text-dark-green tracking-widest mb-4">
             THE RECLAIMED WORLD
           </h2>
-          <div className="font-body text-[#c04e01] text-lg tracking-widest uppercase">
+          <div className="font-body text-[#c04e01] text-lg tracking-widest uppercase mb-8">
              <span>Figure 1.A: Equus Ferus Caballus</span>
           </div>
+          
+          <a href="#featured-grid" className="inline-block bg-rust text-[#f4f1ea] px-8 py-4 font-heading text-xl tracking-widest hover:bg-dark-green transition-colors duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+            ENTER THE OVERGROWTH
+          </a>
         </motion.div>
       </div>
 

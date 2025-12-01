@@ -15,36 +15,33 @@ export function AccountAddressBook({
 }) {
   return (
     <>
-      <div className="grid w-full gap-4 p-4 py-6 md:gap-8 md:p-8 lg:p-12">
-        <h3 className="font-bold text-lead">Address Book</h3>
-        <div>
-          {!addresses?.length && (
-            <Text className="mb-1" width="narrow" as="p" size="copy">
-              You haven&apos;t saved any addresses yet.
-            </Text>
-          )}
-          <div className="w-48">
-            <Button
-              to="address/add"
-              className="mt-2 text-sm w-full mb-6"
-              variant="secondary"
-            >
-              Add an Address
-            </Button>
-          </div>
-          {Boolean(addresses?.length) && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {customer.defaultAddress && (
-                <Address address={customer.defaultAddress} defaultAddress />
-              )}
-              {addresses
-                .filter((address) => address.id !== customer.defaultAddress?.id)
-                .map((address) => (
-                  <Address key={address.id} address={address} />
-                ))}
-            </div>
-          )}
+      <div className="w-full">
+        {!addresses?.length && (
+          <Text className="mb-4 font-typewriter text-dark-green/60" width="narrow" as="p" size="copy">
+            No coordinates established.
+          </Text>
+        )}
+        <div className="w-48">
+          <Button
+            to="address/add"
+            className="btn-stamp text-xs w-full mb-6"
+            variant="secondary"
+          >
+            Add Coordinates
+          </Button>
         </div>
+        {Boolean(addresses?.length) && (
+          <div className="grid grid-cols-1 gap-6">
+            {customer.defaultAddress && (
+              <Address address={customer.defaultAddress} defaultAddress />
+            )}
+            {addresses
+              .filter((address) => address.id !== customer.defaultAddress?.id)
+              .map((address) => (
+                <Address key={address.id} address={address} />
+              ))}
+          </div>
+        )}
       </div>
     </>
   );
@@ -58,17 +55,17 @@ function Address({
   defaultAddress?: boolean;
 }) {
   return (
-    <div className="lg:p-8 p-6 border border-gray-200 rounded flex flex-col">
+    <div className="p-6 border border-dark-green/20 bg-[#f4f1ea] relative flex flex-col hover:border-rust transition-colors duration-300">
       {defaultAddress && (
         <div className="mb-3 flex flex-row">
-          <span className="px-3 py-1 text-xs font-medium rounded-full bg-primary/20 text-primary/50">
-            Default
+          <span className="px-2 py-1 text-[10px] font-mono uppercase tracking-widest border border-rust text-rust bg-rust/5">
+            Primary Base
           </span>
         </div>
       )}
-      <ul className="flex-1 flex-row">
+      <ul className="flex-1 flex-col font-typewriter text-sm text-dark-green space-y-1">
         {(address.firstName || address.lastName) && (
-          <li>
+          <li className="font-bold uppercase tracking-wider mb-2">
             {'' +
               (address.firstName && address.firstName + ' ') +
               address?.lastName}
@@ -78,17 +75,17 @@ function Address({
           address.formatted.map((line: string) => <li key={line}>{line}</li>)}
       </ul>
 
-      <div className="flex flex-row font-medium mt-6 items-baseline">
+      <div className="flex flex-row font-heading text-xs mt-6 items-baseline gap-6">
         <Link
           to={`/account/address/${encodeURIComponent(address.id)}`}
-          className="text-left underline text-sm"
+          className="text-left text-rust hover:underline uppercase tracking-wider"
           prefetch="intent"
         >
           Edit
         </Link>
         <Form action="address/delete" method="delete">
           <input type="hidden" name="addressId" value={address.id} />
-          <button className="text-left text-primary/50 ml-6 text-sm">
+          <button className="text-left text-dark-green/40 hover:text-rust uppercase tracking-wider">
             Remove
           </button>
         </Form>

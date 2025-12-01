@@ -117,7 +117,7 @@ export function ProductCard({
         className="block"
       >
         {/* Card Container */}
-        <div className="relative aspect-[4/5] bg-[#f4f1ea] overflow-hidden border border-dark-green/20 transition-all duration-300 group-hover:border-dark-green/60 group-hover:shadow-lg">
+        <div className="relative aspect-[4/5] bg-[#f4f1ea] overflow-hidden border border-rust/20 transition-all duration-300 group-hover:border-rust/60 group-hover:shadow-lg">
           
           {/* Paper Texture Overlay */}
           <div 
@@ -126,9 +126,10 @@ export function ProductCard({
 
           {/* Product Image Area */}
           <div className="relative w-full h-full p-4 flex items-center justify-center z-0">
+            {/* Primary Image */}
             {image && (
               <Image
-                className={`object-contain w-full h-full transition-transform duration-500 group-hover:scale-105 mix-blend-multiply filter contrast-110 sepia-[0.1] ${isSoldOut ? 'grayscale opacity-70' : ''}`}
+                className={`object-contain w-full h-full transition-opacity duration-500 mix-blend-multiply filter contrast-110 sepia-[0.1] ${isSoldOut ? 'grayscale opacity-70' : ''} ${product.images?.nodes[1] ? 'group-hover:opacity-0' : ''}`}
                 sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw"
                 width={800}
                 aspectRatio="4/5"
@@ -136,6 +137,19 @@ export function ProductCard({
                 alt={image.altText || `Picture of ${product.title}`}
                 loading={loading}
               />
+            )}
+            
+            {/* Secondary Image (Hover) */}
+            {product.images?.nodes[1] && (
+                <Image
+                    className={`absolute inset-0 object-contain w-full h-full p-4 transition-opacity duration-500 opacity-0 group-hover:opacity-100 mix-blend-multiply filter contrast-110 sepia-[0.1] ${isSoldOut ? 'grayscale opacity-70' : ''}`}
+                    sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw"
+                    width={800}
+                    aspectRatio="4/5"
+                    data={product.images.nodes[1]}
+                    alt={product.images.nodes[1].altText || `Picture of ${product.title}`}
+                    loading={loading}
+                />
             )}
           </div>
 
@@ -160,19 +174,30 @@ export function ProductCard({
                 </div>
           </div>
 
-          {/* Static Info (Always Visible) */}
-          <div className="absolute top-0 left-0 w-full p-3 flex justify-between items-start z-20">
+          {/* Badges (Static Info) */}
+          <div className="absolute top-0 left-0 w-full p-3 flex flex-col gap-2 items-start z-20">
              {cardLabel && (
                 <div className="bg-rust text-[#f4f1ea] px-2 py-0.5 text-[10px] tracking-widest uppercase font-bold">
                     {cardLabel}
                 </div>
+             )}
+             {/* Custom Badges based on Tags */}
+             {product.tags?.includes('Limited') && (
+                 <div className="bg-dark-green text-[#f4f1ea] px-2 py-0.5 text-[10px] tracking-widest uppercase font-bold border border-[#f4f1ea]/20">
+                     LIMITED RUN
+                 </div>
+             )}
+             {product.tags?.includes('Field Issue') && (
+                 <div className="bg-[#f4f1ea] text-dark-green px-2 py-0.5 text-[10px] tracking-widest uppercase font-bold border border-dark-green">
+                     FIELD ISSUE
+                 </div>
              )}
           </div>
 
           {/* Sold Out Overlay */}
           {isSoldOut && (
               <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/5 pointer-events-none">
-                  <div className="border-2 border-dark-green text-dark-green px-4 py-2 font-heading text-xl tracking-widest uppercase rotate-[-12deg] bg-[#f4f1ea]/80 backdrop-blur-sm">
+                  <div className="border-2 border-rust text-rust px-4 py-2 font-heading text-xl tracking-widest uppercase rotate-[-12deg] bg-[#f4f1ea]/80 backdrop-blur-sm">
                       DEPLETED
                   </div>
               </div>
@@ -181,23 +206,24 @@ export function ProductCard({
         </div>
 
         {/* Bottom Info */}
-        <div className="mt-3 px-1">
-             <h3 className="font-heading text-lg text-dark-green leading-tight group-hover:text-rust transition-colors duration-300 truncate uppercase">
+        <div className="mt-4 px-1 text-center">
+             <h3 className="font-heading text-xl md:text-2xl text-dark-green leading-tight group-hover:text-rust transition-colors duration-300 uppercase mb-2">
                 {product.title}
              </h3>
-             <div className="flex justify-between items-center mt-1 border-t border-dark-green/10 pt-2">
-                <span className="font-mono text-[10px] text-dark-green/50 tracking-widest">
-                    ID: {product.id.substring(product.id.length - 4)}
-                </span>
-                <Text className="font-body text-sm text-dark-green font-bold tracking-widest">
+             
+             <div className="flex flex-col items-center gap-1">
+                <Text className="font-body text-base md:text-lg text-dark-green font-bold tracking-widest">
                   <Money withoutTrailingZeros data={price!} />
                   {isDiscounted(price as MoneyV2, compareAtPrice as MoneyV2) && (
                     <CompareAtPrice
-                      className={'opacity-50 line-through ml-2 text-xs'}
+                      className={'opacity-50 line-through ml-2 text-sm'}
                       data={compareAtPrice as MoneyV2}
                     />
                   )}
                 </Text>
+                <span className="font-mono text-[10px] text-dark-green/50 tracking-widest">
+                    ID: {product.id.substring(product.id.length - 4)}
+                </span>
              </div>
         </div>
       </Link>

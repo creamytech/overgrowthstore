@@ -33,16 +33,22 @@ export default function Contact() {
   const {page} = useLoaderData<typeof loader>();
   
   return (
-    <div className="min-h-screen bg-[#f4f1ea] relative pt-32 pb-24 px-4 md:px-8 overflow-hidden">
-      
-      {/* Background Texture - Coffee Rings & Dirt */}
-      <div className="fixed inset-0 pointer-events-none opacity-10 z-0">
-         <div className="absolute top-[10%] left-[5%] w-64 h-64 rounded-full border-[20px] border-rust blur-[2px] mask-grunge transform rotate-45" />
-         <div className="absolute bottom-[20%] right-[10%] w-48 h-48 rounded-full border-[10px] border-dark-green blur-[1px] mask-grunge" />
-         <div className="absolute top-1/3 left-1/2 w-96 h-96 bg-[url('/assets/texture_dirt.png')] opacity-20 mix-blend-multiply" />
-      </div>
+    <div className="min-h-screen bg-[#f4f1ea] relative overflow-hidden">
+       {/* Texture Overlay */}
+       <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
+       
+       {/* Header */}
+       <div className="relative z-10 pt-32 pb-12 text-center">
+            <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-2">
+                ESTABLISH CONNECTION
+            </h1>
+            <div className="font-body text-rust text-lg tracking-[0.3em] uppercase">
+                <span>SECURE CHANNEL</span>
+            </div>
+            <div className="w-24 h-1 bg-rust mx-auto mt-6" />
+       </div>
 
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 relative z-10">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 relative z-10 px-4 md:px-8 pb-24">
         
         {/* Left: The Transmission Form */}
         <div className="relative group">
@@ -52,18 +58,6 @@ export default function Contact() {
                 {/* Stamps */}
                 <div className="absolute top-4 right-4 border-4 border-rust/30 text-rust/30 px-4 py-1 font-heading text-xl -rotate-12 pointer-events-none uppercase tracking-widest mix-blend-multiply mask-grunge">
                     CONFIDENTIAL
-                </div>
-
-                <div className="mb-8 border-b-2 border-dashed border-dark-green/20 pb-6">
-                    <h1 className="font-heading text-4xl md:text-5xl text-dark-green mb-2">
-                        ESTABLISH CONNECTION
-                    </h1>
-                    <div className="flex items-center gap-4">
-                        <span className="h-px w-12 bg-rust" />
-                        <div className="font-typewriter text-xs tracking-[0.2em] text-dark-green/60 uppercase">
-                            <span>TRANSMISSION CHANNEL: OPEN // FREQUENCY: 104.5 MHZ</span>
-                        </div>
-                    </div>
                 </div>
 
                 <Form method="post" action="/contact" className="space-y-8">

@@ -35,6 +35,7 @@ import {Skeleton} from '~/components/Skeleton';
 import {ProductSwimlane} from '~/components/ProductSwimlane';
 import {ProductGallery} from '~/components/ProductGallery';
 import {IconCaret, IconCheck, IconClose} from '~/components/Icon';
+import {Modal} from '~/components/Modal';
 import {getExcerpt} from '~/lib/utils';
 import {seoPayload} from '~/lib/seo.server';
 import type {Storefront} from '~/lib/type';
@@ -301,6 +302,25 @@ export default function Product() {
                             </div>
                         </div>
 
+                        {/* Technical Specifications (New Section) */}
+                        <div className="bg-dark-green/5 border border-dark-green/10 p-4 font-mono text-xs text-dark-green/80">
+                            <h4 className="font-bold uppercase tracking-widest mb-2 border-b border-dark-green/10 pb-1">Technical Specifications</h4>
+                            <div className="grid grid-cols-2 gap-2">
+                                <div>
+                                    <span className="opacity-50 block">FIT PROFILE</span>
+                                    <span>OVERSIZED / BOXY</span>
+                                </div>
+                                <div>
+                                    <span className="opacity-50 block">WEIGHT</span>
+                                    <span>HEAVYWEIGHT</span>
+                                </div>
+                                <div className="col-span-2">
+                                    <span className="opacity-50 block">CARE INSTRUCTIONS</span>
+                                    <span>MACHINE WASH COLD // HANG DRY ONLY</span>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Description */}
                         <div className="prose prose-stone font-body text-sm leading-relaxed text-ink/90">
                             <div dangerouslySetInnerHTML={{__html: descriptionHtml || ''}} />
@@ -358,8 +378,8 @@ export default function Product() {
         >
           {(products) => (
             <div className="mt-24 border-t border-dark-green/20 pt-12 max-w-7xl mx-auto px-4">
-                <h3 className="font-heading text-2xl text-dark-green mb-8 text-center">
-                    Related Salvage
+                <h3 className="font-heading text-2xl text-dark-green mb-8 text-center tracking-widest">
+                    RECOMMENDED LOADOUT
                 </h3>
                 <ProductSwimlane title="" products={products} />
             </div>
@@ -398,15 +418,27 @@ export function ProductForm({
   product: ProductFragment;
 }) {
   const isOutOfStock = !selectedVariant?.availableForSale;
+  const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
   return (
     <div className="grid gap-8">
       <div className="grid gap-4">
         {productOptions.map((option) => (
           <div key={option.name} className="flex flex-col gap-3">
-            <h4 className="font-body text-xs uppercase tracking-widest text-dark-green/60">
-              {option.name}
-            </h4>
+            <div className="flex justify-between items-center">
+                <h4 className="font-body text-xs uppercase tracking-widest text-dark-green/60">
+                {option.name}
+                </h4>
+                {option.name === 'Size' && (
+                    <button 
+                        onClick={() => setIsSizeGuideOpen(true)}
+                        className="font-body text-[10px] uppercase tracking-widest text-rust hover:underline"
+                    >
+                        [ VIEW SIZE GUIDE ]
+                    </button>
+                )}
+            </div>
+            
             <div className="flex flex-wrap gap-2">
               {option.optionValues.map(({name, handle, variantUriQuery, selected, available}) => (
                  <Link
@@ -430,6 +462,68 @@ export function ProductForm({
           </div>
         ))}
       </div>
+
+      {/* Size Guide Modal */}
+      {isSizeGuideOpen && (
+          <Modal cancelLink="" close={() => setIsSizeGuideOpen(false)}>
+              <div className="p-6 bg-[#f4f1ea] border border-dark-green relative">
+                  <button 
+                    onClick={() => setIsSizeGuideOpen(false)}
+                    className="absolute top-2 right-2 text-dark-green hover:text-rust"
+                  >
+                      <IconClose />
+                  </button>
+                  <h3 className="font-heading text-2xl text-dark-green mb-4">SIZE SPECIFICATIONS</h3>
+                  <div className="overflow-x-auto">
+                      <table className="w-full text-sm font-body text-dark-green text-left">
+                          <thead>
+                              <tr className="border-b border-dark-green/20">
+                                  <th className="py-2">SIZE</th>
+                                  <th className="py-2">CHEST</th>
+                                  <th className="py-2">LENGTH</th>
+                                  <th className="py-2">SLEEVE</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr className="border-b border-dark-green/10">
+                                  <td className="py-2 font-bold">S</td>
+                                  <td className="py-2">20"</td>
+                                  <td className="py-2">28"</td>
+                                  <td className="py-2">8"</td>
+                              </tr>
+                              <tr className="border-b border-dark-green/10">
+                                  <td className="py-2 font-bold">M</td>
+                                  <td className="py-2">22"</td>
+                                  <td className="py-2">29"</td>
+                                  <td className="py-2">8.5"</td>
+                              </tr>
+                              <tr className="border-b border-dark-green/10">
+                                  <td className="py-2 font-bold">L</td>
+                                  <td className="py-2">24"</td>
+                                  <td className="py-2">30"</td>
+                                  <td className="py-2">9"</td>
+                              </tr>
+                              <tr className="border-b border-dark-green/10">
+                                  <td className="py-2 font-bold">XL</td>
+                                  <td className="py-2">26"</td>
+                                  <td className="py-2">31"</td>
+                                  <td className="py-2">9.5"</td>
+                              </tr>
+                              <tr>
+                                  <td className="py-2 font-bold">XXL</td>
+                                  <td className="py-2">28"</td>
+                                  <td className="py-2">32"</td>
+                                  <td className="py-2">10"</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+                  <p className="mt-4 text-[10px] text-dark-green/60 uppercase tracking-widest">
+                      * Measurements are approximate. Garments are pre-shrunk.
+                  </p>
+              </div>
+          </Modal>
+      )}
 
           {selectedVariant && (
         <div className="mt-8">

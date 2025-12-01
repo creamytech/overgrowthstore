@@ -6,6 +6,7 @@ import {
   useMatches,
   useOutlet,
 } from '@remix-run/react';
+import {Link} from '~/components/Link';
 import {Suspense} from 'react';
 import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {flattenConnection} from '@shopify/hydrogen';
@@ -108,57 +109,109 @@ function Account({customer, heading, featuredDataPromise}: AccountType) {
   const addresses = flattenConnection(customer.addresses);
 
   return (
-    <div className="min-h-screen pt-32 pb-24 px-4 md:px-12 max-w-7xl mx-auto">
+    <div className="min-h-screen pt-32 pb-24 px-4 md:px-8 relative overflow-hidden">
       
-      {/* Header Section */}
-      <div className="border-b-2 border-dark-green pb-6 mb-12 flex flex-col md:flex-row justify-between items-end gap-6">
-        <div>
-            <h1 className="font-heading text-4xl md:text-6xl text-dark-green tracking-widest uppercase mb-2">
+      <div className="max-w-6xl mx-auto relative z-10">
+        {/* Hero / Header Section */}
+        <div className="mb-16 text-center">
+            <div className="inline-block border border-rust/50 bg-rust/10 px-4 py-1 mb-6 backdrop-blur-sm">
+                <span className="font-mono text-xs text-rust tracking-widest uppercase">
+                    AUTHORIZED CLEARANCE: LVL 3
+                </span>
+            </div>
+            <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-2 uppercase">
                 {heading}
             </h1>
-            <p className="font-typewriter text-sm text-rust tracking-widest uppercase">
-                STATUS: ACTIVE // CLEARANCE: LEVEL 4
-            </p>
+            <div className="font-body text-rust text-lg tracking-[0.3em] uppercase">
+                <span>SUBJECT: OPERATIVE DOSSIER</span>
+            </div>
+            <div className="w-24 h-1 bg-rust mx-auto mt-6" />
+
+            <div className="font-typewriter text-sm tracking-[0.3em] text-dark-green/60 uppercase mt-4">
+                <span>Ref: {customer?.id?.substring(customer.id.length - 8) || 'UNKNOWN'}</span>
+            </div>
+            
+             <Form method="post" action={usePrefixPathWithLocale('/account/logout')} className="mt-8">
+                <button type="submit" className="font-heading text-sm text-rust border border-rust px-6 py-2 hover:bg-rust hover:text-[#f4f1ea] transition-colors uppercase tracking-widest">
+                  Discharge (Sign Out)
+                </button>
+              </Form>
         </div>
 
-        <Form method="post" action={usePrefixPathWithLocale('/account/logout')}>
-          <button type="submit" className="font-heading text-sm text-rust border border-rust px-6 py-2 hover:bg-rust hover:text-[#f4f1ea] transition-colors uppercase tracking-widest">
-            Discharge (Sign Out)
-          </button>
-        </Form>
-      </div>
+        {/* Dashboard Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
 
-      <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-12">
-          
-          {/* Left Column: Orders */}
-          <div className="space-y-12">
-             
-             {/* Addresses */}
-             <div>
-                <div className="flex items-center gap-4 mb-8">
-                    <div className="w-8 h-8 bg-rust flex items-center justify-center text-[#f4f1ea] font-heading">B</div>
-                    <h2 className="font-heading text-2xl text-dark-green uppercase tracking-widest">Deployment Coordinates</h2>
+            {/* 01 // CULTIVATION STATUS */}
+            <div className="space-y-6">
+                <h2 className="font-heading text-2xl text-dark-green uppercase tracking-wider border-b border-dark-green/20 pb-2">
+                    01 // Artifact Index
+                </h2>
+                <div className="bg-[#f4f1ea] border border-dark-green/20 p-8 relative overflow-hidden group hover:border-rust transition-colors duration-300">
+                    <div className="flex justify-between items-start mb-6">
+                        <div>
+                            <h2 className="font-heading text-2xl text-dark-green uppercase tracking-widest mb-1">Artifact Index</h2>
+                            <p className="font-typewriter text-xs text-dark-green/60 uppercase">Current Rank: THE ROOT</p>
+                        </div>
+                        <div className="w-12 h-12 border border-dark-green/30 rounded-full flex items-center justify-center">
+                            <span className="font-heading text-xl text-dark-green">🌱</span>
+                        </div>
+                    </div>
+
+                    {/* Progress Bar */}
+                    <div className="mb-4">
+                        <div className="flex justify-between text-xs font-mono text-dark-green mb-2">
+                            <span>150 ARTIFACTS</span>
+                            <span>500 ARTIFACTS</span>
+                        </div>
+                        <div className="w-full h-3 bg-dark-green/10 rounded-full overflow-hidden">
+                            <div className="h-full bg-rust w-[30%] relative">
+                                <div className="absolute right-0 top-0 bottom-0 w-px bg-[#f4f1ea]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                        <p className="font-typewriter text-[10px] text-dark-green/50 uppercase">
+                            Next Reward: 10% OFF NEXT HAUL
+                        </p>
+                        <Link to="/pages/ecosystem" className="font-heading text-xs text-rust hover:underline uppercase tracking-widest">
+                            View Protocol
+                        </Link>
+                    </div>
                 </div>
-                <div className="bg-white/50 border border-dark-green/20 p-6 relative">
+            </div>
+
+            {/* 02 // OPERATIVE COORDINATES */}
+            <div className="space-y-6">
+                <h2 className="font-heading text-2xl text-dark-green uppercase tracking-wider border-b border-dark-green/20 pb-2">
+                    02 // Operative Coordinates
+                </h2>
+                <div className="bg-[#f4f1ea] border border-dark-green/20 p-6 relative min-h-[200px]">
                     <AccountAddressBook addresses={addresses} customer={customer} />
                 </div>
-             </div>
+            </div>
 
-             {/* Personal Details */}
-             <div>
-                <div className="flex items-center gap-4 mb-8">
-                    <div className="w-8 h-8 bg-dark-green/50 flex items-center justify-center text-[#f4f1ea] font-heading">C</div>
-                    <h2 className="font-heading text-2xl text-dark-green uppercase tracking-widest">Operative Data</h2>
-                </div>
-                <div className="bg-white/50 border border-dark-green/20 p-6 relative">
-                    <AccountDetails customer={customer} />
-                </div>
-             </div>
+            {/* 03 // REQUISITION LOG */}
+            <div className="space-y-6 lg:col-span-2">
+                <h2 className="font-heading text-2xl text-dark-green uppercase tracking-wider border-b border-dark-green/20 pb-2">
+                    03 // Requisition Log
+                </h2>
+                <AccountOrderHistory orders={orders} />
+            </div>
+            
+             {/* 04 // OPERATIVE DATA */}
+            <div className="space-y-6 lg:col-span-2">
+                <h2 className="font-heading text-2xl text-dark-green uppercase tracking-wider border-b border-dark-green/20 pb-2">
+                    04 // Operative Data
+                </h2>
+                 <div className="bg-[#f4f1ea] border border-dark-green/20 p-6 relative">
+                      <AccountDetails customer={customer} />
+                  </div>
+            </div>
 
-          </div>
-      </div>
+        </div>
 
-      {!orders.length && (
+        {/* Continue Mission Supply */}
         <Suspense>
           <Await
             resolve={featuredDataPromise}
@@ -166,13 +219,13 @@ function Account({customer, heading, featuredDataPromise}: AccountType) {
           >
             {(data) => (
               <div className="mt-24 border-t border-dark-green/20 pt-12">
-                <h3 className="font-heading text-2xl text-dark-green mb-8 text-center uppercase tracking-widest">Recommended Equipment</h3>
+                <h3 className="font-heading text-2xl text-dark-green mb-8 text-center uppercase tracking-widest">Continue Mission Supply</h3>
                 <ProductSwimlane products={data.featuredProducts} />
               </div>
             )}
           </Await>
         </Suspense>
-      )}
+      </div>
     </div>
   );
 }
