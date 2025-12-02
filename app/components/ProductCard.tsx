@@ -168,7 +168,7 @@ export function ProductCard({
                 <div className="absolute bottom-4 left-0 w-full text-center">
                     <div className="inline-block bg-rust/10 backdrop-blur-sm border border-rust/30 px-3 py-1">
                         <span className="font-mono text-xs text-rust tracking-widest uppercase animate-pulse">
-                            {isSoldOut ? 'SIGNAL LOST' : 'SALVAGE DETECTED'}
+                            {isSoldOut ? 'SIGNAL LOST' : 'RECOVERED WORK DETECTED'}
                         </span>
                     </div>
                 </div>

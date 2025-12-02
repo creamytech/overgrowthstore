@@ -171,7 +171,7 @@ export default function Product() {
                     <div className="flex-1">
                         <div className="flex items-center gap-4 mb-4">
                             <span className="inline-block px-2 py-1 border border-dark-green/30 font-body text-[10px] tracking-widest uppercase text-dark-green bg-[#f4f1ea]">
-                                SALVAGE ANALYSIS
+                                RECOVERED WORKS ANALYSIS
                             </span>
                             <span className="font-body text-[10px] tracking-widest uppercase text-dark-green/60">
                                 REF ID #{product.id.substring(product.id.length - 6)}
@@ -529,7 +529,7 @@ export function ProductForm({
         <div className="mt-8">
           {isOutOfStock ? (
             <Button variant="secondary" disabled className="w-full py-4 bg-gray-200 text-ink/50 font-heading tracking-widest uppercase cursor-not-allowed border border-dashed border-ink/20">
-              Salvage Archived // Depleted
+              Recovered Work Archived // Depleted
             </Button>
           ) : (
             <AddToCartButton
@@ -546,7 +546,7 @@ export function ProductForm({
               {/* Content */}
               <div className="relative z-10 flex flex-col items-center justify-center h-full gap-1">
                  <span className="font-heading text-2xl tracking-[0.25em] uppercase text-[#f4f1ea] transition-colors duration-100 steps(2)">
-                    Acquire Salvage
+                    Acquire Recovered Work
                  </span>
                  <div className="flex items-center gap-3 opacity-60 group-hover:opacity-100 transition-opacity duration-100 steps(2)">
                     <span className="h-px w-8 bg-[#f4f1ea] transition-colors" />

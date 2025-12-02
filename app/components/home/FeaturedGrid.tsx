@@ -3,7 +3,7 @@ import {Image, Money} from '@shopify/hydrogen';
 import {motion} from 'framer-motion';
 import {ProductCard} from '~/components/ProductCard';
 
-export function FeaturedGrid({products, title = "FIELD ISSUE"}: {products: any[], title?: string}) {
+export function FeaturedGrid({products, title = "Field Issue"}: {products: any[], title?: string}) {
   if (!products || products.length === 0) return null;
 
   return (
@@ -13,7 +13,7 @@ export function FeaturedGrid({products, title = "FIELD ISSUE"}: {products: any[]
         {/* Section Header */}
         <div className="text-center mb-16">
             <div className="font-typewriter text-xs text-dark-green/60 mb-4 tracking-widest uppercase">
-                <span>Supply Drop // Priority Access</span>
+                <span>Supply Drop // Early Access</span>
             </div>
             <h2 className="font-heading text-4xl md:text-5xl text-dark-green tracking-widest mb-6 uppercase">
                 {title}
@@ -31,7 +31,7 @@ export function FeaturedGrid({products, title = "FIELD ISSUE"}: {products: any[]
         {/* View All Link */}
         <div className="mt-16 text-center">
             <Link to="/collections/all" className="inline-block border-b border-rust text-dark-green font-heading tracking-widest hover:text-rust hover:border-rust transition-colors pb-1">
-                VIEW FULL MANIFEST &rarr;
+                View Full Collection &rarr;
             </Link>
         </div>
 

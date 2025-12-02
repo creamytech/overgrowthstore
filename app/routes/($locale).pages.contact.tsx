@@ -43,7 +43,7 @@ export default function Contact() {
                 ESTABLISH CONNECTION
             </h1>
             <div className="font-body text-rust text-lg tracking-[0.3em] uppercase">
-                <span>SECURE CHANNEL</span>
+                <span>Secure Channel</span>
             </div>
             <div className="w-24 h-1 bg-rust mx-auto mt-6" />
        </div>
@@ -63,7 +63,7 @@ export default function Contact() {
                 <Form method="post" action="/contact" className="space-y-8">
                     <div className="space-y-2">
                         <label htmlFor="name" className="block font-typewriter text-xs tracking-widest uppercase text-dark-green/70">
-                            Observer Name (Codename)
+                            Your Name
                         </label>
                         <input 
                             type="text" 
@@ -77,7 +77,7 @@ export default function Contact() {
 
                     <div className="space-y-2">
                         <label htmlFor="email" className="block font-typewriter text-xs tracking-widest uppercase text-dark-green/70">
-                            Return Frequency (Email)
+                            Your Email
                         </label>
                         <input 
                             type="email" 
@@ -91,7 +91,7 @@ export default function Contact() {
 
                     <div className="space-y-2">
                         <label htmlFor="message" className="block font-typewriter text-xs tracking-widest uppercase text-dark-green/70">
-                            Observation Data (Message)
+                            Your Message
                         </label>
                         <div className="relative">
                             <textarea 
@@ -112,7 +112,7 @@ export default function Contact() {
                         className="w-full bg-dark-green text-[#f4f1ea] py-4 font-heading text-xl tracking-widest hover:bg-rust transition-colors duration-300 relative overflow-hidden group border-2 border-transparent hover:border-rust/50"
                     >
                         <span className="relative z-10 flex items-center justify-center gap-2">
-                            <span>TRANSMIT REPORT</span>
+                            <span>Send Message</span>
                             <span className="text-xs opacity-50 group-hover:opacity-100 transition-opacity">&gt;&gt;</span>
                         </span>
                         {/* Button Texture */}
@@ -136,7 +136,11 @@ export default function Contact() {
                     HEADQUARTERS
                 </h2>
                 <div className="font-body text-dark-green/80 leading-relaxed max-w-md text-lg">
-                    <span>Our research facility is located in the deep overgrowth of the Pacific Northwest. Direct contact is limited due to atmospheric interference.</span>
+                    <span>Our workshop sits near the warm coast of Fort Lauderdale.</span>
+                    <br />
+                    <span>Sunlight, salt air, and a hint of wild growth shape the world around us.</span>
+                    <br />
+                    <span>Send a message anytime and we will reply as soon as we can.</span>
                 </div>
             </div>
 
@@ -146,31 +150,31 @@ export default function Contact() {
                         Coordinates
                     </h3>
                     <p className="font-heading text-2xl text-dark-green">
-                        45.5152° N, 122.6784° W
+                        26.1224° N, 80.1373° W
                     </p>
                     <p className="font-typewriter text-sm text-dark-green/60 mt-1">
-                        Sector 7G, Portland, OR
+                        Fort Lauderdale, Florida
                     </p>
                 </div>
 
                 <div className="group cursor-crosshair">
                     <h3 className="font-typewriter text-xs tracking-widest uppercase text-rust mb-2 group-hover:text-dark-green transition-colors">
-                        Radio Silence
+                        Hours
                     </h3>
                     <p className="font-heading text-2xl text-dark-green">
-                        0900 - 1700 PST
+                        0900 to 1700 EST
                     </p>
                     <p className="font-typewriter text-sm text-dark-green/60 mt-1">
-                        Mon - Fri (Earth Time)
+                        Mon to Fri
                     </p>
                 </div>
 
                 <div className="group cursor-crosshair">
                     <h3 className="font-typewriter text-xs tracking-widest uppercase text-rust mb-2 group-hover:text-dark-green transition-colors">
-                        Emergency Frequency
+                        General Inquiries
                     </h3>
-                    <a href="mailto:help@overgrowth.com" className="font-heading text-2xl text-dark-green hover:text-rust transition-colors border-b-2 border-transparent hover:border-rust inline-block">
-                        help@overgrowth.com
+                    <a href="mailto:hello@overgrowth.com" className="font-heading text-2xl text-dark-green hover:text-rust transition-colors border-b-2 border-transparent hover:border-rust inline-block">
+                        hello@overgrowth.com
                     </a>
                 </div>
             </div>
@@ -185,8 +189,8 @@ export default function Contact() {
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-rust rounded-full animate-ping" />
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-rust rounded-full" />
                     
-                    <div className="absolute bottom-2 right-2 font-typewriter text-[10px] text-dark-green/60">
-                        RADAR: ACTIVE
+                    <div className="absolute bottom-2 right-2 font-typewriter text-[10px] text-dark-green/60 text-right leading-tight">
+                        Signal paths shift with tides and weather.<br/>Connections may vary.
                     </div>
                 </div>
             </div>

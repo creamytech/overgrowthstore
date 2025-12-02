@@ -31,19 +31,19 @@ export default function FAQ() {
 
   const faqs = [
     {
-      category: "Logistics & Supply",
+      category: "Logistics and Supply",
       items: [
         {
-          question: "Shipping Protocols & Timelines",
-          answer: "All standard supply drops are dispatched within 24-48 hours of order confirmation. Domestic transit typically requires 3-5 business days. International supply lines may vary based on customs clearance protocols."
+          question: "Shipping Windows and Timelines",
+          answer: "Every Overgrowth piece is prepared and shipped with care. Orders usually leave our workshop within 2 to 5 business days. Once dispatched, delivery times depend on your location and your chosen carrier."
         },
         {
-          question: "Tracking Your Supply Drop",
-          answer: "Once your equipment is dispatched, you will receive a transmission containing your tracking coordinates. Use this to monitor the package's trajectory through the network."
+          question: "Tracking Your Shipment",
+          answer: "When your order is on the move, you will receive a tracking link by email. Use it to follow your package as it travels from our world to yours."
         },
         {
-          question: "International Operations",
-          answer: "We ship globally. Note that international operatives are responsible for any local customs duties or import taxes levied by their region's authorities."
+          question: "International Deliveries",
+          answer: "We ship globally. International packages may require additional time due to customs processing in your region. Any customs fees or import charges are handled by the customer."
         }
       ]
     },
@@ -51,12 +51,18 @@ export default function FAQ() {
       category: "Equipment Management",
       items: [
         {
-          question: "Return & Exchange Policy",
-          answer: "If your equipment fails to meet mission standards, you may initiate a return within 30 days of receipt. Items must be in original, unused condition with all tags attached. Initiating a return requires a Return Authorization Code."
+          question: "Returns and Exchanges",
+          answer: (
+            <>
+              If something is not quite right, we are here to help. Returns and exchanges are accepted within 30 days of delivery as long as the item is unworn, unwashed, and in its original condition.
+              <br/><br/>
+              To begin a return or exchange, contact us anytime at <a href="mailto:hello@overgrowth.com" className="border-b border-rust hover:text-rust transition-colors">hello@overgrowth.com</a>
+            </>
+          )
         },
         {
-          question: "Defective Gear",
-          answer: "In the rare event of manufacturing failure, contact Command immediately. We stand by our gear and will replace defective items swiftly to ensure your mission readiness."
+          question: "Defective Items",
+          answer: "If your item arrives damaged or incorrect, send us a message with your order number and a photo of the issue. We will make it right."
         }
       ]
     },
@@ -64,8 +70,8 @@ export default function FAQ() {
       category: "Transaction Protocols",
       items: [
         {
-          question: "Accepted Currencies",
-          answer: "We accept all major credit cards, PayPal, and Shop Pay. All transactions are encrypted and secured."
+          question: "Accepted Payments",
+          answer: "We accept all major cards, PayPal, and Shop Pay. All transactions are secure and encrypted."
         }
       ]
     }
@@ -138,10 +144,10 @@ export default function FAQ() {
                     NOTICE
                 </div>
                 <p className="font-body text-lg text-dark-green/80 mb-4">
-                    Cannot find the data you require?
+                    Cannot find the answer you need
                 </p>
                 <a href="/pages/contact" className="inline-block border-b-2 border-rust text-rust font-heading text-xl hover:bg-rust hover:text-[#f4f1ea] transition-all duration-300 px-2">
-                    ESTABLISH DIRECT CONTACT
+                    Establish Direct Contact
                 </a>
             </div>
         </div>

@@ -104,24 +104,36 @@ export function Drawer({
                             </Heading>
                           </Dialog.Title>
                         )}
-                        <button
-                          type="button"
-                          className={`p-4 -m-4 transition flex items-center gap-2 ${
-                            variant !== 'default' ? 'absolute right-0' : ''
-                          } ${
-                            variant === 'cart' || variant === 'menu'
-                                ? 'text-dark-green hover:text-rust' 
-                                : 'text-primary hover:text-primary/50'
-                          }`}
-                          onClick={onClose}
-                          data-test="close-cart"
-                        >
-                          <IconClose aria-label="Close panel" className="w-6 h-6" />
-                        </button>
+                        {variant === 'default' && (
+                          <button
+                            type="button"
+                            className="p-4 -m-4 transition flex items-center gap-2 text-primary hover:text-primary/50"
+                            onClick={onClose}
+                            data-test="close-cart"
+                          >
+                            <IconClose aria-label="Close panel" className="w-6 h-6" />
+                          </button>
+                        )}
                       </header>
                       <div className="flex-grow overflow-y-auto">
                         {children}
                       </div>
+                      
+                      {/* Footer Close Button (Custom for Menu/Cart) */}
+                      {(variant === 'menu' || variant === 'cart') && (
+                          <div className="pt-6 pb-2 text-center relative z-20">
+                              <button 
+                                  type="button"
+                                  onClick={onClose}
+                                  className="group relative inline-block p-2"
+                                  aria-label="Close"
+                              >
+                                  <span className="font-heading text-4xl italic font-light text-[#5c6f3d] group-hover:text-rust transition-colors duration-300 transform group-hover:scale-110 block">
+                                      X
+                                  </span>
+                              </button>
+                          </div>
+                      )}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

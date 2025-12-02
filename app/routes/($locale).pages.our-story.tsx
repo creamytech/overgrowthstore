@@ -47,7 +47,7 @@ export default function OurStory() {
                 <div className="w-24 h-1 bg-rust mx-auto mt-6" />
                 
                 <div className="font-typewriter text-sm tracking-[0.3em] text-dark-green/60 uppercase mt-4">
-                    <span>Ref: 88-Z</span>
+                    <span>Ref. 07.14</span>
                 </div>
             </div>
 
@@ -58,8 +58,14 @@ export default function OurStory() {
                         01 // The Philosophy
                     </h2>
                     <div className="prose prose-stone font-body text-lg leading-relaxed text-dark-green/80 text-justify">
+                        <p className="mb-4">
+                            Overgrowth began with a simple idea. The world did not end. It grew back in ways no one expected.
+                        </p>
+                        <p className="mb-4">
+                            We believe in creating apparel that celebrates that strange and beautiful return. Soft fabrics. Living colors. Stories woven from a world reclaimed by nature and imagination.
+                        </p>
                         <p>
-                            We believe in creating products that last longer than the trends they outlive. Our commitment to sustainability isn't a marketing tactic; it's a survival strategy.
+                            Our goal is not to chase trends. It is to build pieces that feel alive, personal, and full of character. Every garment is a small artifact from the frontier that grew after us.
                         </p>
                     </div>
                 </div>
@@ -95,15 +101,21 @@ export default function OurStory() {
                     02 // The Aesthetic
                 </h2>
                 <div className="prose prose-stone font-body text-lg leading-relaxed text-dark-green/80 text-justify max-w-2xl">
+                    <p className="mb-4">
+                        Inspired by the quiet power of nature reclaiming forgotten places, our artwork mixes bones, blooms, neon remnants, and wild shapes.
+                    </p>
+                    <p className="mb-4">
+                        The Overgrowth world is playful and surreal. A horse made of branches might wander the road. A gas station might bloom with fresh flowers. Light seeps through vines and turns old metal warm again.
+                    </p>
                     <p>
-                        Inspired by the resilience of nature reclaiming the built environment. Our design language speaks in textures of decay, growth, and persistence. Every garment is a field note from a world after.
+                        This is the visual language that shapes every Overgrowth design. Colorful. Dreamlike. Rooted in the idea that beauty returns even in the strangest places.
                     </p>
                 </div>
             </section>
 
             <section className="mb-16">
                  <h2 className="font-heading text-4xl text-dark-green uppercase tracking-wider mb-12 border-b border-dark-green/20 pb-2">
-                    03 // Weapons of Choice
+                    03 // MATERIALS OF CHOICE
                 </h2>
                 
                 {/* Technical Specs Grid */}
@@ -113,9 +125,9 @@ export default function OurStory() {
                         <div className="w-12 h-12 mb-4 border border-dark-green/30 rounded-full flex items-center justify-center group-hover:border-rust group-hover:text-rust transition-colors">
                             <span className="font-heading text-xl">O</span>
                         </div>
-                        <h3 className="font-heading text-sm text-dark-green tracking-widest mb-2">ORGANIC</h3>
+                        <h3 className="font-heading text-sm text-dark-green tracking-widest mb-2">Organic</h3>
                         <p className="font-mono text-[10px] text-dark-green/60 uppercase">
-                            100% Certified Cotton
+                            Everyday comfort with gentle softness
                         </p>
                     </div>
 
@@ -124,9 +136,9 @@ export default function OurStory() {
                         <div className="w-12 h-12 mb-4 border border-dark-green/30 rounded-full flex items-center justify-center group-hover:border-rust group-hover:text-rust transition-colors">
                             <span className="font-heading text-xl">R</span>
                         </div>
-                        <h3 className="font-heading text-sm text-dark-green tracking-widest mb-2">RECYCLED</h3>
+                        <h3 className="font-heading text-sm text-dark-green tracking-widest mb-2">Recycled</h3>
                         <p className="font-mono text-[10px] text-dark-green/60 uppercase">
-                            Post-Consumer Fiber
+                            Fibers sourced with care for the world around us
                         </p>
                     </div>
 
@@ -135,9 +147,9 @@ export default function OurStory() {
                         <div className="w-12 h-12 mb-4 border border-dark-green/30 rounded-full flex items-center justify-center group-hover:border-rust group-hover:text-rust transition-colors">
                             <span className="font-heading text-xl">D</span>
                         </div>
-                        <h3 className="font-heading text-sm text-dark-green tracking-widest mb-2">DURABLE</h3>
+                        <h3 className="font-heading text-sm text-dark-green tracking-widest mb-2">Durable</h3>
                         <p className="font-mono text-[10px] text-dark-green/60 uppercase">
-                            Heavyweight Weave
+                            Made to last through daily wanderings and long adventures
                         </p>
                     </div>
 
@@ -146,9 +158,9 @@ export default function OurStory() {
                         <div className="w-12 h-12 mb-4 border border-dark-green/30 rounded-full flex items-center justify-center group-hover:border-rust group-hover:text-rust transition-colors">
                             <span className="font-heading text-xl">E</span>
                         </div>
-                        <h3 className="font-heading text-sm text-dark-green tracking-widest mb-2">ETHICAL</h3>
+                        <h3 className="font-heading text-sm text-dark-green tracking-widest mb-2">Ethical</h3>
                         <p className="font-mono text-[10px] text-dark-green/60 uppercase">
-                            Fair Labor Standards
+                            Fair production and responsible partnerships
                         </p>
                     </div>
                 </div>
@@ -169,7 +181,7 @@ export default function OurStory() {
                         Timestamp
                     </p>
                     <p className="font-typewriter text-sm text-dark-green">
-                        {new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                        12.24.2043
                     </p>
                 </div>
             </div>

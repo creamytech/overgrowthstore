@@ -81,18 +81,14 @@ export default function EcosystemPage() {
             </div>
 
             <div className="font-heading text-xl md:text-3xl text-rust mb-8 tracking-[0.2em] uppercase border-y border-rust/20 py-4">
-                <div>Concrete is temporary.</div>
-                <div>The Ecosystem is forever.</div>
+                <div>Concrete fades.</div>
+                <div>The Ecosystem remains.</div>
             </div>
             
             <div className="font-typewriter text-dark-green text-base md:text-lg max-w-2xl mx-auto mb-12 leading-relaxed text-justify">
-                <span className="bg-dark-green text-dark-green select-none mr-2">REDACTED</span> 
-                <span>We don't just want customers; we want </span>
-                <span className="font-bold underline decoration-rust decoration-2 underline-offset-4">Operatives</span>. 
-                <span> The old world is crumbling. Join the reclamation efforts. Recover </span>
-                <span className="font-bold">Artifacts</span> 
-                <span> to unlock exclusive gear, deadstock access, and influence over future growth. </span>
-                <span className="bg-dark-green text-dark-green select-none ml-2">REDACTED</span>
+                In the Overgrowth, we do not look for customers.
+                We look for wanderers who see the world the way we do, full of strange beauty and quiet wonder.
+                Recovered Artifacts help you travel deeper into the world of Overgrowth with small rewards, early access, and hidden discoveries.
             </div>
 
             <Link to="/account/register">
@@ -120,7 +116,7 @@ export default function EcosystemPage() {
                           1
                       </div>
                       <h3 className="font-heading text-xl text-dark-green mb-2">INITIATE</h3>
-                      <p className="font-body text-sm text-dark-green/70">Create your operative profile to begin tracking.</p>
+                      <p className="font-body text-sm text-dark-green/70">Create your explorer profile to begin your journey.</p>
                   </div>
                   {/* Step 2 */}
                   <div className="relative group">
@@ -128,7 +124,7 @@ export default function EcosystemPage() {
                           2
                       </div>
                       <h3 className="font-heading text-xl text-dark-green mb-2">SCAVENGE</h3>
-                      <p className="font-body text-sm text-dark-green/70">Recover 5 Artifacts for every $1 spent on supplies.</p>
+                      <p className="font-body text-sm text-dark-green/70">Collect Artifacts as you move through the Overgrowth.</p>
                   </div>
                   {/* Step 3 */}
                   <div className="relative group">
@@ -136,7 +132,7 @@ export default function EcosystemPage() {
                           3
                       </div>
                       <h3 className="font-heading text-xl text-dark-green mb-2">RECLAIM</h3>
-                      <p className="font-body text-sm text-dark-green/70">Archive Artifacts for exclusive gear and access.</p>
+                      <p className="font-body text-sm text-dark-green/70">Unlock rewards, stories, and exclusive access.</p>
                   </div>
               </div>
           </div>
@@ -189,13 +185,12 @@ export default function EcosystemPage() {
                 {/* Tier I: The Root */}
                 <TierCard 
                     title="THE ROOT"
-                    range="0 - 499 ARTIFACTS"
-                    description="The seed has cracked the pavement. Initial reclamation phase."
+                    range="Ref. 01. 112-K // Observation"
+                    description="The Root is the foundation of all growth within the Overgrowth. Strong, ancient, and steady, it carries old memories and new stories alike. Those who follow the Root learn to see the world beneath the surface."
                     icon="🌱"
                     benefits={[
-                        "Access to 'The Field Guide'",
-                        "First Harvest: 10% off",
-                        "SMS Notification Spikes"
+                        "Assessment: Stable",
+                        "Classification: Living"
                     ]}
                     rotation="-rotate-2"
                     paperColor="bg-[#f0eee6]"
@@ -204,15 +199,13 @@ export default function EcosystemPage() {
                 {/* Tier II: The Vine */}
                 <TierCard 
                     title="THE VINE"
-                    range="500 - 1,999 ARTIFACTS"
-                    description="Structural integrity compromised. Vegetation is climbing."
+                    range="Ref. 02. 157-J // Movement"
+                    description="The Vine is restless. It climbs, wanders, and searches for forgotten corners. Every path it chooses leads to another discovery. Those who follow the Vine tend to stumble into new wonders without trying."
                     icon="🌿"
                     highlight
                     benefits={[
-                        "Greenhouse: 1hr Early Access",
-                        "Regional Reserve Voting Rights",
-                        "Free Standard Shipping",
-                        "Annual Gift: Sticker/Patch Pack"
+                        "Assessment: Active",
+                        "Classification: Expanding"
                     ]}
                     rotation="rotate-1"
                     paperColor="bg-[#e8e4d9]"
@@ -222,14 +215,12 @@ export default function EcosystemPage() {
                 {/* Tier III: The Canopy */}
                 <TierCard 
                     title="THE CANOPY"
-                    range="2,000+ ARTIFACTS"
-                    description="Total reclamation. Skyline overtaken. Apex status confirmed."
+                    range="Ref. 03. 889-L // Observation"
+                    description="The Canopy watches over the reclaimed world. It filters light, shelters creatures, and creates small pockets of calm across the frontier. Those who follow the Canopy learn to appreciate the quiet magic above."
                     icon="🌳"
                     benefits={[
-                        "Shock Drop Coordinates (F&F)",
-                        "The Artifact Box (Physical Kit)",
-                        "Private Concierge Line",
-                        "The Vault: Deadstock Access"
+                        "Assessment: Flourishing",
+                        "Classification: Elevated"
                     ]}
                     rotation="-rotate-1"
                     paperColor="bg-[#dcd8cc]"
@@ -269,7 +260,7 @@ function TierCard({title, range, description, icon, benefits, highlight = false,
                     <div className="w-full h-px bg-dark-green/20 my-2"></div>
                     <p className="font-typewriter text-rust text-xs font-bold tracking-widest uppercase mb-4">{range}</p>
                     <p className="font-typewriter text-dark-green/80 text-xs leading-relaxed min-h-[3rem] text-justify">
-                        REF: {description}
+                        {description}
                     </p>
                 </div>
                 

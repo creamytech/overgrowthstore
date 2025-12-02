@@ -51,8 +51,8 @@ export default function Homepage() {
                         For now, I'll use a placeholder URL or a texture to represent the "Human" element until provided.
                     */}
                     <img 
-                        src="/assets/hero_horse_skeleton_isolated.png" 
-                        alt="Operative in the field" 
+                        src="/assets/journalmain.jpeg" 
+                        alt="Field Journal" 
                         className="w-full h-full object-cover object-center opacity-80 mix-blend-multiply"
                     />
                     <div className="absolute inset-0 bg-dark-green/10 mix-blend-multiply" />
@@ -66,22 +66,19 @@ export default function Homepage() {
                 </div>
                 {/* Decorative corners */}
                 <div className="absolute -top-2 -left-2 w-4 h-4 border-t-2 border-l-2 border-rust" />
-                <div className="absolute -bottom-2 -right-2 w-4 h-4 border-b-2 border-r-2 border-rust" />
             </div>
 
             {/* Text Content */}
             <div className="flex-1 text-center md:text-left">
                 <h2 className="font-heading text-4xl md:text-6xl text-dark-green tracking-widest mb-6">
-                    SURVIVE.<br/>RECLAIM.<br/>GROW.
+                    Wander.<br/>Discover.<br/>Bloom.
                 </h2>
                 <div className="w-24 h-1 bg-rust mb-8 mx-auto md:mx-0" />
                 <p className="font-body text-dark-green/80 text-lg leading-relaxed mb-8 max-w-lg">
-                    The old world is gone. We are the architects of the new one. 
-                    Overgrowth Industries provides the tactical gear and apparel needed 
-                    to navigate the urban wilderness.
+                    Overgrowth is inspired by a world that grew brighter after we stopped shaping it. Creatures returned. Flowers climbed through old metal. Everything became strange in the best way. Our apparel reflects that sense of wonder with designs pulled from a reclaimed frontier full of life.
                 </p>
                 <Link to="/pages/our-story" className="inline-block bg-dark-green text-[#f4f1ea] px-8 py-3 font-heading tracking-widest hover:bg-rust transition-colors duration-300">
-                    READ MISSION BRIEF
+                    Read the Story
                 </Link>
             </div>
          </div>

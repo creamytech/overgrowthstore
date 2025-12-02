@@ -256,7 +256,7 @@ function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
   if (!rootData) return null;
 
   return (
-    <Drawer open={isOpen} onClose={onClose} heading="SALVAGE" openFrom="right" variant="cart">
+    <Drawer open={isOpen} onClose={onClose} heading="RECOVERED WORKS" openFrom="right" variant="cart">
 
 
       <div className="relative z-10 grid h-full grid-rows-[1fr_auto]">
@@ -398,10 +398,10 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                 {/* 1. Newsletter CTA */}
                 <div className="space-y-6">
                     <h4 className="font-heading text-3xl md:text-4xl text-dark-green uppercase tracking-widest">
-                        Join the Resistance
+                        Join the Overgrowth
                     </h4>
                     <p className="font-body text-dark-green/70">
-                        First drops. Field reports. Rewards.
+                        First looks. New drops. Stories from the reclaimed world.
                     </p>
                     <div className="flex justify-center">
                         <NewsletterForm />
@@ -422,7 +422,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                         <h5 className="font-heading text-base text-dark-green font-bold uppercase tracking-[0.25em] mb-4">Protocol</h5>
                         <nav className="flex flex-col gap-4 font-heading text-xl text-dark-green uppercase tracking-widest leading-relaxed items-end">
                             <Link to="/products" className="group relative w-fit block">
-                                <span className="hover:text-rust transition-colors duration-500">Shop Salvage</span>
+                                <span className="hover:text-rust transition-colors duration-500">Shop Recovered Works</span>
                                 <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
                             </Link>
                             <Link to="/journal" className="group relative w-fit block">
@@ -473,11 +473,14 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                     </div>
 
                     <div className="opacity-50 space-y-2">
-                        <p className="font-body text-xs tracking-widest uppercase">
-                            &copy; {new Date().getFullYear()} OVERGROWTH.
+                        <p className="font-heading text-xs tracking-widest uppercase text-dark-green font-bold">
+                            Overgrowth Industries
                         </p>
                         <p className="font-body text-[10px] tracking-widest uppercase">
-                            All Rights Reserved.
+                            Streetwear from the reclaimed world
+                        </p>
+                        <p className="font-body text-[10px] tracking-widest uppercase pt-2">
+                            &copy; {new Date().getFullYear()} OVERGROWTH. All Rights Reserved.
                         </p>
                     </div>
                 </div>
@@ -567,7 +570,7 @@ function NewsletterForm() {
                             disabled={status === 'submitting'}
                             className="bg-dark-green text-[#f4f1ea] px-8 py-5 font-heading text-xs uppercase tracking-widest hover:bg-rust transition-all duration-300 disabled:opacity-50 whitespace-nowrap rounded-r-[3px] hover:shadow-[0_0_15px_rgba(139,58,58,0.4)]"
                         >
-                            {status === 'submitting' ? 'SENDING...' : 'TRANSMIT'}
+                            {status === 'submitting' ? 'SENDING...' : 'Submit'}
                         </button>
                     </div>
                     {status === 'error' && (

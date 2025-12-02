@@ -204,7 +204,7 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
       
       <div className="text-center">
         <Link to="/products" className="font-body text-xs text-dark-green/60 hover:text-rust underline decoration-dashed underline-offset-4 uppercase tracking-widest transition-colors">
-            Continue Salvage
+            Continue Recovery
         </Link>
       </div>
       {/* @todo: <CartShopPayButton cart={cart} /> */}
@@ -490,20 +490,20 @@ export function CartEmpty({
              </svg>
         </div>
         <Text format className="font-typewriter text-xl md:text-2xl leading-relaxed max-w-md mx-auto">
-          Looks like you haven&rsquo;t added anything yet...
+          No works recovered yet
           <br/>
-          <span className="text-sm opacity-70">Begin your requisition.</span>
+          <span className="text-sm opacity-70">Start your search to find your first piece.</span>
         </Text>
         <div>
           <Button onClick={onClose} className="bg-dark-green text-[#EFEBD6] font-heading tracking-widest px-8 py-3 hover:bg-rust transition-colors duration-100 steps(2)">
-              CONTINUE SALVAGE
+              Continue Recovery
           </Button>
         </div>
       </section>
       <section className="grid gap-8 pt-16 border-t border-dark-green/10 mt-8">
         <FeaturedProducts
           count={4}
-          heading="STANDARD ISSUE"
+          heading="NOTABLE FINDS"
           layout={layout}
           onClose={onClose}
           sortKey="BEST_SELLING"
