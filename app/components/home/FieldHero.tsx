@@ -11,7 +11,6 @@ const useSteppedTransform = (value: any, input: number[], output: number[], step
 
 export function FieldHero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const {scrollY} = useScroll();
   const [videoEnded, setVideoEnded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -45,11 +44,7 @@ export function FieldHero() {
     setParticles(newParticles);
   }, []);
 
-  useEffect(() => {
-    if (videoRef.current) {
-        videoRef.current.playbackRate = 1.5;
-    }
-  }, []);
+
 
   return (
     <section 
@@ -101,7 +96,6 @@ export function FieldHero() {
                 onClick={() => document.getElementById('featured-grid')?.scrollIntoView({ behavior: 'smooth' })}
             >
                 <video
-                    ref={videoRef}
                     autoPlay
                     muted
                     playsInline
