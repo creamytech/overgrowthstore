@@ -109,7 +109,7 @@ export function FieldHero() {
                     onEnded={() => setVideoEnded(true)}
                     className="max-h-[55vh] w-auto object-contain"
                 >
-                    <source src="/assets/herovideo1.mp4" type="video/mp4" />
+                    <source src="/assets/herovideofinal.mp4" type="video/mp4" />
                 </video>
 
                 {/* Mobile Interaction Hint */}
