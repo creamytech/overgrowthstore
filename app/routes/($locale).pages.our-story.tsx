@@ -107,6 +107,16 @@ export default function OurStory() {
             </p>
           </section>
 
+          {/* Vine Divider */}
+          <div className="flex justify-center my-12">
+            <svg viewBox="0 0 200 40" className="w-32 h-8 text-dark-green/20">
+              <path d="M10 20 Q50 10 100 20 T190 20" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+              <circle cx="50" cy="13" r="2" fill="currentColor"/>
+              <circle cx="100" cy="20" r="3" fill="currentColor"/>
+              <circle cx="150" cy="13" r="2" fill="currentColor"/>
+            </svg>
+          </div>
+
           {/* Chapter 2 - Aesthetic */}
           <section className="mb-20">
             <div className="flex items-center gap-4 mb-2">
@@ -152,21 +162,6 @@ export default function OurStory() {
                 <p className="font-body text-dark-green/70 leading-relaxed">
                   Soft fabrics meet aged textures.
                 </p>
-                <p className="font-body text-dark-green/70 leading-relaxed">
-                  Fresh blooms meet weathered landmarks.
-                </p>
-                <p className="font-body text-dark-green/70 leading-relaxed">
-                  The familiar becomes strange again — and therefore wondrous.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* Chapter 3 - Materials */}
-          <section className="mb-20">
-            <div className="flex items-center gap-4 mb-2">
-              <span className="font-body text-[10px] text-dark-green/40 uppercase tracking-widest">Subject: Field Gear Standards</span>
-            </div>
             <div className="flex items-center gap-4 mb-8">
               <span className="w-10 h-10 bg-dark-green text-[#f4f1ea] flex items-center justify-center font-heading text-lg">3</span>
               <h2 className="font-heading text-2xl text-dark-green uppercase tracking-wider">Materials We Favor</h2>

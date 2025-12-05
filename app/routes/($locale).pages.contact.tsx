@@ -33,6 +33,7 @@ export default function Contact() {
     email: '',
     subject: 'General Question',
     message: '',
+    orderNumber: '',
   });
   const [submitted, setSubmitted] = useState(false);
 
@@ -79,7 +80,8 @@ export default function Contact() {
             
             {/* Contact Form */}
             <div className="bg-[#f9f7f3] border border-dark-green/20 p-8">
-              <h2 className="font-heading text-xl text-dark-green mb-6">Send a Message</h2>
+              <h2 className="font-heading text-xl text-dark-green mb-2">Send a Message</h2>
+              <p className="font-body text-xs text-dark-green/50 mb-6">* indicates required field</p>
               
               {submitted ? (
                 <div className="text-center py-8">
@@ -99,7 +101,7 @@ export default function Contact() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label className="font-body text-xs text-dark-green/60 uppercase tracking-widest mb-2 block">
-                    Name
+                    Name <span className="text-rust">*</span>
                   </label>
                   <input 
                     type="text" 
@@ -114,7 +116,7 @@ export default function Contact() {
 
                 <div>
                   <label className="font-body text-xs text-dark-green/60 uppercase tracking-widest mb-2 block">
-                    Email
+                    Email <span className="text-rust">*</span>
                   </label>
                   <input 
                     type="email" 
@@ -147,7 +149,21 @@ export default function Contact() {
 
                 <div>
                   <label className="font-body text-xs text-dark-green/60 uppercase tracking-widest mb-2 block">
-                    Message
+                    Order Number (optional)
+                  </label>
+                  <input 
+                    type="text" 
+                    name="orderNumber" 
+                    value={formData.orderNumber}
+                    onChange={(e) => setFormData({...formData, orderNumber: e.target.value})}
+                    className="w-full bg-[#f4f1ea] border border-dark-green/20 p-4 font-body text-dark-green focus:outline-none focus:border-rust transition-colors"
+                    placeholder="#12345 (if applicable)"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-body text-xs text-dark-green/60 uppercase tracking-widest mb-2 block">
+                    Message <span className="text-rust">*</span>
                   </label>
                   <textarea 
                     name="message" 
