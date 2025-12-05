@@ -125,6 +125,14 @@ function Layout({children}: {children?: React.ReactNode}) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
+        {/* Google Fonts Preconnect for faster loading */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Google Fonts - IM Fell English SC for headings, Caveat for handwritten */}
+        <link 
+          href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IM+Fell+English+SC&display=swap" 
+          rel="stylesheet" 
+        />
         <link rel="stylesheet" href={styles}></link>
         <link rel="stylesheet" href={fieldJournalStyles}></link>
         <Meta />

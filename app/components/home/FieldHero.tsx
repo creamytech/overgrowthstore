@@ -4,6 +4,7 @@ import {Link} from '@remix-run/react';
 
 export function FieldHero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [videoEnded, setVideoEnded] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -14,6 +15,18 @@ export function FieldHero() {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Fallback: Show video after 3 seconds even if load events don't fire
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (!videoLoaded) {
+        setVideoLoaded(true);
+        // Try to play the video manually
+        videoRef.current?.play().catch(() => {});
+      }
+    }, 3000);
+    return () => clearTimeout(timeout);
+  }, [videoLoaded]);
 
   // Fix Hydration Error: Generate particles on client only
   const [particles, setParticles] = useState<Array<{x: string, y: string, scale: number, opacity: number, duration: number, moveY: number, moveX: number, width: number, height: number}>>([]);
@@ -74,9 +87,19 @@ export function FieldHero() {
         className="absolute inset-0 flex items-center justify-center z-40 pointer-events-none"
       >
         <div className="h-[55vh] w-auto flex items-center justify-center transition-transform duration-100 ease-out relative">
+            {/* Loading Placeholder */}
+            {!videoLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center bg-[#f0ede6] border border-dark-green/20 p-2 md:p-4 shadow-2xl rotate-1">
+                    <div className="flex flex-col items-center gap-4">
+                        <div className="w-8 h-8 border-2 border-dark-green/30 border-t-dark-green rounded-full animate-spin" />
+                        <span className="font-body text-xs text-dark-green/50 uppercase tracking-widest">Loading...</span>
+                    </div>
+                </div>
+            )}
+            
             {/* Video - Privacy Policy Document Style - Interactive */}
             <motion.div 
-                className={`relative bg-[#f0ede6] border border-dark-green/20 p-2 md:p-4 shadow-2xl rotate-1 w-auto h-auto max-w-[90vw] md:max-w-full cursor-pointer pointer-events-auto transition-opacity duration-300 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
+                className={`relative bg-[#f0ede6] border border-dark-green/20 p-2 md:p-4 shadow-2xl rotate-1 w-auto h-auto max-w-[90vw] md:max-w-full cursor-pointer pointer-events-auto transition-opacity duration-500 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
                 whileHover={videoEnded && !isMobile ? { scale: 1.02, rotate: 2 } : {}}
                 animate={videoEnded && isMobile ? { rotate: [1, 3, 1], scale: [1, 1.02, 1] } : {}}
                 transition={{ duration: 1.5, ease: "easeInOut" }}
@@ -84,13 +107,16 @@ export function FieldHero() {
                 onClick={() => document.getElementById('featured-grid')?.scrollIntoView({ behavior: 'smooth' })}
             >
                 <video
+                    ref={videoRef}
                     autoPlay
                     muted
                     playsInline
+                    preload="auto"
                     loop={false}
                     onEnded={() => setVideoEnded(true)}
                     onCanPlay={() => setVideoLoaded(true)}
                     onLoadedData={() => setVideoLoaded(true)}
+                    onLoadedMetadata={() => setVideoLoaded(true)}
                     className="max-h-[55vh] w-auto object-contain"
                 >
                     <source src="/assets/herovideofinal.mp4" type="video/mp4" />
@@ -121,7 +147,7 @@ export function FieldHero() {
 
       {/* Divider at the bottom */}
       <div 
-        className="absolute bottom-0 left-0 w-full h-24 md:h-48 z-30 pointer-events-none"
+        className="absolute bottom-0 left-0 w-full h-24 md:h-40 z-30 pointer-events-none"
         style={{
             backgroundImage: "url('/assets/divider_ornamental_vine.png')",
             backgroundSize: 'auto 100%',

@@ -79,7 +79,7 @@ export default function Journals() {
           Field Notes
         </h1>
         <p className="font-body text-dark-green/60 text-lg max-w-md mx-auto">
-          Stories from the quiet places
+          Dispatches from the quiet places
         </p>
         <div className="w-24 h-1 bg-rust mx-auto mt-8" />
       </div>

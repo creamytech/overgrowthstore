@@ -18,9 +18,9 @@ export default {
         rust: '#8B3A3A',
       },
       fontFamily: {
-        heading: ['var(--font-heading)', 'serif'],
+        heading: ['IM Fell English SC', 'serif'],
         body: ['var(--font-body)', 'monospace'],
-        handwritten: ['Pinyon Script', 'cursive'],
+        handwritten: ['Caveat', 'cursive'],
       },
       screens: {
         sm: '32em',

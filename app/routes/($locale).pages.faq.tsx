@@ -83,17 +83,17 @@ export default function FAQ() {
       category: 'Shipping',
       iconKey: 'truck' as const,
       questions: [
-        { q: 'How long does shipping take?', a: 'Orders ship within 2-5 business days. Delivery is typically 5-7 days domestic, 10-14 days international.' },
-        { q: 'Do you ship internationally?', a: 'Yes! We ship worldwide. International orders may have customs fees handled by the recipient.' },
-        { q: 'How do I track my order?', a: 'You\'ll receive a tracking email once your order ships. Check your spam folder if you don\'t see it.' },
+        { q: 'When will my recovered piece arrive?', a: 'Orders ship within 2-5 business days. Delivery is typically 5-7 days domestic, 10-14 days international.' },
+        { q: 'Do you ship to distant territories?', a: 'Yes! We ship worldwide. International orders may have customs fees handled by the recipient.' },
+        { q: 'How do I track my shipment?', a: 'You\'ll receive a tracking email once your order ships. Check your spam folder if you don\'t see it.' },
       ]
     },
     {
       category: 'Returns',
       iconKey: 'recycle' as const,
       questions: [
-        { q: 'What\'s your return policy?', a: 'Returns accepted within 30 days. Items must be unworn, unwashed, with tags attached.' },
-        { q: 'How do I start a return?', a: 'Email customerservice@overgrowth.co with your order number. We\'ll send a prepaid label.' },
+        { q: 'What if my artifact needs to go back?', a: 'Returns accepted within 30 days. Items must be unworn, unwashed, with tags attached.' },
+        { q: 'How do I initiate a return?', a: 'Email customerservice@overgrowth.co with your order number. We\'ll send a prepaid label.' },
       ]
     },
     {
@@ -101,15 +101,15 @@ export default function FAQ() {
       iconKey: 'bag' as const,
       questions: [
         { q: 'What payment methods do you accept?', a: 'All major cards, PayPal, Apple Pay, Google Pay, and Shop Pay.' },
-        { q: 'Can I modify my order?', a: 'Contact us within 2 hours of ordering. After that, we may have already started processing.' },
+        { q: 'Can I modify my order after placing it?', a: 'Contact us within 2 hours of ordering. After that, we may have already started processing.' },
       ]
     },
     {
       category: 'Products',
       iconKey: 'shirt' as const,
       questions: [
-        { q: 'How should I care for my items?', a: 'Machine wash cold, tumble dry low. Avoid bleach. Your pieces will last years with proper care.' },
-        { q: 'Are your products sustainable?', a: 'We prioritize organic cotton and recycled materials. Quality over quantity, always.' },
+        { q: 'How do I care for my recovered pieces?', a: 'Machine wash cold, tumble dry low. Avoid bleach. Your pieces will last years with proper care.' },
+        { q: 'Are your artifacts sustainably sourced?', a: 'We prioritize organic cotton and recycled materials. Quality over quantity, always.' },
       ]
     },
   ];

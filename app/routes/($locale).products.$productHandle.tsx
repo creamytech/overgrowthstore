@@ -1,5 +1,4 @@
 import {useRef, Suspense, useState, useEffect} from 'react';
-import {ImageZoomModal} from '~/components/ImageZoomModal';
 import {Disclosure, Listbox} from '@headlessui/react';
 import {
   defer,
@@ -149,7 +148,6 @@ export default function Product() {
   const initialImage = selectedVariant?.image || (firstMedia?.__typename === 'MediaImage' ? firstMedia.image : null);
   
   const [activeImage, setActiveImage] = useState(initialImage);
-  const [isZoomOpen, setIsZoomOpen] = useState(false);
   const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
   const [isHovering, setIsHovering] = useState(false);
   const imageContainerRef = useRef<HTMLDivElement>(null);
@@ -209,11 +207,6 @@ export default function Product() {
                             onMouseEnter={() => setIsHovering(true)}
                             onMouseLeave={() => setIsHovering(false)}
                             onMouseMove={handleMouseMove}
-                            onClick={() => {
-                                if (typeof window !== 'undefined' && window.innerWidth < 1024) {
-                                    setIsZoomOpen(true);
-                                }
-                            }}
                         >
                             {/* Base Product Image */}
                             <div className="relative w-full h-full p-8 z-0">
@@ -274,13 +267,6 @@ export default function Product() {
                             )}
                         </div>
 
-                        {/* Zoom Modal - For mobile tap */}
-                        <ImageZoomModal 
-                            image={activeImage}
-                            isOpen={isZoomOpen}
-                            onClose={() => setIsZoomOpen(false)}
-                        />
-
                         {/* Thumbnails */}
                         {media.nodes.length > 1 && (
                             <div className="flex gap-4 overflow-x-auto pb-2">
@@ -317,12 +303,20 @@ export default function Product() {
                     <div className="flex flex-col gap-8 relative">
                         
                         {/* Price & Vendor */}
-                        <div className="flex items-center justify-between border-b border-dashed border-rust/30 pb-4">
-                             <div className="flex items-center gap-4 font-body text-sm text-rust tracking-widest uppercase">
-                                <span>{vendor}</span>
+                        <div className="border-b border-dashed border-rust/30 pb-4">
+                             <div className="flex items-center justify-between mb-2">
+                                 <div className="flex items-center gap-4 font-body text-sm text-rust tracking-widest uppercase">
+                                    <span>{vendor}</span>
+                                </div>
+                                 <div className="font-heading text-3xl md:text-4xl text-dark-green font-bold">
+                                    <Money withoutTrailingZeros data={selectedVariant?.price!} />
+                                </div>
                             </div>
-                             <div className="font-heading text-2xl text-dark-green">
-                                <Money withoutTrailingZeros data={selectedVariant?.price!} />
+                            <div className="flex items-center justify-end gap-2 text-dark-green/60">
+                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14.5c-3.59 0-6.5-2.91-6.5-6.5S6.41 3.5 10 3.5s6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5zm.5-10.5h-1v5l4.25 2.55.75-1.23-4-2.37V6z"/>
+                                </svg>
+                                <span className="font-body text-xs tracking-wide">Free shipping on orders $75+</span>
                             </div>
                         </div>
 
