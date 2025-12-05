@@ -47,7 +47,7 @@ export default function Homepage() {
             
             {/* Lifestyle Image (Placeholder for now, using existing asset or placeholder) */}
             <div className="flex-1 relative group">
-                <div className="aspect-[4/5] overflow-hidden relative grayscale group-hover:grayscale-0 transition-all duration-700">
+                <div className="aspect-[4/5] overflow-hidden relative saturate-[0.7] group-hover:saturate-100 transition-all duration-700">
                     {/* Using a placeholder or existing asset if available. 
                         Since no specific human shot exists, using a thematic placeholder or re-using an asset creatively.
                         For now, I'll use a placeholder URL or a texture to represent the "Human" element until provided.

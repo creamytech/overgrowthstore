@@ -1,6 +1,6 @@
 import type {CustomerDetailsFragment} from 'customer-accountapi.generated';
 import {Link} from '~/components/Link';
-import {Icon} from '@iconify/react';
+import {Icons} from '~/components/InlineIcons';
 
 export function AccountDetails({
   customer,
@@ -14,7 +14,7 @@ export function AccountDetails({
         {/* Profile */}
         <div>
             <h3 className="font-heading text-lg text-dark-green uppercase tracking-widest mb-4 border-b border-dark-green/10 pb-2 flex items-center gap-2">
-                <Icon icon="ph:user" className="w-5 h-5 text-rust" />
+                <Icons.User className="w-5 h-5 text-rust" />
                 Profile
             </h3>
             <div className="space-y-4">
@@ -31,7 +31,7 @@ export function AccountDetails({
                     className="inline-flex items-center gap-1 text-xs font-body text-rust hover:underline uppercase tracking-wider"
                     to="/account/edit"
                 >
-                    <Icon icon="ph:pencil-simple" className="w-3 h-3" />
+                    <Icons.Pencil className="w-3 h-3" />
                     Edit Details
                 </Link>
             </div>
@@ -40,7 +40,7 @@ export function AccountDetails({
         {/* Contact Info */}
         <div>
             <h3 className="font-heading text-lg text-dark-green uppercase tracking-widest mb-4 border-b border-dark-green/10 pb-2 flex items-center gap-2">
-                <Icon icon="ph:envelope" className="w-5 h-5 text-rust" />
+                <Icons.Envelope className="w-5 h-5 text-rust" />
                 Contact
             </h3>
             <div className="space-y-4">

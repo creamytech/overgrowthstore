@@ -43,7 +43,10 @@ type LayoutProps = {
 export function PageLayout({children, layout}: LayoutProps) {
   const {headerMenu, footerMenu} = layout || {};
   return (
-    <>
+    <div className="relative bg-[#f4f1ea] min-h-screen">
+      {/* Global paper texture overlay */}
+      <div className="fixed inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')] z-0" />
+      
       {headerMenu && layout?.shop.name && (
         <Header title={layout.shop.name} menu={headerMenu} />
       )}
@@ -58,7 +61,7 @@ export function PageLayout({children, layout}: LayoutProps) {
         </main>
       </div>
       {footerMenu && <Footer menu={footerMenu} />}
-    </>
+    </div>
   );
 }
 
@@ -122,8 +125,8 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
         role="banner" 
         className={`fixed top-0 left-0 w-full transition-all duration-500 z-[1000] px-4 md:px-12 ${
             isScrolled 
-            ? 'bg-[#f4f1ea]/90 backdrop-blur-md py-4 shadow-md border-b border-rust/20' 
-            : 'bg-transparent py-6 border-b border-transparent'
+            ? 'bg-[#f4f1ea] py-3 md:py-4 shadow-md border-b border-rust/20' 
+            : 'bg-[#f4f1ea] md:bg-transparent py-4 md:py-6 border-b border-transparent'
         }`}
       >
         <div className="flex justify-between items-center w-full">
@@ -338,21 +341,18 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
   const isHome = useIsHomePath();
   
   return (
-    <footer className="relative bg-[#f4f1ea] text-dark-green">
-        
+    <footer className="relative text-dark-green z-10">
         {/* Roots Divider Graphic - Full Width */}
-        <div className="w-full h-[400px] md:h-[600px] relative z-10 -mb-40 md:-mb-48 pointer-events-none">
+        <div className="w-full relative pointer-events-none">
             <img 
                 src="/assets/divider_root_transition.svg" 
                 alt="Root Transition" 
-                className="w-full h-full object-cover object-top"
+                className="w-full h-auto"
             />
-            {/* Gradient to blend roots into footer bg */}
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#f4f1ea]/10 to-[#f4f1ea]"></div>
         </div>
 
         {/* Footer Panel */}
-        <div className="relative z-20 bg-[#f4f1ea] pt-8 pb-24 px-4 md:px-8">
+        <div className="relative pt-8 pb-24 px-4 md:px-8">
             <div className="max-w-4xl mx-auto text-center space-y-16">
                 
                 {/* 1. Newsletter CTA */}
@@ -389,10 +389,6 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                                 <span className="hover:text-rust transition-colors duration-500">Field Journal</span>
                                 <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
                             </Link>
-                            <Link to="/pages/ecosystem" className="group relative w-fit block">
-                                <span className="hover:text-rust transition-colors duration-500">The Ecosystem</span>
-                                <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
-                            </Link>
                         </nav>
                     </div>
 
@@ -422,16 +418,13 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
             </div>
 
                 {/* 3. Social & Copyright */}
-                <div className="space-y-8 pt-12 border-t border-dark-green/10">
+                <div className="space-y-8 pt-12 border-t border-rust">
                     {/* Social Icons */}
                     <div className="flex justify-center gap-4">
-                        <a href="https://instagram.com/overgrowth" target="_blank" rel="noopener noreferrer" className="group w-10 h-10 border border-dark-green/20 flex items-center justify-center text-dark-green/60 hover:border-rust hover:text-rust hover:bg-rust/5 transition-all duration-300 rounded-full" aria-label="Instagram">
+                        <a href="https://instagram.com/overgrowth.co" target="_blank" rel="noopener noreferrer" className="group w-10 h-10 border border-dark-green/20 flex items-center justify-center text-dark-green/60 hover:border-rust hover:text-rust hover:bg-rust/5 transition-all duration-300 rounded-full" aria-label="Instagram">
                             <IconInstagram size={18} />
                         </a>
-                        <a href="https://tiktok.com/@overgrowth" target="_blank" rel="noopener noreferrer" className="group w-10 h-10 border border-dark-green/20 flex items-center justify-center text-dark-green/60 hover:border-rust hover:text-rust hover:bg-rust/5 transition-all duration-300 rounded-full" aria-label="TikTok">
-                            <IconTiktok size={18} />
-                        </a>
-                        <a href="https://x.com/overgrowth" target="_blank" rel="noopener noreferrer" className="group w-10 h-10 border border-dark-green/20 flex items-center justify-center text-dark-green/60 hover:border-rust hover:text-rust hover:bg-rust/5 transition-all duration-300 rounded-full" aria-label="X">
+                        <a href="https://x.com/Overgrowthco" target="_blank" rel="noopener noreferrer" className="group w-10 h-10 border border-dark-green/20 flex items-center justify-center text-dark-green/60 hover:border-rust hover:text-rust hover:bg-rust/5 transition-all duration-300 rounded-full" aria-label="X">
                             <IconX size={16} />
                         </a>
                     </div>

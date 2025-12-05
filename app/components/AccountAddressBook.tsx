@@ -1,6 +1,6 @@
 import {Form} from '@remix-run/react';
 import type {CustomerAddress} from '@shopify/hydrogen/customer-account-api-types';
-import {Icon} from '@iconify/react';
+import {Icons} from '~/components/InlineIcons';
 
 import type {CustomerDetailsFragment} from 'customer-accountapi.generated';
 import {Button} from '~/components/Button';
@@ -19,7 +19,7 @@ export function AccountAddressBook({
       <div className="w-full">
         {!addresses?.length && (
           <div className="text-center py-8">
-            <Icon icon="ph:map-pin" className="w-10 h-10 text-dark-green/20 mx-auto mb-4" />
+            <Icons.MapPin className="w-10 h-10 text-dark-green/20 mx-auto mb-4" />
             <Text className="mb-4 font-body text-dark-green/60" width="narrow" as="p" size="copy">
               No addresses saved yet.
             </Text>
@@ -62,7 +62,7 @@ function Address({
     <div className="p-6 border border-dark-green/20 bg-[#f9f7f3] relative flex flex-col hover:border-rust transition-colors duration-300">
       {defaultAddress && (
         <div className="mb-3 flex flex-row items-center gap-2">
-          <Icon icon="ph:star" className="w-4 h-4 text-rust" />
+          <Icons.Star className="w-4 h-4 text-rust" />
           <span className="text-[10px] font-body uppercase tracking-widest text-rust">
             Default
           </span>
@@ -86,13 +86,13 @@ function Address({
           className="text-left text-rust hover:underline uppercase tracking-wider flex items-center gap-1"
           prefetch="intent"
         >
-          <Icon icon="ph:pencil-simple" className="w-3 h-3" />
+          <Icons.Pencil className="w-3 h-3" />
           <span>Edit</span>
         </Link>
         <Form action="address/delete" method="delete">
           <input type="hidden" name="addressId" value={address.id} />
           <button className="text-left text-dark-green/40 hover:text-rust uppercase tracking-wider flex items-center gap-1">
-            <Icon icon="ph:trash" className="w-3 h-3" />
+            <Icons.Trash className="w-3 h-3" />
             <span>Remove</span>
           </button>
         </Form>

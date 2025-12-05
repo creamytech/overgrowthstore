@@ -1,5 +1,4 @@
 import {
-  Await,
   Form,
   Outlet,
   useLoaderData,
@@ -7,10 +6,10 @@ import {
   useOutlet,
 } from '@remix-run/react';
 import {Link} from '~/components/Link';
-import {Suspense, useState} from 'react';
+import {useState} from 'react';
 import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {flattenConnection} from '@shopify/hydrogen';
-import {Icon} from '@iconify/react';
+import {Icons} from '~/components/InlineIcons';
 
 import type {
   CustomerDetailsFragment,
@@ -20,16 +19,11 @@ import {OrderCard} from '~/components/OrderCard';
 import {AccountDetails} from '~/components/AccountDetails';
 import {AccountAddressBook} from '~/components/AccountAddressBook';
 import {Modal} from '~/components/Modal';
-import {ProductSwimlane} from '~/components/ProductSwimlane';
 import {usePrefixPathWithLocale} from '~/lib/utils';
 import {CACHE_NONE, routeHeaders} from '~/data/cache';
 import {CUSTOMER_DETAILS_QUERY} from '~/graphql/customer-account/CustomerDetailsQuery';
 
 import {doLogout} from './($locale).account_.logout';
-import {
-  getFeaturedData,
-  type FeaturedData,
-} from './($locale).featured-products';
 
 export const headers = routeHeaders;
 
@@ -49,7 +43,6 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     {
       customer,
       heading,
-      featuredDataPromise: getFeaturedData(context.storefront),
     },
     {
       headers: {
@@ -76,7 +69,7 @@ export default function Authenticated() {
           <Modal cancelLink="/account">
             <Outlet context={{customer: data.customer}} />
           </Modal>
-          <Account {...data} customer={data.customer} />
+          <Account customer={data.customer} heading={data.heading} />
         </>
       );
     } else {
@@ -84,25 +77,21 @@ export default function Authenticated() {
     }
   }
 
-  return <Account {...data} customer={data.customer} />;
+  return <Account customer={data.customer} heading={data.heading} />;
 }
 
 interface AccountType {
   customer: CustomerDetailsFragment;
-  featuredDataPromise: Promise<FeaturedData>;
   heading: string;
 }
 
-function Account({customer, heading, featuredDataPromise}: AccountType) {
+function Account({customer, heading}: AccountType) {
   const orders = flattenConnection(customer.orders);
   const addresses = flattenConnection(customer.addresses);
   const [activeTab, setActiveTab] = useState<'orders' | 'addresses' | 'details'>('orders');
 
   return (
-    <div className="min-h-screen bg-[#f4f1ea] relative overflow-hidden">
-      {/* Texture Overlay */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
-
+    <div className="min-h-screen relative overflow-hidden">
       {/* Standard Header */}
       <div className="relative z-10 pt-40 pb-8 text-center">
         <div className="flex justify-center mb-6">
@@ -112,6 +101,7 @@ function Account({customer, heading, featuredDataPromise}: AccountType) {
             <div className="w-16 h-px bg-gradient-to-l from-transparent to-dark-green/30" />
           </div>
         </div>
+        <p className="font-body text-xs text-rust uppercase tracking-[0.3em] mb-4">Field Dossier</p>
         <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-4 uppercase">
           {heading}
         </h1>
@@ -128,29 +118,24 @@ function Account({customer, heading, featuredDataPromise}: AccountType) {
             type="submit" 
             className="inline-flex items-center gap-2 font-body text-sm text-dark-green/50 hover:text-rust transition-colors"
           >
-            <Icon icon="ph:sign-out" className="w-4 h-4" />
+            <Icons.SignOut className="w-4 h-4" />
             <span>Sign Out</span>
           </button>
         </Form>
       </div>
 
-      {/* Quick Stats */}
+      {/* Quick Stats - Only Orders and Addresses */}
       <div className="relative z-10 px-4 pb-8">
-        <div className="max-w-4xl mx-auto grid grid-cols-3 gap-4">
-          <div className="bg-[#f9f7f3] border border-dark-green/20 p-6 text-center">
-            <Icon icon="ph:package" className="w-8 h-8 text-rust mx-auto mb-2" />
+        <div className="max-w-2xl mx-auto grid grid-cols-2 gap-4">
+          <div className="bg-[#f9f7f3] border border-rust/30 p-6 text-center">
+            <Icons.Package className="w-8 h-8 text-rust mx-auto mb-2" />
             <p className="font-heading text-3xl text-dark-green">{orders.length}</p>
             <p className="font-body text-xs text-dark-green/50 uppercase tracking-widest">Orders</p>
           </div>
-          <div className="bg-[#f9f7f3] border border-dark-green/20 p-6 text-center">
-            <Icon icon="ph:map-pin" className="w-8 h-8 text-rust mx-auto mb-2" />
+          <div className="bg-[#f9f7f3] border border-rust/30 p-6 text-center">
+            <Icons.MapPin className="w-8 h-8 text-rust mx-auto mb-2" />
             <p className="font-heading text-3xl text-dark-green">{addresses.length}</p>
             <p className="font-body text-xs text-dark-green/50 uppercase tracking-widest">Addresses</p>
-          </div>
-          <div className="bg-[#f9f7f3] border border-dark-green/20 p-6 text-center">
-            <Icon icon="ph:star" className="w-8 h-8 text-rust mx-auto mb-2" />
-            <p className="font-heading text-3xl text-dark-green">Root</p>
-            <p className="font-body text-xs text-dark-green/50 uppercase tracking-widest">Tier</p>
           </div>
         </div>
       </div>
@@ -159,11 +144,11 @@ function Account({customer, heading, featuredDataPromise}: AccountType) {
       <div className="relative z-10 px-4 pb-24">
         <div className="max-w-4xl mx-auto">
           {/* Tab Navigation */}
-          <div className="flex border-b border-dark-green/20 mb-8">
+          <div className="flex border-b border-rust/30 mb-8">
             {[
-              { id: 'orders', label: 'Order History', icon: 'ph:package' },
-              { id: 'addresses', label: 'Addresses', icon: 'ph:map-pin' },
-              { id: 'details', label: 'Account Details', icon: 'ph:user' },
+              { id: 'orders', label: 'Order History', Icon: Icons.Package },
+              { id: 'addresses', label: 'Addresses', Icon: Icons.MapPin },
+              { id: 'details', label: 'Account Details', Icon: Icons.User },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -174,7 +159,7 @@ function Account({customer, heading, featuredDataPromise}: AccountType) {
                     : 'text-dark-green/50 hover:text-dark-green'
                 }`}
               >
-                <Icon icon={tab.icon} className="w-4 h-4" />
+                <tab.Icon className="w-4 h-4" />
                 <span>{tab.label}</span>
                 {activeTab === tab.id && (
                   <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-rust" />
@@ -184,29 +169,13 @@ function Account({customer, heading, featuredDataPromise}: AccountType) {
           </div>
 
           {/* Tab Content */}
-          <div className="bg-[#f9f7f3] border border-dark-green/20 p-6 md:p-8">
+          <div className="bg-[#f9f7f3] border border-rust/30 p-6 md:p-8">
             {activeTab === 'orders' && <AccountOrderHistory orders={orders} />}
             {activeTab === 'addresses' && <AccountAddressBook addresses={addresses} customer={customer} />}
             {activeTab === 'details' && <AccountDetails customer={customer} />}
           </div>
         </div>
       </div>
-
-      {/* Recommended Products */}
-      <Suspense fallback={null}>
-        <Await resolve={featuredDataPromise} errorElement={null}>
-          {(data) => (
-            <div className="relative z-10 bg-dark-green py-16 px-4">
-              <div className="max-w-6xl mx-auto">
-                <h2 className="font-heading text-2xl text-[#f4f1ea] tracking-widest text-center mb-12">
-                  Continue Exploring
-                </h2>
-                <ProductSwimlane products={data.featuredProducts} />
-              </div>
-            </div>
-          )}
-        </Await>
-      </Suspense>
     </div>
   );
 }
@@ -226,14 +195,14 @@ function AccountOrderHistory({orders}: OrderCardsProps) {
 function EmptyOrders() {
   return (
     <div className="text-center py-12">
-      <Icon icon="ph:package" className="w-12 h-12 text-dark-green/20 mx-auto mb-4" />
+      <Icons.Package className="w-12 h-12 text-dark-green/20 mx-auto mb-4" />
       <p className="font-body text-dark-green/50 mb-6">No orders yet</p>
       <Link 
         to="/collections"
         className="inline-flex items-center gap-2 bg-dark-green text-[#f4f1ea] px-6 py-3 font-heading tracking-widest hover:bg-rust transition-colors"
       >
         <span>Start Exploring</span>
-        <Icon icon="ph:arrow-right" className="w-4 h-4" />
+        <Icons.ArrowRight className="w-4 h-4" />
       </Link>
     </div>
   );

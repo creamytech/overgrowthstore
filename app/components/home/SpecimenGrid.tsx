@@ -43,7 +43,7 @@ export function SpecimenGrid({collections}: {collections: Collection[]}) {
                     }}
                 >
                     <Link to={`/collections/${collection.handle}`} className="group block relative overflow-hidden border border-rust/20 bg-paper p-4 hover:border-rust transition-colors duration-300">
-                        <div className="aspect-[3/4] overflow-hidden relative mb-4 grayscale group-hover:grayscale-0 transition-all duration-500">
+                        <div className="aspect-[3/4] overflow-hidden relative mb-4 saturate-[0.7] group-hover:saturate-100 transition-all duration-500">
                              {collection.image && (
                                 <Image
                                     data={collection.image}

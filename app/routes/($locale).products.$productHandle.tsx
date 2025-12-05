@@ -174,13 +174,13 @@ export default function Product() {
     <div className="min-h-screen relative pt-40 pb-32 px-4 md:px-8">
        <div className="max-w-7xl mx-auto relative">
             {/* Product Container */}
-            <div className="bg-[#f4f1ea] relative border border-dark-green/20 p-6 md:p-12 shadow-sm">
+            <div className="bg-[#f4f1ea] relative border border-rust/30 p-6 md:p-12 shadow-sm">
                 
                 {/* Header Metadata */}
-                <div className="relative z-10 border-b-2 border-dark-green/20 pb-8 mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+                <div className="relative z-10 border-b-2 border-rust/30 pb-8 mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
                     <div className="flex-1">
                         <div className="flex items-center gap-4 mb-4">
-                            <span className="inline-block px-2 py-1 border border-dark-green/30 font-body text-[10px] tracking-widest uppercase text-dark-green bg-[#f4f1ea]">
+                            <span className="inline-block px-2 py-1 border border-rust/40 font-body text-[10px] tracking-widest uppercase text-dark-green bg-[#f4f1ea]">
                                 RECOVERED WORKS
                             </span>
                         </div>
@@ -192,7 +192,7 @@ export default function Product() {
                         <span className="block font-body text-[10px] tracking-widest uppercase text-dark-green/50 mb-1">
                             Added to Collection
                         </span>
-                        <span className="font-body text-sm text-dark-green border-b border-dark-green/20 pb-1">
+                        <span className="font-body text-sm text-dark-green border-b border-rust/30 pb-1">
                             {new Date(product.publishedAt).toLocaleDateString()}
                         </span>
                     </div>
@@ -205,7 +205,7 @@ export default function Product() {
                         {/* Image Container with Hover Zoom */}
                         <div 
                             ref={imageContainerRef}
-                            className="relative w-full aspect-[4/5] bg-paper border border-dark-green/20 shadow-sm overflow-hidden group"
+                            className="relative w-full aspect-[4/5] bg-paper border border-rust/30 shadow-sm overflow-hidden group"
                             onMouseEnter={() => setIsHovering(true)}
                             onMouseLeave={() => setIsHovering(false)}
                             onMouseMove={handleMouseMove}
@@ -229,36 +229,36 @@ export default function Product() {
                             {/* Hover Zoom Overlay - Desktop Only */}
                             {activeImage && (
                                 <div 
-                                    className={`hidden lg:block absolute inset-0 z-30 pointer-events-none transition-opacity duration-200 ${isHovering ? 'opacity-100' : 'opacity-0'}`}
+                                    className={`hidden lg:block absolute inset-0 z-30 pointer-events-none transition-opacity duration-200 bg-paper ${isHovering ? 'opacity-100' : 'opacity-0'}`}
                                     style={{
                                         backgroundImage: `url(${activeImage.url})`,
                                         backgroundSize: '200%',
                                         backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
                                         backgroundRepeat: 'no-repeat',
+                                        backgroundColor: '#f4f1ea',
                                     }}
                                 />
                             )}
 
                             {/* Corner Label */}
-                            <div className="absolute top-4 left-4 z-20 border border-dark-green/30 px-2 py-1 bg-paper/90">
+                            <div className="absolute top-4 left-4 z-20 border border-rust/40 px-2 py-1 bg-paper/90">
                                 <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60">
                                     Preview
                                 </span>
                             </div>
-                            <div className="absolute bottom-4 left-4 z-20 border border-dark-green/30 px-2 py-1 bg-paper/90">
+                            <div className="absolute bottom-4 left-4 z-20 border border-rust/40 px-2 py-1 bg-paper/90">
                                 <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60">
                                     ATTACHMENT 01
                                 </span>
                             </div>
 
-                            {/* Zoom Hint */}
-                            <div className={`absolute bottom-4 right-4 z-20 transition-opacity duration-300 ${isHovering ? 'lg:opacity-0' : 'opacity-100'}`}>
+                            {/* Zoom Hint - Desktop only */}
+                            <div className={`absolute bottom-4 right-4 z-20 hidden lg:block transition-opacity duration-300 ${isHovering ? 'opacity-0' : 'opacity-100'}`}>
                                 <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60 bg-paper/90 px-3 py-1.5 flex items-center gap-1.5 shadow-sm">
                                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
                                     </svg>
-                                    <span className="lg:hidden">Tap to Zoom</span>
-                                    <span className="hidden lg:inline">Hover to Zoom</span>
+                                    <span>Hover to Zoom</span>
                                 </span>
                             </div>
 
@@ -296,8 +296,8 @@ export default function Product() {
                                             onClick={() => setActiveImage(image)}
                                             className={`relative w-20 h-24 flex-shrink-0 border transition-all duration-100 ${
                                                 isActive 
-                                                ? 'border-dark-green opacity-100 ring-1 ring-dark-green ring-offset-1 ring-offset-[#f4f1ea]' 
-                                                : 'border-dark-green/20 opacity-60 hover:opacity-100 hover:border-dark-green/50'
+                                                ? 'border-rust opacity-100 ring-1 ring-rust ring-offset-1 ring-offset-[#f4f1ea]' 
+                                                : 'border-rust/30 opacity-60 hover:opacity-100 hover:border-rust/60'
                                             }`}
                                         >
                                             <div className="absolute inset-0 bg-paper opacity-20 mix-blend-multiply pointer-events-none" />
@@ -317,7 +317,7 @@ export default function Product() {
                     <div className="flex flex-col gap-8 relative">
                         
                         {/* Price & Vendor */}
-                        <div className="flex items-center justify-between border-b border-dashed border-dark-green/20 pb-4">
+                        <div className="flex items-center justify-between border-b border-dashed border-rust/30 pb-4">
                              <div className="flex items-center gap-4 font-body text-sm text-rust tracking-widest uppercase">
                                 <span>{vendor}</span>
                             </div>
@@ -328,19 +328,19 @@ export default function Product() {
 
                         {/* Metadata Table */}
                         <div className="grid gap-4 font-body text-sm text-ink/80">
-                            <div className="grid grid-cols-3 border-b border-dashed border-dark-green/20 pb-2">
+                            <div className="grid grid-cols-3 border-b border-dashed border-rust/30 pb-2">
                                 <span className="uppercase tracking-widest opacity-60">Origin</span>
                                 <span className="col-span-2">
                                     The Quiet Places // Reclaimed
                                 </span>
                             </div>
-                            <div className="grid grid-cols-3 border-b border-dashed border-dark-green/20 pb-2">
+                            <div className="grid grid-cols-3 border-b border-dashed border-rust/30 pb-2">
                                 <span className="uppercase tracking-widest opacity-60">Material</span>
                                 <span className="col-span-2">
                                     100% Organic Cotton // 240 GSM
                                 </span>
                             </div>
-                            <div className="grid grid-cols-3 border-b border-dashed border-dark-green/20 pb-2">
+                            <div className="grid grid-cols-3 border-b border-dashed border-rust/30 pb-2">
                                 <span className="uppercase tracking-widest opacity-60">Status</span>
                                 <span className="col-span-2">
                                     {selectedVariant?.availableForSale ? 'Available for Acquisition' : 'Archived // Depleted'}
@@ -349,8 +349,8 @@ export default function Product() {
                         </div>
 
                         {/* Technical Specifications */}
-                        <div className="bg-dark-green/5 border border-dark-green/10 p-4 font-mono text-xs text-dark-green/80">
-                            <h4 className="font-bold uppercase tracking-widest mb-2 border-b border-dark-green/10 pb-1">Technical Specifications</h4>
+                        <div className="bg-rust/5 border border-rust/20 p-4 font-mono text-xs text-dark-green/80">
+                            <h4 className="font-bold uppercase tracking-widest mb-2 border-b border-rust/20 pb-1">Technical Specifications</h4>
                             <div className="grid grid-cols-2 gap-2">
                                 <div>
                                     <span className="opacity-50 block">FIT PROFILE</span>
@@ -394,7 +394,7 @@ export default function Product() {
                 </div>
 
                 {/* Footer Signature */}
-                <div className="relative z-10 mt-16 pt-8 border-t border-dashed border-dark-green/30 text-center">
+                <div className="relative z-10 mt-16 pt-8 border-t border-dashed border-rust/40 text-center">
                     <span className="font-body text-xs text-dark-green/50 tracking-widest">
                         Recovered from the quiet places
                     </span>
@@ -408,7 +408,7 @@ export default function Product() {
             resolve={recommended}
           >
             {(products) => (
-              <div className="mt-24 border-t border-dark-green/20 pt-12 max-w-6xl mx-auto px-4">
+              <div className="mt-24 border-t border-rust/30 pt-12 max-w-6xl mx-auto px-4">
                   <h3 className="font-heading text-2xl text-dark-green mb-8 text-center tracking-widest">
                       YOU MAY ALSO LIKE
                   </h3>
@@ -576,17 +576,10 @@ export function ProductForm({
               </div>
 
               {/* Content */}
-              <div className="relative z-10 flex flex-col items-center justify-center h-full gap-1">
+              <div className="relative z-10 flex flex-col items-center justify-center h-full">
                  <span className="font-heading text-2xl tracking-[0.25em] uppercase text-[#f4f1ea] transition-colors duration-100 steps(2)">
                     Claim This Find
                  </span>
-                 <div className="flex items-center gap-3 opacity-60 group-hover:opacity-100 transition-opacity duration-100 steps(2)">
-                    <span className="h-px w-8 bg-[#f4f1ea] transition-colors" />
-                    <span className="font-typewriter text-[10px] text-[#f4f1ea] transition-colors uppercase tracking-widest">
-                        FIG. {product.id.substring(product.id.length - 3)}
-                    </span>
-                    <span className="h-px w-8 bg-[#f4f1ea] transition-colors" />
-                 </div>
               </div>
 
               {/* Hover Effect - Stamp Mark */}

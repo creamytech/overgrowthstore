@@ -69,13 +69,6 @@ export default function Policies() {
             <div className="mb-12 border-b-2 border-dark-green/10 pb-8">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
                     <div>
-                        <Button
-                            className="mb-6 text-rust hover:text-dark-green transition-colors font-typewriter text-xs uppercase tracking-widest flex items-center gap-2"
-                            variant="inline"
-                            to={'/policies'}
-                        >
-                            &larr; Return to Index
-                        </Button>
                         <h1 className="font-heading text-4xl md:text-5xl text-dark-green mb-2 uppercase tracking-widest">
                             {policy.title}
                         </h1>

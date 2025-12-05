@@ -5,6 +5,7 @@ import {Link} from '@remix-run/react';
 export function FieldHero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [videoEnded, setVideoEnded] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -75,7 +76,7 @@ export function FieldHero() {
         <div className="h-[55vh] w-auto flex items-center justify-center transition-transform duration-100 ease-out relative">
             {/* Video - Privacy Policy Document Style - Interactive */}
             <motion.div 
-                className="relative bg-[#f0ede6] border border-dark-green/20 p-2 md:p-4 shadow-2xl rotate-1 w-auto h-auto max-w-[90vw] md:max-w-full cursor-pointer pointer-events-auto"
+                className={`relative bg-[#f0ede6] border border-dark-green/20 p-2 md:p-4 shadow-2xl rotate-1 w-auto h-auto max-w-[90vw] md:max-w-full cursor-pointer pointer-events-auto transition-opacity duration-300 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
                 whileHover={videoEnded && !isMobile ? { scale: 1.02, rotate: 2 } : {}}
                 animate={videoEnded && isMobile ? { rotate: [1, 3, 1], scale: [1, 1.02, 1] } : {}}
                 transition={{ duration: 1.5, ease: "easeInOut" }}
@@ -88,6 +89,8 @@ export function FieldHero() {
                     playsInline
                     loop={false}
                     onEnded={() => setVideoEnded(true)}
+                    onCanPlay={() => setVideoLoaded(true)}
+                    onLoadedData={() => setVideoLoaded(true)}
                     className="max-h-[55vh] w-auto object-contain"
                 >
                     <source src="/assets/herovideofinal.mp4" type="video/mp4" />

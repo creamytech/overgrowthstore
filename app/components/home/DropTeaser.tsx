@@ -25,7 +25,7 @@ export function DropTeaser({product, index}: {product: any; index: number}) {
                 <Image
                 data={image}
                 aspectRatio="1/1"
-                className="object-contain w-full h-full grayscale hover:grayscale-0 transition-all duration-500"
+                className="object-contain w-full h-full saturate-[0.7] hover:saturate-100 transition-all duration-500"
                 sizes="(min-width: 45em) 40vw, 80vw"
                 />
             )}

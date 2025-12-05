@@ -1,5 +1,5 @@
 import {Link} from '~/components/Link';
-import {Icon} from '@iconify/react';
+import {Icons} from '~/components/InlineIcons';
 
 export async function loader() {
   throw new Response('Not found', {status: 404});
@@ -45,7 +45,7 @@ export default function NotFound() {
           {/* Icon overlay */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-24 h-24 border-2 border-dark-green/20 flex items-center justify-center bg-[#f4f1ea]/80 backdrop-blur-sm">
-              <Icon icon="ph:compass-light" className="w-12 h-12 text-dark-green/40" />
+              <Icons.Compass className="w-12 h-12 text-dark-green/40" />
             </div>
           </div>
         </div>
@@ -82,7 +82,7 @@ export default function NotFound() {
               to="/" 
               className="group inline-flex items-center justify-center gap-3 bg-dark-green text-[#f4f1ea] px-8 py-4 font-heading tracking-widest hover:bg-rust transition-all duration-300"
             >
-              <Icon icon="ph:house" className="w-4 h-4" />
+              <Icons.House className="w-4 h-4" />
               <span>Return Home</span>
             </Link>
             <Link 
@@ -90,7 +90,7 @@ export default function NotFound() {
               className="group inline-flex items-center justify-center gap-3 border border-dark-green/30 text-dark-green px-8 py-4 font-heading tracking-widest hover:border-rust hover:text-rust transition-all duration-300"
             >
               <span>Browse Collections</span>
-              <Icon icon="ph:arrow-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <Icons.ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
         </div>

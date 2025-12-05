@@ -1,11 +1,47 @@
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Link} from '~/components/Link';
 import {motion} from 'framer-motion';
-import {Icon} from '@iconify/react';
+import {Icons} from '~/components/InlineIcons';
 
 export async function loader({request, context}: LoaderFunctionArgs) {
   return json({});
 }
+
+// Inline SVG icons for tiers
+const TierIcons = {
+  plant: (className: string) => (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.38 48.38 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21" />
+    </svg>
+  ),
+  tree: (className: string) => (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+      <path d="M11 21v-4.8c-1.2-.5-2-1.6-2-2.9 0-1.1.6-2.1 1.5-2.7-.3-.6-.5-1.3-.5-2.1 0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5c0 .8-.2 1.5-.5 2.1.9.6 1.5 1.6 1.5 2.7 0 1.3-.8 2.4-2 2.9V21h-7z"/>
+    </svg>
+  ),
+  sun: (className: string) => (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+    </svg>
+  ),
+  flower: (className: string) => (
+    <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+    </svg>
+  ),
+};
+
+const CheckIcon = ({className}: {className: string}) => (
+  <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+  </svg>
+);
+
+const CaretDown = ({className}: {className: string}) => (
+  <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+  </svg>
+);
 
 export default function EcosystemPage() {
   const tiers = [
@@ -13,14 +49,14 @@ export default function EcosystemPage() {
       name: 'THE ROOT',
       level: 1,
       points: '0 - 199',
-      icon: 'ph:plant',
+      iconKey: 'plant' as const,
       benefits: ['Member-only pricing', 'Early access announcements', 'Birthday reward'],
     },
     {
       name: 'THE VINE',
       level: 2,
       points: '200 - 499',
-      icon: 'ph:tree',
+      iconKey: 'tree' as const,
       benefits: ['Everything in The Root', '10% off all orders', 'Free shipping over $50', 'Exclusive drops access'],
       featured: true,
     },
@@ -28,9 +64,15 @@ export default function EcosystemPage() {
       name: 'THE CANOPY',
       level: 3,
       points: '500+',
-      icon: 'ph:sun',
+      iconKey: 'sun' as const,
       benefits: ['Everything in The Vine', '15% off all orders', 'Free shipping always', 'First access', 'Surprise gifts'],
     },
+  ];
+
+  const steps = [
+    { num: '01', title: 'Plant', desc: 'Create your free account', iconKey: 'plant' as const },
+    { num: '02', title: 'Grow', desc: 'Every dollar plants a seed', iconKey: 'flower' as const },
+    { num: '03', title: 'Bloom', desc: 'Watch your path unfold', iconKey: 'sun' as const },
   ];
 
   return (
@@ -83,14 +125,10 @@ export default function EcosystemPage() {
           </div>
           
           <div className="grid md:grid-cols-3 gap-6">
-            {[
-              { num: '01', title: 'Plant', desc: 'Create your free account', icon: 'ph:plant' },
-              { num: '02', title: 'Grow', desc: 'Every dollar plants a seed', icon: 'ph:flower' },
-              { num: '03', title: 'Bloom', desc: 'Watch your path unfold', icon: 'ph:sun' },
-            ].map((step, i) => (
+            {steps.map((step, i) => (
               <div key={i} className="bg-[#f9f7f3] border border-dark-green/20 p-6 text-center">
                 <span className="font-heading text-3xl text-rust">{step.num}</span>
-                <Icon icon={step.icon} className="w-8 h-8 text-dark-green/40 mx-auto my-4" />
+                {TierIcons[step.iconKey]("w-8 h-8 text-dark-green/40 mx-auto my-4")}
                 <h3 className="font-heading text-xl text-dark-green mb-2">{step.title}</h3>
                 <p className="font-body text-sm text-dark-green/60">{step.desc}</p>
               </div>
@@ -126,7 +164,7 @@ export default function EcosystemPage() {
                 <div className={`bg-[#f9f7f3] border-2 ${tier.featured ? 'border-rust' : 'border-dark-green/20'} overflow-hidden h-full`}>
                   {/* Header */}
                   <div className="bg-dark-green p-6 text-center">
-                    <Icon icon={tier.icon} className="w-10 h-10 text-rust mx-auto mb-3" />
+                    {TierIcons[tier.iconKey]("w-10 h-10 text-rust mx-auto mb-3")}
                     <h3 className="font-heading text-xl text-[#f4f1ea] tracking-widest">{tier.name}</h3>
                     <p className="font-body text-sm text-[#f4f1ea]/60 mt-1">{tier.points} points</p>
                   </div>
@@ -136,7 +174,7 @@ export default function EcosystemPage() {
                     <ul className="space-y-3">
                       {tier.benefits.map((benefit, j) => (
                         <li key={j} className="flex items-start gap-3">
-                          <Icon icon="ph:check" className="w-4 h-4 text-rust flex-shrink-0 mt-0.5" />
+                          <CheckIcon className="w-4 h-4 text-rust flex-shrink-0 mt-0.5" />
                           <span className="font-body text-sm text-dark-green/70">{benefit}</span>
                         </li>
                       ))}
@@ -166,7 +204,7 @@ export default function EcosystemPage() {
               <details key={i} className="group bg-[#f9f7f3] border border-dark-green/20">
                 <summary className="flex items-center justify-between p-4 cursor-pointer list-none">
                   <span className="font-heading text-dark-green">{faq.q}</span>
-                  <Icon icon="ph:caret-down" className="w-5 h-5 text-rust group-open:rotate-180 transition-transform" />
+                  <CaretDown className="w-5 h-5 text-rust group-open:rotate-180 transition-transform" />
                 </summary>
                 <div className="px-4 pb-4">
                   <p className="font-body text-sm text-dark-green/60">{faq.a}</p>

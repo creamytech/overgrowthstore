@@ -242,15 +242,6 @@ function CartSummary({
             )}
           </Text>
         </div>
-        
-        {/* Rewards Teaser */}
-        {cost?.subtotalAmount?.amount && (
-            <div className="p-2 text-center mt-2">
-                <Text className="font-body text-xs text-dark-green/80">
-                    <span className="font-bold text-rust">+{Math.floor(parseFloat(cost.subtotalAmount.amount))} points earned</span> from this order
-                </Text>
-            </div>
-        )}
       </dl>
       
       {children}

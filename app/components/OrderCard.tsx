@@ -1,5 +1,5 @@
 import {flattenConnection, Image} from '@shopify/hydrogen';
-import {Icon} from '@iconify/react';
+import {Icons} from '~/components/InlineIcons';
 
 import type {OrderCardFragment} from 'customer-accountapi.generated';
 import {Heading, Text} from '~/components/Text';
@@ -46,13 +46,13 @@ export function OrderCard({order}: {order: OrderCardFragment}) {
           </h3>
           <dl className="space-y-1">
             <div className="flex items-center gap-2">
-              <Icon icon="ph:hash" className="w-3 h-3 text-dark-green/40" />
+              <Icons.Hash className="w-3 h-3 text-dark-green/40" />
               <dd className="font-body text-sm text-dark-green/60">
                 Order #{order.number}
               </dd>
             </div>
             <div className="flex items-center gap-2">
-              <Icon icon="ph:calendar-blank" className="w-3 h-3 text-dark-green/40" />
+              <Icons.Calendar className="w-3 h-3 text-dark-green/40" />
               <dd className="font-body text-sm text-dark-green/60">
                 {new Date(order.processedAt).toDateString()}
               </dd>
@@ -66,10 +66,10 @@ export function OrderCard({order}: {order: OrderCardFragment}) {
                       : 'bg-rust/10 text-rust border border-rust/20'
                   }`}
                 >
-                  <Icon 
-                    icon={fulfillmentStatus === 'SUCCESS' ? 'ph:check' : 'ph:clock'} 
-                    className="w-3 h-3" 
-                  />
+                  {fulfillmentStatus === 'SUCCESS' 
+                    ? <Icons.Check className="w-3 h-3" />
+                    : <Icons.Clock className="w-3 h-3" />
+                  }
                   {statusMessage(fulfillmentStatus)}
                 </span>
               </div>
@@ -84,7 +84,7 @@ export function OrderCard({order}: {order: OrderCardFragment}) {
           prefetch="intent"
         >
           <span>View Details</span>
-          <Icon icon="ph:arrow-right" className="w-4 h-4" />
+          <Icons.ArrowRight className="w-4 h-4" />
         </Link>
       </div>
     </li>
