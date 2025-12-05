@@ -12,28 +12,64 @@ export function FeaturedGrid({products, title = "Latest Finds"}: {products: any[
         
         {/* Section Header */}
         <div className="text-center mb-16">
-            <div className="font-typewriter text-xs text-dark-green/60 mb-4 tracking-widest uppercase">
+            <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="font-typewriter text-xs text-dark-green/60 mb-4 tracking-widest uppercase"
+            >
                 <span>New Discoveries</span>
-            </div>
-            <h2 className="font-heading text-4xl md:text-5xl text-dark-green tracking-widest mb-6 uppercase">
+            </motion.div>
+            <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="font-heading text-4xl md:text-5xl text-dark-green tracking-widest mb-6 uppercase"
+            >
                 {title}
-            </h2>
-            <div className="w-24 h-1 bg-rust mx-auto" />
+            </motion.h2>
+            <motion.div 
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="w-24 h-1 bg-rust mx-auto origin-center"
+            />
         </div>
 
-        {/* Product Grid */}
+        {/* Product Grid with Staggered Animation */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-12 md:gap-8">
-            {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+            {products.map((product, index) => (
+                <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ 
+                        duration: 0.5, 
+                        delay: index * 0.1,
+                        ease: "easeOut"
+                    }}
+                >
+                    <ProductCard product={product} />
+                </motion.div>
             ))}
         </div>
 
         {/* View All Link */}
-        <div className="mt-16 text-center">
+        <motion.div 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="mt-16 text-center"
+        >
             <Link to="/collections/all" className="inline-block border-b border-rust text-dark-green font-heading tracking-widest hover:text-rust hover:border-rust transition-colors pb-1">
-                View Full Collection &rarr;
+                Explore All Finds &rarr;
             </Link>
-        </div>
+        </motion.div>
 
       </div>
     </section>

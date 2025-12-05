@@ -33,7 +33,7 @@ export default function Homepage() {
       {/* 2. Featured Grid (Shop First) */}
       
       {/* 2. Featured Grid (Shop First) */}
-      <Suspense fallback={<div className="text-center py-12 font-body text-dark-green/60 tracking-widest">Wandering through the finds...</div>}>
+      <Suspense fallback={<div className="text-center py-12 font-body text-dark-green/60 tracking-widest italic">Unearthing discoveries...</div>}>
         <Await resolve={data.products}>
           {(products) => (
             <FeaturedGrid products={products?.nodes || []} />
@@ -80,7 +80,7 @@ export default function Homepage() {
                     Overgrowth is inspired by a world that grew brighter after we stopped shaping it. Creatures returned. Flowers climbed through old metal. Everything became strange in the best way. Our apparel reflects that sense of wonder with designs pulled from a reclaimed frontier full of life.
                 </p>
                 <Link to="/pages/our-story" className="inline-block bg-dark-green text-[#f4f1ea] px-8 py-3 font-heading tracking-widest hover:bg-rust transition-colors duration-300">
-                    Read the Story
+                    How It Grew
                 </Link>
             </div>
          </div>
@@ -92,7 +92,7 @@ export default function Homepage() {
       */}
 
       {/* 5. Journal / Collections (Specimen Grid moved here as "Archive") */}
-      <Suspense fallback={<div className="text-center py-12 font-body text-dark-green/60 tracking-widest">Turning the pages...</div>}>
+      <Suspense fallback={<div className="text-center py-12 font-body text-dark-green/60 tracking-widest italic">Dusting off the archives...</div>}>
         <Await resolve={data.collections}>
           {(collections) => (
             <SpecimenGrid collections={collections?.nodes || []} />

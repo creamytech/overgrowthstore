@@ -107,7 +107,7 @@ export function ProductCard({
     );
   }
 
-  // Grid Layout (Tactical HUD Style)
+  // Grid Layout (Field Journal Style)
   return (
     <div className={clsx('group relative perspective-1000', className)}>
       <Link
@@ -153,22 +153,19 @@ export function ProductCard({
             )}
           </div>
 
-          {/* HUD Overlay (Appears on Hover) */}
-          <div className="absolute inset-0 z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                {/* Scan Line Animation */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-rust/50 shadow-[0_0_10px_rgba(192,90,52,0.5)] animate-[scan_2s_linear_infinite]" />
-                
-                {/* Corner Brackets */}
-                <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-rust" />
-                <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-rust" />
-                <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-rust" />
-                <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-rust" />
+          {/* Discovery Overlay (Appears on Hover) */}
+          <div className="absolute inset-0 z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                {/* Corner Vine Accents */}
+                <div className="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-rust/60 transition-all duration-300" />
+                <div className="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-rust/60 transition-all duration-300" />
+                <div className="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-rust/60 transition-all duration-300" />
+                <div className="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-rust/60 transition-all duration-300" />
 
-                {/* Data Readout */}
+                {/* Gentle Label */}
                 <div className="absolute bottom-4 left-0 w-full text-center">
-                    <div className="inline-block bg-rust/10 backdrop-blur-sm border border-rust/30 px-3 py-1">
-                        <span className="font-mono text-xs text-rust tracking-widest uppercase animate-pulse">
-                            {isSoldOut ? 'SIGNAL LOST' : 'RECOVERED WORK DETECTED'}
+                    <div className="inline-block bg-[#f4f1ea]/90 backdrop-blur-sm border border-rust/30 px-4 py-1.5">
+                        <span className="font-body text-xs text-dark-green tracking-widest">
+                            {isSoldOut ? 'Resting' : 'Worth a closer look'}
                         </span>
                     </div>
                 </div>
@@ -196,9 +193,9 @@ export function ProductCard({
 
           {/* Sold Out Overlay */}
           {isSoldOut && (
-              <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/5 pointer-events-none">
-                  <div className="border-2 border-rust text-rust px-4 py-2 font-heading text-xl tracking-widest uppercase rotate-[-12deg] bg-[#f4f1ea]/80 backdrop-blur-sm">
-                      DEPLETED
+              <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#f4f1ea]/20 pointer-events-none">
+                  <div className="border border-dark-green/40 text-dark-green/70 px-4 py-2 font-heading text-lg tracking-widest uppercase rotate-[-8deg] bg-[#f4f1ea]/90">
+                      Sold Out
                   </div>
               </div>
           )}

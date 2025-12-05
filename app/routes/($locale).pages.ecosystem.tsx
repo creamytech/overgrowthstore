@@ -84,9 +84,9 @@ export default function EcosystemPage() {
           
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { num: '01', title: 'Join', desc: 'Create your free account', icon: 'ph:user-plus' },
-              { num: '02', title: 'Earn', desc: '1 point for every $1 spent', icon: 'ph:star' },
-              { num: '03', title: 'Unlock', desc: 'Rise through tiers for rewards', icon: 'ph:gift' },
+              { num: '01', title: 'Plant', desc: 'Create your free account', icon: 'ph:plant' },
+              { num: '02', title: 'Grow', desc: 'Every dollar plants a seed', icon: 'ph:flower' },
+              { num: '03', title: 'Bloom', desc: 'Watch your path unfold', icon: 'ph:sun' },
             ].map((step, i) => (
               <div key={i} className="bg-[#f9f7f3] border border-dark-green/20 p-6 text-center">
                 <span className="font-heading text-3xl text-rust">{step.num}</span>
