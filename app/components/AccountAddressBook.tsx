@@ -1,5 +1,6 @@
 import {Form} from '@remix-run/react';
 import type {CustomerAddress} from '@shopify/hydrogen/customer-account-api-types';
+import {Icon} from '@iconify/react';
 
 import type {CustomerDetailsFragment} from 'customer-accountapi.generated';
 import {Button} from '~/components/Button';
@@ -17,17 +18,20 @@ export function AccountAddressBook({
     <>
       <div className="w-full">
         {!addresses?.length && (
-          <Text className="mb-4 font-typewriter text-dark-green/60" width="narrow" as="p" size="copy">
-            No coordinates established.
-          </Text>
+          <div className="text-center py-8">
+            <Icon icon="ph:map-pin" className="w-10 h-10 text-dark-green/20 mx-auto mb-4" />
+            <Text className="mb-4 font-body text-dark-green/60" width="narrow" as="p" size="copy">
+              No addresses saved yet.
+            </Text>
+          </div>
         )}
-        <div className="w-48">
+        <div className="w-48 mb-6">
           <Button
             to="address/add"
-            className="btn-stamp text-xs w-full mb-6"
+            className="text-xs w-full"
             variant="secondary"
           >
-            Add Coordinates
+            Add Address
           </Button>
         </div>
         {Boolean(addresses?.length) && (
@@ -55,17 +59,18 @@ function Address({
   defaultAddress?: boolean;
 }) {
   return (
-    <div className="p-6 border border-dark-green/20 bg-[#f4f1ea] relative flex flex-col hover:border-rust transition-colors duration-300">
+    <div className="p-6 border border-dark-green/20 bg-[#f9f7f3] relative flex flex-col hover:border-rust transition-colors duration-300">
       {defaultAddress && (
-        <div className="mb-3 flex flex-row">
-          <span className="px-2 py-1 text-[10px] font-mono uppercase tracking-widest border border-rust text-rust bg-rust/5">
-            Primary Base
+        <div className="mb-3 flex flex-row items-center gap-2">
+          <Icon icon="ph:star" className="w-4 h-4 text-rust" />
+          <span className="text-[10px] font-body uppercase tracking-widest text-rust">
+            Default
           </span>
         </div>
       )}
-      <ul className="flex-1 flex-col font-typewriter text-sm text-dark-green space-y-1">
+      <ul className="flex-1 flex-col font-body text-sm text-dark-green space-y-1">
         {(address.firstName || address.lastName) && (
-          <li className="font-bold uppercase tracking-wider mb-2">
+          <li className="font-heading uppercase tracking-wider mb-2">
             {'' +
               (address.firstName && address.firstName + ' ') +
               address?.lastName}
@@ -75,18 +80,20 @@ function Address({
           address.formatted.map((line: string) => <li key={line}>{line}</li>)}
       </ul>
 
-      <div className="flex flex-row font-heading text-xs mt-6 items-baseline gap-6">
+      <div className="flex flex-row font-body text-xs mt-6 items-baseline gap-6">
         <Link
           to={`/account/address/${encodeURIComponent(address.id)}`}
-          className="text-left text-rust hover:underline uppercase tracking-wider"
+          className="text-left text-rust hover:underline uppercase tracking-wider flex items-center gap-1"
           prefetch="intent"
         >
-          Edit
+          <Icon icon="ph:pencil-simple" className="w-3 h-3" />
+          <span>Edit</span>
         </Link>
         <Form action="address/delete" method="delete">
           <input type="hidden" name="addressId" value={address.id} />
-          <button className="text-left text-dark-green/40 hover:text-rust uppercase tracking-wider">
-            Remove
+          <button className="text-left text-dark-green/40 hover:text-rust uppercase tracking-wider flex items-center gap-1">
+            <Icon icon="ph:trash" className="w-3 h-3" />
+            <span>Remove</span>
           </button>
         </Form>
       </div>

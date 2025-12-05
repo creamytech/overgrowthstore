@@ -13,6 +13,7 @@ import {CartLoading} from '~/components/CartLoading';
 import {Input} from '~/components/Input';
 import {Drawer, useDrawer} from '~/components/Drawer';
 import {CountrySelector} from '~/components/CountrySelector';
+import {IconInstagram, IconTiktok, IconX} from '~/components/ThemedIcons';
 import {
   IconMenu,
   IconCaret,
@@ -281,14 +282,12 @@ export function MenuDrawer({
 }) {
   return (
     <Drawer open={isOpen} onClose={onClose} openFrom="left" heading="FIELD GUIDE" variant="menu">
-
-
-      <div className="relative z-10 grid h-full content-between pb-8">
+      <div className="relative z-10 flex flex-col h-full justify-between">
         <MenuMobileNav menu={menu} onClose={onClose} />
         
-        <div className="text-center font-body text-xs tracking-widest text-dark-green opacity-60">
-            FIG. 01 — FLORA
-        </div>
+        <p className="font-body text-xs tracking-widest text-dark-green/40 text-center">
+            Where will you wander?
+        </p>
       </div>
     </Drawer>
   );
@@ -301,75 +300,36 @@ function MenuMobileNav({
   menu: EnhancedMenu;
   onClose: () => void;
 }) {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  // Map menu items to background images (conceptually)
-  const getBackgroundImage = (index: number) => {
-      const images = [
-          // '/assets/texture_archive_paper.jpg',      // 0 - Home
-          '/assets/hero_horse_skeleton_isolated.png', // 1 - Catalog
-          '/assets/ui_menu_vellum_bg.jpg',          // 2 - Journal
-          '/assets/divider_root_transition.svg'     // 3 - Our Story
-      ];
-      return images[index % images.length];
-  };
-
   return (
-    <nav className="relative grid gap-6 p-6 sm:px-12 sm:py-8 w-full max-w-md mx-auto z-20">
-      
-      {/* Background Image Area (Fixed/Absolute behind menu) */}
-      <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden opacity-10 transition-opacity duration-700">
-          {menu?.items?.map((_, index) => (
-              <div 
-                key={index}
-                className={`absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out mix-blend-multiply ${hoveredIndex === index ? 'opacity-100' : 'opacity-0'}`}
-                style={{backgroundImage: `url('${getBackgroundImage(index)}')`}}
-              />
-          ))}
-      </div>
-
-      {/* Top level menu items */}
+    <nav className="flex flex-col gap-2">
       {(menu?.items || []).map((item, index) => (
-        <div 
-            key={item.id} 
-            className="w-full"
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
+        <Link
+          key={item.id}
+          to={item.to}
+          target={item.target}
+          onClick={onClose}
+          className={({isActive}) =>
+            `group flex items-center gap-4 py-4 border-b border-dark-green/10 hover:border-rust/30 transition-all duration-300 ${
+              isActive ? 'border-rust/40' : ''
+            }`
+          }
         >
-          <Link
-            to={item.to}
-            target={item.target}
-            onClick={onClose}
-            className={({isActive}) =>
-              `group flex items-baseline justify-between border-b border-[#8B3A3A] pb-2 hover:border-[#8B3A3A] transition-all duration-100 steps(2) ${
-                isActive ? 'opacity-100' : 'opacity-80'
-              }`
-            }
-          >
-            <div className="flex items-baseline gap-4">
-                {/* Chapter Number */}
-                <span className="font-typewriter text-xs text-dark-green/40 group-hover:text-rust transition-colors duration-100 steps(2)">
-                    {(index + 1).toString().padStart(2, '0')}.
-                </span>
-                
-                {/* Title */}
-                <span className="font-heading text-3xl md:text-4xl tracking-widest text-dark-green group-hover:translate-x-4 transition-transform duration-100 steps(4)">
-                    {item.title}
-                </span>
-            </div>
+          {/* Number */}
+          <span className="font-body text-xs text-dark-green/30 group-hover:text-rust/60 transition-colors w-6">
+              {(index + 1).toString().padStart(2, '0')}.
+          </span>
+          
+          {/* Title */}
+          <span className="font-heading text-2xl md:text-3xl tracking-widest text-dark-green group-hover:text-rust transition-colors">
+              {item.title}
+          </span>
 
-            {/* Hover Arrow / Active Indicator */}
-            <span className="font-handwritten text-xl text-rust opacity-0 -translate-x-8 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-100 steps(4)">
-                &rarr;
-            </span>
-          </Link>
-        </div>
+          {/* Arrow on hover */}
+          <span className="ml-auto font-body text-rust opacity-0 group-hover:opacity-100 transition-opacity">
+              →
+          </span>
+        </Link>
       ))}
-      
-      {/* Decorative End Mark */}
-      <div className="flex justify-center pt-8 opacity-30">
-          <img src="/assets/icon_menu_bud.png" alt="End" className="w-6 h-6" />
-      </div>
     </nav>
   );
 }
@@ -401,7 +361,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                         Join the Overgrowth
                     </h4>
                     <p className="font-body text-dark-green/70">
-                        First looks. New drops. Stories from the reclaimed world.
+                        Stories from the quiet places. New finds. Updates from the frontier.
                     </p>
                     <div className="flex justify-center">
                         <NewsletterForm />
@@ -419,7 +379,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                     
                     {/* Primary Links */}
                     <div className="space-y-4 text-right md:text-right pr-4 md:pr-8">
-                        <h5 className="font-heading text-base text-dark-green font-bold uppercase tracking-[0.25em] mb-4">Protocol</h5>
+                        <h5 className="font-heading text-base text-dark-green font-bold uppercase tracking-[0.25em] mb-4">Explore</h5>
                         <nav className="flex flex-col gap-4 font-heading text-xl text-dark-green uppercase tracking-widest leading-relaxed items-end">
                             <Link to="/products" className="group relative w-fit block">
                                 <span className="hover:text-rust transition-colors duration-500">Shop Recovered Works</span>
@@ -441,11 +401,11 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                         <h5 className="font-heading text-base text-dark-green font-bold uppercase tracking-[0.25em] mb-4">Support</h5>
                         <nav className="flex flex-col gap-3 font-body text-sm text-dark-green/70 leading-relaxed items-start">
                             <Link to="/account" className="group relative w-fit block">
-                                <span className="hover:text-rust transition-colors duration-500">Mission Log (Orders)</span>
+                                <span className="hover:text-rust transition-colors duration-500">Your Orders</span>
                                 <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
                             </Link>
                             <Link to="/pages/contact" className="group relative w-fit block">
-                                <span className="hover:text-rust transition-colors duration-500">Contact Command</span>
+                                <span className="hover:text-rust transition-colors duration-500">Get in Touch</span>
                                 <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
                             </Link>
                             <Link to="/pages/faq" className="group relative w-fit block">
@@ -453,7 +413,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                                 <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
                             </Link>
                             <Link to="/policies/privacy-policy" className="group relative w-fit block">
-                                <span className="hover:text-rust transition-colors duration-500">Privacy Protocol</span>
+                                <span className="hover:text-rust transition-colors duration-500">Privacy Policy</span>
                                 <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
                             </Link>
                         </nav>
@@ -465,11 +425,15 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                 <div className="space-y-8 pt-12 border-t border-dark-green/10">
                     {/* Social Icons */}
                     <div className="flex justify-center gap-4">
-                        {['IG', 'TK', 'X'].map((social) => (
-                            <a key={social} href="#" className="w-10 h-10 border border-rust rounded-full flex items-center justify-center text-xs font-heading text-rust hover:border-dark-green hover:text-dark-green hover:bg-dark-green/5 hover:shadow-[0_0_15px_rgba(20,40,30,0.2)] transition-all duration-300">
-                                {social}
-                            </a>
-                        ))}
+                        <a href="https://instagram.com/overgrowth" target="_blank" rel="noopener noreferrer" className="group w-10 h-10 border border-dark-green/20 flex items-center justify-center text-dark-green/60 hover:border-rust hover:text-rust hover:bg-rust/5 transition-all duration-300 rounded-full" aria-label="Instagram">
+                            <IconInstagram size={18} />
+                        </a>
+                        <a href="https://tiktok.com/@overgrowth" target="_blank" rel="noopener noreferrer" className="group w-10 h-10 border border-dark-green/20 flex items-center justify-center text-dark-green/60 hover:border-rust hover:text-rust hover:bg-rust/5 transition-all duration-300 rounded-full" aria-label="TikTok">
+                            <IconTiktok size={18} />
+                        </a>
+                        <a href="https://x.com/overgrowth" target="_blank" rel="noopener noreferrer" className="group w-10 h-10 border border-dark-green/20 flex items-center justify-center text-dark-green/60 hover:border-rust hover:text-rust hover:bg-rust/5 transition-all duration-300 rounded-full" aria-label="X">
+                            <IconX size={16} />
+                        </a>
                     </div>
 
                     <div className="opacity-50 space-y-2">
@@ -539,7 +503,7 @@ function NewsletterForm() {
                 setEmail('');
             } else {
                 setStatus('error');
-                setMessage(data.error || 'Transmission failed.');
+                setMessage(data.error || 'Something went wrong. Please try again.');
             }
         } catch (err) {
             console.error('Newsletter Network Error:', err);
@@ -561,9 +525,9 @@ function NewsletterForm() {
                             type="email" 
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder="ENTER FREQUENCY (EMAIL)" 
+                            placeholder="Your email address" 
                             required
-                            className="w-full bg-transparent py-5 px-4 text-dark-green placeholder:text-dark-green/40 font-typewriter text-sm focus:outline-none bg-dark-green/5 rounded-l-[3px]"
+                            className="w-full bg-transparent py-5 px-4 text-dark-green placeholder:text-dark-green/40 font-body text-sm focus:outline-none bg-dark-green/5 rounded-l-[3px]"
                         />
                         <button 
                             type="submit" 

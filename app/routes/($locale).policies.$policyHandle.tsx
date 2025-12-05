@@ -53,22 +53,17 @@ export default function Policies() {
   const {policy} = useLoaderData<typeof loader>();
 
   return (
-    <div className="min-h-screen bg-[#f4f1ea] relative pt-32 pb-24 px-4 md:px-8 overflow-hidden">
-      
-      {/* Background Texture */}
-      <div className="fixed inset-0 pointer-events-none opacity-10 z-0">
-         <div className="absolute top-0 left-0 w-full h-full bg-[url('/assets/texture_paper_creased.jpg')] mix-blend-multiply" />
-      </div>
-
+    <div className="min-h-screen relative pt-40 pb-24 px-4 md:px-8 overflow-hidden">
       <div className="max-w-4xl mx-auto relative z-10">
         
         {/* Document Container */}
         <div className="bg-[#f0ede6] border border-dark-green/20 p-8 md:p-16 shadow-lg relative">
             
-            {/* Top Secret Stamp */}
-            <div className="absolute top-8 right-8 border-4 border-rust/20 text-rust/20 px-4 py-2 font-heading text-2xl -rotate-12 pointer-events-none uppercase tracking-widest mix-blend-multiply mask-grunge">
-                OFFICIAL PROTOCOL
-            </div>
+            {/* Corner accents */}
+            <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-dark-green/15" />
+            <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-dark-green/15" />
+            <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-dark-green/15" />
+            <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-dark-green/15" />
 
             {/* Header */}
             <div className="mb-12 border-b-2 border-dark-green/10 pb-8">
@@ -84,8 +79,8 @@ export default function Policies() {
                         <h1 className="font-heading text-4xl md:text-5xl text-dark-green mb-2 uppercase tracking-widest">
                             {policy.title}
                         </h1>
-                        <p className="font-typewriter text-xs tracking-[0.2em] text-dark-green/60 uppercase">
-                            Doc Ref: {policy.handle.toUpperCase()} // Auth: Legal
+                        <p className="font-body text-xs tracking-[0.2em] text-dark-green/60 uppercase">
+                            Last Updated: {new Date().getFullYear()}
                         </p>
                     </div>
                 </div>
@@ -102,21 +97,16 @@ export default function Policies() {
                 />
             </div>
 
-            {/* Footer Signature */}
-            <div className="mt-16 pt-12 border-t border-dashed border-dark-green/20 flex justify-between items-end">
-                <div>
-                    <p className="font-typewriter text-[10px] tracking-widest uppercase text-dark-green/40 mb-2">
-                        Approved By
-                    </p>
-                    <div className="font-handwritten text-2xl text-dark-green/60 -rotate-3">
-                        Overgrowth Legal
-                    </div>
+            {/* Footer */}
+            <div className="mt-16 pt-12 border-t border-dark-green/20 text-center">
+                <div className="flex justify-center items-center gap-3 mb-4">
+                    <div className="w-12 h-px bg-dark-green/20" />
+                    <div className="w-2 h-2 border border-rust/40 rotate-45" />
+                    <div className="w-12 h-px bg-dark-green/20" />
                 </div>
-                <div className="text-right">
-                    <p className="font-typewriter text-[10px] tracking-widest uppercase text-dark-green/40">
-                        Page 1 of 1
-                    </p>
-                </div>
+                <p className="font-body text-xs text-dark-green/40 italic">
+                    Questions? Contact us anytime.
+                </p>
             </div>
 
         </div>

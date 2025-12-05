@@ -42,8 +42,7 @@ html, body {
   background-image: url('/assets/texture_archive_paper.jpg');
   background-repeat: no-repeat;
   background-size: cover;
-  opacity: 0.2;
-  mix-blend-mode: multiply;
+  opacity: 0.15;
   pointer-events: none;
 }
 

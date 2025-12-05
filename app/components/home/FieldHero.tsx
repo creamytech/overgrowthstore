@@ -1,17 +1,9 @@
 import {useRef, useState, useEffect} from 'react';
-import {motion, useScroll, useTransform, useMotionValue, AnimatePresence} from 'framer-motion';
+import {motion, AnimatePresence} from 'framer-motion';
 import {Link} from '@remix-run/react';
-
-
-// Helper for stepped values (Moved outside to prevent hook violation)
-const useSteppedTransform = (value: any, input: number[], output: number[], stepSize: number) => {
-  const smooth = useTransform(value, input, output);
-  return useTransform(smooth, (v) => Math.floor(v / stepSize) * stepSize);
-};
 
 export function FieldHero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const {scrollY} = useScroll();
   const [videoEnded, setVideoEnded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -21,10 +13,6 @@ export function FieldHero() {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
-  
-  // Scroll Parallax
-  const ySkeleton = useSteppedTransform(scrollY, [0, 500], [0, 100], 20); // 20px steps
-  const yText = useSteppedTransform(scrollY, [0, 500], [0, 50], 10); // 10px steps
 
   // Fix Hydration Error: Generate particles on client only
   const [particles, setParticles] = useState<Array<{x: string, y: string, scale: number, opacity: number, duration: number, moveY: number, moveX: number, width: number, height: number}>>([]);
@@ -49,7 +37,7 @@ export function FieldHero() {
   return (
     <section 
       ref={containerRef} 
-      className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-transparent"
+      className="relative h-screen w-full overflow-hidden flex items-center justify-center"
     >
       {/* Floating Spores/Dust Particles */}
       <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
@@ -80,10 +68,9 @@ export function FieldHero() {
           ))}
       </div>
 
-      {/* Hero Layer - Horse */}
-      <motion.div 
-        style={{y: ySkeleton}}
-        className="absolute inset-0 flex items-center justify-center z-40 pointer-events-none perspective-1000"
+      {/* Hero Layer - Video */}
+      <div 
+        className="absolute inset-0 flex items-center justify-center z-40 pointer-events-none"
       >
         <div className="h-[55vh] w-auto flex items-center justify-center transition-transform duration-100 ease-out relative">
             {/* Video - Privacy Policy Document Style - Interactive */}
@@ -127,7 +114,7 @@ export function FieldHero() {
                 </AnimatePresence>
             </motion.div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Divider at the bottom */}
       <div 

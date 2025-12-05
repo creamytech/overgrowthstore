@@ -6,13 +6,7 @@ import {IconClose} from '~/components/Icon';
 
 /**
  * Drawer component that opens on user click.
- * @param heading - string. Shown at the top of the drawer.
- * @param open - boolean state. if true opens the drawer.
- * @param onClose - function should set the open state.
- * @param openFrom - right, left
- * @param children - react children node.
  */
-
 
 export function Drawer({
   heading,
@@ -39,14 +33,14 @@ export function Drawer({
       <Dialog as="div" className="relative z-[2000]" onClose={onClose}>
         <Transition.Child
           as={Fragment}
-          enter="duration-100 steps(2)"
+          enter="duration-300 ease-out"
           enterFrom="opacity-0 left-0"
           enterTo="opacity-100"
-          leave="duration-100 steps(2)"
+          leave="duration-200 ease-out"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
+          <div className="fixed inset-0 bg-dark-green/50 backdrop-blur-sm" />
         </Transition.Child>
 
         <div className="fixed inset-0">
@@ -58,48 +52,44 @@ export function Drawer({
             >
               <Transition.Child
                 as={Fragment}
-                enter="transform transition duration-100 steps(2)"
+                enter="transform transition duration-300 ease-out"
                 enterFrom={offScreen[openFrom]}
                 enterTo="translate-x-0"
-                leave="transform transition duration-100 steps(2)"
+                leave="transform transition duration-200 ease-out"
                 leaveFrom="translate-x-0"
                 leaveTo={offScreen[openFrom]}
               >
-                <Dialog.Panel className={`w-screen max-w-lg text-left align-middle transition-all transform shadow-2xl h-screen-dynamic ${variant === 'default' ? 'bg-contrast' : 'bg-transparent'}`}>
+                <Dialog.Panel className={`w-screen max-w-lg text-left align-middle transition-all transform shadow-2xl h-screen-dynamic ${variant === 'default' ? 'bg-contrast' : 'bg-[#f4f1ea]'}`}>
                   
-                  {/* Vellum Background for Menu/Cart */}
+                  {/* Simple edge accent for Menu/Cart */}
                   {(variant === 'menu' || variant === 'cart') && (
-                    <>
-                        <div 
-                            className="absolute inset-0 z-0"
-                            style={{
-                                backgroundImage: "url('/assets/ui_menu_vellum_bg.jpg')",
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center',
-                                opacity: 0.98,
-                            }}
-                        />
-                        <div className="absolute inset-0 z-0 backdrop-blur-md bg-white/30" />
-                        
-                        {/* Green Vignette Overlay */}
-                        <div 
-                            className="absolute inset-0 z-0 pointer-events-none"
-                            style={{
-                                background: 'radial-gradient(circle at center, transparent 0%, rgba(20, 50, 20, 0.08) 100%)'
-                            }}
-                        />
-                    </>
+                    <div 
+                        className={`absolute top-0 bottom-0 w-1 ${openFrom === 'left' ? 'right-0' : 'left-0'} bg-gradient-to-b from-rust/40 via-dark-green/30 to-rust/40`}
+                    />
                   )}
 
-                  <div className={`relative z-10 h-full flex flex-col ${variant === 'menu' || variant === 'cart' ? 'px-12 py-24' : ''}`}>
+                  <div className={`relative z-10 h-full flex flex-col ${variant === 'menu' || variant === 'cart' ? 'px-8 md:px-12 py-16' : ''}`}>
                       <header
                         className={`flex items-center ${
-                          variant === 'default' ? 'px-6 h-nav sm:px-8 md:px-12 justify-between' : 'mb-4 relative justify-center'
+                          variant === 'default' ? 'px-6 h-nav sm:px-8 md:px-12 justify-between' : 'mb-10 relative justify-center flex-col items-center text-center'
                         }`}
                       >
-                        {heading !== null && (
+                        {heading !== null && variant !== 'default' && (
+                          <>
+                            <span className="text-rust text-[10px] tracking-[0.3em] font-body uppercase mb-2">
+                                {variant === 'menu' ? '— Navigate' : '— Your Cart'}
+                            </span>
+                            <Dialog.Title>
+                              <Heading as="span" size="lead" id="cart-contents" className="font-heading text-4xl md:text-5xl tracking-widest text-dark-green">
+                                {heading}
+                              </Heading>
+                            </Dialog.Title>
+                            <div className="w-16 h-0.5 bg-rust mt-4 mx-auto" />
+                          </>
+                        )}
+                        {heading !== null && variant === 'default' && (
                           <Dialog.Title>
-                            <Heading as="span" size="lead" id="cart-contents" className={`${variant !== 'default' ? 'font-heading text-4xl tracking-widest text-dark-green' : ''}`}>
+                            <Heading as="span" size="lead" id="cart-contents">
                               {heading}
                             </Heading>
                           </Dialog.Title>
@@ -115,22 +105,25 @@ export function Drawer({
                           </button>
                         )}
                       </header>
-                      <div className="flex-grow overflow-y-auto">
+                      <div className="flex-grow overflow-y-auto scrollbar-hide" style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
                         {children}
                       </div>
                       
-                      {/* Footer Close Button (Custom for Menu/Cart) */}
+                      {/* Simple Close Button - rust hover */}
                       {(variant === 'menu' || variant === 'cart') && (
-                          <div className="pt-6 pb-2 text-center relative z-20">
+                          <div className="pt-6 text-center">
                               <button 
                                   type="button"
                                   onClick={onClose}
-                                  className="group relative inline-block p-2"
+                                  className="group inline-flex items-center gap-2 px-5 py-2.5 border border-dark-green/30 hover:border-rust hover:bg-rust/10 transition-all duration-300"
                                   aria-label="Close"
                               >
-                                  <span className="font-heading text-4xl italic font-light text-[#5c6f3d] group-hover:text-rust transition-colors duration-300 transform group-hover:scale-110 block">
-                                      X
+                                  <span className="font-body text-xs tracking-widest text-dark-green group-hover:text-rust transition-colors uppercase">
+                                      Close
                                   </span>
+                                  <svg className="w-3.5 h-3.5 text-dark-green/60 group-hover:text-rust transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                  </svg>
                               </button>
                           </div>
                       )}

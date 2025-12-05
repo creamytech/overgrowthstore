@@ -102,6 +102,7 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
 
 
 import {GrowthLoader} from '~/components/ui/GrowthLoader';
+import {NavigationProgress} from '~/components/PageTransition';
 function loadDeferredData({context}: LoaderFunctionArgs) {
   const {cart, customerAccount} = context;
 
@@ -132,6 +133,9 @@ function Layout({children}: {children?: React.ReactNode}) {
       <body className="antialiased text-ink bg-paper selection:bg-rust selection:text-paper">
         {/* Global Field Journal Canvas */}
         <div className="canvas-background" />
+        
+        {/* Navigation Progress Bar */}
+        <NavigationProgress />
 
 
         

@@ -1,4 +1,5 @@
 import {useRef, Suspense, useState, useEffect} from 'react';
+import {ImageZoomModal} from '~/components/ImageZoomModal';
 import {Disclosure, Listbox} from '@headlessui/react';
 import {
   defer,
@@ -148,7 +149,10 @@ export default function Product() {
   const initialImage = selectedVariant?.image || (firstMedia?.__typename === 'MediaImage' ? firstMedia.image : null);
   
   const [activeImage, setActiveImage] = useState(initialImage);
-  const [isInspecting, setIsInspecting] = useState(false);
+  const [isZoomOpen, setIsZoomOpen] = useState(false);
+  const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
+  const [isHovering, setIsHovering] = useState(false);
+  const imageContainerRef = useRef<HTMLDivElement>(null);
 
   // Update active image when variant changes
   useEffect(() => {
@@ -157,13 +161,19 @@ export default function Product() {
     }
   }, [selectedVariant]);
 
+  // Handle mouse move for zoom lens
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!imageContainerRef.current) return;
+    const rect = imageContainerRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setZoomPosition({ x, y });
+  };
+
   return (
-    <div className="min-h-screen bg-[#f4f1ea] relative py-32 px-4 md:px-8">
-       {/* Texture Overlay */}
-       <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
-       
+    <div className="min-h-screen relative pt-40 pb-32 px-4 md:px-8">
        <div className="max-w-7xl mx-auto relative">
-            {/* Official Report Container */}
+            {/* Product Container */}
             <div className="bg-[#f4f1ea] relative border border-dark-green/20 p-6 md:p-12 shadow-sm">
                 
                 {/* Header Metadata */}
@@ -171,10 +181,7 @@ export default function Product() {
                     <div className="flex-1">
                         <div className="flex items-center gap-4 mb-4">
                             <span className="inline-block px-2 py-1 border border-dark-green/30 font-body text-[10px] tracking-widest uppercase text-dark-green bg-[#f4f1ea]">
-                                RECOVERED WORKS ANALYSIS
-                            </span>
-                            <span className="font-body text-[10px] tracking-widest uppercase text-dark-green/60">
-                                REF ID #{product.id.substring(product.id.length - 6)}
+                                RECOVERED WORKS
                             </span>
                         </div>
                         <h1 className="font-heading text-4xl md:text-5xl text-dark-green leading-tight">
@@ -183,7 +190,7 @@ export default function Product() {
                     </div>
                     <div className="text-right flex flex-col items-end">
                         <span className="block font-body text-[10px] tracking-widest uppercase text-dark-green/50 mb-1">
-                            Acquisition Date
+                            Added to Collection
                         </span>
                         <span className="font-body text-sm text-dark-green border-b border-dark-green/20 pb-1">
                             {new Date(product.publishedAt).toLocaleDateString()}
@@ -193,47 +200,86 @@ export default function Product() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start relative z-10">
                     
-                    {/* Left Column: The Visual (Specimen) */}
+                    {/* Left Column: Product Images */}
                     <div className="flex flex-col gap-4">
+                        {/* Image Container with Hover Zoom */}
                         <div 
-                            className="relative w-full aspect-[4/5] bg-paper border border-dark-green/20 p-8 shadow-sm group cursor-crosshair transition-colors duration-100 steps(2)"
-                            onClick={() => setIsInspecting(!isInspecting)}
+                            ref={imageContainerRef}
+                            className="relative w-full aspect-[4/5] bg-paper border border-dark-green/20 shadow-sm overflow-hidden group"
+                            onMouseEnter={() => setIsHovering(true)}
+                            onMouseLeave={() => setIsHovering(false)}
+                            onMouseMove={handleMouseMove}
+                            onClick={() => {
+                                if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+                                    setIsZoomOpen(true);
+                                }
+                            }}
                         >
-                            {/* Texture Overlay (Multiply) - Fades out on hover or inspect */}
-                            <div 
-                                className={`absolute inset-0 z-10 pointer-events-none mix-blend-multiply transition-opacity duration-100 steps(2) ${isInspecting ? 'opacity-0' : 'opacity-30 group-hover:opacity-0'}`}
-                            />
-                            
-                            {/* Product Image - Removes filters on hover or inspect */}
-                            <div className="relative w-full h-full z-0">
+                            {/* Base Product Image */}
+                            <div className="relative w-full h-full p-8 z-0">
                                 {activeImage && (
                                     <Image
                                         data={activeImage}
                                         sizes="(min-width: 1024px) 60vw, 100vw"
-                                        className={`w-full h-full object-contain transition-all duration-100 steps(2) ${isInspecting ? 'mix-blend-normal filter-none sepia-0' : 'mix-blend-multiply filter contrast-110 sepia-[0.1] group-hover:mix-blend-normal group-hover:filter-none group-hover:sepia-0'}`}
+                                        className="w-full h-full object-contain"
                                     />
                                 )}
                             </div>
 
-                            {/* Corner Stamps/Marks */}
-                            <div className={`absolute top-4 left-4 z-20 border border-dark-green/30 px-2 py-1 transition-opacity duration-100 steps(2) ${isInspecting ? 'opacity-50' : 'group-hover:opacity-50'}`}>
-                                <span className="font-typewriter text-[10px] uppercase tracking-widest text-dark-green/60">
-                                    Fig. A
+                            {/* Hover Zoom Overlay - Desktop Only */}
+                            {activeImage && (
+                                <div 
+                                    className={`hidden lg:block absolute inset-0 z-30 pointer-events-none transition-opacity duration-200 ${isHovering ? 'opacity-100' : 'opacity-0'}`}
+                                    style={{
+                                        backgroundImage: `url(${activeImage.url})`,
+                                        backgroundSize: '200%',
+                                        backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                                        backgroundRepeat: 'no-repeat',
+                                    }}
+                                />
+                            )}
+
+                            {/* Corner Label */}
+                            <div className="absolute top-4 left-4 z-20 border border-dark-green/30 px-2 py-1 bg-paper/90">
+                                <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60">
+                                    Preview
                                 </span>
                             </div>
-                             <div className={`absolute bottom-4 left-4 z-20 border border-dark-green/30 px-2 py-1 transition-opacity duration-100 steps(2) ${isInspecting ? 'opacity-50' : 'group-hover:opacity-50'}`}>
-                                <span className="font-typewriter text-[10px] uppercase tracking-widest text-dark-green/60">
+                            <div className="absolute bottom-4 left-4 z-20 border border-dark-green/30 px-2 py-1 bg-paper/90">
+                                <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60">
                                     ATTACHMENT 01
                                 </span>
                             </div>
 
-                            {/* Mobile Hint */}
-                            <div className={`absolute bottom-4 right-4 z-20 transition-opacity duration-100 steps(2) ${isInspecting ? 'opacity-0' : 'opacity-100 lg:opacity-0'}`}>
-                                <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/40 bg-paper/80 px-2 py-1 rounded-full">
-                                    Tap to Inspect
+                            {/* Zoom Hint */}
+                            <div className={`absolute bottom-4 right-4 z-20 transition-opacity duration-300 ${isHovering ? 'lg:opacity-0' : 'opacity-100'}`}>
+                                <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60 bg-paper/90 px-3 py-1.5 flex items-center gap-1.5 shadow-sm">
+                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                    </svg>
+                                    <span className="lg:hidden">Tap to Zoom</span>
+                                    <span className="hidden lg:inline">Hover to Zoom</span>
                                 </span>
                             </div>
+
+                            {/* Crosshair on hover */}
+                            {isHovering && (
+                                <div 
+                                    className="hidden lg:block absolute w-6 h-6 border-2 border-rust/60 rounded-full pointer-events-none z-40 -translate-x-1/2 -translate-y-1/2"
+                                    style={{
+                                        left: `${zoomPosition.x}%`,
+                                        top: `${zoomPosition.y}%`,
+                                    }}
+                                />
+                            )}
                         </div>
+
+                        {/* Zoom Modal - For mobile tap */}
+                        <ImageZoomModal 
+                            image={activeImage}
+                            isOpen={isZoomOpen}
+                            onClose={() => setIsZoomOpen(false)}
+                        />
 
                         {/* Thumbnails */}
                         {media.nodes.length > 1 && (
@@ -248,7 +294,7 @@ export default function Product() {
                                         <button
                                             key={med.id || image.id}
                                             onClick={() => setActiveImage(image)}
-                                            className={`relative w-20 h-24 flex-shrink-0 border transition-all duration-100 steps(2) ${
+                                            className={`relative w-20 h-24 flex-shrink-0 border transition-all duration-100 ${
                                                 isActive 
                                                 ? 'border-dark-green opacity-100 ring-1 ring-dark-green ring-offset-1 ring-offset-[#f4f1ea]' 
                                                 : 'border-dark-green/20 opacity-60 hover:opacity-100 hover:border-dark-green/50'
@@ -258,7 +304,7 @@ export default function Product() {
                                             <Image
                                                 data={image}
                                                 sizes="80px"
-                                                className="w-full h-full object-cover grayscale-[0.2]"
+                                                className="w-full h-full object-cover"
                                             />
                                         </button>
                                     );
@@ -285,37 +331,37 @@ export default function Product() {
                             <div className="grid grid-cols-3 border-b border-dashed border-dark-green/20 pb-2">
                                 <span className="uppercase tracking-widest opacity-60">Origin</span>
                                 <span className="col-span-2">
-                                    Sector 7 (Reclaimed Zone)
+                                    The Quiet Places // Reclaimed
                                 </span>
                             </div>
                             <div className="grid grid-cols-3 border-b border-dashed border-dark-green/20 pb-2">
                                 <span className="uppercase tracking-widest opacity-60">Material</span>
                                 <span className="col-span-2">
-                                    100% Organic Cotton (240 GSM)
+                                    100% Organic Cotton // 240 GSM
                                 </span>
                             </div>
                             <div className="grid grid-cols-3 border-b border-dashed border-dark-green/20 pb-2">
                                 <span className="uppercase tracking-widest opacity-60">Status</span>
                                 <span className="col-span-2">
-                                    {selectedVariant?.availableForSale ? 'Available for Study' : 'Archived'}
+                                    {selectedVariant?.availableForSale ? 'Available for Acquisition' : 'Archived // Depleted'}
                                 </span>
                             </div>
                         </div>
 
-                        {/* Technical Specifications (New Section) */}
+                        {/* Technical Specifications */}
                         <div className="bg-dark-green/5 border border-dark-green/10 p-4 font-mono text-xs text-dark-green/80">
                             <h4 className="font-bold uppercase tracking-widest mb-2 border-b border-dark-green/10 pb-1">Technical Specifications</h4>
                             <div className="grid grid-cols-2 gap-2">
                                 <div>
                                     <span className="opacity-50 block">FIT PROFILE</span>
-                                    <span>OVERSIZED / BOXY</span>
+                                    <span>OVERSIZED // BOXY</span>
                                 </div>
                                 <div>
-                                    <span className="opacity-50 block">WEIGHT</span>
+                                    <span className="opacity-50 block">WEIGHT CLASS</span>
                                     <span>HEAVYWEIGHT</span>
                                 </div>
                                 <div className="col-span-2">
-                                    <span className="opacity-50 block">CARE INSTRUCTIONS</span>
+                                    <span className="opacity-50 block">CARE PROTOCOL</span>
                                     <span>MACHINE WASH COLD // HANG DRY ONLY</span>
                                 </div>
                             </div>
@@ -348,60 +394,46 @@ export default function Product() {
                 </div>
 
                 {/* Footer Signature */}
-                <div className="relative z-10 mt-16 pt-8 border-t border-dashed border-dark-green/30 flex justify-between items-end">
-                    <div>
-                         <span className="block font-body text-[10px] uppercase tracking-widest text-dark-green/50 mb-2">
-                            Clearance
-                        </span>
-                        <span className="font-heading text-lg text-dark-green">
-                            LEVEL 4 AUTHORIZED
-                        </span>
-                    </div>
-                    <div className="text-right">
-                        <span className="block font-body text-[10px] uppercase tracking-widest text-dark-green/50 mb-2">
-                            Verified By
-                        </span>
-                        <span className="font-heading text-xl text-dark-green block border-b border-dark-green/30 pb-1 px-4">
-                            The Quartermaster
-                        </span>
-                    </div>
+                <div className="relative z-10 mt-16 pt-8 border-t border-dashed border-dark-green/30 text-center">
+                    <span className="font-body text-xs text-dark-green/50 tracking-widest">
+                        Recovered from the quiet places
+                    </span>
                 </div>
-
             </div>
-       </div>
 
-      {/* Related Specimens */}
-      <Suspense fallback={<Skeleton className="h-32 mt-12" />}>
-        <Await
-          errorElement="There was a problem loading related products"
-          resolve={recommended}
-        >
-          {(products) => (
-            <div className="mt-24 border-t border-dark-green/20 pt-12 max-w-7xl mx-auto px-4">
-                <h3 className="font-heading text-2xl text-dark-green mb-8 text-center tracking-widest">
-                    RECOMMENDED LOADOUT
-                </h3>
-                <ProductSwimlane title="" products={products} />
-            </div>
-          )}
-        </Await>
-      </Suspense>
-      
-      <Analytics.ProductView
-        data={{
-          products: [
-            {
-              id: product.id,
-              title: product.title,
-              price: selectedVariant?.price.amount || '0',
-              vendor: product.vendor,
-              variantId: selectedVariant?.id || '',
-              variantTitle: selectedVariant?.title || '',
-              quantity: 1,
-            },
-          ],
-        }}
-      />
+        {/* Related Specimens */}
+        <Suspense fallback={<Skeleton className="h-32 mt-12" />}>
+          <Await
+            errorElement="There was a problem loading related products"
+            resolve={recommended}
+          >
+            {(products) => (
+              <div className="mt-24 border-t border-dark-green/20 pt-12 max-w-6xl mx-auto px-4">
+                  <h3 className="font-heading text-2xl text-dark-green mb-8 text-center tracking-widest">
+                      YOU MAY ALSO LIKE
+                  </h3>
+                  <ProductSwimlane title="" products={products} />
+              </div>
+            )}
+          </Await>
+        </Suspense>
+        
+        <Analytics.ProductView
+          data={{
+            products: [
+              {
+                id: product.id,
+                title: product.title,
+                price: selectedVariant?.price.amount || '0',
+                vendor: product.vendor,
+                variantId: selectedVariant?.id || '',
+                variantTitle: selectedVariant?.title || '',
+                quantity: 1,
+              },
+            ],
+          }}
+        />
+        </div>
     </div>
   );
 }
@@ -546,7 +578,7 @@ export function ProductForm({
               {/* Content */}
               <div className="relative z-10 flex flex-col items-center justify-center h-full gap-1">
                  <span className="font-heading text-2xl tracking-[0.25em] uppercase text-[#f4f1ea] transition-colors duration-100 steps(2)">
-                    Acquire Recovered Work
+                    Claim This Find
                  </span>
                  <div className="flex items-center gap-3 opacity-60 group-hover:opacity-100 transition-opacity duration-100 steps(2)">
                     <span className="h-px w-8 bg-[#f4f1ea] transition-colors" />

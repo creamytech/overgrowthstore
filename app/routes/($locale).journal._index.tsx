@@ -6,6 +6,7 @@ import {
 import {useLoaderData} from '@remix-run/react';
 import {flattenConnection, getSeoMeta, Image} from '@shopify/hydrogen';
 import {motion} from 'framer-motion';
+import {Icon} from '@iconify/react';
 
 import {Section} from '~/components/Text';
 import {Link} from '~/components/Link';
@@ -62,19 +63,28 @@ export default function Journals() {
 
   return (
     <div className="min-h-screen bg-[#f4f1ea] relative overflow-hidden">
-       {/* Texture Overlay */}
-       <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
-       {/* Header */}
-       <div className="relative z-10 pt-32 pb-12 text-center">
-            <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-2">
-                FIELD NOTES
-            </h1>
-            <div className="font-body text-rust text-lg tracking-[0.3em] uppercase">
-                <span>OBSERVATION LOGS</span>
-            </div>
-            <div className="w-24 h-1 bg-rust mx-auto mt-6" />
-       </div>
+      {/* Texture Overlay */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
 
+      {/* Standard Header */}
+      <div className="relative z-10 pt-40 pb-12 text-center">
+        <div className="flex justify-center mb-6">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-px bg-gradient-to-r from-transparent to-dark-green/30" />
+            <div className="w-2 h-2 border border-rust rotate-45" />
+            <div className="w-16 h-px bg-gradient-to-l from-transparent to-dark-green/30" />
+          </div>
+        </div>
+        <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-4 uppercase">
+          Field Notes
+        </h1>
+        <p className="font-body text-dark-green/60 text-lg max-w-md mx-auto">
+          Stories from the quiet places
+        </p>
+        <div className="w-24 h-1 bg-rust mx-auto mt-8" />
+      </div>
+
+      {/* Articles Grid */}
       <Section className="relative z-10 px-4 md:px-12 pb-32">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {articles.map((article, i) => (
@@ -112,7 +122,7 @@ function JournalCard({
         className="group h-full"
     >
       <Link to={`/${blogHandle}/${article.handle}`} className="block h-full">
-        <div className="bg-[#f4f1ea] h-full border border-dark-green/20 p-6 flex flex-col transition-all duration-300 group-hover:border-dark-green/50 group-hover:shadow-lg relative overflow-hidden">
+        <div className="bg-[#f9f7f3] h-full border border-dark-green/20 p-6 flex flex-col transition-all duration-300 group-hover:border-rust group-hover:shadow-lg relative overflow-hidden">
             
             {/* Corner Accents */}
             <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-dark-green/30" />
@@ -120,10 +130,10 @@ function JournalCard({
             <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-dark-green/30" />
             <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-dark-green/30" />
 
-            {/* Date Stamp */}
+            {/* Note Label */}
             <div className="mb-4 border-b border-dark-green/10 pb-2 flex justify-between items-center">
                 <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60">
-                    LOG ENTRY #{index + 101}
+                    Field Note #{index + 1}
                 </span>
                 <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60">
                     {article.publishedAt}
@@ -132,12 +142,9 @@ function JournalCard({
 
             {article.image && (
             <div className="aspect-[4/3] overflow-hidden mb-6 border border-dark-green/10 relative">
-                 {/* Texture Overlay */}
-                 <div className="absolute inset-0 z-10 pointer-events-none mix-blend-multiply opacity-20 bg-[url('/assets/texture_archive_paper.jpg')]" />
-                 
                 <Image
                 alt={article.image.altText || article.title}
-                className="object-cover w-full h-full mix-blend-multiply filter contrast-110 sepia-[0.2] transition-transform duration-700 group-hover:scale-105"
+                className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
                 data={article.image}
                 aspectRatio="4/3"
                 loading={loading}
@@ -153,7 +160,7 @@ function JournalCard({
                 <div className="w-full h-px bg-dark-green/10 mt-4 group-hover:bg-rust/30 transition-colors" />
                 <div className="mt-4 flex justify-end">
                     <span className="font-body text-xs text-rust tracking-widest uppercase group-hover:translate-x-1 transition-transform">
-                        Read Report &rarr;
+                        Read More →
                     </span>
                 </div>
             </div>

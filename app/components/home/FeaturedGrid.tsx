@@ -3,7 +3,7 @@ import {Image, Money} from '@shopify/hydrogen';
 import {motion} from 'framer-motion';
 import {ProductCard} from '~/components/ProductCard';
 
-export function FeaturedGrid({products, title = "Field Issue"}: {products: any[], title?: string}) {
+export function FeaturedGrid({products, title = "Latest Finds"}: {products: any[], title?: string}) {
   if (!products || products.length === 0) return null;
 
   return (
@@ -13,7 +13,7 @@ export function FeaturedGrid({products, title = "Field Issue"}: {products: any[]
         {/* Section Header */}
         <div className="text-center mb-16">
             <div className="font-typewriter text-xs text-dark-green/60 mb-4 tracking-widest uppercase">
-                <span>Supply Drop // Early Access</span>
+                <span>New Discoveries</span>
             </div>
             <h2 className="font-heading text-4xl md:text-5xl text-dark-green tracking-widest mb-6 uppercase">
                 {title}

@@ -1,14 +1,13 @@
-import {json, type LoaderFunctionArgs, type ActionFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData, Form, useActionData, useNavigation} from '@remix-run/react';
+import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import {useLoaderData, Form} from '@remix-run/react';
 import {getSeoMeta} from '@shopify/hydrogen';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
-
+import {Icon} from '@iconify/react';
 
 export const headers = routeHeaders;
 
-export async function loader({request, context, params}: LoaderFunctionArgs) {
-  console.log('CONTACT ROUTE LOADER HIT');
+export async function loader({request, context}: LoaderFunctionArgs) {
   const {page} = await context.storefront.query(PAGE_QUERY, {
     variables: {
       handle: 'contact',
@@ -16,11 +15,9 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
     },
   });
 
-  // If page is not found, we don't throw 404, we just render the form without dynamic SEO/Body
-  // This ensures the custom page works even if the user hasn't created it in Admin yet.
   const seo = page 
     ? seoPayload.page({page, url: request.url})
-    : {title: 'Contact | Overgrowth', description: 'Establish connection with Headquarters.'};
+    : {title: 'Contact | Overgrowth', description: 'Get in touch with us.'};
 
   return json({page, seo});
 }
@@ -30,173 +27,150 @@ export const meta = ({matches}: any) => {
 };
 
 export default function Contact() {
-  const {page} = useLoaderData<typeof loader>();
-  
   return (
     <div className="min-h-screen bg-[#f4f1ea] relative overflow-hidden">
-       {/* Texture Overlay */}
-       <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
-       
-       {/* Header */}
-       <div className="relative z-10 pt-32 pb-12 text-center">
-            <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-2">
-                ESTABLISH CONNECTION
-            </h1>
-            <div className="font-body text-rust text-lg tracking-[0.3em] uppercase">
-                <span>Secure Channel</span>
-            </div>
-            <div className="w-24 h-1 bg-rust mx-auto mt-6" />
-       </div>
+      {/* Texture Overlay */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
 
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 relative z-10 px-4 md:px-8 pb-24">
-        
-        {/* Left: The Transmission Form */}
-        <div className="relative group">
-            {/* Paper Sheet Effect */}
-            <div className="absolute inset-0 bg-dark-green/5 transform -rotate-1 group-hover:rotate-0 transition-transform duration-500" />
-            <div className="bg-[#f4f1ea] border border-dark-green/20 p-8 md:p-12 shadow-sm relative overflow-hidden transform rotate-1 group-hover:rotate-0 transition-transform duration-500">
-                {/* Stamps */}
-                <div className="absolute top-4 right-4 border-4 border-rust/30 text-rust/30 px-4 py-1 font-heading text-xl -rotate-12 pointer-events-none uppercase tracking-widest mix-blend-multiply mask-grunge">
-                    CONFIDENTIAL
+      {/* Standard Header */}
+      <div className="relative z-10 pt-40 pb-12 text-center">
+        <div className="flex justify-center mb-6">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-px bg-gradient-to-r from-transparent to-dark-green/30" />
+            <div className="w-2 h-2 border border-rust rotate-45" />
+            <div className="w-16 h-px bg-gradient-to-l from-transparent to-dark-green/30" />
+          </div>
+        </div>
+        <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-4 uppercase">
+          Contact
+        </h1>
+        <p className="font-body text-dark-green/60 text-lg max-w-md mx-auto">
+          Questions, ideas, or just want to say hello?
+        </p>
+        <div className="w-24 h-1 bg-rust mx-auto mt-8" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 px-4 md:px-8 pb-24">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8">
+            
+            {/* Contact Form */}
+            <div className="bg-[#f9f7f3] border border-dark-green/20 p-8">
+              <h2 className="font-heading text-xl text-dark-green mb-6">Send a Message</h2>
+              
+              <Form method="post" action="/contact" className="space-y-6">
+                <div>
+                  <label className="font-body text-xs text-dark-green/60 uppercase tracking-widest mb-2 block">
+                    Name
+                  </label>
+                  <input 
+                    type="text" 
+                    name="name" 
+                    required
+                    className="w-full bg-[#f4f1ea] border border-dark-green/20 p-4 font-body text-dark-green focus:outline-none focus:border-rust transition-colors"
+                    placeholder="Your name"
+                  />
                 </div>
 
-                <Form method="post" action="/contact" className="space-y-8">
-                    <div className="space-y-2">
-                        <label htmlFor="name" className="block font-typewriter text-xs tracking-widest uppercase text-dark-green/70">
-                            Your Name
-                        </label>
-                        <input 
-                            type="text" 
-                            name="name" 
-                            id="name"
-                            required
-                            placeholder="e.g. Agent Cooper"
-                            className="w-full bg-[#f0ede6] border-b-2 border-dark-green/20 py-3 px-4 font-typewriter text-dark-green placeholder:text-dark-green/30 focus:outline-none focus:border-rust focus:bg-[#e8e5d5] transition-all duration-300"
-                        />
-                    </div>
+                <div>
+                  <label className="font-body text-xs text-dark-green/60 uppercase tracking-widest mb-2 block">
+                    Email
+                  </label>
+                  <input 
+                    type="email" 
+                    name="email" 
+                    required
+                    className="w-full bg-[#f4f1ea] border border-dark-green/20 p-4 font-body text-dark-green focus:outline-none focus:border-rust transition-colors"
+                    placeholder="you@email.com"
+                  />
+                </div>
 
-                    <div className="space-y-2">
-                        <label htmlFor="email" className="block font-typewriter text-xs tracking-widest uppercase text-dark-green/70">
-                            Your Email
-                        </label>
-                        <input 
-                            type="email" 
-                            name="email" 
-                            id="email"
-                            required
-                            placeholder="agent@overgrowth.com"
-                            className="w-full bg-[#f0ede6] border-b-2 border-dark-green/20 py-3 px-4 font-typewriter text-dark-green placeholder:text-dark-green/30 focus:outline-none focus:border-rust focus:bg-[#e8e5d5] transition-all duration-300"
-                        />
-                    </div>
+                <div>
+                  <label className="font-body text-xs text-dark-green/60 uppercase tracking-widest mb-2 block">
+                    Subject
+                  </label>
+                  <select 
+                    name="subject"
+                    className="w-full bg-[#f4f1ea] border border-dark-green/20 p-4 font-body text-dark-green focus:outline-none focus:border-rust transition-colors"
+                  >
+                    <option>General Question</option>
+                    <option>Order Inquiry</option>
+                    <option>Return Request</option>
+                    <option>Collaboration</option>
+                    <option>Other</option>
+                  </select>
+                </div>
 
-                    <div className="space-y-2">
-                        <label htmlFor="message" className="block font-typewriter text-xs tracking-widest uppercase text-dark-green/70">
-                            Your Message
-                        </label>
-                        <div className="relative">
-                            <textarea 
-                                name="message" 
-                                id="message"
-                                rows={6}
-                                required
-                                placeholder="Report your findings..."
-                                className="w-full bg-[#f0ede6] border border-dark-green/20 p-4 font-typewriter text-dark-green placeholder:text-dark-green/30 focus:outline-none focus:border-rust focus:bg-[#e8e5d5] transition-all duration-300 resize-none leading-relaxed"
-                            />
-                            {/* Lined Paper Effect */}
-                            <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(transparent_27px,#1a472a10_28px)] bg-[length:100%_28px] mt-1" />
-                        </div>
-                    </div>
+                <div>
+                  <label className="font-body text-xs text-dark-green/60 uppercase tracking-widest mb-2 block">
+                    Message
+                  </label>
+                  <textarea 
+                    name="message" 
+                    rows={5}
+                    required
+                    placeholder="What's on your mind?"
+                    className="w-full bg-[#f4f1ea] border border-dark-green/20 p-4 font-body text-dark-green focus:outline-none focus:border-rust transition-colors resize-none"
+                  />
+                </div>
 
-                    <button 
-                        type="submit"
-                        className="w-full bg-dark-green text-[#f4f1ea] py-4 font-heading text-xl tracking-widest hover:bg-rust transition-colors duration-300 relative overflow-hidden group border-2 border-transparent hover:border-rust/50"
+                <button 
+                  type="submit"
+                  className="w-full bg-dark-green text-[#f4f1ea] py-4 font-heading tracking-widest hover:bg-rust transition-colors flex items-center justify-center gap-3"
+                >
+                  <span>Send Message</span>
+                  <Icon icon="ph:paper-plane-tilt" className="w-5 h-5" />
+                </button>
+              </Form>
+            </div>
+
+            {/* Contact Info */}
+            <div className="space-y-6">
+              <div className="bg-[#f9f7f3] border border-dark-green/20 p-8">
+                <Icon icon="ph:envelope-simple" className="w-8 h-8 text-rust mb-4" />
+                <h3 className="font-heading text-lg text-dark-green mb-2">Email</h3>
+                <a href="mailto:hello@overgrowth.com" className="font-body text-dark-green/70 hover:text-rust transition-colors">
+                  hello@overgrowth.com
+                </a>
+              </div>
+              
+              <div className="bg-[#f9f7f3] border border-dark-green/20 p-8">
+                <Icon icon="ph:clock" className="w-8 h-8 text-rust mb-4" />
+                <h3 className="font-heading text-lg text-dark-green mb-2">Hours</h3>
+                <p className="font-body text-dark-green/70">
+                  Mon – Fri, 9am – 5pm EST
+                </p>
+              </div>
+              
+              <div className="bg-[#f9f7f3] border border-dark-green/20 p-8">
+                <Icon icon="ph:map-pin" className="w-8 h-8 text-rust mb-4" />
+                <h3 className="font-heading text-lg text-dark-green mb-2">Location</h3>
+                <p className="font-body text-dark-green/70">
+                  Fort Lauderdale, FL
+                </p>
+              </div>
+              
+              {/* Social Links */}
+              <div className="bg-dark-green p-8">
+                <h3 className="font-heading text-lg text-[#f4f1ea] mb-4">Follow Us</h3>
+                <div className="flex gap-4">
+                  {['instagram', 'twitter', 'tiktok'].map((social) => (
+                    <a 
+                      key={social}
+                      href={`https://${social}.com/overgrowth`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 bg-[#f4f1ea]/10 flex items-center justify-center hover:bg-rust transition-colors"
                     >
-                        <span className="relative z-10 flex items-center justify-center gap-2">
-                            <span>Send Message</span>
-                            <span className="text-xs opacity-50 group-hover:opacity-100 transition-opacity">&gt;&gt;</span>
-                        </span>
-                        {/* Button Texture */}
-                        {/* <div className="absolute inset-0 opacity-10 bg-[url('/assets/texture_noise.png')] mix-blend-overlay" /> */}
-                    </button>
-                </Form>
-            </div>
-            
-            {/* Paper Stack Effect */}
-            <div className="absolute top-2 left-2 w-full h-full border border-dark-green/10 bg-[#f4f1ea] -z-10 transform rotate-1" />
-        </div>
-
-        {/* Right: Headquarters Info */}
-        <div className="flex flex-col justify-center space-y-12 lg:pl-12 pt-12 lg:pt-0 relative">
-            {/* Vertical Line Decoration */}
-            <div className="absolute left-0 top-12 bottom-12 w-px bg-dark-green/20 hidden lg:block" />
-            
-            <div className="space-y-6 relative">
-                <div className="absolute -left-[3.25rem] top-2 w-3 h-3 bg-rust rounded-full hidden lg:block" />
-                <h2 className="font-heading text-3xl text-dark-green uppercase tracking-wider">
-                    HEADQUARTERS
-                </h2>
-                <div className="font-body text-dark-green/80 leading-relaxed max-w-md text-lg">
-                    <span>Our workshop sits near the warm coast of Fort Lauderdale.</span>
-                    <br />
-                    <span>Sunlight, salt air, and a hint of wild growth shape the world around us.</span>
-                    <br />
-                    <span>Send a message anytime and we will reply as soon as we can.</span>
-                </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-10">
-                <div className="group cursor-crosshair">
-                    <h3 className="font-typewriter text-xs tracking-widest uppercase text-rust mb-2 group-hover:text-dark-green transition-colors">
-                        Coordinates
-                    </h3>
-                    <p className="font-heading text-2xl text-dark-green">
-                        26.1224° N, 80.1373° W
-                    </p>
-                    <p className="font-typewriter text-sm text-dark-green/60 mt-1">
-                        Fort Lauderdale, Florida
-                    </p>
-                </div>
-
-                <div className="group cursor-crosshair">
-                    <h3 className="font-typewriter text-xs tracking-widest uppercase text-rust mb-2 group-hover:text-dark-green transition-colors">
-                        Hours
-                    </h3>
-                    <p className="font-heading text-2xl text-dark-green">
-                        0900 to 1700 EST
-                    </p>
-                    <p className="font-typewriter text-sm text-dark-green/60 mt-1">
-                        Mon to Fri
-                    </p>
-                </div>
-
-                <div className="group cursor-crosshair">
-                    <h3 className="font-typewriter text-xs tracking-widest uppercase text-rust mb-2 group-hover:text-dark-green transition-colors">
-                        General Inquiries
-                    </h3>
-                    <a href="mailto:hello@overgrowth.com" className="font-heading text-2xl text-dark-green hover:text-rust transition-colors border-b-2 border-transparent hover:border-rust inline-block">
-                        hello@overgrowth.com
+                      <Icon icon={`ph:${social === 'twitter' ? 'x-logo' : `${social}-logo`}`} className="w-5 h-5 text-[#f4f1ea]" />
                     </a>
+                  ))}
                 </div>
+              </div>
             </div>
-
-            {/* Decorative Map/Graphic Placeholder */}
-            <div className="relative w-full h-48 border-2 border-dark-green/20 overflow-hidden opacity-80 bg-[#e8e5d5] p-2">
-                <div className="w-full h-full border border-dashed border-dark-green/30 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,#1a472a_10px,#1a472a_11px)] opacity-5" />
-                    {/* Radar Sweep */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-[conic-gradient(from_0deg,transparent_0deg,transparent_270deg,#1a472a40_360deg)] rounded-full animate-spin duration-[4s] linear origin-center mask-radial-fade" />
-                    
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-rust rounded-full animate-ping" />
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-rust rounded-full" />
-                    
-                    <div className="absolute bottom-2 right-2 font-typewriter text-[10px] text-dark-green/60 text-right leading-tight">
-                        Signal paths shift with tides and weather.<br/>Connections may vary.
-                    </div>
-                </div>
-            </div>
-
+          </div>
         </div>
-
       </div>
     </div>
   );

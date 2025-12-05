@@ -4,7 +4,7 @@ export function FieldJournalLayout({
   children,
   title,
   date = 'Unknown',
-  location = 'Sector 7G',
+  location = 'The Quiet Places',
 }: {
   children: ReactNode;
   title: string;

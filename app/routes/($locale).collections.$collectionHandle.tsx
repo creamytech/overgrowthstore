@@ -154,19 +154,23 @@ export default function Collection() {
        <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
 
       {/* Custom Header */}
-      <div className="relative z-10 pt-32 pb-12 text-center">
-        <h1 className="font-heading text-4xl md:text-6xl text-dark-green tracking-widest mb-2 uppercase">
+      <div className="relative z-10 pt-40 pb-12 text-center">
+        <div className="flex justify-center mb-6">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-px bg-gradient-to-r from-transparent to-dark-green/30" />
+            <div className="w-2 h-2 border border-rust rotate-45" />
+            <div className="w-16 h-px bg-gradient-to-l from-transparent to-dark-green/30" />
+          </div>
+        </div>
+        <h1 className="font-heading text-4xl md:text-6xl text-dark-green tracking-widest mb-4 uppercase">
             {collection.title}
         </h1>
-        <div className="font-body text-rust text-lg tracking-[0.3em] uppercase mb-4">
-            <span>SECTOR INVENTORY</span>
-        </div>
         {collection.description && (
-            <div className="font-body text-dark-green/70 text-sm tracking-widest uppercase max-w-2xl mx-auto">
-                <p>{collection.description}</p>
-            </div>
+            <p className="font-body text-dark-green/60 text-lg max-w-2xl mx-auto mb-2">
+                {collection.description}
+            </p>
         )}
-        <div className="w-24 h-1 bg-rust mx-auto mt-6" />
+        <div className="w-24 h-1 bg-rust mx-auto mt-8" />
       </div>
 
       <Section padding="x" className="relative z-10">

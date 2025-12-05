@@ -1,4 +1,5 @@
 import {flattenConnection, Image} from '@shopify/hydrogen';
+import {Icon} from '@iconify/react';
 
 import type {OrderCardFragment} from 'customer-accountapi.generated';
 import {Heading, Text} from '~/components/Text';
@@ -16,74 +17,74 @@ export function OrderCard({order}: {order: OrderCardFragment}) {
     : `/account/orders/${legacyOrderId}`;
 
   return (
-    <li className="grid text-center border rounded">
+    <li className="border border-dark-green/20 bg-[#f9f7f3] hover:border-rust transition-colors">
       <Link
         className="grid items-center gap-4 p-4 md:gap-6 md:p-6 md:grid-cols-2"
         to={url}
         prefetch="intent"
       >
         {lineItems[0].image && (
-          <div className="card-image aspect-square bg-primary/5">
+          <div className="aspect-square bg-[#f4f1ea] overflow-hidden">
             <Image
               width={168}
               height={168}
-              className="w-full fadeIn cover"
+              className="w-full h-full object-cover"
               alt={lineItems[0].image?.altText ?? 'Order image'}
               src={lineItems[0].image.url}
             />
           </div>
         )}
         <div
-          className={`flex-col justify-center text-left ${
+          className={`flex flex-col justify-center text-left ${
             !lineItems[0].image && 'md:col-span-2'
           }`}
         >
-          <Heading as="h3" format size="copy">
+          <h3 className="font-heading text-lg text-dark-green mb-2">
             {lineItems.length > 1
               ? `${lineItems[0].title} +${lineItems.length - 1} more`
               : lineItems[0].title}
-          </Heading>
-          <dl className="grid grid-gap-1">
-            <dt className="sr-only">Order ID</dt>
-            <dd>
-              <Text size="fine" color="subtle">
-                Order No. {order.number}
-              </Text>
-            </dd>
-            <dt className="sr-only">Order Date</dt>
-            <dd>
-              <Text size="fine" color="subtle">
+          </h3>
+          <dl className="space-y-1">
+            <div className="flex items-center gap-2">
+              <Icon icon="ph:hash" className="w-3 h-3 text-dark-green/40" />
+              <dd className="font-body text-sm text-dark-green/60">
+                Order #{order.number}
+              </dd>
+            </div>
+            <div className="flex items-center gap-2">
+              <Icon icon="ph:calendar-blank" className="w-3 h-3 text-dark-green/40" />
+              <dd className="font-body text-sm text-dark-green/60">
                 {new Date(order.processedAt).toDateString()}
-              </Text>
-            </dd>
+              </dd>
+            </div>
             {fulfillmentStatus && (
-              <>
-                <dt className="sr-only">Fulfillment Status</dt>
-                <dd className="mt-2">
-                  <span
-                    className={`px-3 py-1 text-xs font-medium rounded-full ${
-                      fulfillmentStatus === 'SUCCESS'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-primary/5 text-primary/50'
-                    }`}
-                  >
-                    <Text size="fine">{statusMessage(fulfillmentStatus)}</Text>
-                  </span>
-                </dd>
-              </>
+              <div className="mt-3">
+                <span
+                  className={`inline-flex items-center gap-1 px-3 py-1 text-xs font-body uppercase tracking-widest ${
+                    fulfillmentStatus === 'SUCCESS'
+                      ? 'bg-dark-green/10 text-dark-green border border-dark-green/20'
+                      : 'bg-rust/10 text-rust border border-rust/20'
+                  }`}
+                >
+                  <Icon 
+                    icon={fulfillmentStatus === 'SUCCESS' ? 'ph:check' : 'ph:clock'} 
+                    className="w-3 h-3" 
+                  />
+                  {statusMessage(fulfillmentStatus)}
+                </span>
+              </div>
             )}
           </dl>
         </div>
       </Link>
-      <div className="self-end border-t">
+      <div className="border-t border-dark-green/10">
         <Link
-          className="block w-full p-2 text-center"
+          className="flex items-center justify-center gap-2 w-full p-3 font-body text-sm text-dark-green/60 hover:text-rust transition-colors"
           to={url}
           prefetch="intent"
         >
-          <Text color="subtle" className="ml-3">
-            View Details
-          </Text>
+          <span>View Details</span>
+          <Icon icon="ph:arrow-right" className="w-4 h-4" />
         </Link>
       </div>
     </li>

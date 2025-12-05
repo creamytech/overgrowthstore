@@ -87,7 +87,7 @@ function CartDiscounts({
       {/* Have existing discount, display it with a remove option */}
       <dl className={codes && codes.length !== 0 ? 'grid' : 'hidden'}>
         <div className="flex items-center justify-between font-medium">
-          <Text as="dt">Clearance Code(s)</Text>
+          <Text as="dt">Discount Code(s)</Text>
           <div className="flex items-center justify-between">
             <UpdateDiscountForm>
               <button>
@@ -111,9 +111,9 @@ function CartDiscounts({
             <summary className="bg-rust text-[#f4f1ea] px-3 py-1.5 flex items-center gap-2 cursor-pointer list-none">
                 <IconTicket className="w-4 h-4 text-[#f4f1ea]" />
                 <span className="font-heading text-xs tracking-[0.2em] uppercase flex-grow">
-                    Clearance Code
+                    Discount Code
                 </span>
-                <span className="text-[10px] opacity-70 group-open:hidden">(ENTER IF AUTHORIZED)</span>
+                <span className="text-[10px] opacity-70 group-open:hidden">(APPLY CODE)</span>
                 <span className="transform transition-transform group-open:rotate-180">▼</span>
             </summary>
             
@@ -198,13 +198,13 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
     <div className="flex flex-col mt-4 gap-3">
       <a href={checkoutUrl} target="_self" className="group relative">
         <Button as="span" width="full" className="relative bg-dark-green text-[#f4f1ea] font-heading tracking-[2px] uppercase hover:bg-rust transition-colors duration-100 steps(2) flex items-center justify-center gap-2 py-4 shadow-lg">
-          SECURE THE ARTIFACT
+          COMPLETE ORDER
         </Button>
       </a>
       
       <div className="text-center">
         <Link to="/products" className="font-body text-xs text-dark-green/60 hover:text-rust underline decoration-dashed underline-offset-4 uppercase tracking-widest transition-colors">
-            Continue Recovery
+            Continue Shopping
         </Link>
       </div>
       {/* @todo: <CartShopPayButton cart={cart} /> */}
@@ -233,7 +233,7 @@ function CartSummary({
       </h2>
       <dl className="grid gap-4">
         <div className="flex items-center justify-between font-medium text-dark-green">
-          <Text as="dt" className="font-heading text-sm tracking-widest uppercase">Mission Cost</Text>
+          <Text as="dt" className="font-heading text-sm tracking-widest uppercase">Subtotal</Text>
           <Text as="dd" data-test="subtotal">
             {cost?.subtotalAmount?.amount ? (
               <Money data={cost?.subtotalAmount} />
@@ -247,7 +247,7 @@ function CartSummary({
         {cost?.subtotalAmount?.amount && (
             <div className="p-2 text-center mt-2">
                 <Text className="font-body text-xs text-dark-green/80">
-                    <span className="font-bold text-rust">+{Math.floor(parseFloat(cost.subtotalAmount.amount))} Artifacts recovered</span> from this requisition
+                    <span className="font-bold text-rust">+{Math.floor(parseFloat(cost.subtotalAmount.amount))} points earned</span> from this order
                 </Text>
             </div>
         )}
@@ -289,7 +289,7 @@ function CartLineItem({line}: {line: CartLine}) {
                 width={110}
                 height={110}
                 data={merchandise.image}
-                className="object-cover object-center w-full h-full border border-gray-100 grayscale-[0.2] group-hover:grayscale-0 transition-all duration-100 steps(2)"
+                className="object-cover object-center w-full h-full border border-gray-100 transition-all duration-100"
                 alt={merchandise.title}
             />
             )}
@@ -482,21 +482,23 @@ export function CartEmpty({
   return (
     <div ref={scrollRef} className={container[layout]} hidden={hidden}>
       <section className="grid gap-6 text-center justify-items-center pt-12">
-        <div className="w-24 h-24 opacity-30 mb-4">
-             {/* Empty Backpack / Crossed Circle Icon */}
+        <div className="w-20 h-20 opacity-40 mb-2">
+             {/* Leaf/Sprout Illustration */}
              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-full h-full text-dark-green">
-                 <circle cx="12" cy="12" r="10" />
-                 <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+                 <path d="M12 22V12M12 12C12 12 8 8 5 8C5 14 8 16 12 12M12 12C12 12 16 8 19 8C19 14 16 16 12 12" strokeLinecap="round" strokeLinejoin="round" />
              </svg>
         </div>
-        <Text format className="font-typewriter text-xl md:text-2xl leading-relaxed max-w-md mx-auto">
-          No works recovered yet
-          <br/>
-          <span className="text-sm opacity-70">Start your search to find your first piece.</span>
-        </Text>
-        <div>
-          <Button onClick={onClose} className="bg-dark-green text-[#EFEBD6] font-heading tracking-widest px-8 py-3 hover:bg-rust transition-colors duration-100 steps(2)">
-              Continue Recovery
+        <div className="space-y-2">
+          <Text format className="font-heading text-2xl md:text-3xl text-dark-green uppercase tracking-widest">
+            Nothing yet...
+          </Text>
+          <p className="font-body text-sm text-dark-green/60">
+            Your finds will appear here
+          </p>
+        </div>
+        <div className="pt-4">
+          <Button onClick={onClose} className="bg-dark-green text-[#EFEBD6] font-heading tracking-widest px-8 py-3 hover:bg-rust transition-colors duration-300">
+              Start Exploring
           </Button>
         </div>
       </section>

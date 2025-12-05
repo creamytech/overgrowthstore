@@ -59,14 +59,21 @@ export default function Collections() {
        <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
        
        {/* Header */}
-       <div className="relative z-10 pt-32 pb-12 text-center">
-            <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-2">
-                ARCHIVE INDEX
-            </h1>
-            <div className="font-body text-rust text-lg tracking-[0.3em] uppercase">
-                <span>COLLECTION LOGS</span>
+       <div className="relative z-10 pt-40 pb-16 text-center">
+            <div className="flex justify-center mb-6">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-px bg-gradient-to-r from-transparent to-dark-green/30" />
+                <div className="w-2 h-2 border border-rust rotate-45" />
+                <div className="w-16 h-px bg-gradient-to-l from-transparent to-dark-green/30" />
+              </div>
             </div>
-            <div className="w-24 h-1 bg-rust mx-auto mt-6" />
+            <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-4">
+                COLLECTIONS
+            </h1>
+            <p className="font-body text-dark-green/60 text-lg max-w-md mx-auto">
+                Recovered works, organized by origin
+            </p>
+            <div className="w-24 h-1 bg-rust mx-auto mt-8" />
        </div>
 
       <Section className="relative z-10 px-4 md:px-12 pb-32">
@@ -75,7 +82,7 @@ export default function Collections() {
             <>
               <div className="flex items-center justify-center mb-6">
                 <Button as={PreviousLink} variant="secondary" width="full">
-                  {isLoading ? 'Loading...' : 'Previous collections'}
+                  {isLoading ? 'Growing...' : '← More Gardens'}
                 </Button>
               </div>
               <Grid
@@ -91,9 +98,9 @@ export default function Collections() {
                   />
                 ))}
               </Grid>
-              <div className="flex items-center justify-center mt-6">
+              <div className="flex items-center justify-center mt-12">
                 <Button as={NextLink} variant="secondary" width="full">
-                  {isLoading ? 'Loading...' : 'Next collections'}
+                  {isLoading ? 'Loading...' : 'View More Collections'}
                 </Button>
               </div>
             </>
@@ -119,49 +126,61 @@ function CollectionCard({
       to={`/collections/${collection.handle}`}
       className="block h-full group"
     >
-        <div className="bg-[#f4f1ea] h-full border border-dark-green/20 p-6 flex flex-col transition-all duration-300 group-hover:border-dark-green/50 group-hover:shadow-lg relative overflow-hidden">
+        <div className="bg-[#f9f7f3] h-full border border-dark-green/15 flex flex-col transition-all duration-500 group-hover:border-rust/40 group-hover:shadow-xl group-hover:shadow-rust/5 relative overflow-hidden">
             
-            {/* Corner Accents */}
-            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-dark-green/30" />
-            <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-dark-green/30" />
-            <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-dark-green/30" />
-            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-dark-green/30" />
+            {/* Animated corner accents */}
+            <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-dark-green/20 group-hover:border-rust/50 group-hover:w-8 group-hover:h-8 transition-all duration-300" />
+            <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-dark-green/20 group-hover:border-rust/50 group-hover:w-8 group-hover:h-8 transition-all duration-300" />
+            <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-dark-green/20 group-hover:border-rust/50 group-hover:w-8 group-hover:h-8 transition-all duration-300" />
+            <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-dark-green/20 group-hover:border-rust/50 group-hover:w-8 group-hover:h-8 transition-all duration-300" />
 
-            {/* ID Stamp */}
-            <div className="mb-4 border-b border-dark-green/10 pb-2 flex justify-between items-center">
-                <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60">
-                    SECTOR #{index !== undefined ? index + 1 : '00'}
-                </span>
-                <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60">
-                    STATUS: ACTIVE
-                </span>
-            </div>
-
-            <div className="aspect-[3/2] overflow-hidden mb-6 border border-dark-green/10 relative">
-                 {/* Texture Overlay */}
-                 <div className="absolute inset-0 z-10 pointer-events-none mix-blend-multiply opacity-20 bg-[url('/assets/texture_archive_paper.jpg')]" />
+            {/* Image with overlay effects */}
+            <div className="aspect-[4/3] overflow-hidden relative">
+                 {/* Gradient overlay */}
+                 <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#f9f7f3] via-transparent to-transparent opacity-60" />
+                 
+                 {/* Texture */}
+                 <div className="absolute inset-0 z-10 pointer-events-none mix-blend-multiply opacity-10 bg-[url('/assets/texture_archive_paper.jpg')]" />
                  
                 {collection?.image && (
                   <Image
                     data={collection.image}
-                    aspectRatio="6/4"
+                    aspectRatio="4/3"
                     sizes="(min-width: 45em) 50vw, 100vw"
                     width={800}
                     loading={loading}
-                    className="object-cover w-full h-full mix-blend-multiply filter contrast-110 sepia-[0.2] transition-transform duration-700 group-hover:scale-105"
+                    className="object-cover w-full h-full transition-all duration-700 group-hover:scale-110 filter contrast-105"
                   />
                 )}
+                
+                {/* Collection number badge */}
+                <div className="absolute top-4 left-4 z-20 bg-[#f9f7f3]/90 backdrop-blur-sm border border-dark-green/20 px-3 py-1">
+                  <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/70">
+                    Collection {index !== undefined ? String(index + 1).padStart(2, '0') : '01'}
+                  </span>
+                </div>
             </div>
             
-            <div className="mt-auto">
-                <h3 className="font-heading text-2xl text-dark-green mb-3 leading-tight group-hover:text-rust transition-colors uppercase">
+            {/* Content */}
+            <div className="p-6 flex-1 flex flex-col">
+                <h3 className="font-heading text-2xl text-dark-green mb-2 leading-tight group-hover:text-rust transition-colors duration-300 uppercase tracking-wide">
                     {collection.title}
                 </h3>
-                <div className="w-full h-px bg-dark-green/10 mt-4 group-hover:bg-rust/30 transition-colors" />
-                <div className="mt-4 flex justify-end">
-                    <span className="font-body text-xs text-rust tracking-widest uppercase group-hover:translate-x-1 transition-transform">
-                        Access Sector &rarr;
+                
+                {collection.description && (
+                  <p className="font-body text-sm text-dark-green/50 mb-4 line-clamp-2">
+                    {collection.description}
+                  </p>
+                )}
+                
+                {/* Footer with animated arrow */}
+                <div className="mt-auto pt-4 border-t border-dark-green/10 flex justify-between items-center">
+                    <span className="font-body text-xs text-dark-green/40 uppercase tracking-widest">
+                      View Works
                     </span>
+                    <div className="w-8 h-8 border border-dark-green/20 flex items-center justify-center group-hover:border-rust group-hover:bg-rust transition-all duration-300">
+                      <span className="text-dark-green/50 group-hover:text-white transition-colors">→</span>
+                    </div>
                 </div>
             </div>
         </div>

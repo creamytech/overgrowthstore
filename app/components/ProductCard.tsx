@@ -68,7 +68,7 @@ export function ProductCard({
                 <div className="absolute inset-0 bg-white shadow-md p-1.5 pb-4 transform transition-transform duration-100 steps(2)">
                     {image && (
                     <Image
-                        className={`object-cover w-full h-full border border-gray-100 ${isSoldOut ? 'grayscale opacity-50' : 'grayscale-[0.2]'}`}
+                        className={`object-cover w-full h-full border border-gray-100 ${isSoldOut ? 'grayscale opacity-50' : ''}`}
                         sizes="80px"
                         aspectRatio="1/1"
                         data={image}
@@ -129,7 +129,7 @@ export function ProductCard({
             {/* Primary Image */}
             {image && (
               <Image
-                className={`object-contain w-full h-full transition-opacity duration-500 mix-blend-multiply filter contrast-110 sepia-[0.1] ${isSoldOut ? 'grayscale opacity-70' : ''} ${product.images?.nodes[1] ? 'group-hover:opacity-0' : ''}`}
+                className={`object-contain w-full h-full transition-opacity duration-500 ${isSoldOut ? 'grayscale opacity-70' : ''} ${product.images?.nodes[1] ? 'group-hover:opacity-0' : ''}`}
                 sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw"
                 width={800}
                 aspectRatio="4/5"
@@ -142,7 +142,7 @@ export function ProductCard({
             {/* Secondary Image (Hover) */}
             {product.images?.nodes[1] && (
                 <Image
-                    className={`absolute inset-0 object-contain w-full h-full p-4 transition-opacity duration-500 opacity-0 group-hover:opacity-100 mix-blend-multiply filter contrast-110 sepia-[0.1] ${isSoldOut ? 'grayscale opacity-70' : ''}`}
+                    className={`absolute inset-0 object-contain w-full h-full p-4 transition-opacity duration-500 opacity-0 group-hover:opacity-100 ${isSoldOut ? 'grayscale opacity-70' : ''}`}
                     sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw"
                     width={800}
                     aspectRatio="4/5"

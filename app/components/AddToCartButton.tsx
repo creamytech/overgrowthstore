@@ -2,6 +2,7 @@ import {CartForm, type OptimisticCartLineInput} from '@shopify/hydrogen';
 import type {FetcherWithComponents} from '@remix-run/react';
 
 import {Button} from '~/components/Button';
+import {IconLeaf} from '~/components/ThemedIcons';
 
 export function AddToCartButton({
   children,
@@ -42,29 +43,32 @@ export function AddToCartButton({
             >
               {fetcher.state !== 'idle' ? (
                  <div className="absolute inset-0 flex items-center justify-center bg-dark-green z-50">
-                    {/* Hazard Stripes Background */}
+                    {/* Gentle gradient background */}
                     <div 
-                        className="absolute inset-0 opacity-20"
+                        className="absolute inset-0 opacity-30"
                         style={{
-                            backgroundImage: 'repeating-linear-gradient(45deg, #c05a34 0, #c05a34 10px, transparent 10px, transparent 20px)',
-                            backgroundSize: '28px 28px',
-                            animation: 'slide 1s linear infinite'
+                            background: 'linear-gradient(90deg, #4a5d23 0%, #1a472a 50%, #4a5d23 100%)',
+                            backgroundSize: '200% 100%',
+                            animation: 'shimmer 1.5s ease-in-out infinite'
                         }}
                     />
                     <style>{`
-                        @keyframes slide {
-                            0% { background-position: 0 0; }
-                            100% { background-position: 28px 0; }
+                        @keyframes shimmer {
+                            0% { background-position: 200% 0; }
+                            100% { background-position: -200% 0; }
                         }
                     `}</style>
                     
                     {/* Text */}
-                    <span className="relative z-10 font-heading text-xl tracking-[0.2em] uppercase text-[#f4f1ea] animate-pulse">
-                        SECURING ASSET...
+                    <span className="relative z-10 font-heading text-xl tracking-[0.2em] uppercase text-[#f4f1ea]">
+                        Adding to cart...
                     </span>
                  </div>
               ) : (
-                children
+                <span className="flex items-center justify-center gap-2">
+                  <IconLeaf size={18} className="opacity-70" />
+                  {children}
+                </span>
               )}
             </Button>
           </>

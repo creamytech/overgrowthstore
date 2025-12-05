@@ -72,18 +72,25 @@ export default function AllProducts() {
 
   return (
     <div className="min-h-screen bg-[#f4f1ea] relative overflow-hidden">
-       {/* Texture Overlay */}
-       <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
+      {/* Texture Overlay */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
 
-      {/* Custom Header */}
-      <div className="relative z-10 pt-32 pb-12 text-center">
-        <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-2">
-          ALL RECOVERED WORKS
-        </h1>
-        <div className="font-body text-rust text-lg tracking-[0.3em] uppercase">
-            <span>COMPLETE CATALOG</span>
+      {/* Standard Header */}
+      <div className="relative z-10 pt-40 pb-12 text-center">
+        <div className="flex justify-center mb-6">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-px bg-gradient-to-r from-transparent to-dark-green/30" />
+            <div className="w-2 h-2 border border-rust rotate-45" />
+            <div className="w-16 h-px bg-gradient-to-l from-transparent to-dark-green/30" />
+          </div>
         </div>
-        <div className="w-24 h-1 bg-rust mx-auto mt-6" />
+        <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-4 uppercase">
+          All Products
+        </h1>
+        <p className="font-body text-dark-green/60 text-lg max-w-md mx-auto">
+          Browse all recovered works
+        </p>
+        <div className="w-24 h-1 bg-rust mx-auto mt-8" />
       </div>
 
       <Section padding="x" className="relative z-10 pb-32">
@@ -103,7 +110,7 @@ export default function AllProducts() {
                 <div className="flex items-center justify-center mb-12">
                   <PreviousLink className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-heading font-bold text-dark-green transition-all duration-300 bg-transparent border-2 border-dark-green hover:text-[#f4f1ea]">
                     <span className="absolute inset-0 w-full h-full bg-dark-green transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
-                    <span className="relative z-10">{isLoading ? 'LOADING...' : 'PREVIOUS PAGE'}</span>
+                    <span className="relative z-10">{isLoading ? 'Loading...' : '← Previous'}</span>
                   </PreviousLink>
                 </div>
                 
@@ -114,7 +121,7 @@ export default function AllProducts() {
                 <div className="flex items-center justify-center mt-12">
                   <NextLink className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-heading font-bold text-dark-green transition-all duration-300 bg-transparent border-2 border-dark-green hover:text-[#f4f1ea]">
                     <span className="absolute inset-0 w-full h-full bg-dark-green transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
-                    <span className="relative z-10">{isLoading ? 'LOADING...' : 'NEXT PAGE'}</span>
+                    <span className="relative z-10">{isLoading ? 'Loading...' : 'Load More →'}</span>
                   </NextLink>
                 </div>
               </>

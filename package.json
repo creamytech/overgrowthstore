@@ -21,6 +21,7 @@
   "prettier": "@shopify/prettier-config",
   "dependencies": {
     "@headlessui/react": "^1.7.2",
+    "@iconify/react": "^6.0.2",
     "@lottiefiles/dotlottie-react": "^0.17.8",
     "@remix-run/node": "2.15.3",
     "@remix-run/react": "2.15.3",

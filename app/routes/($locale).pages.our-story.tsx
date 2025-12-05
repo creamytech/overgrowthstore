@@ -3,11 +3,12 @@ import {useLoaderData} from '@remix-run/react';
 import {getSeoMeta} from '@shopify/hydrogen';
 import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
-
+import {Icon} from '@iconify/react';
+import {Link} from '~/components/Link';
 
 export const headers = routeHeaders;
 
-export async function loader({request, context, params}: LoaderFunctionArgs) {
+export async function loader({request, context}: LoaderFunctionArgs) {
   const {page} = await context.storefront.query(PAGE_QUERY, {
     variables: {
       handle: 'our-story',
@@ -28,164 +29,140 @@ export const meta = ({matches}: any) => {
 };
 
 export default function OurStory() {
-  const {page} = useLoaderData<typeof loader>();
-
   return (
-    <div className="min-h-screen pt-32 pb-24 px-4 md:px-8 relative overflow-hidden">
-        {/* Texture Overlay - Removed to use global */}
-        {/* <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" /> */}
-        
-        <div className="max-w-4xl mx-auto relative z-10">
-            {/* Header - Standardized */}
-            <div className="mb-16 text-center">
-                <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-2 uppercase">
-                    Mission Briefing
-                </h1>
-                <div className="font-body text-rust text-lg tracking-[0.3em] uppercase">
-                    <span>Subject: The Overgrowth Initiative</span>
-                </div>
-                <div className="w-24 h-1 bg-rust mx-auto mt-6" />
-                
-                <div className="font-typewriter text-sm tracking-[0.3em] text-dark-green/60 uppercase mt-4">
-                    <span>Ref. 07.14</span>
-                </div>
-            </div>
+    <div className="min-h-screen bg-[#f4f1ea] relative overflow-hidden">
+      {/* Texture Overlay */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
 
-            {/* Content Sections */}
-            <section className="mb-24 grid md:grid-cols-2 gap-12 items-center">
-                <div className="order-2 md:order-1">
-                     <h2 className="font-heading text-4xl text-dark-green uppercase tracking-wider mb-6 border-b border-dark-green/20 pb-2">
-                        01 // The Philosophy
-                    </h2>
-                    <div className="prose prose-stone font-body text-lg leading-relaxed text-dark-green/80 text-justify">
-                        <p className="mb-4">
-                            Overgrowth began with a simple idea. The world did not end. It grew back in ways no one expected.
-                        </p>
-                        <p className="mb-4">
-                            We believe in creating apparel that celebrates that strange and beautiful return. Soft fabrics. Living colors. Stories woven from a world reclaimed by nature and imagination.
-                        </p>
-                        <p>
-                            Our goal is not to chase trends. It is to build pieces that feel alive, personal, and full of character. Every garment is a small artifact from the frontier that grew after us.
-                        </p>
-                    </div>
-                </div>
-                {/* Founder / Operative Section */}
-                <div className="order-1 md:order-2 relative group">
-                    <div className="aspect-[3/4] bg-dark-green/5 border border-dark-green/20 relative overflow-hidden">
-                         <img 
-                            src="/assets/hero_horse_skeleton_isolated.png" 
-                            alt="The Operative" 
-                            className="w-full h-full object-cover mix-blend-multiply opacity-80 filter grayscale contrast-125"
-                        />
-                        {/* Classified Overlay */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="border-4 border-rust/50 p-4 transform -rotate-12 bg-[#f4f1ea]/90 backdrop-blur-sm">
-                                <span className="font-heading text-4xl text-rust tracking-widest uppercase">
-                                    Classified
-                                </span>
-                            </div>
-                        </div>
-                        {/* HUD Elements */}
-                        <div className="absolute top-2 left-2 font-mono text-[10px] text-dark-green/60">
-                            SUBJ: OPERATIVE 001
-                        </div>
-                        <div className="absolute bottom-2 right-2 font-mono text-[10px] text-dark-green/60">
-                            STATUS: ACTIVE
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section className="mb-24">
-                 <h2 className="font-heading text-4xl text-dark-green uppercase tracking-wider mb-6 border-b border-dark-green/20 pb-2">
-                    02 // The Aesthetic
-                </h2>
-                <div className="prose prose-stone font-body text-lg leading-relaxed text-dark-green/80 text-justify max-w-2xl">
-                    <p className="mb-4">
-                        Inspired by the quiet power of nature reclaiming forgotten places, our artwork mixes bones, blooms, neon remnants, and wild shapes.
-                    </p>
-                    <p className="mb-4">
-                        The Overgrowth world is playful and surreal. A horse made of branches might wander the road. A gas station might bloom with fresh flowers. Light seeps through vines and turns old metal warm again.
-                    </p>
-                    <p>
-                        This is the visual language that shapes every Overgrowth design. Colorful. Dreamlike. Rooted in the idea that beauty returns even in the strangest places.
-                    </p>
-                </div>
-            </section>
-
-            <section className="mb-16">
-                 <h2 className="font-heading text-4xl text-dark-green uppercase tracking-wider mb-12 border-b border-dark-green/20 pb-2">
-                    03 // MATERIALS OF CHOICE
-                </h2>
-                
-                {/* Technical Specs Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    {/* Spec 1 */}
-                    <div className="border border-dark-green/20 p-6 flex flex-col items-center text-center hover:border-rust transition-colors group">
-                        <div className="w-12 h-12 mb-4 border border-dark-green/30 rounded-full flex items-center justify-center group-hover:border-rust group-hover:text-rust transition-colors">
-                            <span className="font-heading text-xl">O</span>
-                        </div>
-                        <h3 className="font-heading text-sm text-dark-green tracking-widest mb-2">Organic</h3>
-                        <p className="font-mono text-[10px] text-dark-green/60 uppercase">
-                            Everyday comfort with gentle softness
-                        </p>
-                    </div>
-
-                    {/* Spec 2 */}
-                    <div className="border border-dark-green/20 p-6 flex flex-col items-center text-center hover:border-rust transition-colors group">
-                        <div className="w-12 h-12 mb-4 border border-dark-green/30 rounded-full flex items-center justify-center group-hover:border-rust group-hover:text-rust transition-colors">
-                            <span className="font-heading text-xl">R</span>
-                        </div>
-                        <h3 className="font-heading text-sm text-dark-green tracking-widest mb-2">Recycled</h3>
-                        <p className="font-mono text-[10px] text-dark-green/60 uppercase">
-                            Fibers sourced with care for the world around us
-                        </p>
-                    </div>
-
-                    {/* Spec 3 */}
-                    <div className="border border-dark-green/20 p-6 flex flex-col items-center text-center hover:border-rust transition-colors group">
-                        <div className="w-12 h-12 mb-4 border border-dark-green/30 rounded-full flex items-center justify-center group-hover:border-rust group-hover:text-rust transition-colors">
-                            <span className="font-heading text-xl">D</span>
-                        </div>
-                        <h3 className="font-heading text-sm text-dark-green tracking-widest mb-2">Durable</h3>
-                        <p className="font-mono text-[10px] text-dark-green/60 uppercase">
-                            Made to last through daily wanderings and long adventures
-                        </p>
-                    </div>
-
-                    {/* Spec 4 */}
-                    <div className="border border-dark-green/20 p-6 flex flex-col items-center text-center hover:border-rust transition-colors group">
-                        <div className="w-12 h-12 mb-4 border border-dark-green/30 rounded-full flex items-center justify-center group-hover:border-rust group-hover:text-rust transition-colors">
-                            <span className="font-heading text-xl">E</span>
-                        </div>
-                        <h3 className="font-heading text-sm text-dark-green tracking-widest mb-2">Ethical</h3>
-                        <p className="font-mono text-[10px] text-dark-green/60 uppercase">
-                            Fair production and responsible partnerships
-                        </p>
-                    </div>
-                </div>
-            </section>
-            
-            {/* Footer Signature */}
-            <div className="mt-32 pt-12 border-t-2 border-dashed border-dark-green/20 flex justify-between items-end max-w-2xl mx-auto">
-                <div>
-                    <p className="font-typewriter text-xs tracking-widest uppercase text-dark-green/50 mb-2">
-                        Authorized By
-                    </p>
-                    <div className="font-handwritten text-3xl text-dark-green -rotate-6">
-                        The Director
-                    </div>
-                </div>
-                <div className="text-right">
-                    <p className="font-typewriter text-xs tracking-widest uppercase text-dark-green/50 mb-2">
-                        Timestamp
-                    </p>
-                    <p className="font-typewriter text-sm text-dark-green">
-                        12.24.2043
-                    </p>
-                </div>
-            </div>
+      {/* Standard Header */}
+      <div className="relative z-10 pt-40 pb-12 text-center">
+        <div className="flex justify-center mb-6">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-px bg-gradient-to-r from-transparent to-dark-green/30" />
+            <div className="w-2 h-2 border border-rust rotate-45" />
+            <div className="w-16 h-px bg-gradient-to-l from-transparent to-dark-green/30" />
+          </div>
         </div>
+        <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-4 uppercase">
+          Our Story
+        </h1>
+        <p className="font-body text-dark-green/60 text-lg max-w-md mx-auto">
+          How it all began
+        </p>
+        <div className="w-24 h-1 bg-rust mx-auto mt-8" />
+      </div>
+
+      {/* Content - Specimen Card Layout */}
+      <div className="relative z-10 px-4 md:px-8 pb-24">
+        <div className="max-w-4xl mx-auto">
+          
+          {/* Chapter 1 - Philosophy */}
+          <section className="mb-20">
+            <div className="flex items-center gap-4 mb-8">
+              <span className="w-10 h-10 bg-dark-green text-[#f4f1ea] flex items-center justify-center font-heading">1</span>
+              <h2 className="font-heading text-2xl text-dark-green uppercase tracking-wider">The Philosophy</h2>
+              <div className="flex-1 h-px bg-dark-green/20" />
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-[#f9f7f3] border border-dark-green/20 p-8">
+                <p className="font-body text-dark-green/80 leading-relaxed mb-4">
+                  The world didn't end. It grew back in ways no one expected.
+                </p>
+                <p className="font-body text-dark-green/80 leading-relaxed mb-4">
+                  Overgrowth began with a simple observation: beauty returns, even in the strangest places. 
+                  We create apparel that celebrates nature's quiet return.
+                </p>
+                <p className="font-body text-dark-green/80 leading-relaxed">
+                  Every garment is a small artifact from the frontier that grew after us.
+                </p>
+              </div>
+              
+              <div className="bg-[#f9f7f3] border border-dark-green/20 p-8 flex items-center justify-center">
+                <div className="text-center">
+                  <Icon icon="ph:quotes" className="w-10 h-10 text-rust/40 mx-auto mb-4" />
+                  <p className="font-handwritten text-2xl text-dark-green/70 italic">
+                    "We don't chase trends. We chase the feeling of discovering something forgotten."
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Chapter 2 - Aesthetic */}
+          <section className="mb-20">
+            <div className="flex items-center gap-4 mb-8">
+              <span className="w-10 h-10 bg-rust text-[#f4f1ea] flex items-center justify-center font-heading">2</span>
+              <h2 className="font-heading text-2xl text-dark-green uppercase tracking-wider">The Aesthetic</h2>
+              <div className="flex-1 h-px bg-dark-green/20" />
+            </div>
+            
+            <div className="bg-[#f9f7f3] border border-dark-green/20 p-8">
+              <p className="font-body text-dark-green/80 leading-relaxed mb-6">
+                Our designs blend bones and blooms, neon remnants and wild growth. A horse made of branches might wander the road. A gas station might bloom with fresh flowers. Light seeps through vines and turns everything warm again.
+              </p>
+              
+              {/* Color Palette */}
+              <div className="grid grid-cols-4 gap-4 mt-8">
+                {[
+                  { color: '#1a472a', name: 'Forest' },
+                  { color: '#c05a34', name: 'Rust' },
+                  { color: '#f4f1ea', name: 'Paper' },
+                  { color: '#8b7355', name: 'Earth' },
+                ].map((swatch, i) => (
+                  <div key={i} className="text-center">
+                    <div 
+                      className="w-full aspect-square mb-2 border border-dark-green/20"
+                      style={{ backgroundColor: swatch.color }}
+                    />
+                    <span className="font-body text-xs text-dark-green/60">{swatch.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Chapter 3 - Materials */}
+          <section className="mb-20">
+            <div className="flex items-center gap-4 mb-8">
+              <span className="w-10 h-10 bg-dark-green text-[#f4f1ea] flex items-center justify-center font-heading">3</span>
+              <h2 className="font-heading text-2xl text-dark-green uppercase tracking-wider">Materials We Love</h2>
+              <div className="flex-1 h-px bg-dark-green/20" />
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { icon: 'ph:leaf', label: 'Organic', desc: 'Gentle softness' },
+                { icon: 'ph:recycle', label: 'Recycled', desc: 'New life' },
+                { icon: 'ph:shield-check', label: 'Durable', desc: 'Built to last' },
+                { icon: 'ph:heart', label: 'Ethical', desc: 'Fair always' },
+              ].map((item, i) => (
+                <div key={i} className="bg-[#f9f7f3] border border-dark-green/20 p-6 text-center group hover:border-rust/50 transition-colors">
+                  <Icon icon={item.icon} className="w-8 h-8 text-dark-green/40 mx-auto mb-3 group-hover:text-rust transition-colors" />
+                  <h3 className="font-heading text-sm text-dark-green mb-1">{item.label}</h3>
+                  <p className="font-body text-xs text-dark-green/50">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Footer Quote */}
+          <div className="text-center pt-12 border-t border-dark-green/20">
+            <p className="font-handwritten text-2xl text-dark-green/60 italic mb-4">
+              "The world did not end. It took back over."
+            </p>
+            <p className="font-body text-xs text-dark-green/40 uppercase tracking-widest">Growing since 2024</p>
+            
+            <Link 
+              to="/collections"
+              className="inline-flex items-center gap-2 mt-8 bg-dark-green text-[#f4f1ea] px-8 py-4 font-heading tracking-widest hover:bg-rust transition-colors"
+            >
+              <span>Browse Recovered Works</span>
+              <Icon icon="ph:arrow-right" className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

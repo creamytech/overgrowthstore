@@ -31,7 +31,9 @@ export default function Homepage() {
       <FieldHero />
       
       {/* 2. Featured Grid (Shop First) */}
-      <Suspense fallback={<div>Loading Supply Drop...</div>}>
+      
+      {/* 2. Featured Grid (Shop First) */}
+      <Suspense fallback={<div className="text-center py-12 font-body text-dark-green/60 tracking-widest">Wandering through the finds...</div>}>
         <Await resolve={data.products}>
           {(products) => (
             <FeaturedGrid products={products?.nodes || []} />
@@ -40,7 +42,7 @@ export default function Homepage() {
       </Suspense>
 
       {/* 3. Brand Story + Lifestyle Image */}
-      <section className="py-24 px-4 md:px-12 relative z-10 border-y border-rust/20">
+      <section className="py-24 px-4 md:px-12 relative border-y border-rust/20">
          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-24">
             
             {/* Lifestyle Image (Placeholder for now, using existing asset or placeholder) */}
@@ -57,10 +59,10 @@ export default function Homepage() {
                     />
                     <div className="absolute inset-0 bg-dark-green/10 mix-blend-multiply" />
                     
-                    {/* HUD Overlay */}
+                    {/* Label Overlay */}
                     <div className="absolute top-4 left-4 border border-dark-green/30 p-2 bg-[#f4f1ea]/80 backdrop-blur-sm">
                         <div className="font-typewriter text-[10px] text-dark-green uppercase tracking-widest">
-                            Subj: OPERATIVE 001
+                            From the Founder
                         </div>
                     </div>
                 </div>
@@ -90,7 +92,7 @@ export default function Homepage() {
       */}
 
       {/* 5. Journal / Collections (Specimen Grid moved here as "Archive") */}
-      <Suspense fallback={<div>Loading Specimens...</div>}>
+      <Suspense fallback={<div className="text-center py-12 font-body text-dark-green/60 tracking-widest">Turning the pages...</div>}>
         <Await resolve={data.collections}>
           {(collections) => (
             <SpecimenGrid collections={collections?.nodes || []} />
