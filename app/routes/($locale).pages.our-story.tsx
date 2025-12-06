@@ -107,15 +107,7 @@ export default function OurStory() {
             </p>
           </section>
 
-          {/* Vine Divider */}
-          <div className="flex justify-center my-12">
-            <svg viewBox="0 0 200 40" className="w-32 h-8 text-dark-green/20">
-              <path d="M10 20 Q50 10 100 20 T190 20" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-              <circle cx="50" cy="13" r="2" fill="currentColor"/>
-              <circle cx="100" cy="20" r="3" fill="currentColor"/>
-              <circle cx="150" cy="13" r="2" fill="currentColor"/>
-            </svg>
-          </div>
+
 
           {/* Chapter 2 - Aesthetic */}
           <section className="mb-20">
@@ -172,15 +164,7 @@ export default function OurStory() {
             </div>
           </section>
 
-          {/* Vine Divider */}
-          <div className="flex justify-center my-12">
-            <svg viewBox="0 0 200 40" className="w-32 h-8 text-dark-green/20">
-              <path d="M10 20 Q50 10 100 20 T190 20" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-              <circle cx="50" cy="13" r="2" fill="currentColor"/>
-              <circle cx="100" cy="20" r="3" fill="currentColor"/>
-              <circle cx="150" cy="13" r="2" fill="currentColor"/>
-            </svg>
-          </div>
+
 
           {/* Chapter 3 - Materials */}
           <section className="mb-20">

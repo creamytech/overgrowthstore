@@ -107,7 +107,7 @@ export function ProductCard({
     );
   }
 
-  // Grid Layout (Field Journal Style)
+  // Grid Layout (Field Journal Style - Artifact Mode)
   return (
     <div className={clsx('group relative perspective-1000', className)}>
       <Link
@@ -116,112 +116,105 @@ export function ProductCard({
         prefetch="viewport"
         className="block"
       >
-        {/* Card Container */}
-        <div className="relative aspect-[4/5] bg-[#f4f1ea] overflow-hidden border border-rust/20 transition-all duration-300 group-hover:border-rust/60 group-hover:shadow-lg">
+        {/* Artifact Frame Container with Lift Effect */}
+        <div className="relative bg-[#f4f1ea] border-2 border-transparent transition-all duration-500 ease-out transform group-hover:-translate-y-2 group-hover:shadow-[0_20px_40px_-5px_rgba(74,93,35,0.15)]">
+          
+          {/* Frame Borders */}
+          <div className="absolute inset-0 border border-dark-green/10 z-20 pointer-events-none group-hover:border-rust/30 transition-colors duration-500" />
           
           {/* Paper Texture Overlay */}
           <div 
-              className="absolute inset-0 z-10 pointer-events-none mix-blend-multiply opacity-20 bg-[url('/assets/texture_archive_paper.jpg')]" 
+              className="absolute inset-0 z-10 pointer-events-none mix-blend-multiply opacity-30 bg-[url('/assets/texture_archive_paper.jpg')]" 
           />
 
-          {/* Product Image Area */}
-          <div className="relative w-full h-full p-4 flex items-center justify-center z-0">
-            {/* Primary Image */}
-            {image && (
-              <Image
-                className={`object-contain w-full h-full transition-opacity duration-500 ${isSoldOut ? 'grayscale opacity-70' : ''} ${product.images?.nodes[1] ? 'group-hover:opacity-0' : ''}`}
-                sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw"
-                width={800}
-                aspectRatio="4/5"
-                data={image}
-                alt={image.altText || `Picture of ${product.title}`}
-                loading={loading}
-              />
-            )}
-            
-            {/* Secondary Image (Hover) */}
-            {product.images?.nodes[1] && (
+          {/* Product Image Area - With 'Photo Frame' Padding */}
+          <div className="relative p-3 pb-8 bg-white/50">
+            <div className="relative aspect-[4/5] overflow-hidden border border-dark-green/5">
+                {image && (
                 <Image
-                    className={`absolute inset-0 object-contain w-full h-full p-4 transition-opacity duration-500 opacity-0 group-hover:opacity-100 ${isSoldOut ? 'grayscale opacity-70' : ''}`}
+                    className={`object-contain w-full h-full transition-opacity duration-500 ${isSoldOut ? 'grayscale opacity-70' : ''} ${product.images?.nodes[1] ? 'group-hover:opacity-0' : ''}`}
                     sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw"
                     width={800}
                     aspectRatio="4/5"
-                    data={product.images.nodes[1]}
-                    alt={product.images.nodes[1].altText || `Picture of ${product.title}`}
+                    data={image}
+                    alt={image.altText || `Picture of ${product.title}`}
                     loading={loading}
                 />
-            )}
+                )}
+                
+                {/* Secondary Image (Hover) */}
+                {product.images?.nodes[1] && (
+                    <Image
+                        className={`absolute inset-0 object-contain w-full h-full transition-opacity duration-500 opacity-0 group-hover:opacity-100 ${isSoldOut ? 'grayscale opacity-70' : ''}`}
+                        sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw"
+                        width={800}
+                        aspectRatio="4/5"
+                        data={product.images.nodes[1]}
+                        alt={product.images.nodes[1].altText || `Picture of ${product.title}`}
+                        loading={loading}
+                    />
+                )}
+            </div>
+            
+            {/* Artifact Sticker/Label */}
+            <div className="absolute bottom-2 right-2 z-20">
+                <div className="bg-[#f4f1ea] border border-dark-green/20 px-2 py-0.5 shadow-sm transform rotate-[-2deg] group-hover:rotate-0 transition-transform duration-300">
+                     <span className="font-mono text-[8px] text-dark-green/60 tracking-widest uppercase">
+                        Fig. {index ? index + 1 : '01'}
+                     </span>
+                </div>
+            </div>
           </div>
 
-          {/* Discovery Overlay (Appears on Hover) */}
-          <div className="absolute inset-0 z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                {/* Corner Vine Accents */}
-                <div className="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-rust/60 transition-all duration-300" />
-                <div className="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-rust/60 transition-all duration-300" />
-                <div className="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-rust/60 transition-all duration-300" />
-                <div className="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-rust/60 transition-all duration-300" />
-
-                {/* Gentle Label */}
-                <div className="absolute bottom-4 left-0 w-full text-center">
-                    <div className="inline-block bg-[#f4f1ea]/90 backdrop-blur-sm border border-rust/30 px-4 py-1.5">
-                        <span className="font-body text-xs text-dark-green tracking-widest">
-                            {isSoldOut ? 'Resting' : 'Worth a closer look'}
+          {/* Bottom Info Section - Field Card Style Refined */}
+          <div className="px-4 py-4 border-t border-dashed border-dark-green/20 relative z-20">
+               <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2 justify-between">
+                         <h3 className="font-heading text-lg text-dark-green leading-none group-hover:text-rust transition-colors duration-300 uppercase truncate">
+                            {product.title}
+                        </h3>
+                        {/* Edition/Series Number - Right Aligned */}
+                        <span className="font-mono text-xs text-rust/80 tracking-widest shrink-0">
+                            NO. {String(index ? index + 1 : 1).padStart(3, '0')}
                         </span>
+                    </div>
+
+                    {/* Metadata Row - Framed & Separated */}
+                    <div className="flex flex-wrap items-center gap-x-2 text-xs text-dark-green/70 font-mono mt-2 pt-2 border-t border-dark-green/5">
+                        <span className="uppercase tracking-wider text-dark-green/60">
+                            Apparel Artifact
+                        </span>
+                        <span className="w-1 h-1 rounded-full bg-rust/40" />
+                        <span className="uppercase tracking-wider text-dark-green/60">
+                            {product.publishedAt ? new Date(product.publishedAt).getFullYear() : '2025'}
+                        </span>
+                        <span className="w-1 h-1 rounded-full bg-rust/40" />
+                        <span className="font-bold text-dark-green">
+                           {/* Value Display */}
+                            <Money withoutTrailingZeros data={price!} />
+                        </span>
+                         <span className="w-1 h-1 rounded-full bg-rust/40" />
+                         <span className="text-dark-green/40">
+                             {index ? 142 + index : 142}/500
+                         </span>
                     </div>
                 </div>
           </div>
 
-          {/* Badges (Static Info) */}
-          <div className="absolute top-0 left-0 w-full p-3 flex flex-col gap-2 items-start z-20">
+          {/* Badges (Overlaid on Top Left) */}
+          <div className="absolute top-2 left-2 flex flex-col gap-1 z-30 pointer-events-none">
              {cardLabel && (
-                <div className="bg-rust text-[#f4f1ea] px-2 py-0.5 text-[10px] tracking-widest uppercase font-bold">
+                <div className="bg-rust text-[#f4f1ea] px-2 py-0.5 text-[9px] tracking-widest uppercase font-bold shadow-sm">
                     {cardLabel}
                 </div>
              )}
-             {/* Custom Badges based on Tags */}
-             {product.tags?.includes('Limited') && (
-                 <div className="bg-dark-green text-[#f4f1ea] px-2 py-0.5 text-[10px] tracking-widest uppercase font-bold border border-[#f4f1ea]/20">
-                     LIMITED RUN
-                 </div>
-             )}
-             {product.tags?.includes('Field Issue') && (
-                 <div className="bg-[#f4f1ea] text-dark-green px-2 py-0.5 text-[10px] tracking-widest uppercase font-bold border border-dark-green">
-                     FIELD ISSUE
+             {isSoldOut && (
+                 <div className="bg-[#f4f1ea] border border-dark-green text-dark-green px-2 py-0.5 text-[9px] tracking-widest uppercase font-bold">
+                     DEPLETED
                  </div>
              )}
           </div>
 
-          {/* Sold Out Overlay */}
-          {isSoldOut && (
-              <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#f4f1ea]/20 pointer-events-none">
-                  <div className="border border-dark-green/40 text-dark-green/70 px-4 py-2 font-heading text-lg tracking-widest uppercase rotate-[-8deg] bg-[#f4f1ea]/90">
-                      Sold Out
-                  </div>
-              </div>
-          )}
-
-        </div>
-
-        {/* Bottom Info */}
-        <div className="mt-4 px-1 text-center">
-             <h3 className="font-heading text-xl md:text-2xl text-dark-green leading-tight group-hover:text-rust transition-colors duration-300 uppercase mb-2">
-                {product.title}
-             </h3>
-             
-             <div className="flex flex-col items-center gap-1">
-                <Text className="font-body text-base md:text-lg text-dark-green font-bold tracking-widest">
-                  <Money withoutTrailingZeros data={price!} />
-                  {isDiscounted(price as MoneyV2, compareAtPrice as MoneyV2) && (
-                    <CompareAtPrice
-                      className={'opacity-50 line-through ml-2 text-sm'}
-                      data={compareAtPrice as MoneyV2}
-                    />
-                  )}
-                </Text>
-                <span className="font-mono text-[10px] text-dark-green/50 tracking-widest">
-                    ID: {product.id.substring(product.id.length - 4)}
-                </span>
-             </div>
         </div>
       </Link>
     </div>

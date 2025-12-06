@@ -124,8 +124,6 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
-import {FieldHero} from '~/components/home/FieldHero'; // Re-using for consistent header if needed, but we have global nav.
-
 export default function Product() {
   const {product, shop, recommended, variants, storeDomain} =
     useLoaderData<typeof loader>();
@@ -152,6 +150,7 @@ export default function Product() {
   const [activeImage, setActiveImage] = useState(initialImage);
   const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
   const [isHovering, setIsHovering] = useState(false);
+  const [showStickyFooter, setShowStickyFooter] = useState(false);
   const imageContainerRef = useRef<HTMLDivElement>(null);
 
   // Update active image when variant changes
@@ -160,6 +159,18 @@ export default function Product() {
       setActiveImage(selectedVariant.image);
     }
   }, [selectedVariant]);
+
+  // Handle scroll for sticky mobile footer
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show sticky footer after scrolling past product section (approximately 800px on mobile)
+      const scrolled = window.scrollY > 800;
+      setShowStickyFooter(scrolled);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Handle mouse move for zoom lens
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -171,107 +182,192 @@ export default function Product() {
   };
 
   return (
-    <div className="min-h-screen relative pt-40 pb-32 px-4 md:px-8">
-       <div className="max-w-7xl mx-auto relative">
-            {/* Product Container */}
-            <div className="bg-[#f4f1ea] relative border border-rust/30 p-6 md:p-12 shadow-sm">
-                
-                {/* Header Metadata */}
-                <div className="relative z-10 border-b-2 border-rust/30 pb-8 mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+    <div className="min-h-screen relative pt-24 md:pt-32 pb-32 px-4 md:px-8">
+       <div className="max-w-[1250px] mx-auto relative">
+            {/* ============================================
+                MOBILE LAYOUT (< lg breakpoint)
+                Hero-first: Title → Price → Gallery → Lore → Accordions
+            ============================================ */}
+            
+            <div className="lg:hidden">
+                {/* Mobile Hero Section */}
+                <div className="mb-6">
+                    <div className="flex items-center gap-3 mb-3">
+                        <span className="inline-block px-2 py-1 border border-rust/40 font-body text-[9px] tracking-widest uppercase text-dark-green bg-[#f4f1ea]">
+                            RECOVERED WORKS
+                        </span>
+                        {selectedVariant?.sku && (
+                            <span className="font-body text-[9px] tracking-widest uppercase text-dark-green/40">
+                                ARTIFACT NO. {selectedVariant.sku}
+                            </span>
+                        )}
+                    </div>
+                    
+                    <h1 className="font-heading text-3xl text-dark-green leading-tight mb-4">
+                        {title}
+                    </h1>
+
+                    {/* Price - Mobile Prominent */}
+                    <div className="flex items-end justify-between mb-3 pb-4 border-b border-dashed border-rust/30">
+                        <div>
+                            <span className="block font-body text-[9px] tracking-widest uppercase text-dark-green/50 mb-1">
+                                Recovered Value
+                            </span>
+                            <div className="font-body text-3xl text-dark-green font-bold tracking-wide">
+                                <Money withoutTrailingZeros data={selectedVariant?.price!} />
+                            </div>
+                        </div>
+                        <div className="text-right">
+                            <span className="block font-body text-[9px] tracking-widest uppercase text-dark-green/50 mb-1">
+                                Recovered On
+                            </span>
+                            <span className="font-body text-xs text-dark-green">
+                                {new Date(product.publishedAt).toLocaleDateString('en-US', { 
+                                    month: 'short', 
+                                    day: 'numeric', 
+                                    year: 'numeric' 
+                                })}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Mobile Gallery */}
+                <div className="mb-6">
+                    <div 
+                        className="relative w-full aspect-[3/4] bg-paper border border-rust/30 shadow-sm overflow-hidden mb-3"
+                    >
+                        <div className="relative w-full h-full p-6">
+                            {activeImage && (
+                                <Image
+                                    data={activeImage}
+                                    sizes="100vw"
+                                    className="w-full h-full object-contain"
+                                />
+                            )}
+                        </div>
+
+                        {/* Corner Labels */}
+                        <div className="absolute top-3 left-3 border border-rust/40 px-2 py-1 bg-paper/90">
+                            <span className="font-body text-[9px] uppercase tracking-widest text-dark-green/60">
+                                Artifact View
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Mobile Thumbnails - Horizontal Scroll */}
+                    {media.nodes.length > 1 && (
+                        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                            {media.nodes.map((med, i) => {
+                                const image = med.__typename === 'MediaImage' ? med.image : null;
+                                if (!image) return null;
+                                
+                                const isActive = activeImage?.id === image.id;
+
+                                return (
+                                    <button
+                                        key={med.id || image.id}
+                                        onClick={() => setActiveImage(image)}
+                                        className={`relative w-16 h-20 flex-shrink-0 border transition-all duration-100 ${
+                                            isActive 
+                                            ? 'border-rust opacity-100 ring-1 ring-rust ring-offset-1 ring-offset-[#f4f1ea]' 
+                                            : 'border-rust/30 opacity-60'
+                                        }`}
+                                    >
+                                        <Image
+                                            data={image}
+                                            sizes="64px"
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
+
+                {/* Mobile Lore Paragraph */}
+                <div className="mb-6 px-2">
+                    <p className="font-body text-sm italic text-dark-green/80 leading-relaxed">
+                        Recovered from the quiet places where nature reclaimed what was left behind. 
+                        Each piece carries the marks of its journey through the overgrowth.
+                    </p>
+                </div>
+
+                {/* Mobile Accordions */}
+                <div className="mb-6 space-y-3">
+                    <FieldNotesAccordion descriptionHtml={descriptionHtml || ''} />
+                    <ArtifactSpecsAccordion selectedVariant={selectedVariant} title="Artifact Anatomy" />
+                    <ProvenanceAccordion 
+                        vendor={vendor} 
+                        publishedAt={product.publishedAt}
+                        selectedVariant={selectedVariant}
+                        title="Recovery Log"
+                    />
+                </div>
+
+                {/* Mobile Product Form */}
+                <ProductForm
+                    productOptions={productOptions}
+                    selectedVariant={selectedVariant}
+                    storeDomain={storeDomain}
+                    product={product}
+                />
+            </div>
+
+            {/* ============================================
+                DESKTOP LAYOUT (>= lg breakpoint)
+                Two-column: Gallery + Sticky Sidebar
+            ============================================ */}
+            
+            <div className="hidden lg:block">
+                {/* Desktop Header Metadata */}
+                <div className="relative z-10 border-b-2 border-rust/30 pb-6 mb-12 flex justify-between items-end gap-6">
                     <div className="flex-1">
-                        <div className="flex items-center gap-4 mb-4">
+                        <div className="flex items-center gap-4 mb-3">
                             <span className="inline-block px-2 py-1 border border-rust/40 font-body text-[10px] tracking-widest uppercase text-dark-green bg-[#f4f1ea]">
                                 RECOVERED WORKS
                             </span>
+                            {selectedVariant?.sku && (
+                                <span className="font-body text-[10px] tracking-widest uppercase text-dark-green/40">
+                                    ARTIFACT NO. {selectedVariant.sku}
+                                </span>
+                            )}
                         </div>
-                        <h1 className="font-heading text-4xl md:text-5xl text-dark-green leading-tight">
+                        <h1 className="font-heading text-5xl text-dark-green leading-tight tracking-tight">
                             {title}
                         </h1>
+                        {/* Mini Vine Divider */}
+                        <div className="mt-4 opacity-60">
+                            <svg width="40" height="9" viewBox="0 0 40 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M39.5 4.5C34.5 4.5 32.5 1.5 30 1.5C27.5 1.5 25.5 4.5 20.5 4.5C15.5 4.5 13.5 1.5 11 1.5C8.5 1.5 6.5 4.5 0.5 4.5" stroke="#4A5D23" strokeWidth="0.75" strokeLinecap="round"/>
+                                <path d="M10 4.5C10 6.5 11.5 8 13 8" stroke="#4A5D23" strokeWidth="0.75" strokeLinecap="round"/>
+                                <path d="M29 4.5C29 6.5 30.5 8 32 8" stroke="#4A5D23" strokeWidth="0.75" strokeLinecap="round"/>
+                            </svg>
+                        </div>
                     </div>
-                    <div className="text-right flex flex-col items-end">
+                    <div className="text-right flex-col items-end pt-2">
                         <span className="block font-body text-[10px] tracking-widest uppercase text-dark-green/50 mb-1">
-                            Added to Collection
+                            Recovered On
                         </span>
                         <span className="font-body text-sm text-dark-green border-b border-rust/30 pb-1">
-                            {new Date(product.publishedAt).toLocaleDateString()}
+                            {new Date(product.publishedAt).toLocaleDateString('en-US', { 
+                                month: 'long', 
+                                day: 'numeric', 
+                                year: 'numeric' 
+                            })}
                         </span>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start relative z-10">
+                <div className="grid grid-cols-12 gap-12 items-start relative">
                     
-                    {/* Left Column: Product Images */}
-                    <div className="flex flex-col gap-4">
-                        {/* Image Container with Hover Zoom */}
-                        <div 
-                            ref={imageContainerRef}
-                            className="relative w-full aspect-[4/5] bg-paper border border-rust/30 shadow-sm overflow-hidden group"
-                            onMouseEnter={() => setIsHovering(true)}
-                            onMouseLeave={() => setIsHovering(false)}
-                            onMouseMove={handleMouseMove}
-                        >
-                            {/* Base Product Image */}
-                            <div className="relative w-full h-full p-8 z-0">
-                                {activeImage && (
-                                    <Image
-                                        data={activeImage}
-                                        sizes="(min-width: 1024px) 60vw, 100vw"
-                                        className="w-full h-full object-contain"
-                                    />
-                                )}
-                            </div>
-
-                            {/* Hover Zoom Overlay - Desktop Only */}
-                            {activeImage && (
-                                <div 
-                                    className={`hidden lg:block absolute inset-0 z-30 pointer-events-none transition-opacity duration-200 bg-paper ${isHovering ? 'opacity-100' : 'opacity-0'}`}
-                                    style={{
-                                        backgroundImage: `url(${activeImage.url})`,
-                                        backgroundSize: '200%',
-                                        backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
-                                        backgroundRepeat: 'no-repeat',
-                                        backgroundColor: '#f4f1ea',
-                                    }}
-                                />
-                            )}
-
-                            {/* Corner Label */}
-                            <div className="absolute top-4 left-4 z-20 border border-rust/40 px-2 py-1 bg-paper/90">
-                                <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60">
-                                    Preview
-                                </span>
-                            </div>
-                            <div className="absolute bottom-4 left-4 z-20 border border-rust/40 px-2 py-1 bg-paper/90">
-                                <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60">
-                                    ATTACHMENT 01
-                                </span>
-                            </div>
-
-                            {/* Zoom Hint - Desktop only */}
-                            <div className={`absolute bottom-4 right-4 z-20 hidden lg:block transition-opacity duration-300 ${isHovering ? 'opacity-0' : 'opacity-100'}`}>
-                                <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60 bg-paper/90 px-3 py-1.5 flex items-center gap-1.5 shadow-sm">
-                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                                    </svg>
-                                    <span>Hover to Zoom</span>
-                                </span>
-                            </div>
-
-                            {/* Crosshair on hover */}
-                            {isHovering && (
-                                <div 
-                                    className="hidden lg:block absolute w-6 h-6 border-2 border-rust/60 rounded-full pointer-events-none z-40 -translate-x-1/2 -translate-y-1/2"
-                                    style={{
-                                        left: `${zoomPosition.x}%`,
-                                        top: `${zoomPosition.y}%`,
-                                    }}
-                                />
-                            )}
-                        </div>
-
-                        {/* Thumbnails */}
+                    {/* Left Column: Gallery with Vertical Thumbnails */}
+                    <div className="col-span-7 flex gap-4">
+                        
+                        {/* Vertical Thumbnail Strip */}
                         {media.nodes.length > 1 && (
-                            <div className="flex gap-4 overflow-x-auto pb-2">
+                            <div className="flex flex-col gap-3 w-24 flex-shrink-0">
                                 {media.nodes.map((med, i) => {
                                     const image = med.__typename === 'MediaImage' ? med.image : null;
                                     if (!image) return null;
@@ -282,16 +378,16 @@ export default function Product() {
                                         <button
                                             key={med.id || image.id}
                                             onClick={() => setActiveImage(image)}
-                                            className={`relative w-20 h-24 flex-shrink-0 border transition-all duration-100 ${
+                                            className={`relative w-full aspect-[3/4] border transition-all duration-300 ${
                                                 isActive 
-                                                ? 'border-rust opacity-100 ring-1 ring-rust ring-offset-1 ring-offset-[#f4f1ea]' 
-                                                : 'border-rust/30 opacity-60 hover:opacity-100 hover:border-rust/60'
+                                                ? 'border-rust opacity-100 ring-1 ring-rust ring-offset-2 ring-offset-[#f4f1ea]' 
+                                                : 'border-rust/10 opacity-70 hover:opacity-100 hover:border-rust/40'
                                             }`}
                                         >
-                                            <div className="absolute inset-0 bg-paper opacity-20 mix-blend-multiply pointer-events-none" />
+                                            <div className="absolute inset-0 bg-paper opacity-10 mix-blend-multiply pointer-events-none" />
                                             <Image
                                                 data={image}
-                                                sizes="80px"
+                                                sizes="96px"
                                                 className="w-full h-full object-cover"
                                             />
                                         </button>
@@ -299,87 +395,107 @@ export default function Product() {
                                 })}
                             </div>
                         )}
+
+                        {/* Main Image with Zoom */}
+                        <div className="flex-1">
+                            <div 
+                                ref={imageContainerRef}
+                                className="relative w-full aspect-[4/5] bg-paper border border-rust/30 shadow-sm overflow-hidden group"
+                                onMouseEnter={() => setIsHovering(true)}
+                                onMouseLeave={() => setIsHovering(false)}
+                                onMouseMove={handleMouseMove}
+                            >
+                                {/* Base Product Image */}
+                                <div className="relative w-full h-full p-12">
+                                    {activeImage && (
+                                        <Image
+                                            data={activeImage}
+                                            sizes="(min-width: 1024px) 60vw, 100vw"
+                                            className="w-full h-full object-contain"
+                                        />
+                                    )}
+                                </div>
+
+                                {/* Hover Zoom Overlay */}
+                                {activeImage && (
+                                    <div 
+                                        className={`absolute inset-0 pointer-events-none transition-opacity duration-200 bg-paper ${isHovering ? 'opacity-100' : 'opacity-0'}`}
+                                        style={{
+                                            backgroundImage: `url(${activeImage.url})`,
+                                            backgroundSize: '200%',
+                                            backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                                            backgroundRepeat: 'no-repeat',
+                                            backgroundColor: '#f4f1ea',
+                                        }}
+                                    />
+                                )}
+
+                                {/* Corner Labels */}
+                                <div className="absolute top-4 left-4 border border-rust/40 px-2 py-1 bg-paper/90 backdrop-blur-sm">
+                                    <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60">
+                                        Artifact Views
+                                    </span>
+                                </div>
+
+                                {/* Zoom Hint - Moved below image */}
+
+                                {/* Crosshair on hover */}
+                                {isHovering && (
+                                    <div 
+                                        className="absolute w-6 h-6 border-2 border-rust/60 rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2"
+                                        style={{
+                                            left: `${zoomPosition.x}%`,
+                                            top: `${zoomPosition.y}%`,
+                                        }}
+                                    />
+                                )}
+                            </div>
+                        </div>
                     </div>
 
-                    {/* Right Column: The Data */}
-                    <div className="flex flex-col gap-8 relative">
+                    {/* Right Column: Sticky Sidebar */}
+                    <div className="col-span-5 sticky top-8 flex flex-col gap-6">
                         
-                        {/* Price & Vendor */}
-                        <div className="border-b border-dashed border-rust/30 pb-4">
-                             <div className="flex items-center justify-between mb-2">
-                                 <div className="flex items-center gap-4 font-body text-sm text-rust tracking-widest uppercase">
-                                    <span>{vendor}</span>
-                                </div>
-                                 <div className="font-heading text-3xl md:text-4xl text-dark-green font-bold">
-                                    <Money withoutTrailingZeros data={selectedVariant?.price!} />
-                                </div>
-                            </div>
-                            <div className="flex items-center justify-end gap-2 text-dark-green/60">
-                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14.5c-3.59 0-6.5-2.91-6.5-6.5S6.41 3.5 10 3.5s6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5zm.5-10.5h-1v5l4.25 2.55.75-1.23-4-2.37V6z"/>
-                                </svg>
-                                <span className="font-body text-xs tracking-wide">Free shipping on orders $75+</span>
+                        {/* Lore Paragraph */}
+                        <div className="border-l-2 border-rust/30 pl-4">
+                            <p className="font-body text-sm italic text-dark-green/80 leading-relaxed">
+                                Recovered from the quiet places where nature reclaimed what was left behind. 
+                                Each piece carries the marks of its journey through the overgrowth.
+                            </p>
+                        </div>
+
+                        {/* Price Display - Emphasized */}
+                        <div className="bg-rust/5 border-2 border-rust/20 p-6">
+                            <span className="block font-body text-[10px] tracking-widest uppercase text-dark-green/50 mb-2">
+                                Recovered Value
+                            </span>
+                            <div className="font-body text-4xl text-dark-green font-bold tracking-wide mb-3">
+                                <Money withoutTrailingZeros data={selectedVariant?.price!} />
                             </div>
                         </div>
 
-                        {/* Metadata Table */}
-                        <div className="grid gap-4 font-body text-sm text-ink/80">
-                            <div className="grid grid-cols-3 border-b border-dashed border-rust/30 pb-2">
-                                <span className="uppercase tracking-widest opacity-60">Origin</span>
-                                <span className="col-span-2">
-                                    The Quiet Places // Reclaimed
-                                </span>
-                            </div>
-                            <div className="grid grid-cols-3 border-b border-dashed border-rust/30 pb-2">
-                                <span className="uppercase tracking-widest opacity-60">Material</span>
-                                <span className="col-span-2">
-                                    100% Organic Cotton // 240 GSM
-                                </span>
-                            </div>
-                            <div className="grid grid-cols-3 border-b border-dashed border-rust/30 pb-2">
-                                <span className="uppercase tracking-widest opacity-60">Status</span>
-                                <span className="col-span-2">
-                                    {selectedVariant?.availableForSale ? 'Available for Acquisition' : 'Archived // Depleted'}
-                                </span>
-                            </div>
+                        {/* Micro-Detail Row */}
+                        <div className="flex flex-wrap items-center justify-between gap-y-2 text-[10px] uppercase tracking-widest text-dark-green/60 py-3 border-b border-dashed border-rust/20 mb-4 px-1">
+                           <span>Edition of 50 Artifacts</span>
+                           <span className="text-rust/40">•</span>
+                           <span>Soft-weave cotton</span>
+                           <span className="text-rust/40">•</span>
+                           <span>Recovered in the ruins</span>
                         </div>
 
-                        {/* Technical Specifications */}
-                        <div className="bg-rust/5 border border-rust/20 p-4 font-mono text-xs text-dark-green/80">
-                            <h4 className="font-bold uppercase tracking-widest mb-2 border-b border-rust/20 pb-1">Technical Specifications</h4>
-                            <div className="grid grid-cols-2 gap-2">
-                                <div>
-                                    <span className="opacity-50 block">FIT PROFILE</span>
-                                    <span>OVERSIZED // BOXY</span>
-                                </div>
-                                <div>
-                                    <span className="opacity-50 block">WEIGHT CLASS</span>
-                                    <span>HEAVYWEIGHT</span>
-                                </div>
-                                <div className="col-span-2">
-                                    <span className="opacity-50 block">CARE PROTOCOL</span>
-                                    <span>MACHINE WASH COLD // HANG DRY ONLY</span>
-                                </div>
-                            </div>
+                        {/* Desktop Accordions */}
+                        <div className="space-y-3">
+                            <FieldNotesAccordion descriptionHtml={descriptionHtml || ''} />
+                            <ArtifactSpecsAccordion selectedVariant={selectedVariant} title="Artifact Anatomy" />
+                            <ProvenanceAccordion 
+                                vendor={vendor} 
+                                publishedAt={product.publishedAt}
+                                selectedVariant={selectedVariant}
+                                title="Recovery Log"
+                            />
                         </div>
 
-                        {/* Description */}
-                        <div className="prose prose-stone font-body text-sm leading-relaxed text-ink/90">
-                            <div dangerouslySetInnerHTML={{__html: descriptionHtml || ''}} />
-                        </div>
-
-                        {/* Divider */}
-                        <div 
-                            className="w-full h-32 my-2 opacity-60"
-                            style={{
-                                backgroundImage: "url('/assets/divider_ornamental_vine.png')",
-                                backgroundSize: 'auto 100%',
-                                backgroundRepeat: 'no-repeat',
-                                backgroundPosition: 'center'
-                            }}
-                        />
-
-                        {/* Form & CTA */}
+                        {/* Product Form - Sticky in Sidebar */}
                         <ProductForm
                             productOptions={productOptions}
                             selectedVariant={selectedVariant}
@@ -388,26 +504,24 @@ export default function Product() {
                         />
                     </div>
                 </div>
-
-                {/* Footer Signature */}
-                <div className="relative z-10 mt-16 pt-8 border-t border-dashed border-rust/40 text-center">
-                    <span className="font-body text-xs text-dark-green/50 tracking-widest">
-                        Recovered from the quiet places
-                    </span>
-                </div>
             </div>
 
-        {/* Related Specimens */}
-        <Suspense fallback={<Skeleton className="h-32 mt-12" />}>
+        {/* Related Specimens - Both Mobile & Desktop */}
+        <Suspense fallback={<Skeleton className="h-32 mt-16" />}>
           <Await
             errorElement="There was a problem loading related products"
             resolve={recommended}
           >
             {(products) => (
-              <div className="mt-24 border-t border-rust/30 pt-12 max-w-6xl mx-auto px-4">
-                  <h3 className="font-heading text-2xl text-dark-green mb-8 text-center tracking-widest">
-                      YOU MAY ALSO LIKE
-                  </h3>
+              <div className="mt-32 border-t border-rust/30 pt-16">
+                  <div className="text-center mb-4">
+                      <h3 className="font-heading text-2xl text-dark-green mb-2 tracking-widest">
+                          OTHER RECOVERED ARTIFACTS
+                      </h3>
+                      <p className="font-body text-xs text-dark-green/60 italic tracking-wide">
+                          From similar expeditions into the quiet places
+                      </p>
+                  </div>
                   <ProductSwimlane title="" products={products} />
               </div>
             )}
@@ -431,29 +545,43 @@ export default function Product() {
         />
         </div>
 
-        {/* Sticky Mobile Add to Cart Bar */}
-        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#f4f1ea] border-t-2 border-dark-green p-4 z-50 shadow-[0_-4px_12px_rgba(0,0,0,0.15)]">
+        {/* Sticky Mobile Footer Bar */}
+        <div 
+          className={`lg:hidden fixed bottom-0 left-0 right-0 bg-[#f4f1ea] border-t-2 border-dark-green p-4 z-[100] shadow-[0_-4px_12px_rgba(0,0,0,0.15)] transition-transform duration-300 ${
+            showStickyFooter ? 'translate-y-0' : 'translate-y-full'
+          }`}
+        >
           <div className="flex items-center gap-3">
             <div className="flex-1">
               <p className="font-heading text-xs text-dark-green/60 uppercase tracking-widest mb-1">Price</p>
-              <div className="font-heading text-2xl text-dark-green">
+              <div className="font-body font-bold text-xl text-dark-green">
                 <Money withoutTrailingZeros data={selectedVariant?.price!} />
               </div>
             </div>
             {isOutOfStock ? (
               <Button variant="secondary" disabled className="px-6 py-3 bg-gray-200 text-ink/50 font-heading text-xs tracking-widest uppercase cursor-not-allowed">
-                Out of Stock
+                Depleted
               </Button>
             ) : (
               <AddToCartButton
                 lines={[{merchandiseId: selectedVariant.id!, quantity: 1}]}
                 variant="primary"
-                className="group relative px-8 py-3 overflow-hidden"
+                className="group relative flex-1 overflow-hidden"
               >
-                <div className="absolute inset-0 bg-dark-green transition-all duration-100 group-hover:bg-rust" />
-                <span className="relative z-10 font-heading text-sm tracking-[0.2em] uppercase text-[#f4f1ea]">
-                  Add to Cart
-                </span>
+                <div className="relative bg-rust text-[#f4f1ea] overflow-hidden group hover:bg-[#722f2f] transition-all duration-300 h-full flex items-center justify-center shadow-sm">
+                  {/* Corner Brackets */}
+                  <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-[#f4f1ea]/40" />
+                  <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-[#f4f1ea]/40" />
+                  <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-[#f4f1ea]/40" />
+                  <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[#f4f1ea]/40" />
+
+                  {/* Content */}
+                  <div className="relative z-10 px-6">
+                    <span className="block font-heading text-lg uppercase text-[#f4f1ea] tracking-[0.15em] whitespace-nowrap">
+                      Claim This Find
+                    </span>
+                  </div>
+                </div>
               </AddToCartButton>
             )}
           </div>
@@ -461,6 +589,144 @@ export default function Product() {
     </div>
   );
 }
+
+/* ============================================
+   ACCORDION COMPONENTS
+   ============================================ */
+
+function FieldNotesAccordion({descriptionHtml}: {descriptionHtml: string}) {
+  return (
+    <Disclosure>
+      {({open}) => (
+        <div className="border border-rust/30 bg-paper">
+          <Disclosure.Button className="w-full px-4 py-3 flex justify-between items-center hover:bg-rust/5 transition-colors">
+            <span className="font-body text-xs uppercase tracking-widest text-dark-green font-bold">
+              Field Notes
+            </span>
+            <IconCaret
+              className={clsx(
+                'w-4 h-4 text-rust transition-transform duration-200',
+                open && 'rotate-180',
+              )}
+            />
+          </Disclosure.Button>
+          <Disclosure.Panel className="px-4 py-4 border-t border-rust/20">
+            <div
+              className="prose prose-sm prose-stone font-body text-sm leading-relaxed text-ink/90 max-w-none"
+              dangerouslySetInnerHTML={{__html: descriptionHtml}}
+            />
+          </Disclosure.Panel>
+        </div>
+      )}
+    </Disclosure>
+  );
+}
+
+function ArtifactSpecsAccordion({selectedVariant, title = "Artifact Specifications"}: {selectedVariant: any; title?: string}) {
+  return (
+    <Disclosure>
+      {({open}) => (
+        <div className="border border-rust/30 bg-paper">
+          <Disclosure.Button className="w-full px-4 py-3 flex justify-between items-center hover:bg-rust/5 transition-colors">
+            <span className="font-body text-xs uppercase tracking-widest text-dark-green font-bold">
+              {title}
+            </span>
+            <IconCaret
+              className={clsx(
+                'w-4 h-4 text-rust transition-transform duration-200',
+                open && 'rotate-180',
+              )}
+            />
+          </Disclosure.Button>
+          <Disclosure.Panel className="px-4 py-4 border-t border-rust/20">
+            <div className="space-y-3 font-body text-xs text-dark-green/90">
+              <div className="grid grid-cols-3 gap-2 pb-2 border-b border-dashed border-rust/20">
+                <span className="uppercase tracking-widest opacity-60">Material Composition</span>
+                <span className="col-span-2">100% Organic Cotton // 240 GSM</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2 pb-2 border-b border-dashed border-rust/20">
+                <span className="uppercase tracking-widest opacity-60">Combat Fit Class</span>
+                <span className="col-span-2">Oversized // Boxy</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2 pb-2 border-b border-dashed border-rust/20">
+                <span className="uppercase tracking-widest opacity-60">Textile Grade</span>
+                <span className="col-span-2">Heavyweight</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                <span className="uppercase tracking-widest opacity-60">Preservation Protocol</span>
+                <span className="col-span-2">Machine Wash Cold // Hang Dry Only</span>
+              </div>
+            </div>
+          </Disclosure.Panel>
+        </div>
+      )}
+    </Disclosure>
+  );
+}
+
+function ProvenanceAccordion({
+  vendor, 
+  publishedAt,
+  selectedVariant,
+  title = "Provenance Intel"
+}: {
+  vendor: string;
+  publishedAt: string;
+  selectedVariant: any;
+  title?: string;
+}) {
+  return (
+    <Disclosure>
+      {({open}) => (
+        <div className="border border-rust/30 bg-paper">
+          <Disclosure.Button className="w-full px-4 py-3 flex justify-between items-center hover:bg-rust/5 transition-colors">
+            <span className="font-body text-xs uppercase tracking-widest text-dark-green font-bold">
+              {title}
+            </span>
+            <IconCaret
+              className={clsx(
+                'w-4 h-4 text-rust transition-transform duration-200',
+                open && 'rotate-180',
+              )}
+            />
+          </Disclosure.Button>
+          <Disclosure.Panel className="px-4 py-4 border-t border-rust/20">
+            <div className="space-y-3 font-body text-xs text-dark-green/90">
+              <div className="grid grid-cols-3 gap-2 pb-2 border-b border-dashed border-rust/20">
+                <span className="uppercase tracking-widest opacity-60">Recovery Site</span>
+                <span className="col-span-2">The Quiet Places // Reclaimed</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2 pb-2 border-b border-dashed border-rust/20">
+                <span className="uppercase tracking-widest opacity-60">Provenance Code</span>
+                <span className="col-span-2">{vendor}</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2 pb-2 border-b border-dashed border-rust/20">
+                <span className="uppercase tracking-widest opacity-60">Artifact Status</span>
+                <span className="col-span-2">
+                  {selectedVariant?.availableForSale ? 'Available for Acquisition' : 'Archived // Depleted'}
+                </span>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                <span className="uppercase tracking-widest opacity-60">Catalogued</span>
+                <span className="col-span-2">
+                  {new Date(publishedAt).toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                  })}
+                </span>
+              </div>
+            </div>
+          </Disclosure.Panel>
+        </div>
+      )}
+    </Disclosure>
+  );
+}
+
+/* ============================================
+   PRODUCT FORM COMPONENT
+   ============================================ */
 
 export function ProductForm({
   productOptions,
@@ -477,7 +743,7 @@ export function ProductForm({
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
   return (
-    <div className="grid gap-8">
+    <div className="grid gap-6">
       <div className="grid gap-4">
         {productOptions.map((option) => (
           <div key={option.name} className="flex flex-col gap-3">
@@ -504,7 +770,7 @@ export function ProductForm({
                     prefetch="intent"
                     replace
                     className={clsx(
-                      'min-w-[3rem] px-3 py-2 font-body text-sm border transition-all duration-100 steps(2) text-center',
+                      'min-w-[3rem] px-3 py-2 font-body text-sm border transition-all duration-100 text-center',
                       selected 
                         ? 'border-dark-green bg-dark-green text-cream' 
                         : 'border-dark-green/30 text-dark-green hover:border-dark-green',
@@ -581,8 +847,8 @@ export function ProductForm({
           </Modal>
       )}
 
-          {selectedVariant && (
-        <div className="mt-8">
+      {selectedVariant && (
+        <div className="mt-2">
           {isOutOfStock ? (
             <Button variant="secondary" disabled className="w-full py-4 bg-gray-200 text-ink/50 font-heading tracking-widest uppercase cursor-not-allowed border border-dashed border-ink/20">
               Recovered Work Archived // Depleted
@@ -591,23 +857,24 @@ export function ProductForm({
             <AddToCartButton
               lines={[{merchandiseId: selectedVariant.id!, quantity: 1}]}
               variant="primary"
-              className="group relative w-full h-20 overflow-hidden transition-all duration-100 steps(2)"
+              className="group relative w-full overflow-hidden"
             >
-              {/* Button Container - Stamped Look */}
-              <div className="absolute inset-0 bg-dark-green border-2 border-dark-green transition-all duration-100 steps(2) group-hover:bg-rust group-hover:border-rust">
-                 {/* Inner Border */}
-                 <div className="absolute inset-1 border border-[#f4f1ea]/30 group-hover:border-[#f4f1ea]/50" />
-              </div>
-
-              {/* Content */}
-              <div className="relative z-10 flex flex-col items-center justify-center h-full">
-                 <span className="font-heading text-2xl tracking-[0.25em] uppercase text-[#f4f1ea] transition-colors duration-100 steps(2)">
+              {/* Main Button Structure */}
+              {/* Main Button Structure - Artifact Crate Style */}
+              <div className="relative bg-rust text-[#f4f1ea] overflow-hidden group hover:bg-[#722f2f] transition-all duration-300 w-full shadow-[0_4px_15px_rgba(139,58,58,0.2)] hover:shadow-[0_6px_20px_rgba(139,58,58,0.3)]">
+                {/* Corner Brackets */}
+                <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-[#f4f1ea]/40" />
+                <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-[#f4f1ea]/40" />
+                <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-[#f4f1ea]/40" />
+                <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[#f4f1ea]/40" />
+                
+                {/* Centered Text - Taller Padding */}
+                <div className="relative z-10 py-8 px-10 text-center">
+                  <span className="block font-heading text-2xl uppercase text-[#f4f1ea] tracking-[0.2em]">
                     Claim This Find
-                 </span>
+                  </span>
+                </div>
               </div>
-
-              {/* Hover Effect - Stamp Mark */}
-              <div className="absolute -right-8 -bottom-8 w-24 h-24 bg-[#f4f1ea] rounded-full blur-xl opacity-0 group-hover:opacity-10 transition-opacity duration-100 steps(2) pointer-events-none" />
             </AddToCartButton>
           )}
         </div>
@@ -616,79 +883,9 @@ export function ProductForm({
   );
 }
 
-function ProductOptionSwatch({
-  swatch,
-  name,
-}: {
-  swatch?: Maybe<ProductOptionValueSwatch> | undefined;
-  name: string;
-}) {
-  const image = swatch?.image?.previewImage?.url;
-  const color = swatch?.color;
-
-  if (!image && !color) return name;
-
-  return (
-    <div
-      aria-label={name}
-      className="w-8 h-8"
-      style={{
-        backgroundColor: color || 'transparent',
-      }}
-    >
-      {!!image && <img src={image} alt={name} />}
-    </div>
-  );
-}
-
-function ProductDetail({
-  title,
-  content,
-  learnMore,
-}: {
-  title: string;
-  content: string;
-  learnMore?: string;
-}) {
-  return (
-    <Disclosure key={title} as="div" className="grid w-full gap-2">
-      {({open}) => (
-        <>
-          <Disclosure.Button className="text-left">
-            <div className="flex justify-between">
-              <Text size="lead" as="h4">
-                {title}
-              </Text>
-              <IconClose
-                className={clsx(
-                  'transition-transform transform-gpu duration-100 steps(2)',
-                  !open && 'rotate-[45deg]',
-                )}
-              />
-            </div>
-          </Disclosure.Button>
-
-          <Disclosure.Panel className={'pb-4 pt-2 grid gap-2'}>
-            <div
-              className="prose dark:prose-invert"
-              dangerouslySetInnerHTML={{__html: content}}
-            />
-            {learnMore && (
-              <div className="">
-                <Link
-                  className="pb-px border-b border-primary/30 text-primary/50"
-                  to={learnMore}
-                >
-                  Learn more
-                </Link>
-              </div>
-            )}
-          </Disclosure.Panel>
-        </>
-      )}
-    </Disclosure>
-  );
-}
+/* ============================================
+   GRAPHQL QUERIES & HELPERS
+   ============================================ */
 
 const PRODUCT_VARIANT_FRAGMENT = `#graphql
   fragment ProductVariant on ProductVariant {
@@ -846,3 +1043,5 @@ async function getRecommendedProducts(
 
   return {nodes: mergedProducts};
 }
+
+

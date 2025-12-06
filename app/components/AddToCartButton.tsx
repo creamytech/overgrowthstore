@@ -65,10 +65,9 @@ export function AddToCartButton({
                     </span>
                  </div>
               ) : (
-                <span className="flex items-center justify-center gap-2">
-                  <IconLeaf size={18} className="opacity-70" />
+                <>
                   {children}
-                </span>
+                </>
               )}
             </Button>
           </>
