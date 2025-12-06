@@ -347,7 +347,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
             <img 
                 src="/assets/FooterDivider1.svg" 
                 alt="Root Transition" 
-                className="w-full h-auto"
+                className="w-full h-auto opacity-80"
             />
         </div>
 

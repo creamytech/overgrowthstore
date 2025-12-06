@@ -28,7 +28,7 @@ export function ProductCard({
   loading?: HTMLImageElement['loading'];
   onClick?: () => void;
   quickAdd?: boolean;
-  layout?: 'grid' | 'drawer';
+  layout?: 'grid' | 'drawer' | 'museum' | 'archive';
   index?: number;
 }) {
   let cardLabel;
@@ -105,6 +105,126 @@ export function ProductCard({
           </Link>
         </div>
     );
+  }
+
+  // Archive Layout (Field Table / Photo Corner Style)
+  if (layout === 'archive') {
+    return (
+        <div className={clsx('group relative break-inside-avoid mb-8', className)}>
+          <Link
+            onClick={onClick}
+            to={`/products/${product.handle}`}
+            prefetch="viewport"
+            className="block relative transform transition-transform duration-500 hover:-translate-y-1 hover:rotate-1"
+          >
+             {/* Card Base - White Paper with Shadow */}
+             <div className="relative bg-white p-3 pb-8 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.1)] group-hover:shadow-[0_15px_30px_-5px_rgba(74,93,35,0.15)] transition-shadow duration-500">
+                
+                {/* Photo Corners (SVG) */}
+                <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-dark-green/20 z-20" />
+                <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-dark-green/20 z-20" />
+                <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-dark-green/20 z-20" />
+                <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-dark-green/20 z-20" />
+
+                {/* Tape Effect (Randomized visual via CSS or static for now) */}
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-[#fdfbf7] opacity-80 rotate-[-1deg] shadow-sm z-30 mix-blend-multiply border-l border-r border-white/40" />
+
+                {/* Image Area */}
+                <div className="relative aspect-[4/5] bg-[#f4f1ea] overflow-hidden grayscale-[0.1] group-hover:grayscale-0 transition-all duration-500">
+                    {image && (
+                        <Image
+                            className={`object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 ${isSoldOut ? 'opacity-60 grayscale' : ''}`}
+                            sizes="(min-width: 1024px) 33vw, 50vw"
+                            data={image}
+                            alt={image.altText || `Picture of ${product.title}`}
+                            loading={loading}
+                        />
+                    )}
+                </div>
+
+                {/* Handwriting Label */}
+                <div className="mt-4 text-center">
+                    <h3 className="font-handwritten text-lg text-dark-green group-hover:text-rust transition-colors leading-tight">
+                        {product.title}
+                    </h3>
+                    <div className="flex items-center justify-center gap-2 mt-1">
+                        <span className="font-mono text-[9px] uppercase tracking-widest text-dark-green/50">
+                            Fig. {(index || 0) + 1}
+                        </span>
+                        <span className="w-1 h-1 rounded-full bg-dark-green/30" />
+                        <span className="font-mono text-xs font-bold text-dark-green/80">
+                             <Money withoutTrailingZeros data={price!} />
+                        </span>
+                    </div>
+                </div>
+             </div>
+          </Link>
+        </div>
+    );
+  }
+
+  if (layout === 'museum') {
+     return (
+        <div className={clsx('group relative', className)}>
+          <Link
+            onClick={onClick}
+            to={`/products/${product.handle}`}
+            prefetch="viewport"
+            className="block"
+          >
+             <div className="relative bg-transparent transition-all duration-500">
+                
+                {/* Image Container - Larger, clean edges, subtle texture blend */}
+                <div className="relative aspect-[4/5] overflow-hidden bg-[#f0ede6] mb-6">
+                    {/* Subtle Paper Edge Effect */}
+                    <div className="absolute inset-0 border border-dark-green/5 z-20 pointer-events-none" />
+                    <div className="absolute inset-0 opacity-10 mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')] z-10 pointer-events-none" />
+
+                     {image && (
+                        <Image
+                            className={`object-cover w-full h-full transition-all duration-700 transform group-hover:scale-105 ${isSoldOut ? 'grayscale opacity-70' : 'grayscale-[0.1] group-hover:grayscale-0'}`}
+                            sizes="(min-width: 1024px) 50vw, 100vw"
+                            width={1200}
+                            aspectRatio="4/5"
+                            data={image}
+                            alt={image.altText || `Picture of ${product.title}`}
+                            loading={loading}
+                        />
+                    )}
+
+                    {/* Rare Find Badge (Replaces Sale) */}
+                    {isDiscounted(price as MoneyV2, compareAtPrice as MoneyV2) && (
+                        <div className="absolute top-4 left-4 z-20">
+                            <span className="font-heading text-xs text-[#f4f1ea] bg-rust px-3 py-1 tracking-widest uppercase">
+                                Rare Find
+                            </span>
+                        </div>
+                    )}
+                </div>
+
+                {/* Content - Centered & Clean */}
+                <div className="text-center px-4">
+                    <h3 className="font-heading text-2xl text-dark-green mb-2 group-hover:text-rust transition-colors duration-300 uppercase tracking-widest">
+                        {product.title}
+                    </h3>
+                    
+                    {/* Micro-Lore */}
+                    <p className="font-handwritten text-dark-green/60 text-sm italic mb-3">
+                         "{['Recovered from the roadside of a desert ghost town.', 'Salvaged from the deep overgrowth.', 'Found beneath the canopy of Sector 7.', 'A quiet echo of the old world.', 'Restored from the archive of lost things.'][((index || 0) + (product.id.charCodeAt(product.id.length - 1))) % 5]}"
+                    </p>
+
+                    <div className="flex items-center justify-center gap-3">
+                        <Text className="font-mono text-xs text-dark-green/80 font-bold tracking-widest">
+                            <Money withoutTrailingZeros data={price!} />
+                        </Text>
+                         {/* Optional: Add 'View Artifact' link visible on hover? User wanted clean. */}
+                    </div>
+                </div>
+
+             </div>
+          </Link>
+        </div>
+     );
   }
 
   // Grid Layout (Field Journal Style - Artifact Mode)
@@ -197,6 +317,13 @@ export function ProductCard({
                          <span className="text-dark-green/40">
                              {index ? 142 + index : 142}/500
                          </span>
+                    </div>
+
+                    {/* Lore Snippet - Poetic Line */}
+                    <div className="mt-3 pt-3 border-t border-dashed border-dark-green/10">
+                        <p className="font-handwritten text-dark-green/60 text-sm italic">
+                            "{['Found where the roots run deep.', 'Reclaimed from the silent city.', 'Echoes of a forgotten song.', 'Nature always takes it back.', 'Worn by the wind and rain.'][((index || 0) + (product.id.charCodeAt(product.id.length - 1))) % 5]}"
+                        </p>
                     </div>
                 </div>
           </div>

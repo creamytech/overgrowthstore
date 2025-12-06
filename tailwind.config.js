@@ -39,6 +39,9 @@ export default {
         nav: 'var(--height-nav)',
         fine: ['var(--font-size-fine)', '1.333'],
       },
+      letterSpacing: {
+        widest: '0.05em', // Tighter than default 0.1em based on user feedback
+      },
       maxWidth: {
         'prose-narrow': '45ch',
         'prose-wide': '80ch',

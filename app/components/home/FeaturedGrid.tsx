@@ -3,11 +3,11 @@ import {Image, Money} from '@shopify/hydrogen';
 import {motion} from 'framer-motion';
 import {ProductCard} from '~/components/ProductCard';
 
-export function FeaturedGrid({products, title = "Latest Finds"}: {products: any[], title?: string}) {
+export function FeaturedGrid({products, title = "Recent Recoveries"}: {products: any[], title?: string}) {
   if (!products || products.length === 0) return null;
 
   return (
-    <section id="featured-grid" className="py-24 px-4 md:px-12 relative z-20">
+    <section id="featured-grid" className="pt-12 pb-24 px-4 md:px-12 relative z-20">
       <div className="max-w-7xl mx-auto">
         
         {/* Section Header */}
@@ -39,8 +39,8 @@ export function FeaturedGrid({products, title = "Latest Finds"}: {products: any[
             />
         </div>
 
-        {/* Product Grid with Staggered Animation */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-12 md:gap-8">
+        {/* Product Grid with Staggered Animation - Switched to 3 columns for larger thumbnails */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-12 md:gap-10">
             {products.map((product, index) => (
                 <motion.div
                     key={product.id}
@@ -52,7 +52,11 @@ export function FeaturedGrid({products, title = "Latest Finds"}: {products: any[
                         delay: index * 0.1,
                         ease: "easeOut"
                     }}
+                    className="group relative"
                 >
+                     {/* Hover Glow Effect */}
+                     <div className="absolute -inset-4 bg-moss/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl pointer-events-none" />
+                     
                     <ProductCard product={product} />
                 </motion.div>
             ))}
