@@ -144,6 +144,8 @@ export default function Product() {
     selectedOrFirstAvailableVariant: selectedVariant,
   });
 
+  const isOutOfStock = !selectedVariant?.availableForSale;
+
   const firstMedia = media.nodes[0];
   const initialImage = selectedVariant?.image || (firstMedia?.__typename === 'MediaImage' ? firstMedia.image : null);
   
