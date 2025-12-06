@@ -206,6 +206,27 @@ export default function Article() {
           </div>
         </div>
       )}
+
+      {/* Article Navigation */}
+      <div className="max-w-4xl mx-auto mt-16">
+        <div className="flex justify-between items-center py-6 border-y border-rust/30">
+          <Link 
+            to="/journal"
+            className="group flex items-center gap-2 font-heading text-sm tracking-widest text-dark-green hover:text-rust transition-colors"
+          >
+            <Icons.ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            <span>ALL FIELD NOTES</span>
+          </Link>
+          <span className="font-body text-xs text-dark-green/40">•</span>
+          <Link 
+            to="/journal"
+            className="group flex items-center gap-2 font-heading text-sm tracking-widest text-dark-green hover:text-rust transition-colors"
+          >
+            <span>DISCOVER MORE</span>
+            <Icons.ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

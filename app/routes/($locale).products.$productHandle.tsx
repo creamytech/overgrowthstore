@@ -428,6 +428,34 @@ export default function Product() {
           }}
         />
         </div>
+
+        {/* Sticky Mobile Add to Cart Bar */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#f4f1ea] border-t-2 border-dark-green p-4 z-50 shadow-[0_-4px_12px_rgba(0,0,0,0.15)]">
+          <div className="flex items-center gap-3">
+            <div className="flex-1">
+              <p className="font-heading text-xs text-dark-green/60 uppercase tracking-widest mb-1">Price</p>
+              <div className="font-heading text-2xl text-dark-green">
+                <Money withoutTrailingZeros data={selectedVariant?.price!} />
+              </div>
+            </div>
+            {isOutOfStock ? (
+              <Button variant="secondary" disabled className="px-6 py-3 bg-gray-200 text-ink/50 font-heading text-xs tracking-widest uppercase cursor-not-allowed">
+                Out of Stock
+              </Button>
+            ) : (
+              <AddToCartButton
+                lines={[{merchandiseId: selectedVariant.id!, quantity: 1}]}
+                variant="primary"
+                className="group relative px-8 py-3 overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-dark-green transition-all duration-100 group-hover:bg-rust" />
+                <span className="relative z-10 font-heading text-sm tracking-[0.2em] uppercase text-[#f4f1ea]">
+                  Add to Cart
+                </span>
+              </AddToCartButton>
+            )}
+          </div>
+        </div>
     </div>
   );
 }
