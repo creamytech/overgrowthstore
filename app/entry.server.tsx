@@ -41,6 +41,8 @@ export default async function handleRequest(
       'data:',
       'https://cdn.shopify.com',
       'https://*.shopify.com',
+      'https://www.overgrowth.co',
+      'https://overgrowth.co',
       ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
     ],
   });
