@@ -1,50 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 import {useFetcher} from '@remix-run/react';
-import type {ActionFunctionArgs} from '@shopify/remix-oxygen';
-import {json} from '@shopify/remix-oxygen';
-
-// Action to handle newsletter signup
-export async function action({request, context}: ActionFunctionArgs) {
-  const formData = await request.formData();
-  const email = formData.get('email')?.toString();
-
-  if (!email || !email.includes('@')) {
-    return json({ok: false, error: 'Please enter a valid email address'});
-  }
-
-  try {
-    // Create customer with email for newsletter
-    await context.storefront.mutate(CUSTOMER_CREATE_MUTATION, {
-      variables: {
-        input: {
-          email,
-          acceptsMarketing: true,
-        },
-      },
-    });
-    return json({ok: true, error: null});
-  } catch (error) {
-    // If customer already exists, that's still a success for our purposes
-    return json({ok: true, error: null});
-  }
-}
-
-const CUSTOMER_CREATE_MUTATION = `#graphql
-  mutation customerCreate($input: CustomerCreateInput!) {
-    customerCreate(input: $input) {
-      customer {
-        id
-        email
-      }
-      customerUserErrors {
-        code
-        field
-        message
-      }
-    }
-  }
-` as const;
 
 export default function EmailSignupPage() {
   const [videoEnded, setVideoEnded] = useState(false);
@@ -325,7 +281,7 @@ export default function EmailSignupPage() {
                           transition={{delay: 0.8, duration: 0.6, ease: 'easeOut'}}
                           className="w-full max-w-xs"
                         >
-                          <fetcher.Form method="post" className="flex flex-col items-center gap-3 md:gap-5">
+                          <fetcher.Form method="post" action="/api/newsletter" className="flex flex-col items-center gap-3 md:gap-5">
                             {/* Email Input */}
                             <div className="w-full relative">
                               <input
