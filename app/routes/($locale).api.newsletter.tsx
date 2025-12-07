@@ -124,6 +124,8 @@ export async function action({request, context}: ActionFunctionArgs) {
  * Fallback to Storefront API if Admin API is not configured
  */
 async function handleStorefrontFallback(email: string, context: any) {
+  console.log('[Newsletter] Using Storefront API fallback for:', email);
+  
   try {
     const CUSTOMER_CREATE_MUTATION = `#graphql
       mutation customerCreate($input: CustomerCreateInput!) {
@@ -142,19 +144,31 @@ async function handleStorefrontFallback(email: string, context: any) {
       }
     `;
 
-    const {customerCreate} = await context.storefront.mutate(CUSTOMER_CREATE_MUTATION, {
+    // Generate a strong password that meets Shopify requirements (5+ chars)
+    const randomPassword = 'Ovg!' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+    
+    console.log('[Newsletter] Calling storefront.mutate...');
+    
+    const result = await context.storefront.mutate(CUSTOMER_CREATE_MUTATION, {
       variables: {
         input: {
           email,
-          password: Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2) + Date.now().toString(36), // Random password
+          password: randomPassword,
           acceptsMarketing: true,
         },
       },
     });
 
+    console.log('[Newsletter] Mutation result:', JSON.stringify(result, null, 2));
+
+    const customerCreate = result?.customerCreate;
+
     if (customerCreate?.customerUserErrors?.length) {
-      const isEmailTaken = customerCreate.customerUserErrors.some(
-        (error: {code: string}) => error.code === 'TAKEN',
+      const errors = customerCreate.customerUserErrors;
+      console.log('[Newsletter] Customer creation errors:', errors);
+      
+      const isEmailTaken = errors.some(
+        (error: {code: string}) => error.code === 'TAKEN' || error.code === 'CUSTOMER_DISABLED',
       );
 
       if (isEmailTaken) {
@@ -162,14 +176,16 @@ async function handleStorefrontFallback(email: string, context: any) {
       }
 
       return json(
-        {ok: false, error: customerCreate.customerUserErrors[0].message},
+        {ok: false, error: errors[0].message || 'Signup failed'},
         {status: 400},
       );
     }
 
+    console.log('[Newsletter] Customer created successfully');
     return json({ok: true, message: 'Welcome to the Overgrowth.'});
-  } catch (error) {
-    console.error('Storefront Fallback Error:', error);
-    return json({ok: false, error: 'Failed to subscribe.'}, {status: 500});
+  } catch (error: any) {
+    console.error('[Newsletter] Storefront Fallback Error:', error?.message || error);
+    console.error('[Newsletter] Error stack:', error?.stack);
+    return json({ok: false, error: error?.message || 'Failed to subscribe.'}, {status: 500});
   }
 }
