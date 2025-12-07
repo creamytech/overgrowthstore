@@ -146,7 +146,7 @@ async function handleStorefrontFallback(email: string, context: any) {
       variables: {
         input: {
           email,
-          password: crypto.randomUUID(), // Random password - customer won't use it for newsletter signups
+          password: Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2) + Date.now().toString(36), // Random password
           acceptsMarketing: true,
         },
       },
