@@ -71,7 +71,7 @@ export default function EmailSignupPage() {
   }, [fetcher.data]);
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden bg-[#0a0a0a]">
+    <div className="relative w-full min-h-screen-dynamic overflow-hidden bg-[#0a0a0a]">
       {/* Custom CSS for animations */}
       <style>{`
         @keyframes blink {
