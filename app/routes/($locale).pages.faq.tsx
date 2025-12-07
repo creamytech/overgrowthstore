@@ -80,7 +80,8 @@ export default function FAQ() {
 
   const faqs = [
     {
-      category: 'Shipping',
+      category: 'Supply Routes',
+      subtitle: 'When will the drop arrive?',
       iconKey: 'truck' as const,
       questions: [
         { q: 'When will my recovered piece arrive?', a: 'Orders ship within 2-5 business days. Delivery is typically 5-7 days domestic, 10-14 days international.' },
@@ -89,15 +90,17 @@ export default function FAQ() {
       ]
     },
     {
-      category: 'Returns',
+      category: 'Exchanges & Recovery',
+      subtitle: 'If your artifact needs to go back',
       iconKey: 'recycle' as const,
       questions: [
-        { q: 'What if my artifact needs to go back?', a: 'Returns accepted within 30 days. Items must be unworn, unwashed, with tags attached.' },
+        { q: 'What is your return policy?', a: 'Returns accepted within 30 days. Items must be unworn, unwashed, with tags attached.' },
         { q: 'How do I initiate a return?', a: 'Email customerservice@overgrowth.co with your order number. We\'ll send a prepaid label.' },
       ]
     },
     {
-      category: 'Orders',
+      category: 'Acquisition Protocol',
+      subtitle: 'How to secure your find',
       iconKey: 'bag' as const,
       questions: [
         { q: 'What payment methods do you accept?', a: 'All major cards, PayPal, Apple Pay, Google Pay, and Shop Pay.' },
@@ -105,7 +108,8 @@ export default function FAQ() {
       ]
     },
     {
-      category: 'Products',
+      category: 'Fitment Guide',
+      subtitle: 'Sizing and care protocols',
       iconKey: 'shirt' as const,
       questions: [
         { q: 'How do I care for my recovered pieces?', a: 'Machine wash cold, tumble dry low. Avoid bleach. Your pieces will last years with proper care.' },
@@ -116,95 +120,129 @@ export default function FAQ() {
 
   let globalIndex = 0;
 
-  return (
-    <div className="min-h-screen bg-[#f4f1ea] relative overflow-hidden">
-      {/* Texture Overlay */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')]" />
+  // Seed Icon (closed state)
+  const SeedIcon = ({className}: {className: string}) => (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <ellipse cx="12" cy="12" rx="4" ry="6" />
+    </svg>
+  );
 
-      {/* Standard Header */}
-      <div className="relative z-10 pt-40 pb-12 text-center">
-        <div className="flex justify-center mb-6">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-px bg-gradient-to-r from-transparent to-dark-green/30" />
-            <div className="w-2 h-2 border border-rust rotate-45" />
-            <div className="w-16 h-px bg-gradient-to-l from-transparent to-dark-green/30" />
-          </div>
+  // Leaf Icon (open state)
+  const LeafIcon = ({className}: {className: string}) => (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M12 22V12m0 0c0-4 4-8 8-8-1 4-4 8-8 8m0 0c0-4-4-8-8-8 1 4 4 8 8 8"/>
+    </svg>
+  );
+
+  return (
+    <div className="min-h-screen relative overflow-hidden">
+      {/* ARCHIVED Stamp - Decorative */}
+      <div className="absolute top-48 right-8 md:right-16 rotate-12 opacity-10 pointer-events-none z-0">
+        <div className="border-4 border-rust px-6 py-2">
+          <span className="font-heading text-2xl md:text-4xl text-rust uppercase tracking-widest">Archived</span>
         </div>
+      </div>
+
+      {/* Header - "The Field Manual" */}
+      <div className="relative z-10 pt-40 pb-12 text-center px-4">
+        <div className="flex items-center justify-center gap-3 mb-6">
+          {/* Document icon */}
+          <svg className="w-6 h-6 text-dark-green/40" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+          <span className="font-mono text-xs text-dark-green/40 uppercase tracking-widest">Document FM-001</span>
+        </div>
+        
         <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-4 uppercase">
-          Help Center
+          Field Manual
         </h1>
         <p className="font-body text-dark-green/60 text-lg max-w-md mx-auto">
-          Everything you need to know
+          Survival protocols for navigating the Overgrowth experience
         </p>
         <div className="w-24 h-1 bg-rust mx-auto mt-8" />
       </div>
 
       {/* FAQ Content */}
       <div className="relative z-10 px-4 md:px-8 pb-24">
-        <div className="max-w-3xl mx-auto space-y-12">
-          {faqs.map((section, sectionIdx) => (
-            <div key={sectionIdx}>
-              {/* Category Header */}
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-10 h-10 bg-dark-green flex items-center justify-center">
-                  {CategoryIcons[section.iconKey]("w-5 h-5 text-[#f4f1ea]")}
-                </div>
-                <h2 className="font-heading text-xl text-dark-green tracking-widest">{section.category}</h2>
-                <div className="flex-1 h-px bg-dark-green/20" />
-              </div>
-              
-              {/* Questions */}
-              <div className="space-y-3">
-                {section.questions.map((item, qIdx) => {
-                  const currentIndex = globalIndex++;
-                  const isOpen = openIndex === currentIndex;
-                  
-                  return (
-                    <div 
-                      key={qIdx}
-                      className={`bg-[#f9f7f3] border transition-colors ${isOpen ? 'border-rust' : 'border-dark-green/20'}`}
-                    >
-                      <button
-                        onClick={() => setOpenIndex(isOpen ? null : currentIndex)}
-                        className="w-full flex items-center justify-between p-5 text-left"
-                      >
-                        <span className={`font-heading transition-colors ${isOpen ? 'text-rust' : 'text-dark-green'}`}>
-                          {item.q}
-                        </span>
-                        {isOpen 
-                          ? <MinusIcon className="w-5 h-5 text-rust" />
-                          : <PlusIcon className="w-5 h-5 text-dark-green/40" />
-                        }
-                      </button>
-                      
-                      {isOpen && (
-                        <div className="px-5 pb-5">
-                          <p className="font-body text-sm text-dark-green/70 leading-relaxed border-l-2 border-rust/30 pl-4">
-                            {item.a}
-                          </p>
-                        </div>
-                      )}
+        <div className="max-w-3xl mx-auto space-y-10">
+          {faqs.map((section, sectionIdx) => {
+            return (
+              <div key={sectionIdx}>
+                {/* Category Header - Manila Folder Tab Style */}
+                <div className="flex items-end gap-0 mb-0">
+                  <div className="bg-[#e8dfd0] border border-dark-green/20 border-b-0 px-6 py-3 rounded-t-lg relative">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-dark-green/10 rounded-full flex items-center justify-center">
+                        {CategoryIcons[section.iconKey]("w-4 h-4 text-dark-green")}
+                      </div>
+                      <div>
+                        <h2 className="font-heading text-sm text-dark-green uppercase tracking-widest">{section.category}</h2>
+                        <p className="font-mono text-[10px] text-dark-green/40">{section.subtitle}</p>
+                      </div>
                     </div>
-                  );
-                })}
+                  </div>
+                  <div className="flex-1 h-px bg-dark-green/20 mb-px" />
+                </div>
+                
+                {/* Questions - Folder Content */}
+                <div className="bg-[#faf8f4] border border-dark-green/20 border-t-0">
+                  {section.questions.map((item, qIdx) => {
+                    const currentIndex = globalIndex++;
+                    const isOpen = openIndex === currentIndex;
+                    
+                    return (
+                      <div 
+                        key={qIdx}
+                        className={`border-b border-dark-green/10 last:border-b-0 transition-colors ${isOpen ? 'bg-[#f9f7f3]' : ''}`}
+                      >
+                        <button
+                          onClick={() => setOpenIndex(isOpen ? null : currentIndex)}
+                          className="w-full flex items-center justify-between p-5 text-left group"
+                        >
+                          <span className={`font-body text-sm transition-colors ${isOpen ? 'text-rust font-medium' : 'text-dark-green group-hover:text-rust'}`}>
+                            {item.q}
+                          </span>
+                          {/* Seed → Leaf animation */}
+                          <div className={`w-6 h-6 flex items-center justify-center transition-all duration-300 ${isOpen ? 'text-rust rotate-0' : 'text-dark-green/30 -rotate-45'}`}>
+                            {isOpen 
+                              ? <LeafIcon className="w-5 h-5" />
+                              : <SeedIcon className="w-4 h-4" />
+                            }
+                          </div>
+                        </button>
+                        
+                        {isOpen && (
+                          <div className="px-5 pb-5">
+                            <p className="font-body text-sm text-dark-green/70 leading-relaxed border-l-2 border-rust/30 pl-4 ml-0">
+                              {item.a}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
         
-        {/* Contact CTA */}
+        {/* Contact CTA - "Radio for Support" */}
         <div className="max-w-3xl mx-auto mt-16 text-center">
-          <div className="bg-[#f9f7f3] border border-dark-green/20 p-8">
-            <EnvelopeIcon className="w-10 h-10 text-rust mx-auto mb-4" />
-            <h3 className="font-heading text-xl text-dark-green mb-2">Still have questions?</h3>
+          <div className="bg-[#f9f7f3] border border-dark-green/20 p-8 relative">
+            {/* Radio wave icon */}
+            <svg className="w-12 h-12 text-rust mx-auto mb-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+              <path d="M8.288 15.038a5.25 5.25 0 017.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 011.06 0z"/>
+            </svg>
+            <h3 className="font-heading text-xl text-dark-green mb-2 uppercase tracking-widest">Radio for Support</h3>
             <p className="font-body text-sm text-dark-green/60 mb-6">
-              We're here to help. Drop us a note.
+              Signal not found in the manual? Transmit directly.
             </p>
             <Link 
               to="/pages/contact"
-              className="inline-flex items-center gap-2 bg-dark-green text-[#f4f1ea] px-6 py-3 font-heading tracking-widest hover:bg-rust transition-colors"
+              className="inline-flex items-center gap-2 bg-dark-green text-[#f4f1ea] px-6 py-3 font-heading tracking-widest hover:bg-rust transition-colors uppercase"
             >
-              <span>Contact Us</span>
+              <span>Establish Connection</span>
               <ArrowRightIcon className="w-4 h-4" />
             </Link>
           </div>

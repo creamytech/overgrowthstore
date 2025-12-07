@@ -472,31 +472,44 @@ export function CartEmpty({
 
   return (
     <div ref={scrollRef} className={container[layout]} hidden={hidden}>
-      <section className="grid gap-6 text-center justify-items-center pt-12">
-        <div className="w-20 h-20 opacity-40 mb-2">
-             {/* Leaf/Sprout Illustration */}
-             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-full h-full text-dark-green">
-                 <path d="M12 22V12M12 12C12 12 8 8 5 8C5 14 8 16 12 12M12 12C12 12 16 8 19 8C19 14 16 16 12 12" strokeLinecap="round" strokeLinejoin="round" />
-             </svg>
+      <section className="grid gap-6 text-center justify-items-center pt-8 md:pt-12">
+        {/* Empty Cart Illustration */}
+        <div className="w-32 h-32 md:w-40 md:h-40 opacity-80 mb-2">
+          <img 
+            src="/assets/EmptyCart.svg" 
+            alt="Empty cart illustration" 
+            className="w-full h-full object-contain"
+          />
         </div>
-        <div className="space-y-2">
+        
+        <div className="space-y-3 max-w-xs">
           <Text format className="font-heading text-2xl md:text-3xl text-dark-green uppercase tracking-widest">
-            Nothing yet...
+            Your Pack is Empty
           </Text>
-          <p className="font-body text-sm text-dark-green/60">
-            Your finds will appear here
+          <p className="font-body text-sm text-dark-green/60 leading-relaxed">
+            The ruins hold many treasures.<br />
+            Begin your expedition to uncover them.
           </p>
         </div>
-        <div className="pt-4">
-          <Button onClick={onClose} className="bg-dark-green text-[#EFEBD6] font-heading tracking-widest px-8 py-3 hover:bg-rust transition-colors duration-300">
-              Start Exploring
-          </Button>
+        
+        <div className="pt-6">
+          <Link 
+            to="/products" 
+            onClick={onClose}
+            className="bg-dark-green text-[#f4f1ea] font-heading tracking-widest px-8 py-4 hover:bg-rust transition-colors duration-300 uppercase inline-flex items-center gap-2"
+          >
+            <span>Begin the Expedition</span>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+            </svg>
+          </Link>
         </div>
       </section>
-      <section className="grid gap-8 pt-16 border-t border-dark-green/10 mt-8">
+      
+      <section className="grid gap-8 pt-12 border-t border-dark-green/10 mt-8">
         <FeaturedProducts
           count={4}
-          heading="NOTABLE FINDS"
+          heading="RECENT RECOVERIES"
           layout={layout}
           onClose={onClose}
           sortKey="BEST_SELLING"

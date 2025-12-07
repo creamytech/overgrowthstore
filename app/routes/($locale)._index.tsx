@@ -73,14 +73,14 @@ export default function Homepage() {
             {/* Text Content */}
             <div className="flex-1 text-center md:text-left">
                 <h2 className="font-heading text-4xl md:text-6xl text-dark-green tracking-widest mb-6">
-                    Wander.<br/>Discover.<br/>Bloom.
+                    Reclaim.<br/>Overgrow.<br/>Survive.
                 </h2>
                 <div className="w-24 h-1 bg-rust mb-8 mx-auto md:mx-0" />
                 <p className="font-body text-dark-green/80 text-lg leading-relaxed mb-8 max-w-lg">
                     Overgrowth is inspired by a world that grew brighter after we stopped shaping it. Creatures returned. Flowers climbed through old metal. Everything became strange in the best way. Our apparel reflects that sense of wonder with designs pulled from a reclaimed frontier full of life.
                 </p>
                 <Link to="/pages/our-story" className="inline-block bg-dark-green text-[#f4f1ea] px-8 py-3 font-heading tracking-widest hover:bg-rust transition-colors duration-300">
-                    How It Grew
+                    Enter The Genesis
                 </Link>
             </div>
          </div>

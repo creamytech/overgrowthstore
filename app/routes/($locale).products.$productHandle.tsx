@@ -396,11 +396,11 @@ export default function Product() {
                             </div>
                         )}
 
-                        {/* Main Image with Zoom */}
+                        {/* Main Image - "Pinned Photograph" Style */}
                         <div className="flex-1">
                             <div 
                                 ref={imageContainerRef}
-                                className="relative w-full aspect-[4/5] bg-paper border border-rust/30 shadow-sm overflow-hidden group"
+                                className="relative w-full aspect-[4/5] bg-paper border border-rust/30 shadow-[4px_8px_20px_rgba(0,0,0,0.15)] overflow-hidden group"
                                 onMouseEnter={() => setIsHovering(true)}
                                 onMouseLeave={() => setIsHovering(false)}
                                 onMouseMove={handleMouseMove}
@@ -464,12 +464,16 @@ export default function Product() {
                             </p>
                         </div>
 
-                        {/* Price Display - Emphasized */}
-                        <div className="bg-rust/5 border-2 border-rust/20 p-6">
-                            <span className="block font-body text-[10px] tracking-widest uppercase text-dark-green/50 mb-2">
-                                Recovered Value
+                        {/* Price Display - Stamped Value */}
+                        <div className="bg-rust/5 border-2 border-rust/20 p-6 relative">
+                            {/* Stamp effect */}
+                            <div className="absolute top-2 right-2 rotate-6 border-2 border-rust/40 px-2 py-0.5">
+                                <span className="font-mono text-[8px] text-rust uppercase tracking-wider">Verified</span>
+                            </div>
+                            <span className="block font-mono text-[10px] tracking-widest uppercase text-dark-green/50 mb-2">
+                                VALUE
                             </span>
-                            <div className="font-body text-4xl text-dark-green font-bold tracking-wide mb-3">
+                            <div className="font-heading text-4xl text-dark-green tracking-wider">
                                 <Money withoutTrailingZeros data={selectedVariant?.price!} />
                             </div>
                         </div>
@@ -483,15 +487,15 @@ export default function Product() {
                            <span>Recovered in the ruins</span>
                         </div>
 
-                        {/* Desktop Accordions */}
+                        {/* Desktop Accordions - World-Building Copy */}
                         <div className="space-y-3">
                             <FieldNotesAccordion descriptionHtml={descriptionHtml || ''} />
-                            <ArtifactSpecsAccordion selectedVariant={selectedVariant} title="Artifact Anatomy" />
+                            <ArtifactSpecsAccordion selectedVariant={selectedVariant} title="Material Analysis" />
                             <ProvenanceAccordion 
                                 vendor={vendor} 
                                 publishedAt={product.publishedAt}
                                 selectedVariant={selectedVariant}
-                                title="Recovery Log"
+                                title="Origin Coordinates"
                             />
                         </div>
 
@@ -506,7 +510,7 @@ export default function Product() {
                 </div>
             </div>
 
-        {/* Related Specimens - Both Mobile & Desktop */}
+        {/* Other Recovered Works - Both Mobile & Desktop */}
         <Suspense fallback={<Skeleton className="h-32 mt-16" />}>
           <Await
             errorElement="There was a problem loading related products"

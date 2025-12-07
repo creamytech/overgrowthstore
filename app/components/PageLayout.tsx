@@ -341,7 +341,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
   const isHome = useIsHomePath();
   
   return (
-    <footer className="relative text-dark-green z-[5]">
+    <footer className="relative z-[5]">
         {/* Roots Divider Graphic - Full Width */}
         <div className="w-full relative pointer-events-none z-[5]">
             <img 
@@ -351,105 +351,143 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
             />
         </div>
 
-        {/* Footer Panel */}
-        <div className="relative pt-8 pb-24 px-4 md:px-8">
-            <div className="max-w-4xl mx-auto text-center space-y-16">
+        {/* Footer Panel - THE SEDIMENT LAYER (Dark Background) */}
+        <div className="relative bg-[#1A2E1A] pt-20 pb-16 px-6 md:px-12">
+            {/* Subtle texture overlay */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+            }} />
+            
+            <div className="max-w-6xl mx-auto relative z-10 space-y-12">
                 
-                {/* Value Props Banner */}
-                {/* Value Props Banner removed */}
-                
-                {/* 1. Newsletter CTA */}
-                <div className="space-y-6">
-                    <h4 className="font-heading text-3xl md:text-4xl text-dark-green uppercase tracking-widest">
+                {/* 1. Newsletter CTA - "Field Transmission" */}
+                <div className="max-w-xl mx-auto text-center space-y-4 pb-8">
+                    <h4 className="font-heading text-4xl md:text-5xl text-[#f4f1ea] uppercase tracking-wider">
                         Join the Overgrowth
                     </h4>
-                    <p className="font-body text-dark-green/70">
-                        Stories from the quiet places. New finds. Updates from the frontier.
+                    <p className="font-mono text-[11px] text-[#f4f1ea]/40 uppercase tracking-[0.2em]">
+                        Signals from the quiet places • Artifact drops • Survival notes
                     </p>
-                    <div className="flex justify-center">
+                    <div className="pt-4">
                         <NewsletterForm />
                     </div>
                 </div>
 
-                {/* 2. Navigation Links */}
-                <div className="border-t-0 pt-9">
-                    {/* Micro-Divider */}
-                    <div className="flex justify-center pb-8">
-                        <div className="w-24 h-px bg-rust/55"></div>
-                    </div>
+                {/* Divider Line */}
+                <div className="border-t border-[#f4f1ea]/20" />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-3xl mx-auto">
+                {/* 2. Navigation Links - "Manifest Grid" */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8 py-8">
                     
-                    {/* Primary Links */}
-                    <div className="space-y-4 text-right md:text-right pr-4 md:pr-8">
-                        <h5 className="font-heading text-base text-dark-green font-bold uppercase tracking-[0.25em] mb-4">Explore</h5>
-                        <nav className="flex flex-col gap-4 font-heading text-xl text-dark-green uppercase tracking-widest leading-relaxed items-end">
-                            <Link to="/products" className="group relative w-fit block">
-                                <span className="hover:text-rust transition-colors duration-500">Shop Recovered Works</span>
-                                <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+                    {/* SECTORS */}
+                    <div className="space-y-5">
+                        <h5 className="font-heading text-sm text-rust uppercase tracking-widest">
+                            Sectors
+                        </h5>
+                        <nav className="flex flex-col gap-3">
+                            <Link to="/products" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                                Recovered Works
                             </Link>
-                            <Link to="/journal" className="group relative w-fit block">
-                                <span className="hover:text-rust transition-colors duration-500">Field Journal</span>
-                                <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+                            <Link to="/collections" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                                Collections
+                            </Link>
+                            <Link to="/journal" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                                Field Journal
                             </Link>
                         </nav>
                     </div>
 
-                    {/* Secondary Links */}
-                    <div className="space-y-4 text-left md:text-left pl-4 md:pl-0">
-                        <h5 className="font-heading text-base text-dark-green font-bold uppercase tracking-[0.25em] mb-4">Support</h5>
-                        <nav className="flex flex-col gap-3 font-body text-sm text-dark-green/70 leading-relaxed items-start">
-                            <Link to="/account" className="group relative w-fit block">
-                                <span className="hover:text-rust transition-colors duration-500">Your Orders</span>
-                                <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+                    {/* INFO */}
+                    <div className="space-y-5">
+                        <h5 className="font-heading text-sm text-rust uppercase tracking-widest">
+                            Intel
+                        </h5>
+                        <nav className="flex flex-col gap-3">
+                            <Link to="/pages/our-story" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                                The Genesis
                             </Link>
-                            <Link to="/pages/contact" className="group relative w-fit block">
-                                <span className="hover:text-rust transition-colors duration-500">Get in Touch</span>
-                                <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+                            <Link to="/pages/ecosystem" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                                Ecosystem
                             </Link>
-                            <Link to="/pages/faq" className="group relative w-fit block">
-                                <span className="hover:text-rust transition-colors duration-500">FAQ</span>
-                                <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+                        </nav>
+                    </div>
+
+                    {/* LOGISTICS */}
+                    <div className="space-y-5">
+                        <h5 className="font-heading text-sm text-rust uppercase tracking-widest">
+                            Logistics
+                        </h5>
+                        <nav className="flex flex-col gap-3">
+                            <Link to="/account" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                                Your Orders
                             </Link>
-                            <Link to="/policies/privacy-policy" className="group relative w-fit block">
-                                <span className="hover:text-rust transition-colors duration-500">Privacy Policy</span>
-                                <span className="absolute bottom-0 left-0 w-full h-px bg-rust transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></span>
+                            <Link to="/pages/faq" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                                Field Manual
+                            </Link>
+                            <Link to="/pages/contact" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                                Transmission
+                            </Link>
+                        </nav>
+                    </div>
+
+                    {/* LEGAL */}
+                    <div className="space-y-5">
+                        <h5 className="font-heading text-sm text-rust uppercase tracking-widest">
+                            Legal
+                        </h5>
+                        <nav className="flex flex-col gap-3">
+                            <Link to="/policies/privacy-policy" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                                Privacy
+                            </Link>
+                            <Link to="/policies/terms-of-service" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                                Terms
+                            </Link>
+                            <Link to="/policies/shipping-policy" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                                Shipping
                             </Link>
                         </nav>
                     </div>
                 </div>
-            </div>
 
-                {/* 3. Social & Copyright */}
-                <div className="space-y-8 pt-12 border-t border-rust">
-                    {/* Social Icons */}
-                    <div className="flex justify-center gap-4">
-                        <a href="https://instagram.com/overgrowth.co" target="_blank" rel="noopener noreferrer" className="group w-10 h-10 border border-dark-green/20 flex items-center justify-center text-dark-green/60 hover:border-rust hover:text-rust hover:bg-rust/5 transition-all duration-300 rounded-full" aria-label="Instagram">
-                            <IconInstagram size={18} />
-                        </a>
-                        <a href="https://x.com/Overgrowthco" target="_blank" rel="noopener noreferrer" className="group w-10 h-10 border border-dark-green/20 flex items-center justify-center text-dark-green/60 hover:border-rust hover:text-rust hover:bg-rust/5 transition-all duration-300 rounded-full" aria-label="X">
-                            <IconX size={16} />
-                        </a>
-                    </div>
-
-                    <div className="opacity-50 space-y-2">
-                        <p className="font-heading text-xs tracking-widest uppercase text-dark-green font-bold">
-                            Overgrowth Industries
-                        </p>
-                        <p className="font-body text-[10px] tracking-widest uppercase">
-                            Streetwear from the reclaimed world
-                        </p>
-                        <p className="font-body text-[10px] tracking-widest uppercase pt-2">
-                            &copy; {new Date().getFullYear()} OVERGROWTH. All Rights Reserved.
-                        </p>
+                {/* 3. Bottom Bar - "Stamped Artifact" */}
+                <div className="pt-8 border-t border-[#f4f1ea]/20">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                        
+                        {/* Coordinates - Left */}
+                        <div className="font-mono text-[11px] text-[#f4f1ea]/25 uppercase tracking-widest order-3 md:order-1">
+                            LOC: 42.3314° N, 83.0458° W
+                        </div>
+                        
+                        {/* Socials - Center (Text-based) */}
+                        <div className="flex items-center gap-8 order-1 md:order-2">
+                            <a 
+                                href="https://instagram.com/overgrowth.co" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="font-mono text-sm text-[#f4f1ea]/50 hover:text-rust transition-colors uppercase tracking-widest"
+                            >
+                                FREQ: IG
+                            </a>
+                            <span className="text-[#f4f1ea]/15">•</span>
+                            <a 
+                                href="https://x.com/Overgrowthco" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="font-mono text-sm text-[#f4f1ea]/50 hover:text-rust transition-colors uppercase tracking-widest"
+                            >
+                                FREQ: X
+                            </a>
+                        </div>
+                        
+                        {/* Copyright - Right */}
+                        <div className="font-mono text-[11px] text-[#f4f1ea]/25 uppercase tracking-widest text-center md:text-right order-2 md:order-3">
+                            © {new Date().getFullYear()} OVERGROWTH IND. // RECLAIMED & RESTORED
+                        </div>
                     </div>
                 </div>
 
             </div>
         </div>
-        
-        {/* Background Texture */}
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[url('/assets/topo-pattern.png')] opacity-[0.03] pointer-events-none" />
     </footer>
   );
 }
@@ -512,60 +550,46 @@ function NewsletterForm() {
         <div className="relative w-full max-w-lg mx-auto">
             {status === 'success' ? (
                 <div className="text-center py-8">
-                    <div className="w-16 h-16 mx-auto mb-4 border-2 border-dark-green rounded-full flex items-center justify-center">
-                        <svg className="w-8 h-8 text-dark-green" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <div className="w-16 h-16 mx-auto mb-4 border-2 border-rust rounded-full flex items-center justify-center">
+                        <svg className="w-8 h-8 text-rust" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                         </svg>
                     </div>
-                    <p className="font-heading text-lg text-dark-green tracking-widest uppercase">You're In</p>
-                    <p className="font-body text-sm text-dark-green/60 mt-2">{message}</p>
+                    <p className="font-heading text-lg text-[#f4f1ea] tracking-widest uppercase">Uplink Established</p>
+                    <p className="font-mono text-xs text-[#f4f1ea]/50 mt-2">{message}</p>
                 </div>
             ) : (
                 <form onSubmit={handleSubmit} className="relative">
-                    {/* Decorative envelope icon */}
-                    <div className="flex justify-center mb-6">
-                        <div className="w-12 h-12 border border-rust/30 rounded-full flex items-center justify-center bg-[#f4f1ea]">
-                            <svg className="w-5 h-5 text-rust" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                            </svg>
-                        </div>
-                    </div>
-                    
-                    {/* Input container with corner accents */}
-                    <div className="relative bg-[#f9f7f3] border border-dark-green/15 p-1">
-                        {/* Corner accents */}
-                        <div className="absolute -top-px -left-px w-3 h-3 border-t-2 border-l-2 border-rust/40" />
-                        <div className="absolute -top-px -right-px w-3 h-3 border-t-2 border-r-2 border-rust/40" />
-                        <div className="absolute -bottom-px -left-px w-3 h-3 border-b-2 border-l-2 border-rust/40" />
-                        <div className="absolute -bottom-px -right-px w-3 h-3 border-b-2 border-r-2 border-rust/40" />
+                    {/* Terminal-style Input Container */}
+                    <div className="relative bg-transparent border border-[#f4f1ea]/20 p-1">
+                        {/* Corner accents - Thicker for grit */}
+                        <div className="absolute -top-px -left-px w-4 h-4 border-t-2 border-l-2 border-rust" />
+                        <div className="absolute -top-px -right-px w-4 h-4 border-t-2 border-r-2 border-rust" />
+                        <div className="absolute -bottom-px -left-px w-4 h-4 border-b-2 border-l-2 border-rust" />
+                        <div className="absolute -bottom-px -right-px w-4 h-4 border-b-2 border-r-2 border-rust" />
                         
                         <div className="flex flex-col sm:flex-row gap-2">
                             <input 
                                 type="email" 
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                placeholder="Enter your email address" 
+                                placeholder="[ ENTER FREQUENCY / EMAIL ]" 
                                 required
-                                className="flex-1 bg-transparent py-4 px-5 text-dark-green placeholder:text-dark-green/40 font-body text-sm focus:outline-none"
+                                className="flex-1 bg-transparent py-4 px-5 text-[#f4f1ea] placeholder:text-[#f4f1ea]/30 font-mono text-xs uppercase tracking-widest focus:outline-none border-b border-dashed border-[#f4f1ea]/20 sm:border-b-0"
                             />
                             <button 
                                 type="submit" 
                                 disabled={status === 'submitting'}
-                                className="group relative bg-dark-green text-[#f4f1ea] px-8 py-4 font-heading text-xs uppercase tracking-[0.2em] hover:bg-rust transition-all duration-300 disabled:opacity-50 overflow-hidden"
+                                className="group relative border-2 border-rust text-rust px-8 py-4 font-mono text-xs uppercase tracking-widest hover:bg-rust hover:text-[#f4f1ea] transition-all duration-300 disabled:opacity-50"
                             >
                                 <span className="relative z-10 flex items-center justify-center gap-2">
                                     {status === 'submitting' ? (
                                         <>
-                                            <span className="w-4 h-4 border-2 border-[#f4f1ea]/30 border-t-[#f4f1ea] rounded-full animate-spin" />
-                                            Sending
+                                            <span className="w-4 h-4 border-2 border-rust/30 border-t-rust rounded-full animate-spin" />
+                                            ...
                                         </>
                                     ) : (
-                                        <>
-                                            Subscribe
-                                            <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                                            </svg>
-                                        </>
+                                        'TRANSMIT'
                                     )}
                                 </span>
                             </button>
@@ -573,12 +597,12 @@ function NewsletterForm() {
                     </div>
                     
                     {/* Privacy note */}
-                    <p className="text-center font-body text-[10px] text-dark-green/40 mt-4 tracking-wide">
-                        We respect your privacy. Unsubscribe anytime.
+                    <p className="text-center font-mono text-[10px] text-[#f4f1ea]/30 mt-4 tracking-widest uppercase">
+                        Signal encrypted. Unsubscribe anytime.
                     </p>
                     
                     {status === 'error' && (
-                        <p className="text-center text-xs text-red-700 font-body mt-3">{message}</p>
+                        <p className="text-center text-xs text-rust font-mono mt-3">{message}</p>
                     )}
                 </form>
             )}

@@ -15,7 +15,10 @@ export default {
         void: '#0A0A0A',
         moss: '#4A5D23',
         decay: '#8B9B78',
-        rust: '#8B3A3A',
+        rust: '#c05a34',
+        ochre: '#c4a35a',
+        'dark-green': '#1a472a',
+        paper: '#f4f1ea',
       },
       fontFamily: {
         heading: ['IM Fell English SC', 'serif'],

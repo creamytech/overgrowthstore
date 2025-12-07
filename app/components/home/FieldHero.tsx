@@ -1,6 +1,5 @@
 import {useRef, useState, useEffect} from 'react';
-import {motion, AnimatePresence} from 'framer-motion';
-import {Link} from '@remix-run/react';
+import {motion} from 'framer-motion';
 
 export function FieldHero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -82,11 +81,26 @@ export function FieldHero() {
           ))}
       </div>
 
-      {/* Hero Layer - Video */}
+      {/* Hero Layer - Video + Text */}
       <div 
-        className="absolute inset-0 flex items-center justify-center z-40 pointer-events-none"
+        className="absolute inset-0 flex flex-col items-center justify-center z-40 pointer-events-none"
       >
-        <div className="h-[55vh] w-auto flex items-center justify-center transition-transform duration-100 ease-out relative">
+        {/* Headline - Above Video */}
+        <motion.div 
+          className="text-center mb-8 pointer-events-none"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.5 }}
+        >
+          <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl text-dark-green tracking-widest uppercase mb-2">
+            Nature Always Wins
+          </h1>
+          <p className="font-body text-dark-green/60 text-sm md:text-base tracking-widest">
+            Streetwear recovered from the world after.
+          </p>
+        </motion.div>
+
+        <div className="h-[45vh] md:h-[50vh] w-auto flex flex-col items-center justify-center transition-transform duration-100 ease-out relative">
             {/* Loading Placeholder */}
             {!videoLoaded && (
                 <div className="absolute inset-0 flex items-center justify-center bg-[#f0ede6] border border-dark-green/20 p-2 md:p-4 shadow-2xl rotate-1">
@@ -117,44 +131,25 @@ export function FieldHero() {
                     onCanPlay={() => setVideoLoaded(true)}
                     onLoadedData={() => setVideoLoaded(true)}
                     onLoadedMetadata={() => setVideoLoaded(true)}
-                    className="max-h-[55vh] w-auto object-contain"
+                    className="max-h-[45vh] md:max-h-[50vh] w-auto object-contain"
                 >
                     <source src="/assets/herovideofinal.mp4" type="video/mp4" />
                 </video>
-
-                {/* Mobile Interaction Hint */}
-                <AnimatePresence>
-                    {videoEnded && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 5 }}
-                            animate={{ opacity: [0.4, 1, 0.4], y: 0 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ 
-                                opacity: { duration: 2, repeat: Infinity },
-                                y: { duration: 0.5 }
-                            }}
-                            className="absolute -bottom-12 left-0 w-full text-center pointer-events-none z-20"
-                        >
-                            <span className="font-typewriter text-[10px] tracking-[0.2em] text-dark-green/60 uppercase px-3 py-1">
-                                {isMobile ? "Tap to Enter" : "Click to Enter"}
-                            </span>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
             </motion.div>
+
+            {/* Click/Tap hint that appears after video ends */}
+            {videoEnded && (
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="mt-4 font-mono text-xs text-dark-green/50 uppercase tracking-widest pointer-events-none"
+              >
+                {isMobile ? 'Tap to enter' : 'Click to enter'}
+              </motion.p>
+            )}
         </div>
       </div>
-
-      {/* Divider at the bottom */}
-      <div 
-        className="absolute bottom-0 left-0 w-full h-24 md:h-40 z-30 pointer-events-none"
-        style={{
-            backgroundImage: "url('/assets/divider_ornamental_vine.png')",
-            backgroundSize: 'auto 100%',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'bottom center'
-        }}
-      />
     </section>
   );
 }
