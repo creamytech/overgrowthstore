@@ -10,7 +10,7 @@ export async function action({request, context}: ActionFunctionArgs) {
   const email = formData.get('email')?.toString();
 
   if (!email || !email.includes('@')) {
-    return json({success: false, error: 'Please enter a valid email address'});
+    return json({ok: false, error: 'Please enter a valid email address'});
   }
 
   try {
@@ -23,10 +23,10 @@ export async function action({request, context}: ActionFunctionArgs) {
         },
       },
     });
-    return json({success: true, error: null});
+    return json({ok: true, error: null});
   } catch (error) {
     // If customer already exists, that's still a success for our purposes
-    return json({success: true, error: null});
+    return json({ok: true, error: null});
   }
 }
 
@@ -63,6 +63,33 @@ export default function EmailSignupPage() {
       setVideoLoaded(true);
     }, 1000);
     return () => clearTimeout(fallbackTimer);
+  }, []);
+
+  // Safari autoplay fix: Try to play video programmatically
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    
+    const attemptPlay = async () => {
+      try {
+        // Safari requires user interaction or low-power mode exceptions
+        // This attempts to play as soon as the video is ready
+        await video.play();
+      } catch (error) {
+        // Autoplay was prevented, this is expected on some browsers
+        console.log('Autoplay prevented, waiting for user interaction');
+      }
+    };
+
+    // Try to play when video metadata loads
+    video.addEventListener('loadedmetadata', attemptPlay);
+    // Also try when video can play through
+    video.addEventListener('canplaythrough', attemptPlay);
+    
+    return () => {
+      video.removeEventListener('loadedmetadata', attemptPlay);
+      video.removeEventListener('canplaythrough', attemptPlay);
+    };
   }, []);
 
   // Toggle mute on the video element
@@ -207,6 +234,8 @@ export default function EmailSignupPage() {
             autoPlay
             muted
             playsInline
+            preload="auto"
+            x5-video-player-type="h5"
             onEnded={handleVideoEnd}
             onLoadedData={() => setVideoLoaded(true)}
           >
