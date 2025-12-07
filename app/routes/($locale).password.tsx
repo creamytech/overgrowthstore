@@ -251,7 +251,7 @@ export default function EmailSignupPage() {
                 <div className="absolute inset-0 bg-black/60" />
                 
                 {/* Content */}
-                <div className="relative z-20 flex flex-col items-center text-center px-6 py-8">
+                <div className="relative z-20 flex flex-col items-center text-center px-4 py-4 md:px-6 md:py-8">
                   <AnimatePresence mode="wait">
                     {!isSubmitted ? (
                       <motion.div
@@ -263,7 +263,7 @@ export default function EmailSignupPage() {
                       >
                         {/* Decorative line */}
                         <motion.div
-                          className="w-16 h-px bg-gradient-to-r from-transparent via-[#c05a34] to-transparent mb-6"
+                          className="w-12 md:w-16 h-px bg-gradient-to-r from-transparent via-[#c05a34] to-transparent mb-3 md:mb-6"
                           initial={{scaleX: 0}}
                           animate={{scaleX: 1}}
                           transition={{delay: 0.3, duration: 0.6}}
@@ -271,7 +271,7 @@ export default function EmailSignupPage() {
                         
                         {/* H1 - Larger and more prominent */}
                         <motion.h1
-                          className="font-heading text-[#f4f1ea] text-2xl md:text-3xl lg:text-4xl tracking-[0.06em] mb-4 leading-tight"
+                          className="font-heading text-[#f4f1ea] text-xl md:text-3xl lg:text-4xl tracking-[0.06em] mb-2 md:mb-4 leading-tight"
                           initial={{opacity: 0, y: 20}}
                           animate={{opacity: 1, y: 0}}
                           transition={{delay: 0.4, duration: 0.6, ease: 'easeOut'}}
@@ -281,7 +281,7 @@ export default function EmailSignupPage() {
 
                         {/* Supporting line */}
                         <motion.p
-                          className="font-body text-[#c9c4b8] text-sm md:text-base tracking-[0.02em] mb-10"
+                          className="font-body text-[#c9c4b8] text-xs md:text-base tracking-[0.02em] mb-5 md:mb-10"
                           initial={{opacity: 0, y: 15}}
                           animate={{opacity: 1, y: 0}}
                           transition={{delay: 0.6, duration: 0.5, ease: 'easeOut'}}
@@ -296,7 +296,7 @@ export default function EmailSignupPage() {
                           transition={{delay: 0.8, duration: 0.6, ease: 'easeOut'}}
                           className="w-full max-w-xs"
                         >
-                          <fetcher.Form method="post" className="flex flex-col items-center gap-5">
+                          <fetcher.Form method="post" className="flex flex-col items-center gap-3 md:gap-5">
                             {/* Email Input */}
                             <div className="w-full relative">
                               <input
@@ -308,7 +308,7 @@ export default function EmailSignupPage() {
                                 onBlur={() => setIsInputFocused(false)}
                                 placeholder="your@email.com"
                                 required
-                                className="terminal-input w-full px-4 py-3.5 text-[#e8e4dc] text-sm tracking-wide transition-all duration-300 text-center"
+                                className="terminal-input w-full px-3 py-3 md:px-4 md:py-3.5 text-[#e8e4dc] text-xs md:text-sm tracking-wide transition-all duration-300 text-center"
                               />
                             </div>
 
@@ -330,7 +330,7 @@ export default function EmailSignupPage() {
                             <motion.button
                               type="submit"
                               disabled={fetcher.state === 'submitting'}
-                              className="vault-button w-full px-8 py-4 text-sm text-[#f4f1ea] disabled:opacity-50 disabled:cursor-not-allowed"
+                              className="vault-button w-full px-6 py-3 md:px-8 md:py-4 text-xs md:text-sm text-[#f4f1ea] disabled:opacity-50 disabled:cursor-not-allowed"
                               whileHover={{scale: 1.01}}
                               whileTap={{scale: 0.99}}
                             >
@@ -340,7 +340,7 @@ export default function EmailSignupPage() {
                           
                           {/* Privacy note */}
                           <motion.p
-                            className="text-center text-[10px] text-[#a8a090]/60 mt-4 tracking-wider"
+                            className="text-center text-[9px] md:text-[10px] text-[#a8a090]/60 mt-2 md:mt-4 tracking-wider"
                             initial={{opacity: 0}}
                             animate={{opacity: 1}}
                             transition={{delay: 1.2}}
