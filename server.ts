@@ -41,6 +41,32 @@ export default {
       ]);
 
       /**
+       * Launch Gate: Redirect to /password when LAUNCH_OPEN is not 'true'
+       * Exemptions: /password, /api/newsletter, and static assets
+       */
+      const url = new URL(request.url);
+      const pathname = url.pathname;
+      
+      const isLaunchOpen = env.LAUNCH_OPEN === 'true';
+      const isExemptPath = 
+        pathname === '/password' ||
+        pathname.endsWith('/password') ||
+        pathname.includes('/api/newsletter') ||
+        pathname.startsWith('/build/') ||
+        pathname.startsWith('/assets/') ||
+        pathname === '/favicon.ico' ||
+        pathname === '/robots.txt';
+      
+      if (!isLaunchOpen && !isExemptPath) {
+        return new Response(null, {
+          status: 302,
+          headers: {
+            Location: '/password',
+          },
+        });
+      }
+
+      /**
        * Create Hydrogen's Storefront client.
        */
       const {storefront} = createStorefrontClient({

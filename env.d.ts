@@ -29,6 +29,11 @@ declare global {
     PUBLIC_CUSTOMER_ACCOUNT_API_URL: string;
     PUBLIC_CHECKOUT_DOMAIN: string;
     SHOP_ID: string;
+    // Launch gate - set to 'true' to disable password gate
+    LAUNCH_OPEN?: string;
+    // Admin API for newsletter signup
+    SHOPIFY_ADMIN_API_ACCESS_TOKEN?: string;
+    SHOPIFY_ADMIN_API_VERSION?: string;
   }
 }
 
