@@ -75,6 +75,9 @@ export default function EmailSignupPage() {
     const video = videoRef.current;
     if (!video) return;
     
+    // Speed up video to 2x
+    video.playbackRate = 2;
+    
     const attemptPlay = async () => {
       try {
         await video.play();
@@ -152,13 +155,32 @@ export default function EmailSignupPage() {
           text-transform: uppercase;
           letter-spacing: 0.2em;
           box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-          transition: all 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .vault-button::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(ellipse at center, rgba(192, 90, 52, 0.4) 0%, transparent 70%);
+          opacity: 0;
+          transition: opacity 0.4s ease;
         }
         
         .vault-button:hover {
           background: linear-gradient(180deg, #d06a44 0%, #b35a3a 100%);
-          transform: translateY(-1px);
-          animation: subtlePulse 2s ease-in-out infinite;
+          transform: translateY(-2px);
+          box-shadow: 
+            0 6px 20px rgba(0, 0, 0, 0.4),
+            0 0 30px rgba(192, 90, 52, 0.3),
+            0 0 60px rgba(192, 90, 52, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .vault-button:hover::before {
+          opacity: 1;
         }
         
         .vault-button:active {
@@ -297,7 +319,7 @@ export default function EmailSignupPage() {
                           animate={{opacity: 1, y: 0}}
                           transition={{delay: 0.4, duration: 0.6, ease: 'easeOut'}}
                         >
-                          The city changes soon.
+                          The city will bloom again.
                         </motion.h1>
 
                         {/* Supporting line */}
@@ -307,7 +329,7 @@ export default function EmailSignupPage() {
                           animate={{opacity: 1, y: 0}}
                           transition={{delay: 0.6, duration: 0.5, ease: 'easeOut'}}
                         >
-                          Be first to see what grows below.
+                          Don't miss the first rise.
                         </motion.p>
 
                         {/* Email Form */}
@@ -317,7 +339,7 @@ export default function EmailSignupPage() {
                           transition={{delay: 0.8, duration: 0.6, ease: 'easeOut'}}
                           className="w-full max-w-xs"
                         >
-                          <form onSubmit={handleSubmit} className="flex flex-col items-center gap-3 md:gap-5">
+                          <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 md:gap-6">
                             {/* Email Input */}
                             <div className="w-full relative">
                               <input
@@ -361,7 +383,7 @@ export default function EmailSignupPage() {
                           
                           {/* Privacy note */}
                           <motion.p
-                            className="text-center text-[9px] md:text-[10px] text-[#a8a090]/60 mt-2 md:mt-4 tracking-wider"
+                            className="text-center text-[9px] md:text-[10px] text-[#c9c4b8]/70 mt-3 md:mt-5 tracking-wider"
                             initial={{opacity: 0}}
                             animate={{opacity: 1}}
                             transition={{delay: 1.2}}
