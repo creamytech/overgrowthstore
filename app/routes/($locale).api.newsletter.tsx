@@ -10,13 +10,13 @@ export async function action({request, context}: ActionFunctionArgs) {
     const email = formData.get('email');
 
     if (!email || typeof email !== 'string') {
-      return json({ok: false, error: 'Email is required'}, {status: 400});
+      return json({success: false, error: 'Email is required'}, {status: 400});
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return json({ok: false, error: 'Please enter a valid email address'}, {status: 400});
+      return json({success: false, error: 'Please enter a valid email address'}, {status: 400});
     }
 
     const {env} = context;
@@ -76,7 +76,7 @@ export async function action({request, context}: ActionFunctionArgs) {
 
     if (!response.ok) {
       console.error('Admin API Error:', response.status, await response.text());
-      return json({ok: false, error: 'Failed to subscribe. Please try again.'}, {status: 500});
+      return json({success: false, error: 'Failed to subscribe. Please try again.'}, {status: 500});
     }
 
     const result = await response.json() as {
@@ -92,7 +92,7 @@ export async function action({request, context}: ActionFunctionArgs) {
     // Check for GraphQL errors
     if (result.errors?.length) {
       console.error('Admin API GraphQL Error:', result.errors);
-      return json({ok: false, error: 'Failed to subscribe. Please try again.'}, {status: 500});
+      return json({success: false, error: 'Failed to subscribe. Please try again.'}, {status: 500});
     }
 
     const userErrors = result.data?.customerCreate?.userErrors;
@@ -107,16 +107,16 @@ export async function action({request, context}: ActionFunctionArgs) {
 
       if (isEmailTaken) {
         // Treat as success - they're already signed up
-        return json({ok: true, message: 'You\'re already on the list!'});
+        return json({success: true, message: 'You\'re already on the list!'});
       }
 
-      return json({ok: false, error: userErrors[0].message}, {status: 400});
+      return json({success: false, error: userErrors[0].message}, {status: 400});
     }
 
-    return json({ok: true, message: 'Welcome to the Overgrowth.'});
+    return json({success: true, message: 'Welcome to the Overgrowth.'});
   } catch (error) {
     console.error('Newsletter API Error:', error);
-    return json({ok: false, error: 'Something went wrong. Please try again.'}, {status: 500});
+    return json({success: false, error: 'Something went wrong. Please try again.'}, {status: 500});
   }
 }
 
@@ -172,20 +172,20 @@ async function handleStorefrontFallback(email: string, context: any) {
       );
 
       if (isEmailTaken) {
-        return json({ok: true, message: 'You\'re already on the list!'});
+        return json({success: true, message: 'You\'re already on the list!'});
       }
 
       return json(
-        {ok: false, error: errors[0].message || 'Signup failed'},
+        {success: false, error: errors[0].message || 'Signup failed'},
         {status: 400},
       );
     }
 
     console.log('[Newsletter] Customer created successfully');
-    return json({ok: true, message: 'Welcome to the Overgrowth.'});
+    return json({success: true, message: 'Welcome to the Overgrowth.'});
   } catch (error: any) {
     console.error('[Newsletter] Storefront Fallback Error:', error?.message || error);
     console.error('[Newsletter] Error stack:', error?.stack);
-    return json({ok: false, error: error?.message || 'Failed to subscribe.'}, {status: 500});
+    return json({success: false, error: error?.message || 'Failed to subscribe.'}, {status: 500});
   }
 }

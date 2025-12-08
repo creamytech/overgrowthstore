@@ -11,7 +11,7 @@ export default function EmailSignupPage() {
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const fetcher = useFetcher<{ok: boolean; error?: string; message?: string}>();
+  const fetcher = useFetcher<{success: boolean; error?: string; message?: string}>();
 
   // Fallback: Show video after 1 second even if load events don't fire
   useEffect(() => {
@@ -65,7 +65,7 @@ export default function EmailSignupPage() {
 
   // Handle successful submission
   useEffect(() => {
-    if (fetcher.data?.ok) {
+    if (fetcher.data?.success) {
       setIsSubmitted(true);
     }
   }, [fetcher.data]);
