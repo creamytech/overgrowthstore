@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
-import {useFetcher} from '@remix-run/react';
+import {usePrefixPathWithLocale} from '~/lib/utils';
 
 export default function EmailSignupPage() {
   const [videoEnded, setVideoEnded] = useState(false);
@@ -10,8 +10,57 @@ export default function EmailSignupPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const videoRef = useRef<HTMLVideoElement>(null);
-  const fetcher = useFetcher<{success: boolean; error?: string; message?: string}>();
+  
+  // Use the same locale-prefixed URL as the footer
+  const newsletterUrl = usePrefixPathWithLocale('/api/newsletter');
+
+  // Handle form submission - same approach as footer
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrorMessage('');
+    
+    try {
+      const formData = new FormData();
+      formData.append('email', email);
+      
+      const response = await fetch(newsletterUrl, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        console.error('Newsletter Error Status:', response.status, response.statusText);
+        const text = await response.text();
+        console.error('Newsletter Error Body:', text);
+        try {
+          const jsonError = JSON.parse(text) as {error?: string};
+          setErrorMessage(jsonError.error || `Server Error: ${response.status}`);
+        } catch {
+          setErrorMessage(`Server Error: ${response.status}`);
+        }
+        setIsSubmitting(false);
+        return;
+      }
+      
+      const data = await response.json() as {success?: boolean; message?: string; error?: string};
+      
+      if (data.success) {
+        setIsSubmitted(true);
+        setEmail('');
+      } else {
+        setErrorMessage(data.error || 'Something went wrong. Please try again.');
+      }
+    } catch (err) {
+      console.error('Newsletter Network Error:', err);
+      setErrorMessage('Network error. Please try again.');
+    }
+    
+    setIsSubmitting(false);
+  };
 
   // Fallback: Show video after 1 second even if load events don't fire
   useEffect(() => {
@@ -28,18 +77,13 @@ export default function EmailSignupPage() {
     
     const attemptPlay = async () => {
       try {
-        // Safari requires user interaction or low-power mode exceptions
-        // This attempts to play as soon as the video is ready
         await video.play();
       } catch (error) {
-        // Autoplay was prevented, this is expected on some browsers
         console.log('Autoplay prevented, waiting for user interaction');
       }
     };
 
-    // Try to play when video metadata loads
     video.addEventListener('loadedmetadata', attemptPlay);
-    // Also try when video can play through
     video.addEventListener('canplaythrough', attemptPlay);
     
     return () => {
@@ -59,16 +103,8 @@ export default function EmailSignupPage() {
   // Handle video end - pause on last frame
   const handleVideoEnd = () => {
     setVideoEnded(true);
-    // Small delay before starting UI reveal
     setTimeout(() => setShowContent(true), 300);
   };
-
-  // Handle successful submission
-  useEffect(() => {
-    if (fetcher.data?.success) {
-      setIsSubmitted(true);
-    }
-  }, [fetcher.data]);
 
   return (
     <div className="relative w-full min-h-screen-dynamic overflow-hidden bg-[#0a0a0a]">
@@ -281,7 +317,7 @@ export default function EmailSignupPage() {
                           transition={{delay: 0.8, duration: 0.6, ease: 'easeOut'}}
                           className="w-full max-w-xs"
                         >
-                          <fetcher.Form method="post" action="/api/newsletter" className="flex flex-col items-center gap-3 md:gap-5">
+                          <form onSubmit={handleSubmit} className="flex flex-col items-center gap-3 md:gap-5">
                             {/* Email Input */}
                             <div className="w-full relative">
                               <input
@@ -299,14 +335,14 @@ export default function EmailSignupPage() {
 
                             {/* Error Message */}
                             <AnimatePresence>
-                              {fetcher.data?.error && (
+                              {errorMessage && (
                                 <motion.p
                                   className="text-[#c05a34] text-xs tracking-wide font-body"
                                   initial={{opacity: 0, y: -5}}
                                   animate={{opacity: 1, y: 0}}
                                   exit={{opacity: 0, y: -5}}
                                 >
-                                  {fetcher.data.error}
+                                  {errorMessage}
                                 </motion.p>
                               )}
                             </AnimatePresence>
@@ -314,14 +350,14 @@ export default function EmailSignupPage() {
                             {/* Submit Button */}
                             <motion.button
                               type="submit"
-                              disabled={fetcher.state === 'submitting'}
+                              disabled={isSubmitting}
                               className="vault-button w-full px-6 py-3 md:px-8 md:py-4 text-xs md:text-sm text-[#f4f1ea] disabled:opacity-50 disabled:cursor-not-allowed"
                               whileHover={{scale: 1.01}}
                               whileTap={{scale: 0.99}}
                             >
-                              {fetcher.state === 'submitting' ? 'Entering...' : 'Enter the Vault'}
+                              {isSubmitting ? 'Entering...' : 'Enter the Vault'}
                             </motion.button>
-                          </fetcher.Form>
+                          </form>
                           
                           {/* Privacy note */}
                           <motion.p
