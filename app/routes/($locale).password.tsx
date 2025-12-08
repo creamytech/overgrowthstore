@@ -95,6 +95,29 @@ export default function EmailSignupPage() {
     };
   }, []);
 
+  // Audio fade-out effect: Gradually reduce volume in the last 2 seconds
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    
+    const handleTimeUpdate = () => {
+      const timeRemaining = video.duration - video.currentTime;
+      const fadeStartTime = 2; // Start fading 2 seconds before end
+      
+      if (timeRemaining <= fadeStartTime && timeRemaining > 0) {
+        // Calculate fade progress (1 = full volume, 0 = silent)
+        const fadeProgress = timeRemaining / fadeStartTime;
+        video.volume = Math.max(0, fadeProgress);
+      }
+    };
+    
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    
+    return () => {
+      video.removeEventListener('timeupdate', handleTimeUpdate);
+    };
+  }, []);
+
   // Toggle mute on the video element
   const toggleMute = () => {
     if (videoRef.current) {
