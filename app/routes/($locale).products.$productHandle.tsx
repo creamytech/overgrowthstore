@@ -337,14 +337,7 @@ export default function Product() {
                         <h1 className="font-heading text-5xl text-dark-green leading-tight tracking-tight">
                             {title}
                         </h1>
-                        {/* Mini Vine Divider */}
-                        <div className="mt-4 opacity-60">
-                            <svg width="40" height="9" viewBox="0 0 40 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M39.5 4.5C34.5 4.5 32.5 1.5 30 1.5C27.5 1.5 25.5 4.5 20.5 4.5C15.5 4.5 13.5 1.5 11 1.5C8.5 1.5 6.5 4.5 0.5 4.5" stroke="#4A5D23" strokeWidth="0.75" strokeLinecap="round"/>
-                                <path d="M10 4.5C10 6.5 11.5 8 13 8" stroke="#4A5D23" strokeWidth="0.75" strokeLinecap="round"/>
-                                <path d="M29 4.5C29 6.5 30.5 8 32 8" stroke="#4A5D23" strokeWidth="0.75" strokeLinecap="round"/>
-                            </svg>
-                        </div>
+
                     </div>
                     <div className="text-right flex-col items-end pt-2">
                         <span className="block font-body text-[10px] tracking-widest uppercase text-dark-green/50 mb-1">

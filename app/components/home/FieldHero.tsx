@@ -83,7 +83,7 @@ export function FieldHero() {
 
       {/* Hero Layer - Video + Text */}
       <div 
-        className="absolute inset-0 flex flex-col items-center justify-center z-40 pointer-events-none"
+        className="absolute inset-0 flex flex-col items-center justify-start pt-[12vh] md:pt-[15vh] z-40 pointer-events-none"
       >
         {/* Headline - Above Video */}
         <motion.div 
@@ -100,7 +100,7 @@ export function FieldHero() {
           </p>
         </motion.div>
 
-        <div className="h-[45vh] md:h-[50vh] w-auto flex flex-col items-center justify-center transition-transform duration-100 ease-out relative">
+        <div className="h-[55vh] md:h-[60vh] w-auto flex flex-col items-center justify-center transition-transform duration-100 ease-out relative">
             {/* Loading Placeholder */}
             {!videoLoaded && (
                 <div className="absolute inset-0 flex items-center justify-center bg-[#f0ede6] border border-dark-green/20 p-2 md:p-4 shadow-2xl rotate-1">
@@ -131,23 +131,21 @@ export function FieldHero() {
                     onCanPlay={() => setVideoLoaded(true)}
                     onLoadedData={() => setVideoLoaded(true)}
                     onLoadedMetadata={() => setVideoLoaded(true)}
-                    className="max-h-[45vh] md:max-h-[50vh] w-auto object-contain"
+                    className="max-h-[55vh] md:max-h-[60vh] w-auto object-contain"
                 >
                     <source src="/assets/herovideofinal.mp4" type="video/mp4" />
                 </video>
             </motion.div>
 
-            {/* Click/Tap hint that appears after video ends */}
-            {videoEnded && (
-              <motion.p 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="mt-4 font-mono text-xs text-dark-green/50 uppercase tracking-widest pointer-events-none"
-              >
-                {isMobile ? 'Tap to enter' : 'Click to enter'}
-              </motion.p>
-            )}
+            {/* Click/Tap hint that appears after video ends - Absolutely positioned to prevent layout shift */}
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: videoEnded ? 1 : 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="absolute -bottom-14 left-1/2 -translate-x-1/2 font-mono text-xs text-dark-green/50 uppercase tracking-widest pointer-events-none whitespace-nowrap"
+            >
+              {isMobile ? 'Tap to enter' : 'Click to enter'}
+            </motion.p>
         </div>
       </div>
     </section>

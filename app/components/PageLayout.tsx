@@ -340,8 +340,67 @@ function MenuMobileNav({
 function Footer({menu}: {menu?: EnhancedMenu}) {
   const isHome = useIsHomePath();
   
+  // Randomized "zero point" coordinates for story engagement
+  const [coordinates] = useState(() => {
+    const locations = [
+      { coords: '42.3314° N, 83.0458° W', name: 'Detroit Ruins' },
+      { coords: '51.5074° N, 0.1278° W', name: 'London Overgrowth' },
+      { coords: '35.6762° N, 139.6503° E', name: 'Tokyo Reclaim' },
+      { coords: '48.8566° N, 2.3522° E', name: 'Paris Sector' },
+      { coords: '40.7128° N, 74.0060° W', name: 'New York Vine' },
+    ];
+    return locations[Math.floor(Math.random() * locations.length)];
+  });
+  
+  // Generate Google Maps link from coordinates
+  const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(coordinates.coords)}`;
+  
   return (
     <footer className="relative z-[5]">
+        {/* Custom CSS for footer hover effects */}
+        <style>{`
+          .footer-link {
+            position: relative;
+            transition: all 0.18s ease-out;
+            display: inline-block;
+          }
+          .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #c05a34;
+            transition: width 0.18s ease-out;
+          }
+          .footer-link:hover {
+            transform: translateX(1px);
+            letter-spacing: 0.18em;
+            color: #f4f1ea;
+          }
+          .footer-link:hover::after {
+            width: 100%;
+            animation: underlineFlicker 0.8s ease-out forwards;
+          }
+          @keyframes underlineFlicker {
+            0% { opacity: 0; width: 0; }
+            50% { opacity: 1; width: 60%; }
+            100% { opacity: 0.8; width: 100%; }
+          }
+          
+          /* Pulsing arrow for coordinates */
+          @keyframes signalSearch {
+            0%, 85%, 100% { opacity: 1; transform: translateX(0); }
+            90% { opacity: 0.5; transform: translateX(2px); }
+            95% { opacity: 1; transform: translateX(0); }
+          }
+          .signal-arrow {
+            display: inline-block;
+            animation: signalSearch 6s ease-in-out infinite;
+          }
+        `}</style>
+
         {/* Roots Divider Graphic - Full Width */}
         <div className="w-full relative pointer-events-none z-[5]">
             <img 
@@ -352,111 +411,115 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
         </div>
 
         {/* Footer Panel - THE SEDIMENT LAYER (Dark Background) */}
-        <div className="relative bg-[#1A2E1A] pt-20 pb-16 px-6 md:px-12">
+        <div className="relative bg-[#1A2E1A] pt-12 pb-12 px-6 md:px-12">
             {/* Subtle texture overlay */}
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
             }} />
             
-            <div className="max-w-6xl mx-auto relative z-10 space-y-12">
+            <div className="max-w-6xl mx-auto relative z-10 space-y-8">
                 
-                {/* 1. Newsletter CTA - "Field Transmission" */}
-                <div className="max-w-xl mx-auto text-center space-y-4 pb-8">
-                    <h4 className="font-heading text-4xl md:text-5xl text-[#f4f1ea] uppercase tracking-wider">
+                {/* 1. Newsletter CTA - "Field Transmission" - Reduced padding */}
+                <div className="max-w-xl mx-auto text-center space-y-3 pb-6">
+                    <h4 className="font-heading text-3xl md:text-4xl text-[#f4f1ea] uppercase tracking-wider">
                         Join the Overgrowth
                     </h4>
                     <p className="font-mono text-[11px] text-[#f4f1ea]/40 uppercase tracking-[0.2em]">
                         Signals from the quiet places • Artifact drops • Survival notes
                     </p>
-                    <div className="pt-4">
+                    <div className="pt-2">
                         <NewsletterForm />
                     </div>
                 </div>
 
-                {/* Divider Line */}
-                <div className="border-t border-[#f4f1ea]/20" />
+                {/* Divider Line - Slightly stronger */}
+                <div className="border-t border-[#f4f1ea]/30" />
 
                 {/* 2. Navigation Links - "Manifest Grid" */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8 py-8">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-8 py-6">
                     
                     {/* SECTORS */}
-                    <div className="space-y-5">
-                        <h5 className="font-heading text-sm text-rust uppercase tracking-widest">
+                    <div className="space-y-4">
+                        <h5 className="font-heading text-base text-[#f4f1ea]/90 uppercase tracking-widest">
                             Sectors
                         </h5>
                         <nav className="flex flex-col gap-3">
-                            <Link to="/products" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                            <Link to="/products" className="footer-link font-mono text-sm text-[#f4f1ea]/60 uppercase tracking-wider">
                                 Recovered Works
                             </Link>
-                            <Link to="/collections" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                            <Link to="/collections" className="footer-link font-mono text-sm text-[#f4f1ea]/60 uppercase tracking-wider">
                                 Collections
                             </Link>
-                            <Link to="/journal" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                            <Link to="/journal" className="footer-link font-mono text-sm text-[#f4f1ea]/60 uppercase tracking-wider">
                                 Field Journal
                             </Link>
                         </nav>
                     </div>
 
                     {/* INFO */}
-                    <div className="space-y-5">
-                        <h5 className="font-heading text-sm text-rust uppercase tracking-widest">
+                    <div className="space-y-4">
+                        <h5 className="font-heading text-base text-[#f4f1ea]/90 uppercase tracking-widest">
                             Intel
                         </h5>
                         <nav className="flex flex-col gap-3">
-                            <Link to="/pages/our-story" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                            <Link to="/pages/our-story" className="footer-link font-mono text-sm text-[#f4f1ea]/60 uppercase tracking-wider">
                                 The Genesis
-                            </Link>
-                            <Link to="/pages/ecosystem" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
-                                Ecosystem
                             </Link>
                         </nav>
                     </div>
 
                     {/* LOGISTICS */}
-                    <div className="space-y-5">
-                        <h5 className="font-heading text-sm text-rust uppercase tracking-widest">
+                    <div className="space-y-4">
+                        <h5 className="font-heading text-base text-[#f4f1ea]/90 uppercase tracking-widest">
                             Logistics
                         </h5>
                         <nav className="flex flex-col gap-3">
-                            <Link to="/account" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                            <Link to="/account" className="footer-link font-mono text-sm text-[#f4f1ea]/60 uppercase tracking-wider">
                                 Your Orders
                             </Link>
-                            <Link to="/pages/faq" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                            <Link to="/pages/faq" className="footer-link font-mono text-sm text-[#f4f1ea]/60 uppercase tracking-wider">
                                 Field Manual
                             </Link>
-                            <Link to="/pages/contact" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
-                                Transmission
+                            <Link to="/pages/contact" className="footer-link font-mono text-sm text-[#f4f1ea]/60 uppercase tracking-wider">
+                                Transmissions
                             </Link>
                         </nav>
                     </div>
 
                     {/* LEGAL */}
-                    <div className="space-y-5">
-                        <h5 className="font-heading text-sm text-rust uppercase tracking-widest">
+                    <div className="space-y-4">
+                        <h5 className="font-heading text-base text-[#f4f1ea]/90 uppercase tracking-widest">
                             Legal
                         </h5>
                         <nav className="flex flex-col gap-3">
-                            <Link to="/policies/privacy-policy" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                            <Link to="/policies/privacy-policy" className="footer-link font-mono text-sm text-[#f4f1ea]/60 uppercase tracking-wider">
                                 Privacy
                             </Link>
-                            <Link to="/policies/terms-of-service" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                            <Link to="/policies/terms-of-service" className="footer-link font-mono text-sm text-[#f4f1ea]/60 uppercase tracking-wider">
                                 Terms
                             </Link>
-                            <Link to="/policies/shipping-policy" className="font-mono text-sm text-[#f4f1ea]/60 hover:text-[#f4f1ea] transition-colors uppercase tracking-wider">
+                            <Link to="/policies/shipping-policy" className="footer-link font-mono text-sm text-[#f4f1ea]/60 uppercase tracking-wider">
                                 Shipping
                             </Link>
                         </nav>
                     </div>
                 </div>
 
-                {/* 3. Bottom Bar - "Stamped Artifact" */}
-                <div className="pt-8 border-t border-[#f4f1ea]/20">
+                {/* 3. Bottom Bar - "Stamped Artifact" - Tighter gap */}
+                <div className="pt-4 border-t border-[#f4f1ea]/20">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                         
-                        {/* Coordinates - Left */}
-                        <div className="font-mono text-[11px] text-[#f4f1ea]/25 uppercase tracking-widest order-3 md:order-1">
-                            LOC: 42.3314° N, 83.0458° W
-                        </div>
+                        {/* Coordinates - Left - Now Clickable */}
+                        <a 
+                            href={mapsUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-mono text-[11px] text-[#f4f1ea]/25 uppercase tracking-widest order-3 md:order-1 hover:text-rust transition-colors cursor-pointer group"
+                            title={`Zero Point: ${coordinates.name}`}
+                        >
+                            <span className="group-hover:hidden">LOC: {coordinates.coords}</span>
+                            <span className="hidden group-hover:inline text-rust"><span className="signal-arrow">→</span> {coordinates.name}</span>
+                        </a>
                         
                         {/* Socials - Center (Text-based) */}
                         <div className="flex items-center gap-8 order-1 md:order-2">
@@ -464,7 +527,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                                 href="https://instagram.com/overgrowth.co" 
                                 target="_blank" 
                                 rel="noopener noreferrer" 
-                                className="font-mono text-sm text-[#f4f1ea]/50 hover:text-rust transition-colors uppercase tracking-widest"
+                                className="footer-link font-mono text-sm text-[#f4f1ea]/60 uppercase tracking-widest"
                             >
                                 FREQ: IG
                             </a>
@@ -473,15 +536,15 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                                 href="https://x.com/Overgrowthco" 
                                 target="_blank" 
                                 rel="noopener noreferrer" 
-                                className="font-mono text-sm text-[#f4f1ea]/50 hover:text-rust transition-colors uppercase tracking-widest"
+                                className="footer-link font-mono text-sm text-[#f4f1ea]/60 uppercase tracking-widest"
                             >
                                 FREQ: X
                             </a>
                         </div>
                         
-                        {/* Copyright - Right */}
+                        {/* Classification - Right */}
                         <div className="font-mono text-[11px] text-[#f4f1ea]/25 uppercase tracking-widest text-center md:text-right order-2 md:order-3">
-                            © {new Date().getFullYear()} OVERGROWTH IND. // RECLAIMED & RESTORED
+                            CLASSIFIED // OVERGROWTH IND. // RECLAIMED & RESTORED
                         </div>
                     </div>
                 </div>
