@@ -485,6 +485,11 @@ export default function EmailSignupPage() {
           </AnimatePresence>
         </div>
         
+        {/* Tagline - Below Video */}
+        <p className="relative z-10 text-center font-heading text-[#1a472a]/70 text-sm md:text-base tracking-[0.15em] uppercase pt-4 pb-2">
+          Streetwear Reclaimed.
+        </p>
+        
         {/* Social Icons - Below Video */}
         <div className="relative z-10 flex items-center justify-center gap-6 pb-4">
           {/* Instagram */}
