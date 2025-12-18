@@ -7,6 +7,8 @@ export default function EmailSignupPage() {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
@@ -26,6 +28,8 @@ export default function EmailSignupPage() {
     try {
       const formData = new FormData();
       formData.append('email', email);
+      formData.append('firstName', firstName);
+      formData.append('lastName', lastName);
       
       const response = await fetch(newsletterUrl, {
         method: 'POST',
@@ -51,6 +55,8 @@ export default function EmailSignupPage() {
       if (data.success) {
         setIsSubmitted(true);
         setEmail('');
+        setFirstName('');
+        setLastName('');
       } else {
         setErrorMessage(data.error || 'Something went wrong. Please try again.');
       }
@@ -133,411 +139,307 @@ export default function EmailSignupPage() {
   };
 
   return (
-    <div className="relative w-full min-h-screen-dynamic overflow-hidden bg-[#0a0a0a]">
-      {/* Custom CSS for animations */}
+    <div className="relative w-full min-h-screen-dynamic overflow-hidden bg-[#f4f1ea] font-body selection:bg-[#c05a34]/30">
+      {/* Immersive Paper Background - Global */}
+      <div 
+        className="fixed inset-0 opacity-40 pointer-events-none mix-blend-multiply transition-opacity duration-1000 z-0"
+        style={{backgroundImage: "url('/assets/texture_archive_paper.jpg')", backgroundSize: 'cover'}}
+      />
+      <div className="fixed inset-0 pointer-events-none z-[1] bg-radial-vignette opacity-30 shadow-[inset_0_0_100px_rgba(0,0,0,0.1)]" />
+
       <style>{`
-        @keyframes blink {
-          0%, 50% { opacity: 1; }
-          51%, 100% { opacity: 0; }
+        .bg-radial-vignette {
+          background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.2) 100%);
         }
-        
-        @keyframes subtlePulse {
-          0%, 100% { box-shadow: 0 0 20px rgba(192, 90, 52, 0.3); }
-          50% { box-shadow: 0 0 30px rgba(192, 90, 52, 0.5); }
-        }
-        
-        .terminal-cursor {
-          animation: blink 1s step-end infinite;
-        }
-        
-        /* Terminal input style - darker, more refined */
         .terminal-input {
-          background: rgba(20, 20, 18, 0.95);
-          border: 1px solid rgba(192, 90, 52, 0.4);
-          border-radius: 2px;
-          font-family: 'Courier Prime', 'Courier New', monospace;
-          caret-color: #c05a34;
+          background: rgba(255, 255, 255, 0.4);
+          border: 1px solid rgba(26, 71, 42, 0.1);
+          border-radius: 4px;
+          font-family: 'Courier Prime', monospace;
+          color: #1a472a;
+          backdrop-blur: 4px;
         }
-        
         .terminal-input:focus {
-          border-color: rgba(192, 90, 52, 0.8);
-          box-shadow: 0 0 20px rgba(192, 90, 52, 0.2);
+          border-color: #c05a34;
+          box-shadow: 0 0 15px rgba(192, 90, 52, 0.1);
           outline: none;
         }
-        
-        .terminal-input::placeholder {
-          color: rgba(200, 190, 175, 0.4);
-        }
-        
-        /* Vault button - rust accent with subtle glow */
-        .vault-button {
-          background: linear-gradient(180deg, #c05a34 0%, #a34a2a 100%);
-          border: none;
-          border-radius: 2px;
+        .archive-button {
+          background: #c05a34;
+          color: #f4f1ea;
           font-family: 'IM Fell English SC', serif;
-          text-transform: uppercase;
-          letter-spacing: 0.2em;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          letter-spacing: 0.15em;
+          border-radius: 4px;
+          border: 1px solid #a34a2a;
+          box-shadow: 0 4px 10px rgba(163, 74, 42, 0.2);
+          transition: all 0.3s ease;
+        }
+        .archive-button:hover {
+          background: #d06a44;
+          transform: translateY(-1px);
+          box-shadow: 0 6px 15px rgba(163, 74, 42, 0.3);
+        }
+        .archive-card {
+          background: #fdfbf7;
+          border: 1px solid rgba(26, 71, 42, 0.1);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.05);
           position: relative;
-          overflow: hidden;
         }
-        
-        .vault-button::before {
+        .archive-card::after {
           content: '';
           position: absolute;
           inset: 0;
-          background: radial-gradient(ellipse at center, rgba(192, 90, 52, 0.4) 0%, transparent 70%);
-          opacity: 0;
-          transition: opacity 0.4s ease;
-        }
-        
-        .vault-button:hover {
-          background: linear-gradient(180deg, #d06a44 0%, #b35a3a 100%);
-          transform: translateY(-2px);
-          box-shadow: 
-            0 6px 20px rgba(0, 0, 0, 0.4),
-            0 0 30px rgba(192, 90, 52, 0.3),
-            0 0 60px rgba(192, 90, 52, 0.15),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
-        
-        .vault-button:hover::before {
-          opacity: 1;
-        }
-        
-        .vault-button:active {
-          transform: translateY(0);
-        }
-        
-        /* Subtle scanline effect */
-        .scanlines::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 2px,
-            rgba(0, 0, 0, 0.02) 2px,
-            rgba(0, 0, 0, 0.02) 4px
-          );
+          background: url('/assets/texture_archive_paper.jpg');
+          opacity: 0.03;
           pointer-events: none;
-          z-index: 10;
-        }
-        
-        /* CRT vignette */
-        .crt-vignette {
-          box-shadow: inset 0 0 150px 60px rgba(0, 0, 0, 0.5);
         }
       `}</style>
 
-      {/* Video Layer - Always visible, pauses on last frame */}
-      <div className="fixed inset-0 z-0 flex flex-col items-center justify-between p-6 md:p-12 bg-[#f4f1ea]">
-        {/* Paper texture background */}
-        <div 
-          className="absolute inset-0 opacity-20 pointer-events-none mix-blend-multiply"
-          style={{backgroundImage: "url('/assets/texture_archive_paper.jpg')", backgroundSize: 'cover'}}
-        />
-        
-        {/* Logo at top of page - visible from start */}
-        <div className="relative z-10 pt-2 md:pt-4">
-          {/* Mobile logo */}
-          <img 
-            src="/assets/logo_og_vines.png" 
-            alt="Overgrowth" 
-            className="md:hidden h-14 w-auto object-contain"
-          />
-          {/* Desktop logo */}
-          <img 
-            src="/assets/Wordmark Logo.svg" 
-            alt="Overgrowth" 
-            className="hidden md:block h-16 w-auto object-contain"
-          />
-        </div>
-        
-        {/* Postcard Container - centered */}
-        <div className={`relative p-4 md:p-6 max-w-6xl w-full bg-[#fdfbf7] border border-[#1a472a]/15 shadow-xl transition-opacity duration-500 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}>
-          {/* Corner photo mounts */}
-          <div className="absolute -top-1 -left-1 w-6 h-6 border-t-2 border-l-2 border-[#1a472a]/20" />
-          <div className="absolute -top-1 -right-1 w-6 h-6 border-t-2 border-r-2 border-[#1a472a]/20" />
-          <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-2 border-l-2 border-[#1a472a]/20" />
-          <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-2 border-r-2 border-[#1a472a]/20" />
-          
-          {/* Video */}
-          <video
-            ref={videoRef}
-            className="w-full h-auto block"
-            autoPlay
-            muted
-            playsInline
-            preload="auto"
-            x5-video-player-type="h5"
-            onEnded={handleVideoEnd}
-            onLoadedData={() => setVideoLoaded(true)}
+      <AnimatePresence mode="wait">
+        {!showContent ? (
+          /* STAGE 1: THE DISCOVERY (VIDEO) */
+          <motion.div 
+            key="video-stage"
+            className="relative z-50 flex flex-col items-center justify-center min-h-screen p-6 md:p-12"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 1.02 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
           >
-            <source src="/assets/EmailSignup.mp4" type="video/mp4" />
-          </video>
-          
-          {/* Sound toggle button - bottom right */}
-          {!videoEnded && (
-            <button
-              onClick={toggleMute}
-              className="absolute bottom-6 right-6 z-30 w-10 h-10 bg-black/50 hover:bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 group"
-              aria-label={isMuted ? 'Unmute' : 'Mute'}
+            {/* Header branding during video */}
+            <motion.div 
+              className="absolute top-12 left-0 right-0 flex justify-center"
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5 }}
             >
-              {isMuted ? (
-                // Muted icon
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 opacity-80 group-hover:opacity-100">
-                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                  <line x1="23" y1="9" x2="17" y2="15" />
-                  <line x1="17" y1="9" x2="23" y2="15" />
-                </svg>
-              ) : (
-                // Sound on icon
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 opacity-80 group-hover:opacity-100">
-                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-                </svg>
-              )}
-            </button>
-          )}
-          
-          {/* Overlay Content - appears over video after it ends */}
-          <AnimatePresence>
-            {showContent && (
-              <motion.div 
-                className="absolute inset-4 md:inset-6 flex items-center justify-center scanlines crt-vignette"
-                initial={{opacity: 0}}
-                animate={{opacity: 1}}
-                transition={{duration: 0.8}}
+              <img src="/assets/Wordmark Logo.svg" alt="Overgrowth" className="h-12 md:h-16 w-auto grayscale" />
+            </motion.div>
+
+            {/* Video Postcard */}
+            <motion.div 
+              className="relative p-3 md:p-5 max-w-5xl w-full bg-[#fdfbf7] border border-[#1a472a]/10 shadow-2xl skew-x-[0.2deg]"
+              initial={{ rotate: -0.5, scale: 0.95, opacity: 0 }}
+              animate={{ rotate: 0.5, scale: 1, opacity: 1 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+            >
+              {/* Photo corners */}
+              <div className="absolute -top-1 -left-1 w-6 h-6 border-t-2 border-l-2 border-[#1a472a]/10" />
+              <div className="absolute -top-1 -right-1 w-6 h-6 border-t-2 border-r-2 border-[#1a472a]/10" />
+              
+              <div className="bg-[#0a100c] relative overflow-hidden">
+                <video
+                  ref={videoRef}
+                  className={`w-full h-auto block transition-opacity duration-1000 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
+                  autoPlay
+                  muted
+                  playsInline
+                  preload="auto"
+                  poster="/assets/GateClosed.png"
+                  onEnded={handleVideoEnd}
+                  onLoadedData={() => setVideoLoaded(true)}
+                >
+                  <source src="/assets/EmailSignup.mp4" type="video/mp4" />
+                </video>
+              </div>
+
+              {/* Mute button */}
+              <button
+                onClick={toggleMute}
+                className="absolute bottom-10 right-10 z-30 w-10 h-10 bg-black/40 hover:bg-black/60 backdrop-blur-sm rounded-full flex items-center justify-center transition-all text-white"
               >
-                {/* Dark overlay for readability */}
-                <div className="absolute inset-0 bg-black/60" />
+                {isMuted ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line><path d="M11 5L6 9H2V15H6L11 19V5z"></path></svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                )}
+              </button>
+            </motion.div>
+
+            <motion.div 
+              className="mt-12 text-[#1a472a]/40 font-heading text-xs tracking-[0.3em] uppercase"
+              animate={{ opacity: [0.3, 0.6, 0.3] }}
+              transition={{ repeat: Infinity, duration: 3 }}
+            >
+              Initializing Signal Retrieval...
+            </motion.div>
+          </motion.div>
+        ) : (
+          /* STAGE 2: THE ARCHIVE (DASHBOARD) */
+          <motion.div 
+            key="archive-stage"
+            className="relative z-50 min-h-screen flex flex-col items-center justify-center p-4 md:p-8 lg:p-12 overflow-y-auto"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "circOut" }}
+          >
+            {/* Main Dashboard Container */}
+            <div className="w-full max-w-6xl archive-card p-6 md:p-12 border border-[#1a472a]/10 rounded-lg shadow-2xl relative overflow-hidden">
+              
+              {/* Decorative Textural Elements */}
+              <div className="absolute top-8 left-8 flex flex-col gap-1 opacity-20 pointer-events-none">
+                <span className="font-heading text-[10px] tracking-widest uppercase">Dept. of Recovery</span>
+                <span className="font-body text-[8px] tracking-tighter">NY-DISTRICT-01 // CODENAME: GREENHOUSE</span>
+              </div>
+
+              <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
                 
-                {/* Content */}
-                <div className="relative z-20 flex flex-col items-center text-center px-4 py-4 md:px-6 md:py-8">
-                  <AnimatePresence mode="wait">
-                    {!isSubmitted ? (
-                      <motion.div
-                        key="form"
-                        initial={{opacity: 0}}
-                        animate={{opacity: 1}}
-                        exit={{opacity: 0, y: -20}}
-                        className="flex flex-col items-center max-w-md"
-                      >
-                        {/* Decorative line */}
-                        <motion.div
-                          className="w-12 md:w-16 h-px bg-gradient-to-r from-transparent via-[#c05a34] to-transparent mb-3 md:mb-6"
-                          initial={{scaleX: 0}}
-                          animate={{scaleX: 1}}
-                          transition={{delay: 0.3, duration: 0.6}}
+                {/* Left: Branding & Signup */}
+                <div className="w-full lg:w-5/12 flex flex-col">
+                  <motion.div 
+                    initial={{x: -30, opacity: 0}} 
+                    animate={{x: 0, opacity: 1}} 
+                    transition={{delay: 0.3}}
+                  >
+                    <img src="/assets/logo_og_vines.png" alt="Overgrowth" className="h-20 w-auto mb-8" />
+                    <h1 className="font-heading text-4xl md:text-5xl text-[#1a472a] mb-4 tracking-tight leading-none">
+                      Streetwear <br/><span className="text-[#c05a34]">Reclaimed.</span>
+                    </h1>
+                    <p className="font-body text-sm md:text-base text-[#4a5d23]/80 mb-10 italic max-w-sm leading-relaxed">
+                      "The city still works, just differently. We're logging neighbors for the first archival distribution of Collection 01 — NYC."
+                    </p>
+                  </motion.div>
+
+                  {!isSubmitted ? (
+                    <motion.form 
+                      onSubmit={handleSubmit}
+                      className="flex flex-col gap-4"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.6 }}
+                    >
+                      <div className="grid grid-cols-2 gap-3">
+                        <input
+                          type="text"
+                          placeholder="First Name"
+                          value={firstName}
+                          onChange={(e) => setFirstName(e.target.value)}
+                          className="terminal-input px-4 py-3 text-sm"
+                          required
                         />
-                        
-                        {/* H1 - Larger and more prominent */}
-                        <motion.h1
-                          className="font-heading text-[#f4f1ea] text-xl md:text-3xl lg:text-4xl tracking-[0.06em] mb-2 md:mb-4 leading-tight"
-                          initial={{opacity: 0, y: 20}}
-                          animate={{opacity: 1, y: 0}}
-                          transition={{delay: 0.4, duration: 0.6, ease: 'easeOut'}}
-                        >
-                          The city will bloom again.
-                        </motion.h1>
-
-                        {/* Supporting line */}
-                        <motion.p
-                          className="font-body text-[#c9c4b8] text-xs md:text-base tracking-[0.02em] mb-5 md:mb-10"
-                          initial={{opacity: 0, y: 15}}
-                          animate={{opacity: 1, y: 0}}
-                          transition={{delay: 0.6, duration: 0.5, ease: 'easeOut'}}
-                        >
-                          Don't miss the first rise.
-                        </motion.p>
-
-                        {/* Email Form */}
-                        <motion.div
-                          initial={{opacity: 0, y: 20}}
-                          animate={{opacity: 1, y: 0}}
-                          transition={{delay: 0.8, duration: 0.6, ease: 'easeOut'}}
-                          className="w-full max-w-xs"
-                        >
-                          <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 md:gap-6">
-                            {/* Email Input */}
-                            <div className="w-full relative">
-                              <input
-                                type="email"
-                                name="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                onFocus={() => setIsInputFocused(true)}
-                                onBlur={() => setIsInputFocused(false)}
-                                placeholder="your@email.com"
-                                required
-                                className="terminal-input w-full px-3 py-3 md:px-4 md:py-3.5 text-[#e8e4dc] text-xs md:text-sm tracking-wide transition-all duration-300 text-center"
-                              />
-                            </div>
-
-                            {/* Error Message */}
-                            <AnimatePresence>
-                              {errorMessage && (
-                                <motion.p
-                                  className="text-[#c05a34] text-xs tracking-wide font-body"
-                                  initial={{opacity: 0, y: -5}}
-                                  animate={{opacity: 1, y: 0}}
-                                  exit={{opacity: 0, y: -5}}
-                                >
-                                  {errorMessage}
-                                </motion.p>
-                              )}
-                            </AnimatePresence>
-
-                            {/* Submit Button */}
-                            <motion.button
-                              type="submit"
-                              disabled={isSubmitting}
-                              className="vault-button w-full px-6 py-3 md:px-8 md:py-4 text-xs md:text-sm text-[#f4f1ea] disabled:opacity-50 disabled:cursor-not-allowed"
-                              whileHover={{scale: 1.01}}
-                              whileTap={{scale: 0.99}}
-                            >
-                              {isSubmitting ? 'Entering...' : 'Enter the Vault'}
-                            </motion.button>
-                          </form>
-                          
-                          {/* Privacy note */}
-                          <motion.p
-                            className="text-center text-[9px] md:text-[10px] text-[#c9c4b8]/70 mt-3 md:mt-5 tracking-wider"
-                            initial={{opacity: 0}}
-                            animate={{opacity: 1}}
-                            transition={{delay: 1.2}}
+                        <input
+                          type="text"
+                          placeholder="Last Name"
+                          value={lastName}
+                          onChange={(e) => setLastName(e.target.value)}
+                          className="terminal-input px-4 py-3 text-sm"
+                          required
+                        />
+                      </div>
+                      <input
+                        type="email"
+                        placeholder="archive@signal.nyc"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="terminal-input px-4 py-3 text-sm"
+                        required
+                      />
+                      
+                      <AnimatePresence>
+                        {errorMessage && (
+                          <motion.p 
+                            className="text-[#c05a34] text-xs font-body italic"
+                            initial={{opacity: 0, height: 0}}
+                            animate={{opacity: 1, height: 'auto'}}
+                            exit={{opacity: 0, height: 0}}
                           >
-                            Early access • Exclusive drops • No spam
+                            {errorMessage}
                           </motion.p>
-                        </motion.div>
-                      </motion.div>
-                    ) : (
-                      /* Success State */
-                      <motion.div
-                        key="success"
-                        initial={{opacity: 0, scale: 0.95}}
-                        animate={{opacity: 1, scale: 1}}
-                        className="flex flex-col items-center py-6"
+                        )}
+                      </AnimatePresence>
+
+                      <button 
+                        type="submit" 
+                        disabled={isSubmitting}
+                        className="archive-button py-4 mt-2 uppercase text-sm font-heading"
                       >
-                        {/* Success checkmark */}
-                        <motion.div
-                          className="w-16 h-16 mb-6 rounded-full border-2 border-[#c05a34] flex items-center justify-center"
-                          initial={{scale: 0}}
-                          animate={{scale: 1}}
-                          transition={{type: 'spring', bounce: 0.4, delay: 0.1}}
-                        >
-                          <motion.svg 
-                            viewBox="0 0 24 24" 
-                            className="w-8 h-8 text-[#c05a34]"
-                            initial={{pathLength: 0, opacity: 0}}
-                            animate={{pathLength: 1, opacity: 1}}
-                            transition={{delay: 0.3, duration: 0.5}}
-                          >
-                            <motion.path
-                              d="M5 13l4 4L19 7"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              initial={{pathLength: 0}}
-                              animate={{pathLength: 1}}
-                              transition={{delay: 0.4, duration: 0.4}}
-                            />
-                          </motion.svg>
-                        </motion.div>
-
-                        <motion.h2
-                          className="font-heading text-[#f4f1ea] text-2xl md:text-3xl tracking-[0.06em] mb-3"
-                          initial={{opacity: 0, y: 10}}
-                          animate={{opacity: 1, y: 0}}
-                          transition={{delay: 0.5}}
-                        >
-                          You're in the first wave.
-                        </motion.h2>
-
-                        <motion.p
-                          className="font-body text-[#c9c4b8] text-sm md:text-base tracking-wide mb-6"
-                          initial={{opacity: 0, y: 10}}
-                          animate={{opacity: 1, y: 0}}
-                          transition={{delay: 0.6}}
-                        >
-                          We'll call you when the vault opens.
-                        </motion.p>
-                        
-                        {/* Decorative divider */}
-                        <motion.div
-                          className="w-16 h-px bg-gradient-to-r from-transparent via-[#c05a34] to-transparent"
-                          initial={{scaleX: 0}}
-                          animate={{scaleX: 1}}
-                          transition={{delay: 0.8, duration: 0.6}}
-                        />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                        {isSubmitting ? 'Verifying Signal...' : 'Initialize Access'}
+                      </button>
+                      <p className="text-[10px] text-center text-[#1a472a]/40 uppercase tracking-widest mt-2">
+                        Priority Clearance • Secure Log
+                      </p>
+                    </motion.form>
+                  ) : (
+                    <motion.div 
+                      className="p-8 border-2 border-dashed border-[#c05a34]/30 bg-[#fdfbf7] flex flex-col items-center text-center"
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                    >
+                      <div className="w-12 h-12 bg-[#c05a34] text-[#f4f1ea] rounded-full flex items-center justify-center mb-4">
+                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                      </div>
+                      <h3 className="font-heading text-2xl text-[#1a472a] mb-2">Signal Received.</h3>
+                      <p className="font-body text-sm text-[#4a5d23]/70">
+                        You've been logged for distribution. Watch your local district frequency for arrival notice.
+                      </p>
+                    </motion.div>
+                  )}
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-        
-        {/* Tagline - Below Video */}
-        <p className="relative z-10 text-center font-heading text-[#1a472a]/70 text-sm md:text-base tracking-[0.15em] uppercase pt-4 pb-2">
-          Streetwear Reclaimed.
-        </p>
-        
-        {/* Social Icons - Below Video */}
-        <div className="relative z-10 flex items-center justify-center gap-6 pb-4">
-          {/* Instagram */}
-          <a 
-            href="https://instagram.com/overgrowth.co" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-[#1a472a]/60 hover:text-[#c05a34] transition-colors duration-300"
-            aria-label="Follow us on Instagram"
-          >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              width="24" 
-              height="24" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                fill="currentColor" 
-                d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4zm9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8A1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5a5 5 0 0 1-5 5a5 5 0 0 1-5-5a5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3"
-              />
-            </svg>
-          </a>
-          
-          {/* X (Twitter) */}
-          <a 
-            href="https://x.com/Overgrowthco" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-[#1a472a]/60 hover:text-[#c05a34] transition-colors duration-300"
-            aria-label="Follow us on X"
-          >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              width="24" 
-              height="24" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                fill="currentColor" 
-                d="M18.205 2.25h3.308l-7.227 8.26l8.502 11.24H16.13l-5.214-6.817L4.95 21.75H1.64l7.73-8.835L1.257 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.045 4.126H5.078z"
-              />
-            </svg>
-          </a>
-        </div>
-        
-        {/* Bottom spacer for balanced centering */}
-        <div className="h-8 md:h-10" />
-      </div>
+
+                {/* Right: Immersive Collection Grid */}
+                <div className="w-full lg:w-7/12">
+                  <div className="grid grid-cols-2 gap-4 md:gap-6 relative">
+                    
+                    {/* Header Label */}
+                    <div className="absolute -top-10 left-0">
+                      <span className="font-heading text-[10px] md:text-xs text-[#c05a34] tracking-[0.4em] uppercase">Manifest 01: The NYC District</span>
+                    </div>
+
+                    {[
+                      {src: '/assets/teaser_bodega.jpg', title: 'The Bodega', desc: 'Artifact 21-A'},
+                      {src: '/assets/teaser_slice.jpg', title: 'The OG Slice', desc: 'Artifact 21-B'},
+                      {src: '/assets/teaser_hoodie_v2.jpg', title: 'Archival Hood', desc: 'Artifact 21-C', span: true}
+                    ].map((item, i) => (
+                      <motion.div 
+                        key={i}
+                        className={`relative group archive-card rounded shadow-sm overflow-hidden ${item.span ? 'col-span-2 aspect-[16/9]' : 'aspect-square'}`}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.8 + (i * 0.1) }}
+                        whileHover={{ y: -5 }}
+                      >
+                        <img 
+                          src={item.src} 
+                          alt={item.title} 
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[0.2]" 
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        
+                        {/* Polaroid overlay / Archive label */}
+                        <div className="absolute bottom-3 left-3 right-3 bg-white/90 backdrop-blur-sm p-3 border border-[#1a472a]/10 flex justify-between items-center transform translate-y-12 group-hover:translate-y-0 transition-transform duration-500">
+                          <div>
+                            <p className="font-heading text-[10px] text-[#1a472a] uppercase">{item.title}</p>
+                            <p className="font-body text-[8px] text-[#c05a34]">{item.desc}</p>
+                          </div>
+                          <div className="w-4 h-4 text-[#1a472a]/30">
+                            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer Area */}
+              <div className="mt-16 pt-8 border-t border-[#1a472a]/5 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div className="flex gap-8">
+                  <a href="https://instagram.com/overgrowth.co" target="_blank" className="text-[#1a472a]/40 hover:text-[#c05a34] transition-colors">
+                    <span className="font-heading text-xs tracking-widest uppercase">Instagram</span>
+                  </a>
+                  <a href="https://x.com/Overgrowthco" target="_blank" className="text-[#1a472a]/40 hover:text-[#c05a34] transition-colors">
+                    <span className="font-heading text-xs tracking-widest uppercase">Archive-X</span>
+                  </a>
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-green-500/40 animate-pulse" />
+                  <p className="font-body text-[9px] text-[#1a472a]/30 uppercase tracking-[0.2em]">Signal Active • NYC Node 01</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to the Neighborhood</title>
+    <!--[if mso]>
+      <style type="text/css">
+        body,
+        table,
+        td,
+        p,
+        h1,
+        h2,
+        h3 {
+          font-family: Courier, monospace !important;
+        }
+      </style>
+    <![endif]-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=IM+Fell+English+SC&family=Caveat&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* RESET STYLES */
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100% !important;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        background-color: #f4f1ea;
+      }
+      table {
+        border-spacing: 0;
+        border-collapse: collapse;
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+      }
+      img {
+        border: 0;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #f4f1ea;
+        border: 1px solid #e0ddd5;
+      }
+
+      /* BRAND STYLES */
+      .heading {
+        font-family: 'IM Fell English SC', serif;
+        color: #0a0a0a;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .body-text {
+        font-family: 'Courier Prime', 'Courier', monospace;
+        color: #0a0a0a;
+        line-height: 1.6;
+        font-size: 14px;
+      }
+      .accent {
+        color: #4a5d23; /* Moss Green */
+      }
+      .signature {
+        font-family: 'Caveat', cursive;
+        font-size: 24px;
+        color: #c05a34; /* Rust */
+      }
+
+      /* BUTTONS */
+      .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #0a0a0a;
+        color: #f4f1ea !important;
+        text-decoration: none;
+        font-family: 'Courier Prime', monospace;
+        font-weight: bold;
+        text-transform: uppercase;
+        border-radius: 0;
+        border: 1px solid #0a0a0a;
+      }
+      .btn:hover {
+        background-color: #4a5d23;
+        border-color: #4a5d23;
+      }
+
+      /* DECORATION */
+      .divider {
+        border-top: 1px solid #d4cfc1;
+        margin: 30px 0;
+      }
+      .ink-fleck {
+        opacity: 0.1;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="background-color: #f4f1ea; padding: 40px 20px">
+      <!-- Main Email Table -->
+      <table
+        role="presentation"
+        class="email-container"
+        width="100%"
+        align="center"
+      >
+        <!-- Header / Logo -->
+        <tr>
+          <td style="padding: 40px 40px 20px 40px; text-align: center">
+            <h1 class="heading" style="margin: 0; font-size: 28px">
+              Growth Ongoing
+            </h1>
+            <p
+              class="body-text"
+              style="margin: 10px 0 0 0; font-style: italic; opacity: 0.7"
+            >
+              Status: Neighborhood Entry Verified
+            </p>
+          </td>
+        </tr>
+
+        <!-- Decorative Line -->
+        <tr>
+          <td style="padding: 0 40px">
+            <div
+              style="
+                height: 1px;
+                background-color: #0a0a0a;
+                opacity: 0.2;
+                width: 100%;
+              "
+            ></div>
+          </td>
+        </tr>
+
+        <!-- Content Body -->
+        <tr>
+          <td style="padding: 40px">
+            <h2 class="heading" style="margin: 0 0 20px 0; font-size: 20px">
+              Welcome back, {{ customer.first_name | default: 'Neighbor' }}
+            </h2>
+
+            <p class="body-text">
+              You've made it. The vines have cleared a path for you to enter the
+              <span class="accent">Overgrowth Archive</span>.
+            </p>
+
+            <p class="body-text">
+              This city isn't what it used to be, but it's still alive. Between
+              the cracked pavement and the blooming fire escapes, we've gathered
+              specimens of survival—things recovered from the quiet corners
+              where the growth is strongest.
+            </p>
+
+            <p
+              class="body-text"
+              style="font-weight: bold; color: #c05a34; margin: 30px 0"
+            >
+              [ LOGGED: ARRIVAL_SUCCESS ]
+            </p>
+
+            <p class="body-text">
+              We'll keep you posted on new gear, street reports, and recovered
+              artifacts. Your spot on the block is secured.
+            </p>
+
+            <!-- CTA Button -->
+            <table role="presentation" style="margin: 40px 0">
+              <tr>
+                <td>
+                  <a href="{{ shop.url }}" class="btn">Step Outside</a>
+                </td>
+              </tr>
+            </table>
+
+            <div class="divider"></div>
+
+            <p class="body-text">Take it slow. The cats are watching.</p>
+
+            <p class="signature" style="margin-top: 20px">The Archivist</p>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td
+            style="
+              padding: 40px;
+              background-color: #0a0a0a;
+              color: #8b9b78;
+              text-align: center;
+            "
+          >
+            <p
+              class="body-text"
+              style="color: #8b9b78; font-size: 12px; margin: 0"
+            >
+              &copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. All Rights
+              Reserved.
+            </p>
+            <p
+              class="body-text"
+              style="
+                color: #8b9b78;
+                font-size: 10px;
+                margin: 10px 0 0 0;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+              "
+            >
+              District 07 // Archive Division
+            </p>
+            <div style="margin-top: 20px">
+              <a
+                href="{{ shop.url }}"
+                style="
+                  color: #f4f1ea;
+                  text-decoration: none;
+                  font-size: 11px;
+                  margin: 0 10px;
+                "
+                >Inventory</a
+              >
+              <a
+                href="{{ shop.url }}/blogs/journal"
+                style="
+                  color: #f4f1ea;
+                  text-decoration: none;
+                  font-size: 11px;
+                  margin: 0 10px;
+                "
+                >Journal</a
+              >
+              <a
+                href="{{ shop.url }}/account"
+                style="
+                  color: #f4f1ea;
+                  text-decoration: none;
+                  font-size: 11px;
+                  margin: 0 10px;
+                "
+                >My Corner</a
+              >
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Unsubscribe link required by law -->
+      <table role="presentation" width="100%" align="center">
+        <tr>
+          <td style="padding: 20px; text-align: center">
+            <p class="body-text" style="font-size: 10px; opacity: 0.5">
+              No longer interested in the street?
+              <a href="{{ unsubscribe_url }}" style="color: #0a0a0a"
+                >Step Away</a
+              >.
+            </p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

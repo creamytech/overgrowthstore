@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Archive Contribution: {{ order_name }}</title>
+    <!--[if mso]>
+      <style type="text/css">
+        body, table, td, p, h1, h2, h3 { font-family: Courier, monospace !important; }
+      </style>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=IM+Fell+English+SC&family=Caveat&display=swap" rel="stylesheet" />
+    <style>
+      body { margin: 0; padding: 0; width: 100% !important; background-color: #f4f1ea; }
+      table { border-spacing: 0; border-collapse: collapse; }
+      .email-container { max-width: 600px; margin: 0 auto; background-color: #f4f1ea; border: 1px solid #e0ddd5; }
+      .heading { font-family: 'IM Fell English SC', serif; color: #0a0a0a; text-transform: uppercase; letter-spacing: 0.1em; }
+      .body-text { font-family: 'Courier Prime', 'Courier', monospace; color: #0a0a0a; line-height: 1.6; font-size: 14px; }
+      .signature { font-family: 'Caveat', cursive; font-size: 24px; color: #c05a34; }
+      .btn { display: inline-block; padding: 12px 24px; background-color: #0a0a0a; color: #f4f1ea !important; text-decoration: none; font-family: 'Courier Prime', monospace; font-weight: bold; text-transform: uppercase; border: 1px solid #0a0a0a; }
+      .divider { border-top: 1px solid #d4cfc1; margin: 30px 0; }
+    </style>
+  </head>
+  <body>
+    <div style="background-color: #f4f1ea; padding: 40px 20px">
+      <table role="presentation" class="email-container" width="100%" align="center">
+        <tr>
+          <td style="padding: 40px 40px 20px 40px; text-align: center">
+            <h1 class="heading" style="margin: 0; font-size: 28px">Invoice Pending</h1>
+            <p class="body-text" style="margin: 10px 0 0 0; font-style: italic; opacity: 0.7">Order Link No: {{ order_name }} // Status: Awaiting Settle</p>
+          </td>
+        </tr>
+        <tr><td style="padding: 0 40px"><div style="height: 1px; background-color: #0a0a0a; opacity: 0.2;"></div></td></tr>
+        <tr>
+          <td style="padding: 40px">
+            <h2 class="heading" style="margin: 0 0 20px 0; font-size: 20px">Neighbor Invoice, {{ customer.first_name | default: 'Neighbor' }}</h2>
+            <p class="body-text">We've gathered the specimens you requested and have them set aside in the archive. To finalize the recovery and secure your gear for dispatch, please use the link below to settle the contribution.</p>
+            
+            <div style="margin: 30px 0; background: #eeebdf; padding: 20px; border: 1px solid #d4cfc1;">
+              <p class="body-text" style="margin: 0; opacity: 0.7; font-size: 12px;">Total Due:</p>
+              <p class="body-text" style="margin: 0; font-weight: bold; font-size: 18px;">{{ total_price | money }}</p>
+            </div>
+
+            <!-- CTA Button -->
+            <table role="presentation" style="margin: 40px 0">
+              <tr>
+                <td>
+                  <a href="{{ checkout_payment_url }}" class="btn">Finalize Recovery</a>
+                </td>
+              </tr>
+            </table>
+
+            <p class="body-text">Once settled, we'll initialize the dispatch to your district immediately.</p>
+
+            <div class="divider"></div>
+            <p class="body-text">The growth waits for no one.</p>
+            <p class="signature" style="margin-top: 20px">The Archivist</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 40px; background-color: #0a0a0a; color: #8b9b78; text-align: center;">
+            <p class="body-text" style="color: #8b9b78; font-size: 12px; margin: 0">&copy; {{ 'now' | date: "%Y" }} {{ shop.name }}.</p>
+            <p class="body-text" style="color: #8b9b78; font-size: 10px; margin: 10px 0 0 0; text-transform: uppercase; letter-spacing: 2px;">District 07 // Archive Division</p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

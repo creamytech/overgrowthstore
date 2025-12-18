@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Spot is Ready</title>
+    <!--[if mso]>
+      <style type="text/css">
+        body, table, td, p, h1, h2, h3 { font-family: Courier, monospace !important; }
+      </style>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=IM+Fell+English+SC&family=Caveat&display=swap" rel="stylesheet" />
+    <style>
+      body { margin: 0; padding: 0; width: 100% !important; background-color: #f4f1ea; }
+      table { border-spacing: 0; border-collapse: collapse; }
+      .email-container { max-width: 600px; margin: 0 auto; background-color: #f4f1ea; border: 1px solid #e0ddd5; }
+      .heading { font-family: 'IM Fell English SC', serif; color: #0a0a0a; text-transform: uppercase; letter-spacing: 0.1em; }
+      .body-text { font-family: 'Courier Prime', 'Courier', monospace; color: #0a0a0a; line-height: 1.6; font-size: 14px; }
+      .accent { color: #4a5d23; }
+      .signature { font-family: 'Caveat', cursive; font-size: 24px; color: #c05a34; }
+      .btn { display: inline-block; padding: 12px 24px; background-color: #0a0a0a; color: #f4f1ea !important; text-decoration: none; font-family: 'Courier Prime', monospace; font-weight: bold; text-transform: uppercase; border: 1px solid #0a0a0a; }
+      .divider { border-top: 1px solid #d4cfc1; margin: 30px 0; }
+    </style>
+  </head>
+  <body>
+    <div style="background-color: #f4f1ea; padding: 40px 20px">
+      <table role="presentation" class="email-container" width="100%" align="center">
+        <tr>
+          <td style="padding: 40px 40px 20px 40px; text-align: center">
+            <h1 class="heading" style="margin: 0; font-size: 28px">City Reclaimed</h1>
+            <p class="body-text" style="margin: 10px 0 0 0; font-style: italic; opacity: 0.7">Status: Street Address Reserved</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 0 40px">
+            <div style="height: 1px; background-color: #0a0a0a; opacity: 0.2; width: 100%;"></div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 40px">
+            <h2 class="heading" style="margin: 0 0 20px 0; font-size: 20px">Welcome Home, {{ customer.first_name | default: 'Neighbor' }}</h2>
+            
+            {% if custom_message %}
+              <p class="body-text" style="font-style: italic; border-left: 2px solid #4a5d23; padding-left: 15px; margin: 20px 0;">{{ custom_message }}</p>
+            {% endif %}
+
+            <p class="body-text">We've cleared some vines and found a spot for you on the block. Your credentials are waiting to be finalized so you can start exploring the <span class="accent">Overgrowth Archive</span>.</p>
+            <p class="body-text">Once you activate your spot, you'll be able to track your recovered gear and street reports from your own corner of the city.</p>
+            <!-- CTA Button -->
+            <table role="presentation" style="margin: 40px 0">
+              <tr>
+                <td>
+                  <a href="{{ customer.account_activation_url }}" class="btn">Claim Your Corner</a>
+                </td>
+              </tr>
+            </table>
+            <div class="divider"></div>
+            <p class="body-text">Don't mind the ivy. It's just decor.</p>
+            <p class="signature" style="margin-top: 20px">The Archivist</p>
+          </td>
+        </tr>
+        <!-- Footer -->
+        <tr>
+          <td style="padding: 40px; background-color: #0a0a0a; color: #8b9b78; text-align: center;">
+            <p class="body-text" style="color: #8b9b78; font-size: 12px; margin: 0">&copy; {{ 'now' | date: "%Y" }} {{ shop.name }}.</p>
+            <p class="body-text" style="color: #8b9b78; font-size: 10px; margin: 10px 0 0 0; text-transform: uppercase; letter-spacing: 2px;">District 07 // Archive Division</p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>
