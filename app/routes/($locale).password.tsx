@@ -255,13 +255,27 @@ export default function EmailSignupPage() {
               </button>
             </motion.div>
 
-            <motion.div 
-              className="mt-12 text-[#1a472a]/40 font-heading text-xs tracking-[0.3em] uppercase"
-              animate={{ opacity: [0.3, 0.6, 0.3] }}
-              transition={{ repeat: Infinity, duration: 3 }}
-            >
-              Initializing Signal Retrieval...
-            </motion.div>
+            <div className="mt-12 flex flex-col items-center gap-4">
+              <div className="relative w-48 md:w-64 h-1 bg-[#1a472a]/10 overflow-hidden rounded-full">
+                <motion.div 
+                  className="absolute inset-0 bg-[#22c55e] shadow-[0_0_10px_rgba(34,197,94,0.5)]"
+                  initial={{ x: '-100%' }}
+                  animate={{ x: '100%' }}
+                  transition={{ 
+                    repeat: Infinity, 
+                    duration: 2.5, 
+                    ease: "linear" 
+                  }}
+                />
+              </div>
+              <motion.div 
+                className="text-[#22c55e] font-heading text-[10px] md:text-xs tracking-[0.3em] uppercase"
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+              >
+                Signal Retrieval: In Progress
+              </motion.div>
+            </div>
           </motion.div>
         ) : (
           /* STAGE 2: THE ARCHIVE (DASHBOARD) */
@@ -276,9 +290,9 @@ export default function EmailSignupPage() {
             <div className="w-full max-w-6xl archive-card p-6 md:p-12 border border-[#1a472a]/10 rounded-lg shadow-2xl relative overflow-hidden">
               
               {/* Decorative Textural Elements */}
-              <div className="absolute top-8 left-8 flex flex-col gap-1 opacity-20 pointer-events-none">
-                <span className="font-heading text-[10px] tracking-widest uppercase">Dept. of Recovery</span>
-                <span className="font-body text-[8px] tracking-tighter">NY-DISTRICT-01 // CODENAME: GREENHOUSE</span>
+              <div className="absolute top-4 right-6 md:top-8 md:left-8 flex flex-col gap-1 opacity-80 md:opacity-40 pointer-events-none text-right md:text-left">
+                <span className="font-heading text-[8px] md:text-[10px] tracking-widest uppercase text-[#1a472a] brightness-75">Dept. of Recovery</span>
+                <span className="font-body text-[6px] md:text-[8px] tracking-tighter text-[#1a472a] brightness-90">NY-DISTRICT-01 // CODENAME: GREENHOUSE</span>
               </div>
 
               <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
@@ -290,7 +304,7 @@ export default function EmailSignupPage() {
                     animate={{x: 0, opacity: 1}} 
                     transition={{delay: 0.3}}
                   >
-                    <img src="/assets/logo_og_vines.png" alt="Overgrowth" className="h-20 w-auto mb-8" />
+                    <img src="/assets/logo_og_vines.png" alt="Overgrowth" className="h-16 md:h-20 w-auto mb-8" />
                     <h1 className="font-heading text-4xl md:text-5xl text-[#1a472a] mb-4 tracking-tight leading-none">
                       Streetwear <br/><span className="text-[#c05a34]">Reclaimed.</span>
                     </h1>
@@ -354,7 +368,7 @@ export default function EmailSignupPage() {
                       >
                         {isSubmitting ? 'Verifying Signal...' : 'Initialize Access'}
                       </button>
-                      <p className="text-[10px] text-center text-[#1a472a]/40 uppercase tracking-widest mt-2">
+                      <p className="text-[10px] text-center text-[#1a472a]/70 uppercase tracking-widest mt-2">
                         Priority Clearance • Secure Log
                       </p>
                     </motion.form>
@@ -379,9 +393,9 @@ export default function EmailSignupPage() {
                 <div className="w-full lg:w-7/12">
                   <div className="grid grid-cols-2 gap-4 md:gap-6 relative">
                     
-                    {/* Header Label */}
-                    <div className="absolute -top-10 left-0">
-                      <span className="font-heading text-[10px] md:text-xs text-[#c05a34] tracking-[0.4em] uppercase">Manifest 01: The NYC District</span>
+                    {/* Header Label - Truly Centered */}
+                    <div className="absolute -top-10 left-0 right-0 flex justify-center">
+                      <span className="font-heading text-[10px] md:text-xs text-[#c05a34]/80 tracking-[0.4em] uppercase">Manifest 01: The NYC District</span>
                     </div>
 
                     {[
@@ -391,7 +405,7 @@ export default function EmailSignupPage() {
                     ].map((item, i) => (
                       <motion.div 
                         key={i}
-                        className={`relative group archive-card rounded shadow-sm overflow-hidden ${item.span ? 'col-span-2 aspect-[16/9]' : 'aspect-square'}`}
+                        className={`relative group archive-card rounded shadow-sm overflow-hidden ${item.span ? 'col-span-2 aspect-[4/3]' : 'aspect-square'}`}
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.8 + (i * 0.1) }}
@@ -400,7 +414,7 @@ export default function EmailSignupPage() {
                         <img 
                           src={item.src} 
                           alt={item.title} 
-                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[0.2]" 
+                          className={`absolute inset-0 w-full h-full ${item.span ? 'object-cover' : 'object-cover'} transition-transform duration-700 group-hover:scale-105 grayscale-[0.2]`} 
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                         
