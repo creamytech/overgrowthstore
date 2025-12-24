@@ -6,6 +6,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import {useLocation} from '@remix-run/react';
 import Lenis from 'lenis';
 
 interface LenisContextType {
@@ -19,6 +20,7 @@ export const useLenis = () => useContext(LenisContext);
 export function SmoothScrollProvider({children}: {children: ReactNode}) {
   const [lenis, setLenis] = useState<Lenis | null>(null);
   const reqIdRef = useRef<number | null>(null);
+  const location = useLocation();
 
   useEffect(() => {
     const lenisInstance = new Lenis({
@@ -45,6 +47,14 @@ export function SmoothScrollProvider({children}: {children: ReactNode}) {
       setLenis(null);
     };
   }, []);
+
+  // Scroll to top on route change
+  useEffect(() => {
+    if (lenis) {
+      window.scrollTo(0, 0);
+      lenis.scrollTo(0, {immediate: true});
+    }
+  }, [location.pathname, lenis]);
 
   return (
     <LenisContext.Provider value={{lenis}}>
