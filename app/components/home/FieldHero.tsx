@@ -126,14 +126,19 @@ export function FieldHero() {
                     muted
                     playsInline
                     preload="auto"
-                    loop={false}
+                    onTimeUpdate={(e) => {
+                      if (e.currentTarget.currentTime >= 3.9) {
+                        e.currentTarget.pause();
+                        setVideoEnded(true);
+                      }
+                    }}
                     onEnded={() => setVideoEnded(true)}
                     onCanPlay={() => setVideoLoaded(true)}
                     onLoadedData={() => setVideoLoaded(true)}
                     onLoadedMetadata={() => setVideoLoaded(true)}
                     className="max-h-[55vh] md:max-h-[60vh] w-auto object-contain"
                 >
-                    <source src="/assets/herovideofinal.mp4" type="video/mp4" />
+                    <source src="/assets/OvergrowthHero.mp4" type="video/mp4" />
                 </video>
             </motion.div>
 

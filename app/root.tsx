@@ -33,6 +33,7 @@ import favicon from '~/assets/favicon.svg';
 import {seoPayload} from '~/lib/seo.server';
 import styles from '~/styles/app.css?url';
 import fieldJournalStyles from '~/styles/field-journal.css?url';
+import {SmoothScrollProvider} from '~/components/SmoothScroll';
 
 import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
 
@@ -208,7 +209,9 @@ import {AnimatePresence, motion} from 'framer-motion';
 export default function App() {
   return (
     <Layout>
-      <Outlet />
+      <SmoothScrollProvider>
+        <Outlet />
+      </SmoothScrollProvider>
     </Layout>
   );
 }
