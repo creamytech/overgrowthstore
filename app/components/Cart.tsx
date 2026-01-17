@@ -17,12 +17,11 @@ import type {
   CartLineUpdateInput,
 } from '@shopify/hydrogen/storefront-api-types';
 
-import {Button} from '~/components/Button';
-import {Text, Heading} from '~/components/Text';
 import {Link} from '~/components/Link';
-import {IconRemove, IconTicket} from '~/components/Icon';
-import {FeaturedProducts} from '~/components/FeaturedProducts';
-import {getInputStyleClasses} from '~/lib/utils';
+import {IconRemove} from '~/components/Icon';
+import {Button} from '~/components/ui/button';
+import {Separator} from '~/components/ui/separator';
+import {ScrollArea} from '~/components/ui/scroll-area';
 
 type Layouts = 'page' | 'drawer';
 
@@ -35,12 +34,13 @@ export function Cart({
   onClose?: () => void;
   cart: CartReturn | null;
 }) {
-  const linesCount = Boolean(cart?.lines?.edges?.length || 0);
+  const linesCount = cart?.lines?.edges?.length || 0;
+  const hasItems = linesCount > 0;
 
   return (
     <>
-      <CartEmpty hidden={linesCount} onClose={onClose} layout={layout} />
-      <CartDetails cart={cart} layout={layout} />
+      {!hasItems && <CartEmpty onClose={onClose} layout={layout} />}
+      {hasItems && <CartDetails cart={cart} layout={layout} />}
     </>
   );
 }
@@ -52,11 +52,10 @@ export function CartDetails({
   layout: Layouts;
   cart: CartType | null;
 }) {
-  // @todo: get optimistic cart cost
   const cartHasItems = !!cart && cart.totalQuantity > 0;
   const container = {
-    drawer: 'grid grid-cols-1 h-screen-no-nav grid-rows-[1fr_auto] bg-transparent text-dark-green font-body', 
-    page: 'w-full pb-12 grid md:grid-cols-2 md:items-start gap-8 md:gap-8 lg:gap-12',
+    drawer: 'grid grid-cols-1 h-full grid-rows-[1fr_auto]', 
+    page: 'w-full pb-12 grid md:grid-cols-2 md:items-start gap-8 md:gap-12',
   };
 
   return (
@@ -84,54 +83,36 @@ function CartDiscounts({
 
   return (
     <>
-      {/* Have existing discount, display it with a remove option */}
       <dl className={codes && codes.length !== 0 ? 'grid' : 'hidden'}>
-        <div className="flex items-center justify-between font-medium">
-          <Text as="dt">Discount Code(s)</Text>
-          <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between font-mono text-xs text-[#8A8A84]">
+          <dt>Discount</dt>
+          <div className="flex items-center gap-2">
             <UpdateDiscountForm>
-              <button>
-                <IconRemove
-                  aria-hidden="true"
-                  style={{height: 18, marginRight: 4}}
-                  className="text-rust"
-                />
+              <button className="text-[#B55A3C] hover:text-[#1a472a]">
+                <IconRemove aria-hidden="true" style={{height: 14}} />
               </button>
             </UpdateDiscountForm>
-            <Text as="dd">{codes?.join(', ')}</Text>
+            <dd className="text-[#B55A3C]">{codes?.join(', ')}</dd>
           </div>
         </div>
       </dl>
 
-      {/* Show an input to apply a discount */}
-      {/* Show an input to apply a discount */}
       <UpdateDiscountForm discountCodes={codes}>
-        <details className="group relative mt-4 border border-rust/30 bg-[#e8e4d9]">
-            {/* Header Bar - Clickable to expand */}
-            <summary className="bg-rust text-[#f4f1ea] px-3 py-1.5 flex items-center gap-2 cursor-pointer list-none">
-                <IconTicket className="w-4 h-4 text-[#f4f1ea]" />
-                <span className="font-heading text-xs tracking-[0.2em] uppercase flex-grow">
-                    Discount Code
-                </span>
-                <span className="text-[10px] opacity-70 group-open:hidden">(APPLY CODE)</span>
-                <span className="transform transition-transform group-open:rotate-180">▼</span>
-            </summary>
-            
-            {/* Input Area - Hidden by default until expanded */}
-            <div className="p-3 flex gap-2">
-                <div className="flex-grow bg-white border border-rust/20 p-2 shadow-inner">
-                    <input
-                        className="w-full bg-transparent font-typewriter text-sm text-dark-green placeholder:text-dark-green/30 focus:outline-none uppercase tracking-widest"
-                        type="text"
-                        name="discountCode"
-                        placeholder="ENTER CODE..."
-                    />
-                </div>
-                <button className="font-heading text-sm tracking-widest text-[#f4f1ea] bg-rust px-4 hover:bg-dark-green transition-colors shadow-sm">
-                    APPLY
-                </button>
-            </div>
-        </details>
+        <div className="flex gap-2 mt-4">
+          <input
+            className="flex-1 bg-[#1a1a1a] border border-[#F2EFE9]/20 px-4 py-3 font-mono text-xs text-[#F2EFE9] placeholder:text-[#F2EFE9]/30 focus:outline-none focus:border-[#B55A3C] uppercase tracking-wide"
+            type="text"
+            name="discountCode"
+            placeholder="Discount code"
+          />
+          <Button 
+            type="submit" 
+            variant="outline" 
+            className="px-6 font-mono text-[10px] uppercase tracking-[0.2em] border-[#F2EFE9]/20 text-[#F2EFE9] hover:border-[#B55A3C] hover:text-[#B55A3C]"
+          >
+            Apply
+          </Button>
+        </div>
       </UpdateDiscountForm>
     </>
   );
@@ -170,10 +151,10 @@ function CartLines({
   const {y} = useScroll(scrollRef);
 
   const className = clsx([
-    y > 0 ? 'border-t border-dark-green/10' : '',
+    y > 0 ? 'border-t border-[#F2EFE9]/10' : '',
     layout === 'page'
-      ? 'flex-grow md:translate-y-4'
-      : 'pb-6 sm-max:pt-2 overflow-auto transition',
+      ? 'flex-grow'
+      : 'pb-6 overflow-auto scrollbar-hide',
   ]);
 
   return (
@@ -182,7 +163,7 @@ function CartLines({
       aria-labelledby="cart-contents"
       className={className}
     >
-      <ul className="grid gap-6 md:gap-10">
+      <ul className="grid gap-6">
         {currentLines.map((line) => (
           <CartLineItem key={line.id} line={line as CartLine} />
         ))}
@@ -195,19 +176,23 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
   if (!checkoutUrl) return null;
 
   return (
-    <div className="flex flex-col mt-4 gap-3">
-      <a href={checkoutUrl} target="_self" className="group relative">
-        <Button as="span" width="full" className="relative bg-dark-green text-[#f4f1ea] font-heading tracking-[2px] uppercase hover:bg-rust transition-colors duration-100 steps(2) flex items-center justify-center gap-2 py-4 shadow-lg">
-          COMPLETE ORDER
+    <div className="flex flex-col gap-4 mt-8">
+      <a href={checkoutUrl} target="_self">
+        <Button className="w-full py-6 bg-[#B55A3C] text-[#F2EFE9] hover:bg-[#9A4A30] font-mono text-xs uppercase tracking-[0.2em] transition-all duration-300 group">
+          <span>Checkout</span>
+          <span className="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
         </Button>
       </a>
       
       <div className="text-center">
-        <Link to="/products" className="font-body text-xs text-dark-green/60 hover:text-rust underline decoration-dashed underline-offset-4 uppercase tracking-widest transition-colors">
-            Continue Shopping
+        <Link 
+          to="/products" 
+          className="inline-flex items-center gap-2 font-mono text-[10px] text-[#F2EFE9]/50 hover:text-[#B55A3C] uppercase tracking-[0.2em] transition-colors group"
+        >
+          <span className="w-4 h-px bg-[#F2EFE9]/30 group-hover:bg-[#B55A3C] transition-colors" />
+          Continue Browsing
         </Link>
       </div>
-      {/* @todo: <CartShopPayButton cart={cart} /> */}
     </div>
   );
 }
@@ -222,8 +207,8 @@ function CartSummary({
   layout: Layouts;
 }) {
   const summary = {
-    drawer: 'grid gap-4 pt-6 border-t border-dark-green/10',
-    page: 'sticky top-nav grid gap-6 p-4 md:px-6 md:translate-y-4 bg-primary/5 rounded w-full',
+    drawer: 'grid gap-4 pt-6 border-t border-[#F2EFE9]/10',
+    page: 'sticky top-32 grid gap-6 p-6 bg-[#F2EFE9] border border-[#1a472a]/10',
   };
 
   return (
@@ -232,17 +217,19 @@ function CartSummary({
         Order summary
       </h2>
       <dl className="grid gap-4">
-        <div className="flex items-center justify-between font-medium text-dark-green">
-          <Text as="dt" className="font-heading text-sm tracking-widest uppercase">Subtotal</Text>
-          <Text as="dd" data-test="subtotal">
+        <div className="flex items-center justify-between">
+          <dt className="font-mono text-xs uppercase tracking-[0.2em] text-[#F2EFE9]/50">Subtotal</dt>
+          <dd className="font-heading text-lg text-[#B55A3C]" data-test="subtotal">
             {cost?.subtotalAmount?.amount ? (
               <Money data={cost?.subtotalAmount} />
             ) : (
               '-'
             )}
-          </Text>
+          </dd>
         </div>
       </dl>
+      
+      <Separator className="bg-[#F2EFE9]/10 my-2" />
       
       {children}
     </section>
@@ -267,59 +254,65 @@ function CartLineItem({line}: {line: CartLine}) {
   return (
     <li
       key={id}
-      className="flex gap-6 py-6 border-b-2 border-dashed border-rust/20 relative group transition-transform duration-100 steps(2) hover:bg-dark-green/5 items-start"
+      className="relative group py-6 border-b border-[#F2EFE9]/10"
       style={{
-        display: optimisticData?.action === 'remove' ? 'none' : 'flex',
+        display: optimisticData?.action === 'remove' ? 'none' : 'block',
       }}
     >
-      {/* Polaroid Image */}
-      <div className="flex-shrink-0 relative w-24 h-28 rotate-[-2deg] transition-transform duration-100 steps(2) group-hover:rotate-0 group-hover:scale-105">
-        <div className="absolute inset-0 bg-white shadow-md p-1.5 pb-5 transform transition-transform duration-100 steps(2)">
+      <div className="flex gap-5">
+        {/* Image with corner markers */}
+        <div className="relative flex-shrink-0">
+          <div className="w-24 h-28 bg-[#1a1a1a] border border-[#F2EFE9]/10 overflow-hidden">
             {merchandise.image && (
-            <Image
-                width={110}
-                height={110}
+              <Image
+                width={96}
+                height={112}
                 data={merchandise.image}
-                className="object-cover object-center w-full h-full border border-gray-100 transition-all duration-100"
+                className="object-cover w-full h-full"
                 alt={merchandise.title}
-            />
+              />
             )}
-        </div>
-      </div>
-
-      <div className="flex justify-between flex-grow gap-4">
-        <div className="grid gap-1">
-          {/* Handwritten Title */}
-          <Heading as="h3" size="copy" className="font-heading text-2xl tracking-widest text-dark-green leading-tight">
-            {merchandise?.product?.handle ? (
-              <Link to={`/products/${merchandise.product.handle}`}>
-                {merchandise?.product?.title || ''}
-              </Link>
-            ) : (
-              <Text>{merchandise?.product?.title || ''}</Text>
-            )}
-          </Heading>
-
-          <div className="grid pb-2">
-            {(merchandise?.selectedOptions || []).map((option) => (
-              <Text color="subtle" key={option.name} className="text-dark-green/70 font-body text-xs uppercase tracking-wider">
-                {option.name}: {option.value}
-              </Text>
-            ))}
           </div>
+          {/* Corner markers */}
+          <div className="absolute -top-1 -left-1 w-2 h-2 border-l border-t border-[#B55A3C]" />
+          <div className="absolute -top-1 -right-1 w-2 h-2 border-r border-t border-[#B55A3C]" />
+        </div>
 
-          <div className="flex items-center gap-6 mt-2">
-            <div className="flex justify-start text-copy origin-left">
-              <CartLineQuantityAdjust line={line} />
+        <div className="flex-grow flex flex-col justify-between">
+          {/* Top: Title + Options */}
+          <div>
+            <h3 className="font-heading text-base text-[#F2EFE9] uppercase tracking-wide mb-1">
+              {merchandise?.product?.handle ? (
+                <Link to={`/products/${merchandise.product.handle}`} className="hover:text-[#B55A3C] transition-colors">
+                  {merchandise?.product?.title || ''}
+                </Link>
+              ) : (
+                <span>{merchandise?.product?.title || ''}</span>
+              )}
+            </h3>
+
+            <div className="flex flex-wrap gap-x-3 gap-y-1">
+              {(merchandise?.selectedOptions || []).map((option) => (
+                <span key={option.name} className="font-mono text-[10px] text-[#F2EFE9]/40 uppercase tracking-wide">
+                  {option.name}: <span className="text-[#B55A3C]">{option.value}</span>
+                </span>
+              ))}
             </div>
-            <ItemRemoveButton lineId={id} />
           </div>
-        </div>
-        
-        <div className="flex flex-col items-end">
-            <Text className="font-body text-dark-green font-bold text-lg">
-            <CartLinePrice line={line} as="span" />
-            </Text>
+          
+          {/* Bottom: Quantity + Price */}
+          <div className="flex items-end justify-between mt-4">
+            <div className="flex items-center gap-3">
+              <CartLineQuantityAdjust line={line} />
+              <ItemRemoveButton lineId={id} />
+            </div>
+            
+            <div className="text-right">
+              <span className="font-heading text-lg text-[#B55A3C]">
+                <CartLinePrice line={line} as="span" />
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </li>
@@ -336,11 +329,11 @@ function ItemRemoveButton({lineId}: {lineId: CartLine['id']}) {
       }}
     >
       <button
-        className="flex items-center justify-center w-10 h-10 border border-rust/30 rounded hover:border-rust hover:text-rust transition-colors duration-100 steps(2)"
+        className="text-[#F2EFE9]/40 hover:text-[#B55A3C] transition-colors"
         type="submit"
       >
         <span className="sr-only">Remove</span>
-        <IconRemove aria-hidden="true" className="text-rust/70 hover:text-rust" />
+        <IconRemove aria-hidden="true" className="w-4 h-4" />
       </button>
       <OptimisticInput id={lineId} data={{action: 'remove'}} />
     </CartForm>
@@ -364,16 +357,16 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
       <label htmlFor={`quantity-${lineId}`} className="sr-only">
         Quantity, {optimisticQuantity}
       </label>
-      <div className="flex items-center bg-dark-green/5 rounded-full px-1 border border-rust/30 hover:border-rust transition-colors">
+      <div className="flex items-center border border-[#F2EFE9]/20">
         <UpdateCartButton lines={[{id: lineId, quantity: prevQuantity}]}>
           <button
             name="decrease-quantity"
             aria-label="Decrease quantity"
-            className="w-8 h-8 flex items-center justify-center transition duration-100 steps(2) text-rust/70 hover:text-rust hover:bg-rust/10 rounded-full disabled:text-dark-green/10"
+            className="w-8 h-8 flex items-center justify-center text-[#F2EFE9]/50 hover:text-[#B55A3C] hover:bg-[#F2EFE9]/5 transition-colors disabled:opacity-30"
             value={prevQuantity}
             disabled={optimisticQuantity <= 1}
           >
-            <span>&#8722;</span>
+            <span>−</span>
             <OptimisticInput
               id={optimisticId}
               data={{quantity: prevQuantity}}
@@ -381,18 +374,18 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
           </button>
         </UpdateCartButton>
 
-        <div className="px-2 text-center text-dark-green font-typewriter text-sm min-w-[1.5rem]" data-test="item-quantity">
+        <div className="px-3 text-center text-[#F2EFE9] font-mono text-xs min-w-[2rem]" data-test="item-quantity">
           {optimisticQuantity}
         </div>
 
         <UpdateCartButton lines={[{id: lineId, quantity: nextQuantity}]}>
           <button
-            className="w-8 h-8 flex items-center justify-center transition duration-100 steps(2) text-rust/70 hover:text-rust hover:bg-rust/10 rounded-full"
+            className="w-8 h-8 flex items-center justify-center text-[#F2EFE9]/50 hover:text-[#B55A3C] hover:bg-[#F2EFE9]/5 transition-colors"
             name="increase-quantity"
             value={nextQuantity}
             aria-label="Increase quantity"
           >
-            <span>&#43;</span>
+            <span>+</span>
             <OptimisticInput
               id={optimisticId}
               data={{quantity: nextQuantity}}
@@ -452,69 +445,54 @@ export function CartEmpty({
   layout = 'drawer',
   onClose,
 }: {
-  hidden: boolean;
+  hidden?: boolean;
   layout?: Layouts;
   onClose?: () => void;
 }) {
-  const scrollRef = useRef(null);
-  const {y} = useScroll(scrollRef);
-
   const container = {
-    drawer: clsx([
-      'content-start gap-4 pb-8 transition overflow-y-scroll md:gap-12 h-screen-no-nav md:pb-12 text-dark-green font-body',
-      y > 0 ? 'border-t border-dark-green/10' : '',
-    ]),
+    drawer: 'flex flex-col items-center justify-center h-full gap-8 text-center px-8',
     page: clsx([
-      hidden ? '' : 'grid',
-      `pb-12 w-full md:items-start gap-4 md:gap-8 lg:gap-12`,
+      hidden ? 'hidden' : 'flex',
+      'flex-col items-center justify-center gap-8 text-center py-20',
     ]),
   };
 
   return (
-    <div ref={scrollRef} className={container[layout]} hidden={hidden}>
-      <section className="grid gap-6 text-center justify-items-center pt-8 md:pt-12">
-        {/* Empty Cart Illustration */}
-        <div className="w-32 h-32 md:w-40 md:h-40 opacity-80 mb-2">
-          <img 
-            src="/assets/EmptyCart.svg" 
-            alt="Empty cart illustration" 
-            className="w-full h-full object-contain"
-          />
+    <div className={container[layout]} hidden={hidden}>
+      {/* Empty state icon */}
+      <div className="relative">
+        <div className="w-24 h-24 border border-[#F2EFE9]/10 flex items-center justify-center">
+          <div className="w-16 h-16 border border-dashed border-[#B55A3C]/30 flex items-center justify-center">
+            <span className="font-heading text-2xl text-[#B55A3C]/50">∅</span>
+          </div>
         </div>
-        
-        <div className="space-y-3 max-w-xs">
-          <Text format className="font-heading text-2xl md:text-3xl text-dark-green uppercase tracking-widest">
-            Your Pack is Empty
-          </Text>
-          <p className="font-body text-sm text-dark-green/60 leading-relaxed">
-            The ruins hold many treasures.<br />
-            Begin your expedition to uncover them.
-          </p>
-        </div>
-        
-        <div className="pt-6">
-          <Link 
-            to="/products" 
-            onClick={onClose}
-            className="bg-dark-green text-[#f4f1ea] font-heading tracking-widest px-8 py-4 hover:bg-rust transition-colors duration-300 uppercase inline-flex items-center gap-2"
-          >
-            <span>Begin the Expedition</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-            </svg>
-          </Link>
-        </div>
-      </section>
+        {/* Corner markers */}
+        <div className="absolute -top-1 -left-1 w-3 h-3 border-l border-t border-[#B55A3C]" />
+        <div className="absolute -top-1 -right-1 w-3 h-3 border-r border-t border-[#B55A3C]" />
+        <div className="absolute -bottom-1 -left-1 w-3 h-3 border-l border-b border-[#B55A3C]" />
+        <div className="absolute -bottom-1 -right-1 w-3 h-3 border-r border-b border-[#B55A3C]" />
+      </div>
       
-      <section className="grid gap-8 pt-12 border-t border-dark-green/10 mt-8">
-        <FeaturedProducts
-          count={4}
-          heading="RECENT RECOVERIES"
-          layout={layout}
-          onClose={onClose}
-          sortKey="BEST_SELLING"
-        />
-      </section>
+      <div className="space-y-3 max-w-xs">
+        <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.3em] uppercase block">
+          Cart Empty
+        </span>
+        <h2 className="font-heading text-2xl text-[#F2EFE9] uppercase tracking-[0.08em]">
+          Nothing Selected
+        </h2>
+        <p className="font-mono text-xs text-[#F2EFE9]/50 leading-relaxed">
+          Limited quantities available. Once sold out, pieces are permanently archived.
+        </p>
+      </div>
+      
+      <Link 
+        to="/products" 
+        onClick={onClose}
+      >
+        <Button className="px-10 py-5 bg-[#B55A3C] text-[#F2EFE9] hover:bg-[#9A4A30] font-mono text-xs uppercase tracking-[0.2em] transition-all duration-300">
+          Browse Archive →
+        </Button>
+      </Link>
     </div>
   );
 }

@@ -43,7 +43,13 @@ export default async function handleRequest(
       'https://*.shopify.com',
       'https://www.overgrowth.co',
       'https://overgrowth.co',
+      'https://res.cloudinary.com',
       ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
+    ],
+    mediaSrc: [
+      'self',
+      'https://res.cloudinary.com',
+      'https://*.cloudinary.com',
     ],
   });
 

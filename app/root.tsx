@@ -34,6 +34,8 @@ import {seoPayload} from '~/lib/seo.server';
 import styles from '~/styles/app.css?url';
 import fieldJournalStyles from '~/styles/field-journal.css?url';
 import {SmoothScrollProvider} from '~/components/SmoothScroll';
+import {CommandPalette} from '~/components/CommandPalette';
+import {Toaster} from '~/components/ui/sonner';
 
 import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
 
@@ -168,8 +170,23 @@ function Layout({children}: {children?: React.ReactNode}) {
         {/* End Meta Pixel Code */}
       </head>
       <body className="antialiased text-ink bg-paper selection:bg-rust selection:text-paper">
-        {/* Global Field Journal Canvas */}
-        <div className="canvas-background" />
+        {/* Global Paper Texture Overlay - Inline styles for guaranteed display */}
+        <div 
+          aria-hidden="true"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 9998,
+            pointerEvents: 'none',
+            backgroundImage: "url('/assets/texture_archive_paper.jpg')",
+            backgroundRepeat: 'repeat',
+            backgroundSize: 'cover',
+            opacity: 0.08,
+          }}
+        />
         
         {/* Navigation Progress Bar */}
         <NavigationProgress />
@@ -199,6 +216,22 @@ function Layout({children}: {children?: React.ReactNode}) {
         
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
+        
+        {/* Global Command Palette (⌘K) */}
+        <CommandPalette />
+        
+        {/* Toast notifications */}
+        <Toaster 
+          position="bottom-right" 
+          toastOptions={{
+            className: 'font-mono text-sm bg-[#0a0a0a] text-[#F2EFE9] border border-[#F2EFE9]/20',
+            style: {
+              background: '#0a0a0a',
+              color: '#F2EFE9',
+              border: '1px solid rgba(242, 239, 233, 0.2)',
+            },
+          }}
+        />
       </body>
     </html>
   );

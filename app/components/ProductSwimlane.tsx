@@ -1,4 +1,5 @@
-import type {HomepageFeaturedProductsQuery} from 'storefrontapi.generated';
+// import type {HomepageFeaturedProductsQuery} from 'storefrontapi.generated';
+type HomepageFeaturedProductsQuery = any;
 import {Section} from '~/components/Text';
 import {ProductCard} from '~/components/ProductCard';
 
@@ -20,7 +21,7 @@ export function ProductSwimlane({
   return (
     <Section heading={title} padding="y" {...props}>
       <div className="swimlane hiddenScroll md:pb-8 md:scroll-px-8 lg:scroll-px-12 md:px-8 lg:px-12">
-        {products.nodes.map((product, i) => (
+        {products.nodes.map((product: any, i: any) => (
           <ProductCard
             product={product}
             key={product.id}

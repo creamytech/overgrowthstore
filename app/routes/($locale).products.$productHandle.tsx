@@ -1,5 +1,4 @@
 import {useRef, Suspense, useState, useEffect} from 'react';
-import {Disclosure, Listbox} from '@headlessui/react';
 import {
   defer,
   type MetaArgs,
@@ -9,7 +8,6 @@ import {useLoaderData, Await} from '@remix-run/react';
 import {
   getSeoMeta,
   Money,
-  ShopPayButton,
   getSelectedProductOptions,
   Analytics,
   useOptimisticVariant,
@@ -21,27 +19,39 @@ import {
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 import clsx from 'clsx';
-import type {
-  Maybe,
-  ProductOptionValueSwatch,
-} from '@shopify/hydrogen/storefront-api-types';
 
 import type {ProductFragment} from 'storefrontapi.generated';
-import {Heading, Section, Text} from '~/components/Text';
 import {Link} from '~/components/Link';
-import {Button} from '~/components/Button';
 import {AddToCartButton} from '~/components/AddToCartButton';
-import {Skeleton} from '~/components/Skeleton';
-import {ProductSwimlane} from '~/components/ProductSwimlane';
-import {ProductGallery} from '~/components/ProductGallery';
-import {IconCaret, IconCheck, IconClose} from '~/components/Icon';
-import {Modal} from '~/components/Modal';
-import {getExcerpt} from '~/lib/utils';
+import {ProductCard} from '~/components/ProductCard';
 import {seoPayload} from '~/lib/seo.server';
 import type {Storefront} from '~/lib/type';
 import {routeHeaders} from '~/data/cache';
 import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
-
+import {Button} from '~/components/ui/button';
+import {Badge} from '~/components/ui/badge';
+import {Separator} from '~/components/ui/separator';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '~/components/ui/accordion';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '~/components/ui/breadcrumb';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '~/components/ui/tooltip';
+import {Alert, AlertDescription} from '~/components/ui/alert';
 
 export const headers = routeHeaders;
 
@@ -49,19 +59,10 @@ export async function loader(args: LoaderFunctionArgs) {
   const {productHandle} = args.params;
   invariant(productHandle, 'Missing productHandle param, check route filename');
 
-  // Start fetching non-critical data without blocking time to first byte
-  const deferredData = loadDeferredData(args);
-
-  // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
-
-  return defer({...deferredData, ...criticalData});
+  return defer({...criticalData});
 }
 
-/**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
- */
 async function loadCriticalData({
   params,
   request,
@@ -81,7 +82,6 @@ async function loadCriticalData({
         language: context.storefront.i18n.language,
       },
     }),
-    // Add other queries here, so that they are loaded in parallel
   ]);
 
   if (!product?.id) {
@@ -108,18 +108,6 @@ async function loadCriticalData({
   };
 }
 
-/**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
- */
-function loadDeferredData(args: LoaderFunctionArgs) {
-  // Put any API calls that are not critical to be available on first page render
-  // For example: product reviews, product recommendations, social feeds.
-
-  return {};
-}
-
 export const meta = ({matches}: MetaArgs<typeof loader>) => {
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
@@ -128,7 +116,6 @@ export default function Product() {
   const {product, shop, recommended, variants, storeDomain} =
     useLoaderData<typeof loader>();
   const {media, title, vendor, descriptionHtml} = product;
-  const {shippingPolicy, refundPolicy} = shop;
 
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
@@ -148,584 +135,281 @@ export default function Product() {
   const initialImage = selectedVariant?.image || (firstMedia?.__typename === 'MediaImage' ? firstMedia.image : null);
   
   const [activeImage, setActiveImage] = useState(initialImage);
-  const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
-  const [isHovering, setIsHovering] = useState(false);
-  const [showStickyFooter, setShowStickyFooter] = useState(false);
-  const imageContainerRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  // Update active image when variant changes
   useEffect(() => {
     if (selectedVariant?.image) {
       setActiveImage(selectedVariant.image);
     }
   }, [selectedVariant]);
 
-  // Handle scroll for sticky mobile footer
-  useEffect(() => {
-    const handleScroll = () => {
-      // Show sticky footer after scrolling past product section (approximately 800px on mobile)
-      const scrolled = window.scrollY > 800;
-      setShowStickyFooter(scrolled);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Handle mouse move for zoom lens
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!imageContainerRef.current) return;
-    const rect = imageContainerRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    setZoomPosition({ x, y });
-  };
-
   return (
-    <div className="min-h-screen relative pt-24 md:pt-32 pb-32 px-4 md:px-8">
-       <div className="max-w-[1250px] mx-auto relative">
-            {/* ============================================
-                MOBILE LAYOUT (< lg breakpoint)
-                Hero-first: Title → Price → Gallery → Lore → Accordions
-            ============================================ */}
-            
-            <div className="lg:hidden">
-                {/* Mobile Hero Section */}
-                <div className="mb-6">
-                    <div className="flex items-center gap-3 mb-3">
-                        <span className="inline-block px-2 py-1 border border-rust/40 font-body text-[9px] tracking-widest uppercase text-dark-green bg-[#f4f1ea]">
-                            RECOVERED WORKS
-                        </span>
-                        {selectedVariant?.sku && (
-                            <span className="font-body text-[9px] tracking-widest uppercase text-dark-green/40">
-                                ARTIFACT NO. {selectedVariant.sku}
-                            </span>
-                        )}
-                    </div>
-                    
-                    <h1 className="font-heading text-3xl text-dark-green leading-tight mb-4">
-                        {title}
-                    </h1>
-
-                    {/* Price - Mobile Prominent */}
-                    <div className="flex items-end justify-between mb-3 pb-4 border-b border-dashed border-rust/30">
-                        <div>
-                            <span className="block font-body text-[9px] tracking-widest uppercase text-dark-green/50 mb-1">
-                                Recovered Value
-                            </span>
-                            <div className="font-body text-3xl text-dark-green font-bold tracking-wide">
-                                <Money withoutTrailingZeros data={selectedVariant?.price!} />
-                            </div>
-                        </div>
-                        <div className="text-right">
-                            <span className="block font-body text-[9px] tracking-widest uppercase text-dark-green/50 mb-1">
-                                Recovered On
-                            </span>
-                            <span className="font-body text-xs text-dark-green">
-                                {new Date(product.publishedAt).toLocaleDateString('en-US', { 
-                                    month: 'short', 
-                                    day: 'numeric', 
-                                    year: 'numeric' 
-                                })}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Mobile Gallery */}
-                <div className="mb-6">
-                    <div 
-                        className="relative w-full aspect-[3/4] bg-paper border border-rust/30 shadow-sm overflow-hidden mb-3"
-                    >
-                        <div className="relative w-full h-full p-6">
-                            {activeImage && (
-                                <Image
-                                    data={activeImage}
-                                    sizes="100vw"
-                                    className="w-full h-full object-contain"
-                                />
-                            )}
-                        </div>
-
-                        {/* Corner Labels */}
-                        <div className="absolute top-3 left-3 border border-rust/40 px-2 py-1 bg-paper/90">
-                            <span className="font-body text-[9px] uppercase tracking-widest text-dark-green/60">
-                                Artifact View
-                            </span>
-                        </div>
-                    </div>
-
-                    {/* Mobile Thumbnails - Horizontal Scroll */}
-                    {media.nodes.length > 1 && (
-                        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-                            {media.nodes.map((med, i) => {
-                                const image = med.__typename === 'MediaImage' ? med.image : null;
-                                if (!image) return null;
-                                
-                                const isActive = activeImage?.id === image.id;
-
-                                return (
-                                    <button
-                                        key={med.id || image.id}
-                                        onClick={() => setActiveImage(image)}
-                                        className={`relative w-16 h-20 flex-shrink-0 border transition-all duration-100 ${
-                                            isActive 
-                                            ? 'border-rust opacity-100 ring-1 ring-rust ring-offset-1 ring-offset-[#f4f1ea]' 
-                                            : 'border-rust/30 opacity-60'
-                                        }`}
-                                    >
-                                        <Image
-                                            data={image}
-                                            sizes="64px"
-                                            className="w-full h-full object-cover"
-                                        />
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    )}
-                </div>
-
-                {/* Mobile Lore Paragraph */}
-                <div className="mb-6 px-2">
-                    <p className="font-body text-sm italic text-dark-green/80 leading-relaxed">
-                        Recovered from the quiet places where nature reclaimed what was left behind. 
-                        Each piece carries the marks of its journey through the overgrowth.
-                    </p>
-                </div>
-
-                {/* Mobile Accordions */}
-                <div className="mb-6 space-y-3">
-                    <FieldNotesAccordion descriptionHtml={descriptionHtml || ''} />
-                    <ArtifactSpecsAccordion selectedVariant={selectedVariant} title="Artifact Anatomy" />
-                    <ProvenanceAccordion 
-                        vendor={vendor} 
-                        publishedAt={product.publishedAt}
-                        selectedVariant={selectedVariant}
-                        title="Recovery Log"
-                    />
-                </div>
-
-                {/* Mobile Product Form */}
-                <ProductForm
-                    productOptions={productOptions}
-                    selectedVariant={selectedVariant}
-                    storeDomain={storeDomain}
-                    product={product}
-                />
-            </div>
-
-            {/* ============================================
-                DESKTOP LAYOUT (>= lg breakpoint)
-                Two-column: Gallery + Sticky Sidebar
-            ============================================ */}
-            
-            <div className="hidden lg:block">
-                {/* Desktop Header Metadata */}
-                <div className="relative z-10 border-b-2 border-rust/30 pb-6 mb-12 flex justify-between items-end gap-6">
-                    <div className="flex-1">
-                        <div className="flex items-center gap-4 mb-3">
-                            <span className="inline-block px-2 py-1 border border-rust/40 font-body text-[10px] tracking-widest uppercase text-dark-green bg-[#f4f1ea]">
-                                RECOVERED WORKS
-                            </span>
-                            {selectedVariant?.sku && (
-                                <span className="font-body text-[10px] tracking-widest uppercase text-dark-green/40">
-                                    ARTIFACT NO. {selectedVariant.sku}
-                                </span>
-                            )}
-                        </div>
-                        <h1 className="font-heading text-5xl text-dark-green leading-tight tracking-tight">
-                            {title}
-                        </h1>
-
-                    </div>
-                    <div className="text-right flex-col items-end pt-2">
-                        <span className="block font-body text-[10px] tracking-widest uppercase text-dark-green/50 mb-1">
-                            Recovered On
-                        </span>
-                        <span className="font-body text-sm text-dark-green border-b border-rust/30 pb-1">
-                            {new Date(product.publishedAt).toLocaleDateString('en-US', { 
-                                month: 'long', 
-                                day: 'numeric', 
-                                year: 'numeric' 
-                            })}
-                        </span>
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-12 gap-12 items-start relative">
-                    
-                    {/* Left Column: Gallery with Vertical Thumbnails */}
-                    <div className="col-span-7 flex gap-4">
-                        
-                        {/* Vertical Thumbnail Strip */}
-                        {media.nodes.length > 1 && (
-                            <div className="flex flex-col gap-3 w-24 flex-shrink-0">
-                                {media.nodes.map((med, i) => {
-                                    const image = med.__typename === 'MediaImage' ? med.image : null;
-                                    if (!image) return null;
-                                    
-                                    const isActive = activeImage?.id === image.id;
-
-                                    return (
-                                        <button
-                                            key={med.id || image.id}
-                                            onClick={() => setActiveImage(image)}
-                                            className={`relative w-full aspect-[3/4] border transition-all duration-300 ${
-                                                isActive 
-                                                ? 'border-rust opacity-100 ring-1 ring-rust ring-offset-2 ring-offset-[#f4f1ea]' 
-                                                : 'border-rust/10 opacity-70 hover:opacity-100 hover:border-rust/40'
-                                            }`}
-                                        >
-                                            <div className="absolute inset-0 bg-paper opacity-10 mix-blend-multiply pointer-events-none" />
-                                            <Image
-                                                data={image}
-                                                sizes="96px"
-                                                className="w-full h-full object-cover"
-                                            />
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                        )}
-
-                        {/* Main Image - "Pinned Photograph" Style */}
-                        <div className="flex-1">
-                            <div 
-                                ref={imageContainerRef}
-                                className="relative w-full aspect-[4/5] bg-paper border border-rust/30 shadow-[4px_8px_20px_rgba(0,0,0,0.15)] overflow-hidden group"
-                                onMouseEnter={() => setIsHovering(true)}
-                                onMouseLeave={() => setIsHovering(false)}
-                                onMouseMove={handleMouseMove}
-                            >
-                                {/* Base Product Image */}
-                                <div className="relative w-full h-full p-12">
-                                    {activeImage && (
-                                        <Image
-                                            data={activeImage}
-                                            sizes="(min-width: 1024px) 60vw, 100vw"
-                                            className="w-full h-full object-contain"
-                                        />
-                                    )}
-                                </div>
-
-                                {/* Hover Zoom Overlay */}
-                                {activeImage && (
-                                    <div 
-                                        className={`absolute inset-0 pointer-events-none transition-opacity duration-200 bg-paper ${isHovering ? 'opacity-100' : 'opacity-0'}`}
-                                        style={{
-                                            backgroundImage: `url(${activeImage.url})`,
-                                            backgroundSize: '200%',
-                                            backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
-                                            backgroundRepeat: 'no-repeat',
-                                            backgroundColor: '#f4f1ea',
-                                        }}
-                                    />
-                                )}
-
-                                {/* Corner Labels */}
-                                <div className="absolute top-4 left-4 border border-rust/40 px-2 py-1 bg-paper/90 backdrop-blur-sm">
-                                    <span className="font-body text-[10px] uppercase tracking-widest text-dark-green/60">
-                                        Artifact Views
-                                    </span>
-                                </div>
-
-                                {/* Zoom Hint - Moved below image */}
-
-                                {/* Crosshair on hover */}
-                                {isHovering && (
-                                    <div 
-                                        className="absolute w-6 h-6 border-2 border-rust/60 rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2"
-                                        style={{
-                                            left: `${zoomPosition.x}%`,
-                                            top: `${zoomPosition.y}%`,
-                                        }}
-                                    />
-                                )}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Right Column: Sticky Sidebar */}
-                    <div className="col-span-5 sticky top-8 flex flex-col gap-6">
-                        
-                        {/* Lore Paragraph */}
-                        <div className="border-l-2 border-rust/30 pl-4">
-                            <p className="font-body text-sm italic text-dark-green/80 leading-relaxed">
-                                Recovered from the quiet places where nature reclaimed what was left behind. 
-                                Each piece carries the marks of its journey through the overgrowth.
-                            </p>
-                        </div>
-
-                        {/* Price Display - Stamped Value */}
-                        <div className="bg-rust/5 border-2 border-rust/20 p-6 relative">
-                            {/* Stamp effect */}
-                            <div className="absolute top-2 right-2 rotate-6 border-2 border-rust/40 px-2 py-0.5">
-                                <span className="font-mono text-[8px] text-rust uppercase tracking-wider">Verified</span>
-                            </div>
-                            <span className="block font-mono text-[10px] tracking-widest uppercase text-dark-green/50 mb-2">
-                                VALUE
-                            </span>
-                            <div className="font-heading text-4xl text-dark-green tracking-wider">
-                                <Money withoutTrailingZeros data={selectedVariant?.price!} />
-                            </div>
-                        </div>
-
-                        {/* Micro-Detail Row */}
-                        <div className="flex flex-wrap items-center justify-between gap-y-2 text-[10px] uppercase tracking-widest text-dark-green/60 py-3 border-b border-dashed border-rust/20 mb-4 px-1">
-                           <span>Edition of 50 Artifacts</span>
-                           <span className="text-rust/40">•</span>
-                           <span>Soft-weave cotton</span>
-                           <span className="text-rust/40">•</span>
-                           <span>Recovered in the ruins</span>
-                        </div>
-
-                        {/* Desktop Accordions - World-Building Copy */}
-                        <div className="space-y-3">
-                            <FieldNotesAccordion descriptionHtml={descriptionHtml || ''} />
-                            <ArtifactSpecsAccordion selectedVariant={selectedVariant} title="Material Analysis" />
-                            <ProvenanceAccordion 
-                                vendor={vendor} 
-                                publishedAt={product.publishedAt}
-                                selectedVariant={selectedVariant}
-                                title="Origin Coordinates"
-                            />
-                        </div>
-
-                        {/* Product Form - Sticky in Sidebar */}
-                        <ProductForm
-                            productOptions={productOptions}
-                            selectedVariant={selectedVariant}
-                            storeDomain={storeDomain}
-                            product={product}
-                        />
-                    </div>
-                </div>
-            </div>
-
-        {/* Other Recovered Works - Both Mobile & Desktop */}
-        <Suspense fallback={<Skeleton className="h-32 mt-16" />}>
-          <Await
-            errorElement="There was a problem loading related products"
-            resolve={recommended}
-          >
-            {(products) => (
-              <div className="mt-32 border-t border-rust/30 pt-16">
-                  <div className="text-center mb-4">
-                      <h3 className="font-heading text-2xl text-dark-green mb-2 tracking-widest">
-                          OTHER RECOVERED ARTIFACTS
-                      </h3>
-                      <p className="font-body text-xs text-dark-green/60 italic tracking-wide">
-                          From similar expeditions into the quiet places
-                      </p>
-                  </div>
-                  <ProductSwimlane title="" products={products} />
-              </div>
-            )}
-          </Await>
-        </Suspense>
+    <div className="min-h-screen bg-[#F2EFE9]">
+      
+      {/* Dark header spacer for navbar consistency */}
+      <div className="h-20 bg-[#0a0a0a] w-full" />
+      
+      {/* HERO SECTION - Full bleed immersive product display */}
+      <section className="relative min-h-[calc(100vh-80px)] flex flex-col lg:flex-row">
         
-        <Analytics.ProductView
-          data={{
-            products: [
-              {
-                id: product.id,
-                title: product.title,
-                price: selectedVariant?.price.amount || '0',
-                vendor: product.vendor,
-                variantId: selectedVariant?.id || '',
-                variantTitle: selectedVariant?.title || '',
-                quantity: 1,
-              },
-            ],
-          }}
-        />
-        </div>
-
-        {/* Sticky Mobile Footer Bar */}
-        <div 
-          className={`lg:hidden fixed bottom-0 left-0 right-0 bg-[#f4f1ea] border-t-2 border-dark-green p-4 z-[100] shadow-[0_-4px_12px_rgba(0,0,0,0.15)] transition-transform duration-300 ${
-            showStickyFooter ? 'translate-y-0' : 'translate-y-full'
-          }`}
-        >
-          <div className="flex items-center gap-3">
-            <div className="flex-1">
-              <p className="font-heading text-xs text-dark-green/60 uppercase tracking-widest mb-1">Price</p>
-              <div className="font-body font-bold text-xl text-dark-green">
-                <Money withoutTrailingZeros data={selectedVariant?.price!} />
-              </div>
-            </div>
-            {isOutOfStock ? (
-              <Button variant="secondary" disabled className="px-6 py-3 bg-gray-200 text-ink/50 font-heading text-xs tracking-widest uppercase cursor-not-allowed">
-                Depleted
-              </Button>
-            ) : (
-              <AddToCartButton
-                lines={[{merchandiseId: selectedVariant.id!, quantity: 1}]}
-                variant="primary"
-                className="group relative flex-1 overflow-hidden"
-              >
-                <div className="relative bg-rust text-[#f4f1ea] overflow-hidden group hover:bg-[#722f2f] transition-all duration-300 h-full flex items-center justify-center shadow-sm">
-                  {/* Corner Brackets */}
-                  <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-[#f4f1ea]/40" />
-                  <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-[#f4f1ea]/40" />
-                  <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-[#f4f1ea]/40" />
-                  <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[#f4f1ea]/40" />
-
-                  {/* Content */}
-                  <div className="relative z-10 px-6">
-                    <span className="block font-heading text-lg uppercase text-[#f4f1ea] tracking-[0.15em] whitespace-nowrap">
-                      Claim This Find
-                    </span>
-                  </div>
+        {/* Left: Full-height Image Gallery */}
+        <div className="lg:w-[60%] relative bg-[#0a0a0a]">
+          {/* Main Image */}
+          <div className="sticky top-0 h-screen flex items-center justify-center p-8 lg:p-16">
+            {activeImage && (
+              <div className="relative w-full h-full max-w-2xl mx-auto">
+                <Image
+                  data={activeImage}
+                  sizes="(min-width: 1024px) 60vw, 100vw"
+                  className="w-full h-full object-contain"
+                />
+                
+                {/* Specimen Corner Markers */}
+                <div className="absolute top-0 left-0 w-12 h-12 border-l-2 border-t-2 border-[#F2EFE9]/20" />
+                <div className="absolute top-0 right-0 w-12 h-12 border-r-2 border-t-2 border-[#F2EFE9]/20" />
+                <div className="absolute bottom-0 left-0 w-12 h-12 border-l-2 border-b-2 border-[#F2EFE9]/20" />
+                <div className="absolute bottom-0 right-0 w-12 h-12 border-r-2 border-b-2 border-[#F2EFE9]/20" />
+                
+                {/* Item ID Tag */}
+                <div className="absolute bottom-3 left-3 bg-black/80 px-2 py-1 backdrop-blur-sm">
+                  <span className="font-mono text-[10px] text-[#F2EFE9]/70 uppercase tracking-wider">
+                    {selectedVariant?.sku ? `Item № ${selectedVariant.sku}` : `View ${activeIndex + 1}/${media.nodes.length}`}
+                  </span>
                 </div>
-              </AddToCartButton>
+              </div>
             )}
           </div>
+          
+          {/* Thumbnail Strip - Vertical on left side */}
+          {media.nodes.length > 1 && (
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-20">
+              {media.nodes.map((med, i) => {
+                const image = med.__typename === 'MediaImage' ? med.image : null;
+                if (!image) return null;
+                
+                const isActive = activeImage?.id === image.id;
+
+                return (
+                  <button
+                    key={med.id || image.id}
+                    onClick={() => {
+                      setActiveImage(image);
+                      setActiveIndex(i);
+                    }}
+                    className={clsx(
+                      'relative w-14 h-16 border-2 transition-all duration-300 overflow-hidden',
+                      isActive 
+                        ? 'border-[#B55A3C] opacity-100' 
+                        : 'border-[#F2EFE9]/20 opacity-40 hover:opacity-80'
+                    )}
+                  >
+                    <Image
+                      data={image}
+                      sizes="56px"
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
+
+        {/* Right: Product Info Panel - Cream background */}
+        <div className="lg:w-[40%] bg-[#F2EFE9] relative">
+          <div className="sticky top-0 min-h-screen flex flex-col justify-center p-8 lg:p-12 xl:p-16">
+            
+            {/* Archive Header */}
+            <div className="mb-8">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-16 h-px bg-[#B55A3C]" />
+                <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase">
+                  {isOutOfStock ? 'Archived' : 'Available'}
+                </span>
+              </div>
+              
+              <span className="font-mono text-[10px] text-[#8A8A84] tracking-[0.3em] uppercase block mb-4">
+                {vendor || 'Overgrowth'} Collection
+              </span>
+              
+              <h1 className="font-heading text-4xl md:text-5xl xl:text-6xl text-[#1a472a] tracking-[0.05em] uppercase leading-none mb-6">
+                {title}
+              </h1>
+              
+              <Separator className="bg-[#1a472a]/10 my-6" />
+              
+              {/* Price Display */}
+              <div className="flex items-baseline gap-4">
+                <span className="font-heading text-3xl md:text-4xl text-[#1a472a]">
+                  <Money withoutTrailingZeros data={selectedVariant?.price!} />
+                </span>
+                {selectedVariant?.compareAtPrice && (
+                  <span className="font-mono text-sm text-[#8A8A84] line-through">
+                    <Money withoutTrailingZeros data={selectedVariant.compareAtPrice} />
+                  </span>
+                )}
+              </div>
+              
+              {/* Low Stock Warning - shows for available items to create urgency */}
+              {selectedVariant?.availableForSale && (
+                <Alert className="mt-4 bg-[#B55A3C]/10 border-[#B55A3C]/30">
+                  <AlertDescription className="font-mono text-xs text-[#B55A3C]">
+                    ⚠ Limited stock — no restocks once sold out
+                  </AlertDescription>
+                </Alert>
+              )}
+              
+              {/* Size Guide Link */}
+              <div className="mt-4">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link 
+                        to="/pages/size-guide" 
+                        className="inline-flex items-center gap-2 font-mono text-[10px] text-[#8A8A84] hover:text-[#B55A3C] uppercase tracking-wider transition-colors"
+                      >
+                        <span>📏</span>
+                        Size Guide
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-[#0a0a0a] text-[#F2EFE9] border-[#F2EFE9]/20">
+                      <p className="font-mono text-xs">View measurements & fit guide</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+            </div>
+
+            {/* Product Options & Add to Cart */}
+            <div className="space-y-6">
+              <ProductForm
+                productOptions={productOptions}
+                selectedVariant={selectedVariant}
+                storeDomain={storeDomain}
+                product={product}
+              />
+            </div>
+
+            {/* Expandable Details */}
+            <div className="mt-8">
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="description" className="border-[#1a472a]/10">
+                  <AccordionTrigger className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#8A8A84] hover:text-[#B55A3C] py-4">
+                    Discovery Notes
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div 
+                      className="prose prose-sm font-mono text-[#8A8A84] max-w-none text-xs leading-relaxed"
+                      dangerouslySetInnerHTML={{__html: descriptionHtml || 'No description available.'}}
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+                
+                <AccordionItem value="specs" className="border-[#1a472a]/10">
+                  <AccordionTrigger className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#8A8A84] hover:text-[#B55A3C] py-4">
+                    Material Analysis
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="grid grid-cols-2 gap-4 font-mono text-xs text-[#8A8A84]">
+                      <div className="space-y-1">
+                        <span className="text-[#8A8A84]/60 block text-[9px] uppercase tracking-wider">Composition</span>
+                        <span>100% Premium Cotton</span>
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[#8A8A84]/60 block text-[9px] uppercase tracking-wider">Weight</span>
+                        <span>240 GSM Heavyweight</span>
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[#8A8A84]/60 block text-[9px] uppercase tracking-wider">Structure</span>
+                        <span>Relaxed Fit</span>
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[#8A8A84]/60 block text-[9px] uppercase tracking-wider">Production</span>
+                        <span className="text-[#B55A3C]">Limited Run</span>
+                      </div>
+                    </div>
+                    <p className="font-mono text-[10px] text-[#8A8A84]/50 mt-4 italic">
+                      Constructed with premium heavyweight cotton. No reprints—when it's gone, it's archived.
+                    </p>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="shipping" className="border-[#1a472a]/10">
+                  <AccordionTrigger className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#8A8A84] hover:text-[#B55A3C] py-4">
+                    Recovery & Returns
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="font-mono text-xs text-[#8A8A84] space-y-2">
+                      <p>• Free shipping on orders over $100</p>
+                      <p>• Standard recovery: 5-7 business days</p>
+                      <p>• Returns accepted within 30 days</p>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </div>
+
+            {/* Trust Signals */}
+            <div className="mt-8 pt-8 border-t border-[#1a472a]/10">
+              <div className="flex justify-between font-mono text-[9px] text-[#8A8A84]/60 uppercase tracking-widest">
+                <span>Premium Quality</span>
+                <span>Limited Run</span>
+                <span>Est. 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* RELATED PRODUCTS - Dark section */}
+      <Suspense fallback={null}>
+        <Await resolve={recommended}>
+          {(products) => products?.nodes?.length > 0 && (
+            <section className="bg-[#F2EFE9] py-24">
+              <div className="max-w-7xl mx-auto px-6 md:px-12">
+                <div className="text-center mb-16">
+                  <div className="flex items-center justify-center gap-4 mb-6">
+                    <div className="w-16 h-px bg-[#1a472a]/20" />
+                    <span className="font-mono text-[9px] text-[#8A8A84] tracking-[0.4em] uppercase">
+                      More From This Collection
+                    </span>
+                    <div className="w-16 h-px bg-[#1a472a]/20" />
+                  </div>
+                  <h2 className="font-heading text-3xl md:text-4xl text-[#1a472a] tracking-[0.1em] uppercase">
+                    Related Discoveries
+                  </h2>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                  {products.nodes.slice(0, 4).map((product: any, i: number) => (
+                    <ProductCard key={product.id} product={product} index={i} />
+                  ))}
+                </div>
+              </div>
+            </section>
+          )}
+        </Await>
+      </Suspense>
+
+      <Analytics.ProductView
+        data={{
+          products: [
+            {
+              id: product.id,
+              title: product.title,
+              price: selectedVariant?.price.amount || '0',
+              vendor: product.vendor,
+              variantId: selectedVariant?.id || '',
+              variantTitle: selectedVariant?.title || '',
+              quantity: 1,
+            },
+          ],
+        }}
+      />
     </div>
   );
 }
 
-/* ============================================
-   ACCORDION COMPONENTS
-   ============================================ */
-
-function FieldNotesAccordion({descriptionHtml}: {descriptionHtml: string}) {
-  return (
-    <Disclosure>
-      {({open}) => (
-        <div className="border border-rust/30 bg-paper">
-          <Disclosure.Button className="w-full px-4 py-3 flex justify-between items-center hover:bg-rust/5 transition-colors">
-            <span className="font-body text-xs uppercase tracking-widest text-dark-green font-bold">
-              Field Notes
-            </span>
-            <IconCaret
-              className={clsx(
-                'w-4 h-4 text-rust transition-transform duration-200',
-                open && 'rotate-180',
-              )}
-            />
-          </Disclosure.Button>
-          <Disclosure.Panel className="px-4 py-4 border-t border-rust/20">
-            <div
-              className="prose prose-sm prose-stone font-body text-sm leading-relaxed text-ink/90 max-w-none"
-              dangerouslySetInnerHTML={{__html: descriptionHtml}}
-            />
-          </Disclosure.Panel>
-        </div>
-      )}
-    </Disclosure>
-  );
-}
-
-function ArtifactSpecsAccordion({selectedVariant, title = "Artifact Specifications"}: {selectedVariant: any; title?: string}) {
-  return (
-    <Disclosure>
-      {({open}) => (
-        <div className="border border-rust/30 bg-paper">
-          <Disclosure.Button className="w-full px-4 py-3 flex justify-between items-center hover:bg-rust/5 transition-colors">
-            <span className="font-body text-xs uppercase tracking-widest text-dark-green font-bold">
-              {title}
-            </span>
-            <IconCaret
-              className={clsx(
-                'w-4 h-4 text-rust transition-transform duration-200',
-                open && 'rotate-180',
-              )}
-            />
-          </Disclosure.Button>
-          <Disclosure.Panel className="px-4 py-4 border-t border-rust/20">
-            <div className="space-y-3 font-body text-xs text-dark-green/90">
-              <div className="grid grid-cols-3 gap-2 pb-2 border-b border-dashed border-rust/20">
-                <span className="uppercase tracking-widest opacity-60">Material Composition</span>
-                <span className="col-span-2">100% Organic Cotton // 240 GSM</span>
-              </div>
-              <div className="grid grid-cols-3 gap-2 pb-2 border-b border-dashed border-rust/20">
-                <span className="uppercase tracking-widest opacity-60">Combat Fit Class</span>
-                <span className="col-span-2">Oversized // Boxy</span>
-              </div>
-              <div className="grid grid-cols-3 gap-2 pb-2 border-b border-dashed border-rust/20">
-                <span className="uppercase tracking-widest opacity-60">Textile Grade</span>
-                <span className="col-span-2">Heavyweight</span>
-              </div>
-              <div className="grid grid-cols-3 gap-2">
-                <span className="uppercase tracking-widest opacity-60">Preservation Protocol</span>
-                <span className="col-span-2">Machine Wash Cold // Hang Dry Only</span>
-              </div>
-            </div>
-          </Disclosure.Panel>
-        </div>
-      )}
-    </Disclosure>
-  );
-}
-
-function ProvenanceAccordion({
-  vendor, 
-  publishedAt,
-  selectedVariant,
-  title = "Provenance Intel"
-}: {
-  vendor: string;
-  publishedAt: string;
-  selectedVariant: any;
-  title?: string;
-}) {
-  return (
-    <Disclosure>
-      {({open}) => (
-        <div className="border border-rust/30 bg-paper">
-          <Disclosure.Button className="w-full px-4 py-3 flex justify-between items-center hover:bg-rust/5 transition-colors">
-            <span className="font-body text-xs uppercase tracking-widest text-dark-green font-bold">
-              {title}
-            </span>
-            <IconCaret
-              className={clsx(
-                'w-4 h-4 text-rust transition-transform duration-200',
-                open && 'rotate-180',
-              )}
-            />
-          </Disclosure.Button>
-          <Disclosure.Panel className="px-4 py-4 border-t border-rust/20">
-            <div className="space-y-3 font-body text-xs text-dark-green/90">
-              <div className="grid grid-cols-3 gap-2 pb-2 border-b border-dashed border-rust/20">
-                <span className="uppercase tracking-widest opacity-60">Recovery Site</span>
-                <span className="col-span-2">The Quiet Places // Reclaimed</span>
-              </div>
-              <div className="grid grid-cols-3 gap-2 pb-2 border-b border-dashed border-rust/20">
-                <span className="uppercase tracking-widest opacity-60">Provenance Code</span>
-                <span className="col-span-2">{vendor}</span>
-              </div>
-              <div className="grid grid-cols-3 gap-2 pb-2 border-b border-dashed border-rust/20">
-                <span className="uppercase tracking-widest opacity-60">Artifact Status</span>
-                <span className="col-span-2">
-                  {selectedVariant?.availableForSale ? 'Available for Acquisition' : 'Archived // Depleted'}
-                </span>
-              </div>
-              <div className="grid grid-cols-3 gap-2">
-                <span className="uppercase tracking-widest opacity-60">Catalogued</span>
-                <span className="col-span-2">
-                  {new Date(publishedAt).toLocaleDateString('en-US', { 
-                    month: 'short', 
-                    day: 'numeric', 
-                    year: 'numeric' 
-                  })}
-                </span>
-              </div>
-            </div>
-          </Disclosure.Panel>
-        </div>
-      )}
-    </Disclosure>
-  );
-}
-
-/* ============================================
-   PRODUCT FORM COMPONENT
-   ============================================ */
-
-export function ProductForm({
+function ProductForm({
   productOptions,
   selectedVariant,
   storeDomain,
@@ -737,140 +421,57 @@ export function ProductForm({
   product: ProductFragment;
 }) {
   const isOutOfStock = !selectedVariant?.availableForSale;
-  const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
   return (
-    <div className="grid gap-6">
-      <div className="grid gap-4">
-        {productOptions.map((option) => (
-          <div key={option.name} className="flex flex-col gap-3">
-            <div className="flex justify-between items-center">
-                <h4 className="font-body text-xs uppercase tracking-widest text-dark-green/60">
-                {option.name}
-                </h4>
-                {option.name === 'Size' && (
-                    <button 
-                        onClick={() => setIsSizeGuideOpen(true)}
-                        className="font-body text-[10px] uppercase tracking-widest text-rust hover:underline"
-                    >
-                        [ VIEW SIZE GUIDE ]
-                    </button>
+    <div className="space-y-6">
+      {/* Options */}
+      {productOptions.map((option) => (
+        <div key={option.name}>
+          <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#8A8A84] mb-3">
+            {option.name}
+          </h4>
+          <div className="flex flex-wrap gap-2">
+            {option.optionValues.map(({name, handle, variantUriQuery, selected, available}) => (
+              <Link
+                key={option.name + name}
+                to={`/products/${handle}?${variantUriQuery}`}
+                preventScrollReset
+                prefetch="intent"
+                replace
+                className={clsx(
+                  'min-w-[3rem] px-4 py-3 font-mono text-xs uppercase tracking-wide border transition-all text-center',
+                  selected 
+                    ? 'border-[#B55A3C] bg-[#B55A3C] text-[#F2EFE9]' 
+                    : 'border-[#1a472a]/20 text-[#1a472a] hover:border-[#B55A3C] hover:text-[#B55A3C]',
+                  !available && 'opacity-40 line-through pointer-events-none'
                 )}
-            </div>
-            
-            <div className="flex flex-wrap gap-2">
-              {option.optionValues.map(({name, handle, variantUriQuery, selected, available}) => (
-                 <Link
-                    key={option.name + name}
-                    to={`/products/${handle}?${variantUriQuery}`}
-                    preventScrollReset
-                    prefetch="intent"
-                    replace
-                    className={clsx(
-                      'min-w-[3rem] px-3 py-2 font-body text-sm border transition-all duration-100 text-center',
-                      selected 
-                        ? 'border-dark-green bg-dark-green text-cream' 
-                        : 'border-dark-green/30 text-dark-green hover:border-dark-green',
-                      !available && 'opacity-50 line-through cursor-not-allowed'
-                    )}
-                  >
-                    {name}
-                  </Link>
-              ))}
-            </div>
+              >
+                {name}
+              </Link>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
 
-      {/* Size Guide Modal */}
-      {isSizeGuideOpen && (
-          <Modal cancelLink="" close={() => setIsSizeGuideOpen(false)}>
-              <div className="p-6 bg-[#f4f1ea] border border-dark-green relative">
-                  <button 
-                    onClick={() => setIsSizeGuideOpen(false)}
-                    className="absolute top-2 right-2 text-dark-green hover:text-rust"
-                  >
-                      <IconClose />
-                  </button>
-                  <h3 className="font-heading text-2xl text-dark-green mb-4">SIZE SPECIFICATIONS</h3>
-                  <div className="overflow-x-auto">
-                      <table className="w-full text-sm font-body text-dark-green text-left">
-                          <thead>
-                              <tr className="border-b border-dark-green/20">
-                                  <th className="py-2">SIZE</th>
-                                  <th className="py-2">CHEST</th>
-                                  <th className="py-2">LENGTH</th>
-                                  <th className="py-2">SLEEVE</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr className="border-b border-dark-green/10">
-                                  <td className="py-2 font-bold">S</td>
-                                  <td className="py-2">20"</td>
-                                  <td className="py-2">28"</td>
-                                  <td className="py-2">8"</td>
-                              </tr>
-                              <tr className="border-b border-dark-green/10">
-                                  <td className="py-2 font-bold">M</td>
-                                  <td className="py-2">22"</td>
-                                  <td className="py-2">29"</td>
-                                  <td className="py-2">8.5"</td>
-                              </tr>
-                              <tr className="border-b border-dark-green/10">
-                                  <td className="py-2 font-bold">L</td>
-                                  <td className="py-2">24"</td>
-                                  <td className="py-2">30"</td>
-                                  <td className="py-2">9"</td>
-                              </tr>
-                              <tr className="border-b border-dark-green/10">
-                                  <td className="py-2 font-bold">XL</td>
-                                  <td className="py-2">26"</td>
-                                  <td className="py-2">31"</td>
-                                  <td className="py-2">9.5"</td>
-                              </tr>
-                              <tr>
-                                  <td className="py-2 font-bold">XXL</td>
-                                  <td className="py-2">28"</td>
-                                  <td className="py-2">32"</td>
-                                  <td className="py-2">10"</td>
-                              </tr>
-                          </tbody>
-                      </table>
-                  </div>
-                  <p className="mt-4 text-[10px] text-dark-green/60 uppercase tracking-widest">
-                      * Measurements are approximate. Garments are pre-shrunk.
-                  </p>
-              </div>
-          </Modal>
-      )}
-
+      {/* Add to Cart */}
       {selectedVariant && (
-        <div className="mt-2">
+        <div className="pt-4">
           {isOutOfStock ? (
-            <Button variant="secondary" disabled className="w-full py-4 bg-gray-200 text-ink/50 font-heading tracking-widest uppercase cursor-not-allowed border border-dashed border-ink/20">
-              Recovered Work Archived // Depleted
+            <Button 
+              disabled 
+              variant="outline" 
+              className="w-full py-6 font-mono text-xs uppercase tracking-[0.2em] border-[#1a472a]/20 text-[#8A8A84]"
+            >
+              Sold Out
             </Button>
           ) : (
             <AddToCartButton
               lines={[{merchandiseId: selectedVariant.id!, quantity: 1}]}
               variant="primary"
-              className="group relative w-full overflow-hidden"
+              className="w-full"
             >
-              {/* Main Button Structure */}
-              {/* Main Button Structure - Artifact Crate Style */}
-              <div className="relative bg-rust text-[#f4f1ea] overflow-hidden group hover:bg-[#722f2f] transition-all duration-300 w-full shadow-[0_4px_15px_rgba(139,58,58,0.2)] hover:shadow-[0_6px_20px_rgba(139,58,58,0.3)]">
-                {/* Corner Brackets */}
-                <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-[#f4f1ea]/40" />
-                <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-[#f4f1ea]/40" />
-                <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-[#f4f1ea]/40" />
-                <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[#f4f1ea]/40" />
-                
-                {/* Centered Text - Taller Padding */}
-                <div className="relative z-10 py-8 px-10 text-center">
-                  <span className="block font-heading text-2xl uppercase text-[#f4f1ea] tracking-[0.2em]">
-                    Claim This Find
-                  </span>
-                </div>
+              <div className="w-full py-6 bg-[#B55A3C] text-[#F2EFE9] hover:bg-[#9A4A30] transition-all duration-300 font-mono text-xs uppercase tracking-[0.2em] text-center">
+                Recover This Artifact
               </div>
             </AddToCartButton>
           )}
@@ -880,10 +481,7 @@ export function ProductForm({
   );
 }
 
-/* ============================================
-   GRAPHQL QUERIES & HELPERS
-   ============================================ */
-
+/* GraphQL Queries */
 const PRODUCT_VARIANT_FRAGMENT = `#graphql
   fragment ProductVariant on ProductVariant {
     id
@@ -1040,5 +638,3 @@ async function getRecommendedProducts(
 
   return {nodes: mergedProducts};
 }
-
-

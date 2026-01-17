@@ -31,19 +31,25 @@ html, body {
 
 /* 1. THE GLOBAL "CANVAS" */
 
-/* Background Layer */
+/* Paper texture overlay on body */
+body::after {
+  content: '' !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 9998 !important;
+  pointer-events: none !important;
+  background-image: url('/assets/texture_archive_paper.jpg') !important;
+  background-repeat: repeat !important;
+  background-size: cover !important;
+  opacity: 0.08 !important;
+}
+
+/* Legacy class (hide, use body::after instead) */
 .canvas-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1;
-  background-image: url('/assets/texture_archive_paper.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  opacity: 0.15;
-  pointer-events: none;
+  display: none;
 }
 
 /* Film Grain Overlay */

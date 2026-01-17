@@ -5,56 +5,15 @@ import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
 import {useState} from 'react';
 import {Link} from '~/components/Link';
+import {Separator} from '~/components/ui/separator';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '~/components/ui/accordion';
 
 export const headers = routeHeaders;
-
-// Inline SVG icons
-const CategoryIcons: Record<string, (className: string) => JSX.Element> = {
-  truck: (className) => (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
-    </svg>
-  ),
-  recycle: (className) => (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" />
-    </svg>
-  ),
-  bag: (className) => (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
-    </svg>
-  ),
-  shirt: (className) => (
-    <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
-    </svg>
-  ),
-};
-
-const PlusIcon = ({className}: {className: string}) => (
-  <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-  </svg>
-);
-
-const MinusIcon = ({className}: {className: string}) => (
-  <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
-  </svg>
-);
-
-const EnvelopeIcon = ({className}: {className: string}) => (
-  <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-  </svg>
-);
-
-const ArrowRightIcon = ({className}: {className: string}) => (
-  <svg className={className} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-  </svg>
-);
 
 export async function loader({request, context}: LoaderFunctionArgs) {
   const {page} = await context.storefront.query(PAGE_QUERY, {
@@ -64,10 +23,11 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     },
   });
 
-  const seo = page
-    ? seoPayload.page({page, url: request.url})
-    : {title: 'FAQ | Overgrowth', description: 'Answers to common questions.'};
+  if (!page) {
+    throw new Response('Not Found', {status: 404});
+  }
 
+  const seo = seoPayload.page({page, url: request.url});
   return json({page, seo});
 }
 
@@ -75,179 +35,206 @@ export const meta = ({matches}: any) => {
   return getSeoMeta(...matches.map((match: any) => match.data.seo));
 };
 
+const faqCategories = [
+  {
+    id: 'shipping',
+    title: 'Shipping',
+    questions: [
+      {
+        q: 'How long does shipping take?',
+        a: 'Standard shipping within the US takes 5-7 business days. Express shipping is available at checkout for 2-3 day delivery.',
+      },
+      {
+        q: 'Do you ship internationally?',
+        a: 'Yes, we ship to most countries worldwide. International shipping typically takes 10-14 business days.',
+      },
+      {
+        q: 'How can I track my order?',
+        a: 'Once your order ships, you\'ll receive an email with tracking information. You can also check your order status in your account.',
+      },
+    ],
+  },
+  {
+    id: 'returns',
+    title: 'Returns',
+    questions: [
+      {
+        q: 'What is your return policy?',
+        a: 'We accept returns within 30 days of delivery for unworn items with original tags attached. Items must be in original condition.',
+      },
+      {
+        q: 'How do I start a return?',
+        a: 'Email us at hello@overgrowth.co with your order number and reason for return. We\'ll provide a prepaid shipping label.',
+      },
+      {
+        q: 'Can I exchange for a different size?',
+        a: 'Yes, exchanges are free. Contact us and we\'ll arrange the swap once we receive your original item.',
+      },
+    ],
+  },
+  {
+    id: 'products',
+    title: 'Products',
+    questions: [
+      {
+        q: 'How do your pieces fit?',
+        a: 'Most of our pieces are designed with a relaxed, slightly oversized fit. Check the size guide on each product page for detailed measurements.',
+      },
+      {
+        q: 'What materials do you use?',
+        a: 'We prioritize organic cotton, recycled fibers, and sustainable materials. Each product page lists specific fabric compositions.',
+      },
+      {
+        q: 'How should I care for my items?',
+        a: 'Machine wash cold, hang dry. Avoid bleach. This helps maintain the quality and extends the life of your garment.',
+      },
+    ],
+  },
+  {
+    id: 'orders',
+    title: 'Orders',
+    questions: [
+      {
+        q: 'What payment methods do you accept?',
+        a: 'We accept all major credit cards, PayPal, Apple Pay, Google Pay, and Shop Pay.',
+      },
+      {
+        q: 'Can I modify or cancel my order?',
+        a: 'Orders can be modified or cancelled within 1 hour of placement. After that, please contact us immediately and we\'ll do our best to help.',
+      },
+      {
+        q: 'Do you offer gift cards?',
+        a: 'Yes, digital gift cards are available in various denominations. They never expire and can be used on any order.',
+      },
+    ],
+  },
+];
+
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const faqs = [
-    {
-      category: 'Supply Routes',
-      subtitle: 'When will the drop arrive?',
-      iconKey: 'truck' as const,
-      questions: [
-        { q: 'When will my recovered piece arrive?', a: 'Orders ship within 2-5 business days. Delivery is typically 5-7 days domestic, 10-14 days international.' },
-        { q: 'Do you ship to distant territories?', a: 'Yes! We ship worldwide. International orders may have customs fees handled by the recipient.' },
-        { q: 'How do I track my shipment?', a: 'You\'ll receive a tracking email once your order ships. Check your spam folder if you don\'t see it.' },
-      ]
-    },
-    {
-      category: 'Exchanges & Recovery',
-      subtitle: 'If your artifact needs to go back',
-      iconKey: 'recycle' as const,
-      questions: [
-        { q: 'What is your return policy?', a: 'Returns accepted within 30 days. Items must be unworn, unwashed, with tags attached.' },
-        { q: 'How do I initiate a return?', a: 'Email customerservice@overgrowth.co with your order number. We\'ll send a prepaid label.' },
-      ]
-    },
-    {
-      category: 'Acquisition Protocol',
-      subtitle: 'How to secure your find',
-      iconKey: 'bag' as const,
-      questions: [
-        { q: 'What payment methods do you accept?', a: 'All major cards, PayPal, Apple Pay, Google Pay, and Shop Pay.' },
-        { q: 'Can I modify my order after placing it?', a: 'Contact us within 2 hours of ordering. After that, we may have already started processing.' },
-      ]
-    },
-    {
-      category: 'Fitment Guide',
-      subtitle: 'Sizing and care protocols',
-      iconKey: 'shirt' as const,
-      questions: [
-        { q: 'How do I care for my recovered pieces?', a: 'Machine wash cold, tumble dry low. Avoid bleach. Your pieces will last years with proper care.' },
-        { q: 'Are your artifacts sustainably sourced?', a: 'We prioritize organic cotton and recycled materials. Quality over quantity, always.' },
-      ]
-    },
-  ];
-
-  let globalIndex = 0;
-
-  // Seed Icon (closed state)
-  const SeedIcon = ({className}: {className: string}) => (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <ellipse cx="12" cy="12" rx="4" ry="6" />
-    </svg>
-  );
-
-  // Leaf Icon (open state)
-  const LeafIcon = ({className}: {className: string}) => (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M12 22V12m0 0c0-4 4-8 8-8-1 4-4 8-8 8m0 0c0-4-4-8-8-8 1 4 4 8 8 8"/>
-    </svg>
-  );
+  const [activeCategory, setActiveCategory] = useState('shipping');
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* ARCHIVED Stamp - Decorative */}
-      <div className="absolute top-48 right-8 md:right-16 rotate-12 opacity-10 pointer-events-none z-0">
-        <div className="border-4 border-rust px-6 py-2">
-          <span className="font-heading text-2xl md:text-4xl text-rust uppercase tracking-widest">Archived</span>
-        </div>
-      </div>
-
-      {/* Header - "The Field Manual" */}
-      <div className="relative z-10 pt-40 pb-12 text-center px-4">
-        <div className="flex items-center justify-center gap-3 mb-6">
-          {/* Document icon */}
-          <svg className="w-6 h-6 text-dark-green/40" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-          </svg>
-          <span className="font-mono text-xs text-dark-green/40 uppercase tracking-widest">Document FM-001</span>
+    <div className="min-h-screen bg-[#F2EFE9]">
+      
+      {/* HERO */}
+      <section className="relative bg-[#0a0a0a] pt-32 pb-20 overflow-hidden">
+        {/* Background pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 2px 2px, #F2EFE9 1px, transparent 0)',
+            backgroundSize: '40px 40px',
+          }} />
         </div>
         
-        <h1 className="font-heading text-5xl md:text-7xl text-dark-green tracking-widest mb-4 uppercase">
-          Field Manual
-        </h1>
-        <p className="font-body text-dark-green/60 text-lg max-w-md mx-auto">
-          Survival protocols for navigating the Overgrowth experience
-        </p>
-        <div className="w-24 h-1 bg-rust mx-auto mt-8" />
-      </div>
+        <div className="relative max-w-4xl mx-auto px-6 text-center">
+          <div className="inline-flex items-center gap-4 mb-6">
+            <div className="w-8 h-px bg-[#B55A3C]" />
+            <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase">
+              Recovery Guide
+            </span>
+            <div className="w-8 h-px bg-[#B55A3C]" />
+          </div>
+          
+          <h1 className="font-heading text-5xl md:text-7xl text-[#F2EFE9] tracking-[0.1em] mb-6 uppercase">
+            FAQ
+          </h1>
+          
+          <p className="font-mono text-sm text-[#F2EFE9]/50 max-w-md mx-auto">
+            Field notes on orders, shipping, and artifact preservation
+          </p>
+        </div>
+      </section>
 
-      {/* FAQ Content */}
-      <div className="relative z-10 px-4 md:px-8 pb-24">
-        <div className="max-w-3xl mx-auto space-y-10">
-          {faqs.map((section, sectionIdx) => {
-            return (
-              <div key={sectionIdx}>
-                {/* Category Header - Manila Folder Tab Style */}
-                <div className="flex items-end gap-0 mb-0">
-                  <div className="bg-[#e8dfd0] border border-dark-green/20 border-b-0 px-6 py-3 rounded-t-lg relative">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-dark-green/10 rounded-full flex items-center justify-center">
-                        {CategoryIcons[section.iconKey]("w-4 h-4 text-dark-green")}
-                      </div>
-                      <div>
-                        <h2 className="font-heading text-sm text-dark-green uppercase tracking-widest">{section.category}</h2>
-                        <p className="font-mono text-[10px] text-dark-green/40">{section.subtitle}</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex-1 h-px bg-dark-green/20 mb-px" />
-                </div>
-                
-                {/* Questions - Folder Content */}
-                <div className="bg-[#faf8f4] border border-dark-green/20 border-t-0">
-                  {section.questions.map((item, qIdx) => {
-                    const currentIndex = globalIndex++;
-                    const isOpen = openIndex === currentIndex;
-                    
-                    return (
-                      <div 
-                        key={qIdx}
-                        className={`border-b border-dark-green/10 last:border-b-0 transition-colors ${isOpen ? 'bg-[#f9f7f3]' : ''}`}
-                      >
-                        <button
-                          onClick={() => setOpenIndex(isOpen ? null : currentIndex)}
-                          className="w-full flex items-center justify-between p-5 text-left group"
-                        >
-                          <span className={`font-body text-sm transition-colors ${isOpen ? 'text-rust font-medium' : 'text-dark-green group-hover:text-rust'}`}>
-                            {item.q}
-                          </span>
-                          {/* Seed → Leaf animation */}
-                          <div className={`w-6 h-6 flex items-center justify-center transition-all duration-300 ${isOpen ? 'text-rust rotate-0' : 'text-dark-green/30 -rotate-45'}`}>
-                            {isOpen 
-                              ? <LeafIcon className="w-5 h-5" />
-                              : <SeedIcon className="w-4 h-4" />
-                            }
-                          </div>
-                        </button>
-                        
-                        {isOpen && (
-                          <div className="px-5 pb-5">
-                            <p className="font-body text-sm text-dark-green/70 leading-relaxed border-l-2 border-rust/30 pl-4 ml-0">
-                              {item.a}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
+      {/* FAQ CONTENT - Two column layout */}
+      <section className="py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-6 md:px-12">
+          <div className="grid lg:grid-cols-[280px,1fr] gap-12">
+            
+            {/* Category Sidebar - Sticky */}
+            <div className="lg:sticky lg:top-32 lg:self-start">
+              <span className="font-mono text-[9px] text-[#8A8A84] tracking-[0.3em] uppercase block mb-6">
+                Categories
+              </span>
+              <div className="space-y-2">
+                {faqCategories.map((cat, i) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    className={`w-full text-left px-5 py-4 font-mono text-sm transition-all duration-300 flex items-center gap-4 ${
+                      activeCategory === cat.id
+                        ? 'bg-[#0a0a0a] text-[#F2EFE9]'
+                        : 'bg-[#0a0a0a]/5 text-[#8A8A84] hover:bg-[#0a0a0a]/10 hover:text-[#0a0a0a]'
+                    }`}
+                  >
+                    <span className={`w-6 h-6 flex items-center justify-center text-[10px] ${
+                      activeCategory === cat.id ? 'bg-[#B55A3C] text-[#F2EFE9]' : 'bg-[#8A8A84]/20 text-[#8A8A84]'
+                    }`}>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className="uppercase tracking-wide text-xs">{cat.title}</span>
+                  </button>
+                ))}
               </div>
-            );
-          })}
-        </div>
-        
-        {/* Contact CTA - "Radio for Support" */}
-        <div className="max-w-3xl mx-auto mt-16 text-center">
-          <div className="bg-[#f9f7f3] border border-dark-green/20 p-8 relative">
-            {/* Radio wave icon */}
-            <svg className="w-12 h-12 text-rust mx-auto mb-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-              <path d="M8.288 15.038a5.25 5.25 0 017.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 011.06 0z"/>
-            </svg>
-            <h3 className="font-heading text-xl text-dark-green mb-2 uppercase tracking-widest">Radio for Support</h3>
-            <p className="font-body text-sm text-dark-green/60 mb-6">
-              Signal not found in the manual? Transmit directly.
-            </p>
-            <Link 
-              to="/pages/contact"
-              className="inline-flex items-center gap-2 bg-dark-green text-[#f4f1ea] px-6 py-3 font-heading tracking-widest hover:bg-rust transition-colors uppercase"
-            >
-              <span>Establish Connection</span>
-              <ArrowRightIcon className="w-4 h-4" />
-            </Link>
+              
+              {/* Help CTA */}
+              <div className="mt-8 p-6 border border-[#B55A3C]/20 bg-[#B55A3C]/5">
+                <span className="font-heading text-sm text-[#1a472a] uppercase block mb-2">
+                  Still have questions?
+                </span>
+                <p className="font-mono text-[10px] text-[#8A8A84] mb-4">
+                  Our recovery team is here to help.
+                </p>
+                <Link
+                  to="/pages/contact"
+                  className="inline-block w-full text-center px-4 py-3 bg-[#B55A3C] text-[#F2EFE9] hover:bg-[#9A4A30] font-mono text-[10px] uppercase tracking-widest transition-colors"
+                >
+                  Contact Us →
+                </Link>
+              </div>
+            </div>
+
+            {/* FAQ Accordion */}
+            <div>
+              {faqCategories.map((category) => (
+                <div
+                  key={category.id}
+                  className={activeCategory === category.id ? 'block' : 'hidden'}
+                >
+                  {/* Category Header */}
+                  <div className="mb-8 pb-6 border-b border-[#1a472a]/10">
+                    <span className="font-mono text-[9px] text-[#8A8A84] tracking-[0.3em] uppercase block mb-2">
+                      Section {faqCategories.findIndex(c => c.id === category.id) + 1}
+                    </span>
+                    <h2 className="font-heading text-3xl text-[#1a472a] uppercase tracking-wide">
+                      {category.title}
+                    </h2>
+                  </div>
+                  
+                  <Accordion type="single" collapsible className="w-full space-y-3">
+                    {category.questions.map((item, i) => (
+                      <AccordionItem 
+                        key={i} 
+                        value={`item-${i}`} 
+                        className="border border-[#1a472a]/10 bg-white/50 px-6 data-[state=open]:border-[#B55A3C]/30 data-[state=open]:bg-[#B55A3C]/5 transition-colors"
+                      >
+                        <AccordionTrigger className="font-mono text-sm text-[#1a472a] hover:text-[#B55A3C] text-left py-5 hover:no-underline">
+                          <span className="flex items-start gap-4">
+                            <span className="text-[#8A8A84]/40 text-[10px] mt-1">Q{i + 1}</span>
+                            <span>{item.q}</span>
+                          </span>
+                        </AccordionTrigger>
+                        <AccordionContent className="font-mono text-sm text-[#8A8A84] leading-relaxed pb-5 pl-10">
+                          {item.a}
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

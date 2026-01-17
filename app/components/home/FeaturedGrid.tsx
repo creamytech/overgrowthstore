@@ -3,7 +3,7 @@ import {Image, Money} from '@shopify/hydrogen';
 import {motion} from 'framer-motion';
 import {ProductCard} from '~/components/ProductCard';
 
-export function FeaturedGrid({products, title = "Recent Recoveries"}: {products: any[], title?: string}) {
+export function FeaturedGrid({products, title = "Latest Drops"}: {products: any[], title?: string}) {
   if (!products || products.length === 0) return null;
 
   return (
@@ -17,16 +17,16 @@ export function FeaturedGrid({products, title = "Recent Recoveries"}: {products:
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="font-typewriter text-xs text-dark-green/60 mb-4 tracking-widest uppercase"
+                className="font-mono text-xs text-[#8A8A84] mb-4 tracking-[0.3em] uppercase"
             >
-                <span>New Discoveries</span>
+                <span>Just Released</span>
             </motion.div>
             <motion.h2 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="font-heading text-4xl md:text-5xl text-dark-green tracking-widest mb-6 uppercase"
+                className="font-heading text-4xl md:text-5xl text-[#1a472a] tracking-[0.1em] mb-6 uppercase"
             >
                 {title}
             </motion.h2>
@@ -35,11 +35,11 @@ export function FeaturedGrid({products, title = "Recent Recoveries"}: {products:
                 whileInView={{ scaleX: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="w-24 h-1 bg-rust mx-auto origin-center"
+                className="w-24 h-1 bg-[#B55A3C] mx-auto origin-center"
             />
         </div>
 
-        {/* Product Grid with Staggered Animation - Switched to 3 columns for larger thumbnails */}
+        {/* Product Grid with Staggered Animation */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-12 md:gap-10">
             {products.map((product, index) => (
                 <motion.div
@@ -55,7 +55,7 @@ export function FeaturedGrid({products, title = "Recent Recoveries"}: {products:
                     className="group relative"
                 >
                      {/* Hover Glow Effect */}
-                     <div className="absolute -inset-4 bg-moss/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl pointer-events-none" />
+                     <div className="absolute -inset-4 bg-[#B55A3C]/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl pointer-events-none" />
                      
                     <ProductCard product={product} />
                 </motion.div>
@@ -70,8 +70,9 @@ export function FeaturedGrid({products, title = "Recent Recoveries"}: {products:
             transition={{ duration: 0.6, delay: 0.5 }}
             className="mt-16 text-center"
         >
-            <Link to="/collections/all" className="inline-block border-b border-rust text-dark-green font-heading tracking-widest hover:text-rust hover:border-rust transition-colors pb-1">
-                Explore All Finds &rarr;
+            <Link to="/products" className="inline-flex items-center gap-2 border border-[#1a472a]/20 px-8 py-4 font-mono text-xs uppercase tracking-[0.2em] text-[#1a472a] hover:border-[#B55A3C] hover:text-[#B55A3C] transition-all duration-300">
+                Browse Full Archive
+                <span>→</span>
             </Link>
         </motion.div>
 

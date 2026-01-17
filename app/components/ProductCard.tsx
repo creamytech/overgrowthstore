@@ -1,16 +1,17 @@
-import clsx from 'clsx';
 import {flattenConnection, Image, Money, useMoney} from '@shopify/hydrogen';
 import type {MoneyV2, Product} from '@shopify/hydrogen/storefront-api-types';
-
 import type {ProductCardFragment} from 'storefrontapi.generated';
-import {Text} from '~/components/Text';
 import {Link} from '~/components/Link';
-import {Button} from '~/components/Button';
-import {AddToCartButton} from '~/components/AddToCartButton';
-import {isDiscounted, isNewArrival} from '~/lib/utils';
+import {isDiscounted, isNewArrival, cn} from '~/lib/utils';
 import {getProductPlaceholder} from '~/lib/placeholders';
-
-
+import {Card, CardContent} from '~/components/ui/card';
+import {Badge} from '~/components/ui/badge';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '~/components/ui/tooltip';
 
 export function ProductCard({
   product,
@@ -19,7 +20,6 @@ export function ProductCard({
   loading,
   onClick,
   quickAdd,
-  layout = 'grid',
   index,
 }: {
   product: ProductCardFragment;
@@ -28,7 +28,6 @@ export function ProductCard({
   loading?: HTMLImageElement['loading'];
   onClick?: () => void;
   quickAdd?: boolean;
-  layout?: 'grid' | 'drawer' | 'museum' | 'archive';
   index?: number;
 }) {
   let cardLabel;
@@ -52,299 +51,131 @@ export function ProductCard({
   }
 
   const isSoldOut = !firstVariant.availableForSale;
+  const hasDiscount = isDiscounted(price as MoneyV2, compareAtPrice as MoneyV2);
 
-  // Drawer Layout (Polaroid Style)
-  if (layout === 'drawer') {
-    return (
-        <div className={clsx('flex flex-col gap-2 group relative', className)}>
-          <Link
-            onClick={onClick}
-            to={`/products/${product.handle}`}
-            prefetch="viewport"
-            className="flex flex-row gap-4 items-center border-b border-[#fcfbf4]/30 border-dotted pb-4"
-          >
-            {/* Drawer Image - Polaroid Style */}
-            <div className="relative w-20 h-24 flex-shrink-0 rotate-2 transition-transform duration-100 steps(2) group-hover:rotate-0 group-hover:scale-105">
-                <div className="absolute inset-0 bg-white shadow-md p-1.5 pb-4 transform transition-transform duration-100 steps(2)">
-                    {image && (
-                    <Image
-                        className={`object-cover w-full h-full border border-gray-100 ${isSoldOut ? 'grayscale opacity-50' : ''}`}
-                        sizes="80px"
-                        aspectRatio="1/1"
-                        data={image}
-                        alt={image.altText || `Picture of ${product.title}`}
-                        loading={loading}
-                    />
-                    )}
-                </div>
-                 {/* Sold Out Overlay */}
-                {isSoldOut && (
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                        <span className="text-[#c05a34] font-body text-[10px] font-bold tracking-widest uppercase bg-white/90 px-1">SOLD</span>
-                    </div>
-                )}
-            </div>
+  // Item number for archival feel
+  const itemNum = index !== undefined ? (index + 1).toString().padStart(3, '0') : null;
 
-            {/* Drawer Content - Typewriter, White */}
-            <div className="flex-grow text-left">
-                <h3 className="font-body text-sm text-dark-green uppercase tracking-wide group-hover:text-rust transition-colors duration-100 steps(2)">
-                    {product.title}
-                </h3>
-                <div className="flex items-center gap-2 mt-1">
-                    <Text className="font-body text-xs text-dark-green font-bold">
-                        <Money withoutTrailingZeros data={price!} />
-                    </Text>
-                     {isDiscounted(price as MoneyV2, compareAtPrice as MoneyV2) && (
-                        <CompareAtPrice
-                        className={'opacity-50 line-through text-dark-green text-xs'}
-                        data={compareAtPrice as MoneyV2}
-                        />
-                    )}
-                </div>
-            </div>
-          </Link>
-        </div>
-    );
-  }
-
-  // Archive Layout (Field Table / Photo Corner Style)
-  if (layout === 'archive') {
-    return (
-        <div className={clsx('group relative break-inside-avoid mb-8', className)}>
-          <Link
-            onClick={onClick}
-            to={`/products/${product.handle}`}
-            prefetch="viewport"
-            className="block relative transform transition-transform duration-500 hover:-translate-y-1 hover:rotate-1"
-          >
-             {/* Card Base - White Paper with Shadow */}
-             <div className="relative bg-white p-3 pb-8 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.1)] group-hover:shadow-[0_15px_30px_-5px_rgba(74,93,35,0.15)] transition-shadow duration-500">
-                
-                {/* Photo Corners (SVG) */}
-                <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-dark-green/20 z-20" />
-                <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-dark-green/20 z-20" />
-                <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-dark-green/20 z-20" />
-                <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-dark-green/20 z-20" />
-
-                {/* Tape Effect (Randomized visual via CSS or static for now) */}
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-[#fdfbf7] opacity-80 rotate-[-1deg] shadow-sm z-30 mix-blend-multiply border-l border-r border-white/40" />
-
-                {/* Image Area */}
-                <div className="relative aspect-[4/5] bg-[#f4f1ea] overflow-hidden grayscale-[0.1] group-hover:grayscale-0 transition-all duration-500">
-                    {image && (
-                        <Image
-                            className={`object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 ${isSoldOut ? 'opacity-60 grayscale' : ''}`}
-                            sizes="(min-width: 1024px) 33vw, 50vw"
-                            data={image}
-                            alt={image.altText || `Picture of ${product.title}`}
-                            loading={loading}
-                        />
-                    )}
-                </div>
-
-                {/* Handwriting Label */}
-                <div className="mt-4 text-center">
-                    <h3 className="font-handwritten text-lg text-dark-green group-hover:text-rust transition-colors leading-tight">
-                        {product.title}
-                    </h3>
-                    <div className="flex items-center justify-center gap-2 mt-1">
-                        <span className="font-mono text-[9px] uppercase tracking-widest text-dark-green/50">
-                            Fig. {(index || 0) + 1}
-                        </span>
-                        <span className="w-1 h-1 rounded-full bg-dark-green/30" />
-                        <span className="font-mono text-xs font-bold text-dark-green/80">
-                             <Money withoutTrailingZeros data={price!} />
-                        </span>
-                    </div>
-                </div>
-             </div>
-          </Link>
-        </div>
-    );
-  }
-
-  if (layout === 'museum') {
-     return (
-        <div className={clsx('group relative', className)}>
-          <Link
-            onClick={onClick}
-            to={`/products/${product.handle}`}
-            prefetch="viewport"
-            className="block"
-          >
-             <div className="relative bg-transparent transition-all duration-500">
-                
-                {/* Image Container - Larger, clean edges, subtle texture blend */}
-                <div className="relative aspect-[4/5] overflow-hidden bg-[#f0ede6] mb-6">
-                    {/* Subtle Paper Edge Effect */}
-                    <div className="absolute inset-0 border border-dark-green/5 z-20 pointer-events-none" />
-                    <div className="absolute inset-0 opacity-10 mix-blend-multiply bg-[url('/assets/texture_archive_paper.jpg')] z-10 pointer-events-none" />
-
-                     {image && (
-                        <Image
-                            className={`object-cover w-full h-full transition-all duration-700 transform group-hover:scale-105 ${isSoldOut ? 'grayscale opacity-70' : 'grayscale-[0.1] group-hover:grayscale-0'}`}
-                            sizes="(min-width: 1024px) 50vw, 100vw"
-                            width={1200}
-                            aspectRatio="4/5"
-                            data={image}
-                            alt={image.altText || `Picture of ${product.title}`}
-                            loading={loading}
-                        />
-                    )}
-
-                    {/* Rare Find Badge (Replaces Sale) */}
-                    {isDiscounted(price as MoneyV2, compareAtPrice as MoneyV2) && (
-                        <div className="absolute top-4 left-4 z-20">
-                            <span className="font-heading text-xs text-[#f4f1ea] bg-rust px-3 py-1 tracking-widest uppercase">
-                                Rare Find
-                            </span>
-                        </div>
-                    )}
-                </div>
-
-                {/* Content - Centered & Clean */}
-                <div className="text-center px-4">
-                    <h3 className="font-heading text-2xl text-dark-green mb-2 group-hover:text-rust transition-colors duration-300 uppercase tracking-widest">
-                        {product.title}
-                    </h3>
-                    
-                    {/* Micro-Lore */}
-                    <p className="font-handwritten text-dark-green/60 text-sm italic mb-3">
-                         "{['Recovered from the roadside of a desert ghost town.', 'Salvaged from the deep overgrowth.', 'Found beneath the canopy of Sector 7.', 'A quiet echo of the old world.', 'Restored from the archive of lost things.'][((index || 0) + (product.id.charCodeAt(product.id.length - 1))) % 5]}"
-                    </p>
-
-                    <div className="flex items-center justify-center gap-3">
-                        <Text className="font-mono text-xs text-dark-green/80 font-bold tracking-widest">
-                            <Money withoutTrailingZeros data={price!} />
-                        </Text>
-                         {/* Optional: Add 'View Artifact' link visible on hover? User wanted clean. */}
-                    </div>
-                </div>
-
-             </div>
-          </Link>
-        </div>
-     );
-  }
-
-  // Grid Layout (Field Journal Style - Artifact Mode)
   return (
-    <div className={clsx('group relative perspective-1000', className)}>
+    <Card 
+      className={cn(
+        'group relative overflow-hidden',
+        'bg-[#F2EFE9] border-[#1a472a]/10',
+        'hover:border-[#1a472a]/20',
+        'transition-all duration-300',
+        'hover-lift',
+        className
+      )}
+    >
       <Link
         onClick={onClick}
         to={`/products/${product.handle}`}
         prefetch="viewport"
         className="block"
       >
-        {/* Artifact Frame Container with Lift Effect */}
-        <div className="relative bg-[#f4f1ea] border-2 border-transparent transition-all duration-500 ease-out transform group-hover:-translate-y-2 group-hover:shadow-[0_20px_40px_-5px_rgba(74,93,35,0.15)]">
+        {/* Product Image */}
+        <div className="relative aspect-[3/4] overflow-hidden bg-[#F2EFE9]">
+          {image && (
+            <Image
+              className={cn(
+                'object-cover w-full h-full',
+                'transition-all duration-700 ease-out',
+                'group-hover:scale-[1.02]',
+                isSoldOut && 'grayscale opacity-50'
+              )}
+              sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+              data={image}
+              alt={image.altText || `Picture of ${product.title}`}
+              loading={loading}
+            />
+          )}
           
-          {/* Frame Borders */}
-          <div className="absolute inset-0 border border-dark-green/10 z-20 pointer-events-none group-hover:border-rust/30 transition-colors duration-500" />
-          
-          {/* Paper Texture Overlay */}
-          <div 
-              className="absolute inset-0 z-10 pointer-events-none mix-blend-multiply opacity-30 bg-[url('/assets/texture_archive_paper.jpg')]" 
-          />
+          {/* Hover second image */}
+          {product.images?.nodes[1] && (
+            <Image
+              className="absolute inset-0 object-cover w-full h-full transition-opacity duration-700 opacity-0 group-hover:opacity-100"
+              sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+              data={product.images.nodes[1]}
+              alt={product.images.nodes[1].altText || `Picture of ${product.title}`}
+              loading="lazy"
+            />
+          )}
 
-          {/* Product Image Area - With 'Photo Frame' Padding */}
-          <div className="relative p-3 pb-8 bg-white/50">
-            <div className="relative aspect-[4/5] overflow-hidden border border-dark-green/5">
-                {image && (
-                <Image
-                    className={`object-contain w-full h-full transition-opacity duration-500 ${isSoldOut ? 'grayscale opacity-70' : ''} ${product.images?.nodes[1] ? 'group-hover:opacity-0' : ''}`}
-                    sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw"
-                    width={800}
-                    aspectRatio="4/5"
-                    data={image}
-                    alt={image.altText || `Picture of ${product.title}`}
-                    loading={loading}
-                />
-                )}
-                
-                {/* Secondary Image (Hover) */}
-                {product.images?.nodes[1] && (
-                    <Image
-                        className={`absolute inset-0 object-contain w-full h-full transition-opacity duration-500 opacity-0 group-hover:opacity-100 ${isSoldOut ? 'grayscale opacity-70' : ''}`}
-                        sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 100vw"
-                        width={800}
-                        aspectRatio="4/5"
-                        data={product.images.nodes[1]}
-                        alt={product.images.nodes[1].altText || `Picture of ${product.title}`}
-                        loading={loading}
-                    />
-                )}
+          {/* Item number - top left */}
+          {itemNum && (
+            <div className="absolute top-3 left-3 z-10">
+              <span className="font-mono text-[9px] text-[#8A8A84] tracking-[0.2em]">
+                №{itemNum}
+              </span>
             </div>
-            
-            {/* Artifact Sticker/Label */}
-            <div className="absolute bottom-2 right-2 z-20">
-                <div className="bg-[#f4f1ea] border border-dark-green/20 px-2 py-0.5 shadow-sm transform rotate-[-2deg] group-hover:rotate-0 transition-transform duration-300">
-                     <span className="font-mono text-[8px] text-dark-green/60 tracking-widest uppercase">
-                        Fig. {index ? index + 1 : '01'}
-                     </span>
-                </div>
+          )}
+
+          {/* Badges - top right */}
+          <div className="absolute top-3 right-3 flex flex-col gap-2 z-10">
+            {cardLabel && (
+              <Badge 
+                className={cn(
+                  "text-[9px] tracking-[0.15em] uppercase",
+                  cardLabel === 'Sale' ? "bg-[#B55A3C] text-[#F2EFE9]" : "bg-[#1a472a] text-[#F2EFE9]"
+                )}
+              >
+                {cardLabel}
+              </Badge>
+            )}
+            {isSoldOut && (
+              <Badge 
+                variant="outline"
+                className="text-[9px] tracking-[0.15em] border-[#1a472a]/30 text-[#8A8A84] bg-[#F2EFE9]/90"
+              >
+                Sold Out
+              </Badge>
+            )}
+          </div>
+
+          {/* Scarcity indicator with Tooltip */}
+          {!isSoldOut && firstVariant.quantityAvailable && firstVariant.quantityAvailable <= 3 && (
+            <div className="absolute bottom-3 left-3 z-10">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="font-mono text-[9px] text-[#3E5F4B] tracking-[0.15em] uppercase animate-scarcity cursor-help">
+                      {firstVariant.quantityAvailable} left
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-[#1a472a] text-[#F2EFE9] border-none">
+                    <p className="font-mono text-[10px]">Limited availability — act fast</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
-          </div>
-
-          {/* Bottom Info Section - Field Card Style Refined */}
-          <div className="px-4 py-4 border-t border-dashed border-dark-green/20 relative z-20">
-               <div className="flex flex-col gap-1">
-                    <div className="flex items-center gap-2 justify-between">
-                         <h3 className="font-heading text-lg text-dark-green leading-none group-hover:text-rust transition-colors duration-300 uppercase truncate">
-                            {product.title}
-                        </h3>
-                        {/* Edition/Series Number - Right Aligned */}
-                        <span className="font-mono text-xs text-rust/80 tracking-widest shrink-0">
-                            NO. {String(index ? index + 1 : 1).padStart(3, '0')}
-                        </span>
-                    </div>
-
-                    {/* Metadata Row - Framed & Separated */}
-                    <div className="flex flex-wrap items-center gap-x-2 text-xs text-dark-green/70 font-mono mt-2 pt-2 border-t border-dark-green/5">
-                        <span className="uppercase tracking-wider text-dark-green/60">
-                            Apparel Artifact
-                        </span>
-                        <span className="w-1 h-1 rounded-full bg-rust/40" />
-                        <span className="uppercase tracking-wider text-dark-green/60">
-                            {product.publishedAt ? new Date(product.publishedAt).getFullYear() : '2025'}
-                        </span>
-                        <span className="w-1 h-1 rounded-full bg-rust/40" />
-                        <span className="font-bold text-dark-green">
-                           {/* Value Display */}
-                            <Money withoutTrailingZeros data={price!} />
-                        </span>
-                         <span className="w-1 h-1 rounded-full bg-rust/40" />
-                         <span className="text-dark-green/40">
-                             {index ? 142 + index : 142}/500
-                         </span>
-                    </div>
-
-                    {/* Lore Snippet - Poetic Line */}
-                    <div className="mt-3 pt-3 border-t border-dashed border-dark-green/10">
-                        <p className="font-handwritten text-dark-green/60 text-sm italic">
-                            "{['Found where the roots run deep.', 'Reclaimed from the silent city.', 'Echoes of a forgotten song.', 'Nature always takes it back.', 'Worn by the wind and rain.'][((index || 0) + (product.id.charCodeAt(product.id.length - 1))) % 5]}"
-                        </p>
-                    </div>
-                </div>
-          </div>
-
-          {/* Badges (Overlaid on Top Left) */}
-          <div className="absolute top-2 left-2 flex flex-col gap-1 z-30 pointer-events-none">
-             {cardLabel && (
-                <div className="bg-rust text-[#f4f1ea] px-2 py-0.5 text-[9px] tracking-widest uppercase font-bold shadow-sm">
-                    {cardLabel}
-                </div>
-             )}
-             {isSoldOut && (
-                 <div className="bg-[#f4f1ea] border border-dark-green text-dark-green px-2 py-0.5 text-[9px] tracking-widest uppercase font-bold">
-                     DEPLETED
-                 </div>
-             )}
-          </div>
-
+          )}
         </div>
+
+        {/* Content */}
+        <CardContent className="p-4 bg-[#F2EFE9]">
+          {/* Product Title */}
+          <h3 className="font-heading text-sm text-[#1a472a] uppercase tracking-[0.1em] line-clamp-1 group-hover:text-[#B55A3C] transition-colors duration-300">
+            {product.title}
+          </h3>
+          
+          {/* Price Row */}
+          <div className="flex items-center gap-3 mt-3">
+            <span className={cn(
+              "font-mono text-xs tracking-wide",
+              hasDiscount ? "text-[#B55A3C]" : "text-[#1a472a]"
+            )}>
+              <Money withoutTrailingZeros data={price!} />
+            </span>
+            {hasDiscount && (
+              <CompareAtPrice
+                className="text-[#8A8A84] text-[10px] line-through"
+                data={compareAtPrice as MoneyV2}
+              />
+            )}
+          </div>
+        </CardContent>
       </Link>
-    </div>
+    </Card>
   );
 }
 
@@ -355,13 +186,10 @@ function CompareAtPrice({
   data: MoneyV2;
   className?: string;
 }) {
-  const {currencyNarrowSymbol, withoutTrailingZerosAndCurrency} =
-    useMoney(data);
-
-  const styles = clsx('strike', className);
+  const {currencyNarrowSymbol, withoutTrailingZerosAndCurrency} = useMoney(data);
 
   return (
-    <span className={styles}>
+    <span className={cn('line-through', className)}>
       {currencyNarrowSymbol}
       {withoutTrailingZerosAndCurrency}
     </span>

@@ -74,7 +74,9 @@ export function RucksackDrawerBg({className}: {className?: string}) {
              <feFuncA type="linear" slope="0.2" />
           </feComponentTransfer>
         </filter>
-        <dropShadow id="bagShadow" dx="5" dy="5" stdDeviation="10" floodOpacity="0.5" />
+        <filter id="bagShadow">
+          <feDropShadow dx="5" dy="5" stdDeviation="10" floodOpacity="0.5" />
+        </filter>
       </defs>
 
       {/* Main Bag Body (Open) */}

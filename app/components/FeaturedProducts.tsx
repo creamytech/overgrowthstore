@@ -72,7 +72,6 @@ export function FeaturedProducts({
           count={count}
           onClick={onClose}
           products={data?.products}
-          layout={layout}
         />
       </div>
     </>
@@ -120,7 +119,6 @@ function FeatureProductsContent({
           key={product.id}
           onClick={onClick}
           quickAdd
-          layout={layout === 'drawer' ? 'drawer' : 'grid'}
           index={i}
         />
       ))}
