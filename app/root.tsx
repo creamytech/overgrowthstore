@@ -169,7 +169,13 @@ function Layout({children}: {children?: React.ReactNode}) {
         </noscript>
         {/* End Meta Pixel Code */}
       </head>
-      <body className="antialiased text-ink bg-paper selection:bg-rust selection:text-paper">
+      <body 
+        className="antialiased text-ink bg-[#0a0a0a] selection:bg-rust selection:text-paper"
+        style={{
+          paddingLeft: 'env(safe-area-inset-left)',
+          paddingRight: 'env(safe-area-inset-right)',
+        }}
+      >
         {/* Global Paper Texture Overlay - Inline styles for guaranteed display */}
         <div 
           aria-hidden="true"

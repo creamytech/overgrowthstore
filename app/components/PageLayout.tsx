@@ -122,6 +122,13 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
                 ? 'bg-[#0a0a0a]/95 backdrop-blur-sm pt-4 pb-3 border-b border-[#F2EFE9]/10' 
                 : 'bg-transparent pt-6 pb-5 border-b border-transparent'
             }`}
+            style={{
+              paddingTop: isScrolled 
+                ? 'calc(env(safe-area-inset-top) + 1rem)' 
+                : 'calc(env(safe-area-inset-top) + 1.5rem)',
+              paddingLeft: 'max(env(safe-area-inset-left), 1.5rem)',
+              paddingRight: 'max(env(safe-area-inset-right), 1.5rem)',
+            }}
           >
             <div className="flex justify-between items-center w-full max-w-7xl mx-auto">
                 
@@ -439,7 +446,12 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-[#F2EFE9]/10 px-8 md:px-12 py-6">
+      <div 
+        className="border-t border-[#F2EFE9]/10 px-8 md:px-12 py-6"
+        style={{
+          paddingBottom: 'calc(env(safe-area-inset-bottom) + 1.5rem)',
+        }}
+      >
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="font-mono text-[9px] text-[#F2EFE9]/30 tracking-wider">
             © {new Date().getFullYear()} OVERGROWTH
