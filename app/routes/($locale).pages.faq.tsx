@@ -104,7 +104,7 @@ const faqCategories = [
       },
       {
         q: 'Do you offer gift cards?',
-        a: 'Yes, digital gift cards are available in various denominations. They never expire and can be used on any order.',
+        a: "We're working on adding gift cards soon. In the meantime, you can contact us at hello@overgrowth.co to arrange a gift for someone special.",
       },
     ],
   },

@@ -149,7 +149,7 @@ export default function OurStory() {
                 {[
                   {name: 'Brick', color: '#B55A3C', desc: 'pulse of action'},
                   {name: 'Cream', color: '#F2EFE9', desc: 'paper of recovery'},
-                  {name: 'Charcoal', color: '#1a472a', desc: 'weight of truth', dark: true},
+                  {name: 'Dark Green', color: '#1a472a', desc: 'weight of truth', dark: true},
                   {name: 'Moss', color: '#3E5F4B', desc: 'life creeping in'},
                 ].map((item) => (
                   <div key={item.name} className="text-center">

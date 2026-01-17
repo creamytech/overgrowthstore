@@ -69,6 +69,37 @@ export default function SizeGuide() {
             </div>
           </div>
 
+          {/* Model Reference */}
+          <div className="mb-20 p-8 bg-[#0a0a0a]/5 border border-[#0a0a0a]/10">
+            <h2 className="font-heading text-xl text-[#0a0a0a] uppercase tracking-wide mb-6">
+              Model Reference
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <span className="font-mono text-[9px] text-[#8A8A84] uppercase tracking-widest block mb-2">
+                  Men's Fit
+                </span>
+                <p className="font-mono text-sm text-[#0a0a0a] mb-1">
+                  Model is 6'1" / 185 cm, 175 lbs / 79 kg
+                </p>
+                <p className="font-mono text-xs text-[#8A8A84]">
+                  Wearing size <span className="text-[#B55A3C] font-bold">L</span> for relaxed fit
+                </p>
+              </div>
+              <div>
+                <span className="font-mono text-[9px] text-[#8A8A84] uppercase tracking-widest block mb-2">
+                  Women's Fit
+                </span>
+                <p className="font-mono text-sm text-[#0a0a0a] mb-1">
+                  Model is 5'7" / 170 cm, 130 lbs / 59 kg
+                </p>
+                <p className="font-mono text-xs text-[#8A8A84]">
+                  Wearing size <span className="text-[#B55A3C] font-bold">M</span> for oversized fit
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Tops Size Chart */}
           <div className="mb-16">
             <h2 className="font-heading text-2xl text-[#0a0a0a] uppercase tracking-wide mb-8">

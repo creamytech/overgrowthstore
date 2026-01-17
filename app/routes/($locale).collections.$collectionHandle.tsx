@@ -177,13 +177,13 @@ export default function Collection() {
       </section>
 
       {/* Collection Navigation Pills */}
-      <section className="sticky top-[72px] z-40 bg-[#F2EFE9] border-b border-[#1a472a]/10 py-4">
+      <section className="sticky top-[72px] z-40 bg-[#0a0a0a] border-b border-[#F2EFE9]/10 py-4">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="flex flex-wrap justify-center gap-2">
             <Link
               to="/products"
               prefetch="intent"
-              className="px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] border border-[#1a472a]/20 text-[#8A8A84] hover:border-[#B55A3C] hover:text-[#B55A3C] transition-all duration-300"
+              className="px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] border border-[#F2EFE9]/20 text-[#F2EFE9]/60 hover:border-[#B55A3C] hover:text-[#B55A3C] transition-all duration-300"
             >
               All Artifacts
             </Link>
@@ -195,8 +195,8 @@ export default function Collection() {
                 prefetch="intent"
                 className={`px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] transition-all duration-300 ${
                   col.handle === collection.handle
-                    ? 'bg-[#0a0a0a] text-[#F2EFE9] border border-[#0a0a0a]'
-                    : 'border border-[#0a0a0a]/20 text-[#8A8A84] hover:border-[#B55A3C] hover:text-[#B55A3C]'
+                    ? 'bg-[#B55A3C] text-[#F2EFE9] border border-[#B55A3C]'
+                    : 'border border-[#F2EFE9]/20 text-[#F2EFE9]/60 hover:border-[#B55A3C] hover:text-[#B55A3C]'
                 }`}
               >
                 {col.title}

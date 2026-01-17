@@ -12,7 +12,7 @@ const shippingInfo = [
   },
   {
     question: 'Do you ship internationally?',
-    answer: 'Yes! We ship to most countries worldwide. International shipping rates and duties are calculated at checkout. Please note that you may be responsible for import taxes or duties in your country.',
+    answer: 'Yes! We ship to 50+ countries including Canada, UK, Germany, France, Australia, Japan, South Korea, and more. International shipping rates and duties are calculated at checkout. Please note that you may be responsible for import taxes or duties in your country.',
   },
   {
     question: 'How much does shipping cost?',
