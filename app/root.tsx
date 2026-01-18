@@ -204,16 +204,16 @@ function Layout({children}: {children?: React.ReactNode}) {
           className="safe-area-bottom-overlay"
           aria-hidden="true"
         />
-        {/* Global Paper Texture Overlay - Inline styles for guaranteed display */}
+        {/* Global Paper Texture Overlay - extends into safe areas */}
         <div 
           aria-hidden="true"
           style={{
             position: 'fixed',
-            top: 0,
+            top: 'calc(-1 * env(safe-area-inset-top, 0px))',
             left: 0,
             right: 0,
-            bottom: 0,
-            zIndex: 9998,
+            bottom: 'calc(-1 * env(safe-area-inset-bottom, 0px))',
+            zIndex: 40,
             pointerEvents: 'none',
             backgroundImage: "url('/assets/texture_archive_paper.jpg')",
             backgroundRepeat: 'repeat',
