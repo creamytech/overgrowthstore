@@ -12,12 +12,12 @@ const shippingInfo = [
     answer: 'All items are made to order. Please allow 3-4 weeks for your order to be crafted and delivered. You\'ll receive tracking information once your order ships.',
   },
   {
-    question: 'Do you ship internationally?',
-    answer: 'Yes! We ship to 50+ countries including Canada, UK, Germany, France, Australia, Japan, South Korea, and more. International shipping rates and duties are calculated at checkout. Please note that you may be responsible for import taxes or duties in your country.',
+    question: 'Where do you ship?',
+    answer: 'We currently ship within the United States only.',
   },
   {
     question: 'How much does shipping cost?',
-    answer: 'Free shipping on all orders over $150 within the USA. Standard domestic shipping is $8. International shipping starts at $15 and varies by location.',
+    answer: 'Free shipping on all orders over $150. Standard shipping is $8.',
   },
   {
     question: 'Can I track my order?',

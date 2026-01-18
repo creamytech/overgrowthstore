@@ -46,8 +46,8 @@ const faqCategories = [
         a: 'All items are made to order. Please allow 3-4 weeks for your order to be crafted and delivered to your address. Tracking is included with every order.',
       },
       {
-        q: 'Do you ship internationally?',
-        a: 'Yes, we ship worldwide. International orders are also made to order and typically take 4-6 weeks for delivery.',
+        q: 'Where do you ship?',
+        a: 'We currently ship within the United States only.',
       },
       {
         q: 'How can I track my order?',
