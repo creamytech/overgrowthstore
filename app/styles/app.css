@@ -4,17 +4,48 @@
 
 /* Paper texture overlay - in base layer for guaranteed processing */
 @layer base {
-  /* iOS Safari safe area fills - use cream to match main page content */
+  /* iOS Safari safe-area overlays */
   html {
-    background-color: #F2EFE9;
+    background-color: #0a0a0a;
     overscroll-behavior: none;
   }
   
   body {
-    background-color: #F2EFE9;
+    background-color: #0a0a0a;
     overscroll-behavior-y: none;
   }
-  
+
+  /* iOS Safe-Area Top Overlay */
+  .safe-area-top-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: env(safe-area-inset-top);
+    z-index: 9999;
+    pointer-events: none;
+    background-color: transparent;
+    transition: background-color 0.5s ease;
+  }
+
+  /* iOS Safe-Area Bottom Overlay */
+  .safe-area-bottom-overlay {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: env(safe-area-inset-bottom);
+    z-index: 9999;
+    pointer-events: none;
+    background-color: #0a0a0a;
+  }
+
+  /* When scrolled, top overlay matches navbar background */
+  html[data-scrolled="true"] .safe-area-top-overlay {
+    background-color: #0a0a0a;
+  }
+
+  /* Body texture overlay */
   body::after {
     content: '';
     position: fixed;
@@ -22,7 +53,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 40; /* Below header (1000) and modals, but above standard content */
+    z-index: 40;
     pointer-events: none;
     background-image: url('/assets/texture_archive_paper.jpg');
     background-repeat: repeat;

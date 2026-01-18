@@ -81,8 +81,13 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const scrolled = window.scrollY > 50;
+      setIsScrolled(scrolled);
+      // Sync to html element for CSS safe-area overlays
+      document.documentElement.setAttribute('data-scrolled', scrolled ? 'true' : 'false');
     };
+    // Initial call
+    handleScroll();
     window.addEventListener('scroll', handleScroll, {passive: true});
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -140,17 +145,6 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
               isolation: 'isolate',
             }}
           >
-            {/* iOS Notch Fill - only shows when scrolled to match header background */}
-            <div 
-              className={`absolute top-0 left-0 right-0 -z-10 transition-all duration-500 ${
-                isScrolled ? 'bg-[#0a0a0a] opacity-100' : 'bg-transparent opacity-0'
-              }`}
-              style={{
-                height: 'env(safe-area-inset-top)',
-                marginTop: 'calc(-1 * env(safe-area-inset-top))',
-              }}
-              aria-hidden="true"
-            />
             <div className="flex justify-between items-center w-full max-w-7xl mx-auto">
                 
               {/* Left: Menu Icon - Blooms when menu is open */}
