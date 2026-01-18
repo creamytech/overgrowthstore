@@ -30,7 +30,6 @@ import invariant from 'tiny-invariant';
 import {PageLayout} from '~/components/PageLayout';
 import {GenericError} from '~/components/GenericError';
 import {NotFound} from '~/components/NotFound';
-import favicon from '~/assets/favicon.svg';
 import {seoPayload} from '~/lib/seo.server';
 import styles from '~/styles/app.css?url';
 import fieldJournalStyles from '~/styles/field-journal.css?url';
@@ -41,6 +40,14 @@ import {Toaster} from '~/components/ui/sonner';
 import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
 
 export type RootLoader = typeof loader;
+
+export const links: LinksFunction = () => {
+  return [
+    {rel: 'stylesheet', href: styles},
+    {rel: 'stylesheet', href: fieldJournalStyles},
+    {rel: 'icon', type: 'image/png', href: '/assets/logo_og_vines.png'},
+  ];
+};
 
 export const meta: MetaFunction<typeof loader> = ({matches}) => {
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
@@ -144,8 +151,6 @@ function Layout({children}: {children?: React.ReactNode}) {
           href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IM+Fell+English+SC&display=swap" 
           rel="stylesheet" 
         />
-        <link rel="stylesheet" href={styles}></link>
-        <link rel="stylesheet" href={fieldJournalStyles}></link>
         <Meta />
         <Links />
         
