@@ -36,6 +36,7 @@ import fieldJournalStyles from '~/styles/field-journal.css?url';
 import {SmoothScrollProvider} from '~/components/SmoothScroll';
 import {CommandPalette} from '~/components/CommandPalette';
 import {Toaster} from '~/components/ui/sonner';
+import {DropNotificationPopup} from '~/components/DropNotificationPopup';
 
 import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
 
@@ -240,6 +241,9 @@ function Layout({children}: {children?: React.ReactNode}) {
         
         {/* Global Command Palette (⌘K) */}
         <CommandPalette />
+        
+        {/* Drop Notification Popup - appears after 10s for first-time visitors */}
+        <DropNotificationPopup />
         
         {/* Toast notifications */}
         <Toaster 
