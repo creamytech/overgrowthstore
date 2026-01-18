@@ -128,7 +128,7 @@ export default function Contact() {
                   </span>
                   <a 
                     href="mailto:customerservice@overgrowth.co" 
-                    className="font-heading text-2xl text-[#1a472a] hover:text-[#B55A3C] transition-colors"
+                    className="font-heading text-lg md:text-2xl text-[#1a472a] hover:text-[#B55A3C] transition-colors break-all"
                   >
                     customerservice@overgrowth.co
                   </a>

@@ -9,7 +9,7 @@ export const meta: MetaFunction = () => {
 const shippingInfo = [
   {
     question: 'How long does shipping take?',
-    answer: 'Domestic orders (USA) typically arrive within 3-7 business days. International orders take 7-14 business days depending on your location. All orders include tracking.',
+    answer: 'All items are made to order. Please allow 3-4 weeks for your order to be crafted and delivered. You\'ll receive tracking information once your order ships.',
   },
   {
     question: 'Do you ship internationally?',
@@ -144,7 +144,7 @@ export default function ShippingReturns() {
             </p>
             <a 
               href="mailto:customerservice@overgrowth.co"
-              className="font-heading text-xl text-[#0a0a0a] hover:text-[#B55A3C] transition-colors"
+              className="font-heading text-base md:text-xl text-[#0a0a0a] hover:text-[#B55A3C] transition-colors break-all"
             >
               customerservice@overgrowth.co
             </a>

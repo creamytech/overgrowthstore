@@ -43,11 +43,11 @@ const faqCategories = [
     questions: [
       {
         q: 'How long does shipping take?',
-        a: 'Standard shipping within the US takes 5-7 business days. Express shipping is available at checkout for 2-3 day delivery.',
+        a: 'All items are made to order. Please allow 3-4 weeks for your order to be crafted and delivered to your address. Tracking is included with every order.',
       },
       {
         q: 'Do you ship internationally?',
-        a: 'Yes, we ship to most countries worldwide. International shipping typically takes 10-14 business days.',
+        a: 'Yes, we ship worldwide. International orders are also made to order and typically take 4-6 weeks for delivery.',
       },
       {
         q: 'How can I track my order?',
