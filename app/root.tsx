@@ -51,7 +51,14 @@ export const links: LinksFunction = () => {
 };
 
 export const meta: MetaFunction<typeof loader> = ({matches}) => {
-  return getSeoMeta(...matches.map((match) => (match.data as any).seo));
+  const seoMeta = getSeoMeta(...matches.map((match) => (match.data as any).seo));
+  return [
+    ...(seoMeta || []),
+    {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1, viewport-fit=cover',
+    },
+  ];
 };
 
 // This is important to avoid re-fetching root queries on sub-navigations
@@ -139,7 +146,6 @@ function Layout({children}: {children?: React.ReactNode}) {
     <html lang={locale.language} style={{backgroundColor: '#0a0a0a'}} data-scrolled="false">
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
         {/* iOS Safari theme color */}
         <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
