@@ -127,7 +127,7 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
             className={`fixed top-0 left-0 w-full transition-all duration-500 z-[1000] px-6 md:px-12 ${
                 isScrolled 
                 ? 'bg-[#0a0a0a]/95 backdrop-blur-sm pt-4 pb-3 border-b border-[#F2EFE9]/10' 
-                : 'bg-[#0a0a0a] pt-6 pb-5 border-b border-transparent'
+                : 'bg-transparent pt-6 pb-5 border-b border-transparent'
             }`}
             style={{
               paddingTop: isScrolled 
@@ -140,9 +140,11 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
               isolation: 'isolate',
             }}
           >
-            {/* iOS Notch Fill - extends background into safe area */}
+            {/* iOS Notch Fill - only shows when scrolled to match header background */}
             <div 
-              className="absolute top-0 left-0 right-0 bg-[#0a0a0a] -z-10"
+              className={`absolute top-0 left-0 right-0 -z-10 transition-opacity duration-500 ${
+                isScrolled ? 'bg-[#0a0a0a]/95 opacity-100' : 'opacity-0'
+              }`}
               style={{
                 height: 'env(safe-area-inset-top)',
                 marginTop: 'calc(-1 * env(safe-area-inset-top))',
