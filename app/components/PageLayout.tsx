@@ -70,6 +70,11 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
     closeDrawer: closeMenu,
   } = useDrawer();
 
+  // Sync menu state to html for safe-area styling
+  useEffect(() => {
+    document.documentElement.setAttribute('data-menu-open', isMenuOpen ? 'true' : 'false');
+  }, [isMenuOpen]);
+
   const addToCartFetchers = useCartFetchers(CartForm.ACTIONS.LinesAdd);
 
   useEffect(() => {
