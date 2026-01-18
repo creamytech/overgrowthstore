@@ -39,7 +39,7 @@ export async function action({request, context}: ActionFunctionArgs) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Overgrowth Contact <contact@overgrowth.co>', // Must be verified domain in Resend
+        from: 'Overgrowth Contact <hello@news.overgrowth.co>', // Verified domain in Resend
         to: ['hello@overgrowth.co'], // Your email address
         reply_to: email,
         subject: `[Contact Form] ${subject || 'New Message'}`,
@@ -61,9 +61,12 @@ export async function action({request, context}: ActionFunctionArgs) {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Resend API Error:', errorData);
-      return json({success: false, error: 'Failed to send message. Please try again.'}, {status: 500});
+      const errorData = await response.json() as { message?: string; error?: string; statusCode?: number };
+      console.error('Resend API Error:', JSON.stringify(errorData, null, 2));
+      console.error('Resend API Status:', response.status);
+      // Return the actual error for debugging
+      const errorMessage = errorData.message || errorData.error || 'Failed to send message. Please try again.';
+      return json({success: false, error: errorMessage}, {status: 500});
     }
 
     return json({success: true, message: 'Message sent successfully!'});

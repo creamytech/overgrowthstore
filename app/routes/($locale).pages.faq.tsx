@@ -6,6 +6,7 @@ import {routeHeaders} from '~/data/cache';
 import {useState} from 'react';
 import {Link} from '~/components/Link';
 import {Separator} from '~/components/ui/separator';
+import {Spotlight} from '~/components/ui/spotlight';
 import {
   Accordion,
   AccordionContent,
@@ -60,15 +61,15 @@ const faqCategories = [
     questions: [
       {
         q: 'What is your return policy?',
-        a: 'We accept returns within 30 days of delivery for unworn items with original tags attached. Items must be in original condition.',
+        a: 'We don\'t accept returns due to the scarcity of each product. Every piece is part of a limited run, and once sold, it\'s gone forever.',
       },
       {
-        q: 'How do I start a return?',
-        a: 'Email us at hello@overgrowth.co with your order number and reason for return. We\'ll provide a prepaid shipping label.',
+        q: 'What if my item arrives damaged?',
+        a: 'If you receive a damaged or defective item, contact us immediately at hello@overgrowth.co with photos. We\'ll work with you to make it right.',
       },
       {
         q: 'Can I exchange for a different size?',
-        a: 'Yes, exchanges are free. Contact us and we\'ll arrange the swap once we receive your original item.',
+        a: 'Unfortunately, due to the limited nature of our products, we cannot offer exchanges. Please check our size guide before ordering.',
       },
     ],
   },
@@ -118,6 +119,9 @@ export default function FAQ() {
       
       {/* HERO */}
       <section className="relative bg-[#0a0a0a] pt-32 pb-20 overflow-hidden">
+        {/* Spotlight Effect */}
+        <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="#B55A3C" />
+        
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -126,7 +130,7 @@ export default function FAQ() {
           }} />
         </div>
         
-        <div className="relative max-w-4xl mx-auto px-6 text-center">
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <div className="inline-flex items-center gap-4 mb-6">
             <div className="w-8 h-px bg-[#B55A3C]" />
             <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase">

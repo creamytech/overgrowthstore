@@ -52,6 +52,7 @@ export default {
         pathname === '/password' ||
         pathname.endsWith('/password') ||
         pathname.includes('/api/newsletter') ||
+        pathname.includes('/api/contact') ||
         pathname.startsWith('/build/') ||
         pathname.startsWith('/assets/') ||
         pathname === '/favicon.ico' ||

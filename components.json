@@ -14,5 +14,7 @@
     "components": "~/components",
     "utils": "~/lib/utils"
   },
-  "registries": {}
+  "registries": {
+    "@aceternity": "https://ui.aceternity.com/registry/{name}.json"
+  }
 }

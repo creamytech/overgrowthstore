@@ -3,6 +3,8 @@ import {Link} from '@remix-run/react';
 import {Badge} from '~/components/ui/badge';
 import {Button} from '~/components/ui/button';
 import {Separator} from '~/components/ui/separator';
+import TextLoop from '~/components/text-loop';
+import HoverArrowButton from '~/components/hover-arrow-button';
 
 // Using Cloudinary transformation for boomerang effect (processed server-side)
 // e_boomerang creates a forward-reverse loop at the CDN level
@@ -88,6 +90,7 @@ export function DropHero() {
           background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%)'
         }} />
       </div>
+
 
       {/* Bottom Countdown Bar */}
       <div className="absolute bottom-0 left-0 right-0 z-20">

@@ -154,8 +154,7 @@ function Layout({children}: {children?: React.ReactNode}) {
         <Meta />
         <Links />
         
-        {/* Elfsight Instagram Feed Widget */}
-        <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
+        
         
         {/* Meta Pixel Code */}
         <script

@@ -4,6 +4,7 @@ import {Image, Money, getSeoMeta} from '@shopify/hydrogen';
 import type {LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {motion} from 'framer-motion';
 import {seoPayload} from '~/lib/seo.server';
+import {Spotlight} from '~/components/ui/spotlight';
 
 export const meta = ({matches}: MetaArgs<typeof loader>) => {
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
@@ -31,10 +32,14 @@ export default function DropArchive() {
   const archivedProducts = products.filter((p: any) => !p.availableForSale);
   
   return (
-    <div className="min-h-screen bg-[#F2EFE9]">
-      {/* Hero */}
-      <section className="bg-[#0a0a0a] py-24 md:py-32">
-        <div className="max-w-4xl mx-auto px-6 text-center">
+    <div className="min-h-screen bg-[#0a0a0a]">
+      {/* Hero with Spotlight */}
+      <section className="relative bg-[#0a0a0a] py-24 md:py-32 overflow-hidden">
+        <Spotlight 
+          className="-top-40 left-0 md:left-60 md:-top-20" 
+          fill="#B55A3C" 
+        />
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase block mb-6">
             Past Releases
           </span>
@@ -50,11 +55,11 @@ export default function DropArchive() {
 
       {/* Current Drops */}
       {currentProducts.length > 0 && (
-        <section className="py-20">
+        <section className="py-20 bg-[#0a0a0a] border-b border-[#F2EFE9]/10">
           <div className="max-w-7xl mx-auto px-6">
             <div className="flex items-center gap-4 mb-12">
               <span className="w-2 h-2 bg-[#22c55e] rounded-full animate-pulse" />
-              <h2 className="font-heading text-2xl text-[#0a0a0a] uppercase tracking-wide">
+              <h2 className="font-heading text-2xl text-[#F2EFE9] uppercase tracking-wide">
                 Available Now
               </h2>
             </div>
@@ -69,7 +74,7 @@ export default function DropArchive() {
                   transition={{delay: index * 0.1}}
                 >
                   <Link to={`/products/${product.handle}`} className="group block">
-                    <div className="relative aspect-[3/4] bg-[#0a0a0a] overflow-hidden mb-4">
+                    <div className="relative aspect-[3/4] bg-[#1a1a1a] overflow-hidden mb-4">
                       {product.featuredImage && (
                         <Image
                           data={product.featuredImage}
@@ -83,10 +88,10 @@ export default function DropArchive() {
                         </span>
                       </div>
                     </div>
-                    <h3 className="font-heading text-sm text-[#0a0a0a] uppercase tracking-wide mb-1 group-hover:text-[#B55A3C] transition-colors">
+                    <h3 className="font-heading text-sm text-[#F2EFE9] uppercase tracking-wide mb-1 group-hover:text-[#B55A3C] transition-colors">
                       {product.title}
                     </h3>
-                    <span className="font-mono text-sm text-[#8A8A84]">
+                    <span className="font-mono text-sm text-[#F2EFE9]/60">
                       <Money data={product.priceRange.minVariantPrice} />
                     </span>
                   </Link>

@@ -1,4 +1,5 @@
 import type {MetaFunction} from '@remix-run/react';
+import {Spotlight} from '~/components/ui/spotlight';
 
 export const meta: MetaFunction = () => {
   return [{title: 'Size Guide | Overgrowth'}];
@@ -31,8 +32,9 @@ export default function SizeGuide() {
   return (
     <div className="min-h-screen bg-[#F2EFE9]">
       {/* Hero */}
-      <section className="bg-[#0a0a0a] py-24 md:py-32">
-        <div className="max-w-4xl mx-auto px-6 text-center">
+      <section className="relative bg-[#0a0a0a] py-24 md:py-32 overflow-hidden">
+        <Spotlight className="-top-40 right-0 md:right-60 md:-top-20" fill="#B55A3C" />
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase block mb-6">
             Fit Reference
           </span>

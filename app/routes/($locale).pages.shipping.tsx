@@ -1,5 +1,6 @@
 import type {MetaFunction} from '@remix-run/react';
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '~/components/ui/accordion';
+import {Spotlight} from '~/components/ui/spotlight';
 
 export const meta: MetaFunction = () => {
   return [{title: 'Shipping & Returns | Overgrowth'}];
@@ -27,23 +28,19 @@ const shippingInfo = [
 const returnsInfo = [
   {
     question: 'What is your return policy?',
-    answer: 'We accept returns within 14 days of delivery for unworn, unwashed items with original tags attached. Items must be in their original condition.',
+    answer: 'We don\'t accept returns due to the scarcity of each product. Every piece is part of a limited run, and once it\'s gone, it\'s gone forever.',
   },
   {
-    question: 'How do I start a return?',
-    answer: 'Email us at hello@overgrowth.co with your order number and reason for return. We\'ll send you a prepaid return label within 24 hours.',
-  },
-  {
-    question: 'When will I receive my refund?',
-    answer: 'Refunds are processed within 5-7 business days after we receive your return. The refund will be credited to your original payment method.',
+    question: 'What if my item arrives damaged?',
+    answer: 'If you receive a damaged or defective item, contact us immediately at hello@overgrowth.co with photos of the damage. We\'ll work with you to make it right.',
   },
   {
     question: 'Can I exchange an item?',
-    answer: 'Due to our limited-run model, exchanges depend on availability. We recommend returning your item for a refund and placing a new order. Contact us and we can hold an item for you if it\'s in stock.',
+    answer: 'Unfortunately, due to the limited nature of our products, we are unable to offer exchanges. Please refer to our size guide before ordering.',
   },
   {
-    question: 'What if my item is damaged?',
-    answer: 'If you receive a damaged or defective item, contact us immediately at hello@overgrowth.co with photos of the damage. We\'ll send a replacement or full refund at no extra cost.',
+    question: 'Why don\'t you accept returns?',
+    answer: 'Each Overgrowth piece is produced in extremely limited quantities. Once sold, these items cannot be restocked. This scarcity is core to our model and ensures each piece remains special.',
   },
 ];
 
@@ -51,8 +48,9 @@ export default function ShippingReturns() {
   return (
     <div className="min-h-screen bg-[#F2EFE9]">
       {/* Hero */}
-      <section className="bg-[#0a0a0a] py-24 md:py-32">
-        <div className="max-w-4xl mx-auto px-6 text-center">
+      <section className="relative bg-[#0a0a0a] py-24 md:py-32 overflow-hidden">
+        <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="#B55A3C" />
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase block mb-6">
             Policies
           </span>
@@ -126,10 +124,10 @@ export default function ShippingReturns() {
             </div>
             <div className="p-6 bg-[#0a0a0a] text-[#F2EFE9]">
               <span className="font-mono text-[9px] text-[#B55A3C] tracking-widest uppercase block mb-3">
-                Return Window
+                Returns
               </span>
-              <span className="font-heading text-2xl">14 Days</span>
-              <p className="font-mono text-xs text-[#F2EFE9]/50 mt-2">From delivery</p>
+              <span className="font-heading text-2xl">Final Sale</span>
+              <p className="font-mono text-xs text-[#F2EFE9]/50 mt-2">Due to scarcity</p>
             </div>
             <div className="p-6 bg-[#0a0a0a] text-[#F2EFE9]">
               <span className="font-mono text-[9px] text-[#B55A3C] tracking-widest uppercase block mb-3">

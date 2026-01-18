@@ -6,6 +6,10 @@ import {routeHeaders} from '~/data/cache';
 import {Link} from '~/components/Link';
 import {Separator} from '~/components/ui/separator';
 import {Button} from '~/components/ui/button';
+import {Spotlight} from '~/components/ui/spotlight';
+import {Timeline} from '~/components/ui/timeline';
+import FeatureSteps from '~/components/feature-steps';
+import ShimmerButton from '~/components/shimmer-button';
 
 export const headers = routeHeaders;
 
@@ -35,6 +39,9 @@ export default function OurStory() {
       
       {/* HERO - Full width cinematic */}
       <section className="relative min-h-[70vh] bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
+        {/* Spotlight Effect */}
+        <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="#B55A3C" />
+        
         {/* Background texture */}
         <div className="absolute inset-0 opacity-20">
           <div className="absolute inset-0" style={{
@@ -49,7 +56,7 @@ export default function OurStory() {
         
         <div className="relative z-10 text-center px-6 max-w-4xl">
           <span className="font-mono text-[10px] text-[#B55A3C] tracking-[0.5em] uppercase block mb-8">
-            Est. 2024
+            Est. 2026
           </span>
           <h1 className="font-heading text-6xl md:text-8xl lg:text-9xl text-[#F2EFE9] tracking-[0.08em] uppercase mb-8">
             Our Story
@@ -187,9 +194,47 @@ export default function OurStory() {
               <span className="w-12 h-12 bg-[#1a472a] text-[#F2EFE9] flex items-center justify-center font-heading text-lg">III</span>
             </div>
             <span className="font-mono text-[9px] text-[#8A8A84] uppercase tracking-[0.3em] block mb-4">Chapter Three</span>
-            <h2 className="font-heading text-4xl md:text-5xl text-[#1a472a] uppercase tracking-[0.05em]">
-              What We Believe
+            <h2 className="font-heading text-4xl md:text-5xl text-[#1a472a] uppercase tracking-[0.05em] mb-6">
+              The Journey
             </h2>
+            <p className="font-mono text-sm text-[#8A8A84] max-w-xl mx-auto">
+              From concept to your hands—every step matters.
+            </p>
+          </div>
+          
+          {/* Feature Steps - Auto-playing brand journey */}
+          <FeatureSteps 
+            features={[
+              {
+                step: 'Step 01',
+                title: 'Design',
+                content: 'Every piece starts with an idea—inspired by nature, crafted with intention. We sketch, refine, and obsess until it feels right.',
+              },
+              {
+                step: 'Step 02',
+                title: 'Source',
+                content: 'Premium heavyweight cotton, sourced responsibly. No shortcuts. No compromises on materials.',
+              },
+              {
+                step: 'Step 03',
+                title: 'Create',
+                content: 'Small batch production means every piece gets the attention it deserves. Quality control at every stage.',
+              },
+              {
+                step: 'Step 04',
+                title: 'Release',
+                content: 'Limited drops. Once it\'s gone, it enters the archive forever. No restocks, no reprints.',
+              },
+            ]}
+            className="mb-20"
+          />
+          
+          {/* Values Grid Header */}
+          <div className="text-center mb-12">
+            <span className="font-mono text-[9px] text-[#8A8A84] uppercase tracking-[0.3em] block mb-4">Our Values</span>
+            <h3 className="font-heading text-3xl text-[#1a472a] uppercase tracking-[0.05em]">
+              What We Believe
+            </h3>
           </div>
           
           {/* Values Grid - Bento style */}
@@ -217,6 +262,62 @@ export default function OurStory() {
         </div>
       </section>
 
+      {/* CHAPTER IV - The Timeline */}
+      <Timeline 
+        title="Brand Milestones"
+        description="Follow our journey from concept to collection"
+        data={[
+          {
+            title: '2026',
+            content: (
+              <div className="space-y-4">
+                <h4 className="font-heading text-xl text-[#1a472a] uppercase">The Beginning</h4>
+                <p className="font-mono text-sm text-[#8A8A84] leading-relaxed">
+                  Overgrowth was founded with a simple mission: create limited edition pieces 
+                  that prioritize quality over quantity. No restocks, no reprints—ever.
+                </p>
+              </div>
+            ),
+          },
+          {
+            title: 'Drop 01',
+            content: (
+              <div className="space-y-4">
+                <h4 className="font-heading text-xl text-[#1a472a] uppercase">First Release</h4>
+                <p className="font-mono text-sm text-[#8A8A84] leading-relaxed">
+                  Our inaugural collection launched with 50 pieces. Sold out in hours.
+                  Each piece now lives in the permanent archive.
+                </p>
+              </div>
+            ),
+          },
+          {
+            title: 'Growing',
+            content: (
+              <div className="space-y-4">
+                <h4 className="font-heading text-xl text-[#1a472a] uppercase">Building Community</h4>
+                <p className="font-mono text-sm text-[#8A8A84] leading-relaxed">
+                  The Overgrowth ecosystem expands. Collectors join from around the world, 
+                  united by a shared appreciation for intentional fashion.
+                </p>
+              </div>
+            ),
+          },
+          {
+            title: 'Future',
+            content: (
+              <div className="space-y-4">
+                <h4 className="font-heading text-xl text-[#B55A3C] uppercase">What's Next</h4>
+                <p className="font-mono text-sm text-[#8A8A84] leading-relaxed">
+                  New drops coming soon. Sign up for our newsletter to get early access 
+                  and never miss a release.
+                </p>
+              </div>
+            ),
+          },
+        ]}
+      />
+
       {/* CLOSING - CTA */}
       <section className="py-24 bg-[#0a0a0a] relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
@@ -237,11 +338,9 @@ export default function OurStory() {
             — The Overgrowth Team
           </p>
           
-          <Button asChild className="px-12 py-6 bg-[#B55A3C] text-[#F2EFE9] hover:bg-[#9A4A30] font-mono text-xs uppercase tracking-[0.2em] transition-all duration-300">
-            <Link to="/products">
-              Shop the Collection →
-            </Link>
-          </Button>
+          <Link to="/products">
+            <ShimmerButton text="Shop the Collection →" className="px-12 py-5" />
+          </Link>
         </div>
       </section>
     </div>

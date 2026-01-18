@@ -2,6 +2,7 @@ import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Link} from '~/components/Link';
 import {motion} from 'framer-motion';
 import {Icons} from '~/components/InlineIcons';
+import {MovingBorderButton} from '~/components/ui/moving-border';
 
 export async function loader({request, context}: LoaderFunctionArgs) {
   return json({});
@@ -50,14 +51,14 @@ export default function EcosystemPage() {
       level: 1,
       points: '0 - 199',
       iconKey: 'plant' as const,
-      benefits: ['Member-only pricing', 'Early access announcements', 'Birthday reward'],
+      benefits: ['Member-only pricing', 'Early access announcements', 'Birthday reward', 'Free shipping on $150+'],
     },
     {
       name: 'THE VINE',
       level: 2,
       points: '200 - 499',
       iconKey: 'tree' as const,
-      benefits: ['Everything in The Root', '10% off all orders', 'Free shipping over $50', 'Exclusive drops access'],
+      benefits: ['Everything in The Root', '10% off all orders', 'Free shipping on $100+', 'Exclusive drops access'],
       featured: true,
     },
     {
@@ -101,11 +102,13 @@ export default function EcosystemPage() {
       {/* CTA Buttons */}
       <div className="relative z-10 text-center mb-16">
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link 
-            to="/account/register"
-            className="bg-dark-green text-[#f4f1ea] px-8 py-4 font-heading tracking-widest hover:bg-rust transition-colors"
-          >
-            Join the Ecosystem
+          <Link to="/account/register">
+            <MovingBorderButton
+              containerClassName="w-auto"
+              className="px-8 py-4 font-heading tracking-widest"
+            >
+              Join the Ecosystem
+            </MovingBorderButton>
           </Link>
           <Link 
             to="/account/login"

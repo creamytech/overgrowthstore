@@ -340,9 +340,9 @@ export default function Product() {
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="font-mono text-xs text-[#8A8A84] space-y-2">
-                      <p>• Free shipping on orders over $100</p>
+                      <p>• Free shipping on orders $150+</p>
                       <p>• Standard recovery: 5-7 business days</p>
-                      <p>• Returns accepted within 30 days</p>
+                      <p>• No returns — due to the scarcity of each product</p>
                     </div>
                   </AccordionContent>
                 </AccordionItem>

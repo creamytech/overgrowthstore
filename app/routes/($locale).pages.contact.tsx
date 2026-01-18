@@ -6,6 +6,7 @@ import {routeHeaders} from '~/data/cache';
 import {useState} from 'react';
 import {Separator} from '~/components/ui/separator';
 import {Button} from '~/components/ui/button';
+import {Spotlight} from '~/components/ui/spotlight';
 
 export const headers = routeHeaders;
 
@@ -75,6 +76,9 @@ export default function Contact() {
       
       {/* HERO - Full width at top for proper header contrast */}
       <section className="relative bg-[#0a0a0a] pt-32 pb-16 overflow-hidden">
+        {/* Spotlight Effect */}
+        <Spotlight className="-top-40 right-0 md:right-60 md:-top-20" fill="#B55A3C" />
+        
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -87,7 +91,7 @@ export default function Contact() {
         <div className="absolute top-8 left-8 w-20 h-20 border-l-2 border-t-2 border-[#F2EFE9]/10" />
         <div className="absolute top-8 right-8 w-20 h-20 border-r-2 border-t-2 border-[#F2EFE9]/10" />
         
-        <div className="relative max-w-4xl mx-auto px-6 text-center">
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <div className="inline-flex items-center gap-4 mb-6">
             <div className="w-8 h-px bg-[#B55A3C]" />
             <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase">

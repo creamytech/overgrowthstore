@@ -4,6 +4,9 @@ import {Image, Money, getSeoMeta} from '@shopify/hydrogen';
 import type {LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {motion} from 'framer-motion';
 import {seoPayload} from '~/lib/seo.server';
+import {Spotlight} from '~/components/ui/spotlight';
+import {FocusCards} from '~/components/ui/focus-cards';
+import ShimmerButton from '~/components/shimmer-button';
 
 export const meta = ({matches}: MetaArgs<typeof loader>) => {
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
@@ -30,6 +33,7 @@ export default function Lookbook() {
     <div className="min-h-screen bg-[#0a0a0a]">
       {/* Hero */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+        <Spotlight className="-top-40 left-0 md:left-40 md:-top-20" fill="#B55A3C" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-transparent to-[#0a0a0a]" />
         
         <div className="relative z-10 text-center px-6">
@@ -57,6 +61,24 @@ export default function Lookbook() {
           >
             Styling inspiration from the archive. Each piece photographed in its natural environment.
           </motion.p>
+        </div>
+      </section>
+
+      {/* Featured Focus Cards */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase">
+              Featured This Season
+            </span>
+          </div>
+          <FocusCards 
+            cards={products.slice(0, 3).map((product: any) => ({
+              title: product.title,
+              src: product.featuredImage?.url || '',
+              description: product.productType || 'Limited Edition',
+            }))}
+          />
         </div>
       </section>
 
@@ -114,12 +136,8 @@ export default function Lookbook() {
 
       {/* CTA */}
       <section className="py-20 text-center">
-        <Link 
-          to="/products"
-          className="inline-flex items-center gap-4 px-10 py-5 border border-[#F2EFE9]/20 text-[#F2EFE9] font-mono text-sm uppercase tracking-wider hover:border-[#B55A3C] hover:text-[#B55A3C] transition-colors"
-        >
-          Shop All Pieces
-          <span>→</span>
+        <Link to="/products">
+          <ShimmerButton text="Shop All Pieces →" className="px-10 py-5" />
         </Link>
       </section>
     </div>

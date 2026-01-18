@@ -22,6 +22,7 @@ import {useCartFetchers} from '~/hooks/useCartFetchers';
 import type {RootLoader} from '~/root';
 import {Separator} from '~/components/ui/separator';
 import {Button} from '~/components/ui/button';
+import GlowingBorderButton from '~/components/glowing-border-button';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -534,30 +535,25 @@ function NewsletterForm() {
     <div className="relative w-full max-w-md mx-auto">
       {status === 'success' ? (
         <div className="text-center py-6">
-          <span className="font-mono text-[10px] text-[#3E5F4B] tracking-[0.2em] uppercase">
-            ● You're In
+          <span className="font-mono text-[10px] text-[#B55A3C] tracking-[0.2em] uppercase">
+            ✓ You're In
           </span>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="relative">
-          <div className="flex border border-[#F2EFE9]/20 hover:border-[#B55A3C]/30 transition-colors">
-            <input 
-              type="email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email for drop alerts" 
-              required
-              className="flex-1 bg-transparent py-4 px-5 text-[#F2EFE9] placeholder:text-[#8A8A84]/40 font-mono text-xs tracking-wide focus:outline-none"
-            />
-            <Button 
-              type="submit" 
-              disabled={status === 'submitting'}
-              variant="ghost"
-              className="px-6 text-[10px] font-mono tracking-[0.2em] uppercase text-[#8A8A84] hover:text-[#B55A3C] hover:bg-transparent disabled:opacity-50"
-            >
-              {status === 'submitting' ? '...' : 'Join'}
-            </Button>
-          </div>
+        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 items-center">
+          <input 
+            type="email" 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email for drop alerts" 
+            required
+            className="w-full sm:flex-1 bg-[#1a1a1a] border border-[#F2EFE9]/20 py-4 px-5 text-[#F2EFE9] placeholder:text-[#8A8A84]/40 font-mono text-xs tracking-wide focus:outline-none focus:border-[#B55A3C] transition-colors"
+          />
+          <GlowingBorderButton 
+            text={status === 'submitting' ? '...' : 'Join Now'}
+            type="submit"
+            className="w-full sm:w-auto"
+          />
         </form>
       )}
     </div>

@@ -20,6 +20,7 @@ import {seoPayload} from '~/lib/seo.server';
 import {routeHeaders} from '~/data/cache';
 import {Link} from '~/components/Link';
 import {Separator} from '~/components/ui/separator';
+import {Spotlight} from '~/components/ui/spotlight';
 
 const PAGE_BY = 12;
 
@@ -87,6 +88,9 @@ export default function AllProducts() {
       
       {/* HERO HEADER - Full width dramatic header */}
       <section className="relative bg-[#0a0a0a] pt-32 pb-20 overflow-hidden">
+        {/* Spotlight Effect */}
+        <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" fill="#B55A3C" />
+        
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-full h-full" style={{
@@ -99,7 +103,7 @@ export default function AllProducts() {
         <div className="absolute top-8 left-8 w-24 h-24 border-l-2 border-t-2 border-[#F2EFE9]/20" />
         <div className="absolute top-8 right-8 w-24 h-24 border-r-2 border-t-2 border-[#F2EFE9]/20" />
         
-        <div className="relative max-w-7xl mx-auto px-6 md:px-12 text-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 text-center">
           {/* Archive badge */}
           <div className="inline-flex items-center gap-4 mb-8">
             <div className="w-12 h-px bg-[#B55A3C]" />
