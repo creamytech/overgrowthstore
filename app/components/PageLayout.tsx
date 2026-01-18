@@ -507,10 +507,27 @@ function NewsletterForm() {
     e.preventDefault();
     setStatus('submitting');
     
-    // Simulate - replace with actual API
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setStatus('success');
-    setEmail('');
+    try {
+      const formData = new FormData();
+      formData.append('email', email);
+      
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      const data = await response.json() as { success?: boolean };
+      
+      if (data.success) {
+        setStatus('success');
+        setEmail('');
+      } else {
+        setStatus('error');
+      }
+    } catch (error) {
+      console.error('Newsletter signup error:', error);
+      setStatus('error');
+    }
   };
 
   return (
