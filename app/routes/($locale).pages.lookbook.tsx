@@ -1,20 +1,26 @@
-import type {MetaFunction} from '@remix-run/react';
+import {type MetaArgs} from '@remix-run/react';
 import {Link, useLoaderData} from '@remix-run/react';
-import {Image, Money} from '@shopify/hydrogen';
+import {Image, Money, getSeoMeta} from '@shopify/hydrogen';
 import type {LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {motion} from 'framer-motion';
+import {seoPayload} from '~/lib/seo.server';
 
-export const meta: MetaFunction = () => {
-  return [{title: 'Lookbook | Overgrowth'}];
+export const meta = ({matches}: MetaArgs<typeof loader>) => {
+  return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
-export async function loader({context}: LoaderFunctionArgs) {
+export async function loader({context, request}: LoaderFunctionArgs) {
   const {storefront} = context;
   
   // Get products for the lookbook
   const {products} = await storefront.query(LOOKBOOK_QUERY);
   
-  return {products: products.nodes};
+  const seo = seoPayload.page({
+    page: {title: 'Lookbook', seo: {title: 'Lookbook | Overgrowth', description: 'Styling inspiration from the archive. Each piece photographed in its natural environment.'}},
+    url: request.url,
+  });
+  
+  return {products: products.nodes, seo};
 }
 
 export default function Lookbook() {

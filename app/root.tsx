@@ -16,6 +16,7 @@ import {
   useRouteError,
   useLocation,
   type ShouldRevalidateFunction,
+  type MetaFunction,
 } from '@remix-run/react';
 import {
   useNonce,
@@ -40,6 +41,10 @@ import {Toaster} from '~/components/ui/sonner';
 import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
 
 export type RootLoader = typeof loader;
+
+export const meta: MetaFunction<typeof loader> = ({matches}) => {
+  return getSeoMeta(...matches.map((match) => (match.data as any).seo));
+};
 
 // This is important to avoid re-fetching root queries on sub-navigations
 export const shouldRevalidate: ShouldRevalidateFunction = ({
@@ -143,6 +148,9 @@ function Layout({children}: {children?: React.ReactNode}) {
         <link rel="stylesheet" href={fieldJournalStyles}></link>
         <Meta />
         <Links />
+        
+        {/* Elfsight Instagram Feed Widget */}
+        <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
         
         {/* Meta Pixel Code */}
         <script

@@ -1,5 +1,6 @@
 import {useParams, Form, Await, useRouteLoaderData, useLocation} from '@remix-run/react';
-import {Suspense, useEffect, useState} from 'react';
+import {Suspense, useEffect, useState, useRef} from 'react';
+import {motion, useScroll, useTransform} from 'framer-motion';
 import {CartForm} from '@shopify/hydrogen';
 
 import {type LayoutQuery} from 'storefrontapi.generated';
@@ -99,6 +100,11 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
     if (path.includes('/our-story')) return true;
     if (path.includes('/journal')) return true;
     if (path.includes('/account')) return true;
+    if (path.includes('/shipping')) return true;
+    if (path.includes('/lookbook')) return true;
+    if (path.includes('/archive')) return true;
+    if (path.includes('/size-guide')) return true;
+    if (path.includes('/ecosystem')) return true;
     return false;
   })();
 
@@ -331,17 +337,36 @@ function MenuMobileNav({
 }
 
 function Footer({menu}: {menu?: EnhancedMenu}) {
+  const footerRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: footerRef,
+    offset: ["start end", "start 0.6"]
+  });
+  
+  // Animate scaleY from 0 to 1 as user scrolls to footer
+  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
+  
   return (
-    <footer className="relative bg-[#0a0a0a] text-[#F2EFE9]">
+    <footer ref={footerRef} className="relative bg-[#0a0a0a] text-[#F2EFE9]">
       
-      {/* Decorative Divider */}
-      <div className="w-full bg-[#0a0a0a]">
-        <img 
-          src="/assets/FooterDivider1.svg" 
-          alt="" 
-          className="w-full h-auto"
-          style={{ filter: 'brightness(0) invert(1)' }}
-        />
+      {/* Decorative Divider with scroll-triggered growth animation */}
+      <div className="w-full bg-[#0a0a0a] overflow-hidden">
+        <motion.div
+          style={{ 
+            scaleY, 
+            opacity,
+            transformOrigin: 'top center',
+          }}
+          className="w-full"
+        >
+          <img 
+            src="/assets/FooterDivider1.svg" 
+            alt="" 
+            className="w-full h-auto"
+            style={{ filter: 'brightness(0) invert(1)' }}
+          />
+        </motion.div>
       </div>
       
       {/* Main Footer Content */}

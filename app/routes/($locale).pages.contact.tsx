@@ -42,10 +42,32 @@ export default function Contact() {
     e.preventDefault();
     setFormStatus('submitting');
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setFormStatus('success');
-    setFormData({name: '', email: '', subject: '', message: ''});
+    try {
+      // Submit to our Resend-powered API endpoint
+      const submitData = new FormData();
+      submitData.append('name', formData.name);
+      submitData.append('email', formData.email);
+      submitData.append('subject', formData.subject);
+      submitData.append('message', formData.message);
+
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        body: submitData,
+      });
+
+      const result = await response.json() as { success: boolean; error?: string };
+      
+      if (result.success) {
+        setFormStatus('success');
+        setFormData({name: '', email: '', subject: '', message: ''});
+      } else {
+        console.error('Contact form error:', result.error);
+        setFormStatus('error');
+      }
+    } catch (error) {
+      console.error('Contact form error:', error);
+      setFormStatus('error');
+    }
   };
 
   return (

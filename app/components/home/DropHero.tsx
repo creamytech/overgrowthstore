@@ -62,7 +62,10 @@ export function DropHero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center bg-[#0a0a0a]">
+    <section 
+      className="relative w-full overflow-hidden flex flex-col items-center justify-center bg-[#0a0a0a]"
+      style={{ minHeight: '100dvh' }}
+    >
       
       {/* Video Background - Cinematic, dark */}
       <div className="absolute inset-0 z-0">

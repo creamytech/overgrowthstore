@@ -107,8 +107,7 @@ function CartDiscounts({
           />
           <Button 
             type="submit" 
-            variant="outline" 
-            className="px-6 font-mono text-[10px] uppercase tracking-[0.2em] border-[#F2EFE9]/20 text-[#F2EFE9] hover:border-[#B55A3C] hover:text-[#B55A3C]"
+            className="px-6 font-mono text-[10px] uppercase tracking-[0.2em] bg-[#F2EFE9] text-[#0a0a0a] hover:bg-[#B55A3C] hover:text-[#F2EFE9] border-0"
           >
             Apply
           </Button>

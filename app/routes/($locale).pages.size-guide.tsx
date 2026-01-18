@@ -176,7 +176,7 @@ export default function SizeGuide() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-[#B55A3C]">•</span>
-                240 GSM heavyweight cotton may shrink 2-3% after first wash
+                Heavyweight cotton may shrink 2-3% after first wash
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-[#B55A3C]">•</span>

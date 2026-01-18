@@ -31,9 +31,9 @@ function root({
 }): SeoConfig {
   return {
     title: shop?.name,
-    titleTemplate: '%s | Hydrogen Demo Store',
+    titleTemplate: '%s | Overgrowth',
     description: truncate(shop?.description ?? ''),
-    handle: '@shopify',
+    handle: '@overgrowth',
     url,
     robots: {
       noIndex: false,
@@ -45,11 +45,7 @@ function root({
       name: shop.name,
       logo: shop.brand?.logo?.image?.url,
       sameAs: [
-        'https://twitter.com/shopify',
-        'https://facebook.com/shopify',
-        'https://instagram.com/shopify',
-        'https://youtube.com/shopify',
-        'https://tiktok.com/@shopify',
+        'https://instagram.com/overgrowth.co',
       ],
       url,
       potentialAction: {
@@ -64,8 +60,8 @@ function root({
 function home({url}: {url: Request['url']}): SeoConfig {
   return {
     title: 'Home',
-    titleTemplate: '%s | Hydrogen Demo Store',
-    description: 'The best place to buy snowboarding products',
+    titleTemplate: '%s | Overgrowth',
+    description: 'Limited edition streetwear artifacts. Heavyweight cotton. Artisan construction.',
     url,
     robots: {
       noIndex: false,

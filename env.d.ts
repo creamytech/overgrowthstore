@@ -34,6 +34,8 @@ declare global {
     // Admin API for newsletter signup
     SHOPIFY_ADMIN_API_ACCESS_TOKEN?: string;
     SHOPIFY_ADMIN_API_VERSION?: string;
+    // Resend API for contact form
+    RESEND_API_KEY?: string;
   }
 }
 

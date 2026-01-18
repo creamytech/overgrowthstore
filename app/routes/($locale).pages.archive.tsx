@@ -1,28 +1,34 @@
-import type {MetaFunction} from '@remix-run/react';
+import {type MetaArgs} from '@remix-run/react';
 import {Link, useLoaderData} from '@remix-run/react';
-import {Image, Money} from '@shopify/hydrogen';
+import {Image, Money, getSeoMeta} from '@shopify/hydrogen';
 import type {LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {motion} from 'framer-motion';
+import {seoPayload} from '~/lib/seo.server';
 
-export const meta: MetaFunction = () => {
-  return [{title: 'Drop Archive | Overgrowth'}];
+export const meta = ({matches}: MetaArgs<typeof loader>) => {
+  return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
-export async function loader({context}: LoaderFunctionArgs) {
+export async function loader({context, request}: LoaderFunctionArgs) {
   const {storefront} = context;
   
   // Get all products sorted by creation date
   const {products} = await storefront.query(ARCHIVE_QUERY);
   
-  return {products: products.nodes};
+  const seo = seoPayload.page({
+    page: {title: 'Drop Archive', seo: {title: 'Drop Archive | Overgrowth', description: 'Once sold out, our pieces are permanently archived. Browse past releases to see what you missed.'}},
+    url: request.url,
+  });
+  
+  return {products: products.nodes, seo};
 }
 
 export default function DropArchive() {
   const {products} = useLoaderData<typeof loader>();
   
-  // Simulate archived (sold out) products for demo - in reality this would come from inventory
-  const archivedProducts = products.slice(0, 4);
-  const currentProducts = products.slice(4);
+  // Separate products by actual availability status from Shopify
+  const currentProducts = products.filter((p: any) => p.availableForSale);
+  const archivedProducts = products.filter((p: any) => !p.availableForSale);
   
   return (
     <div className="min-h-screen bg-[#F2EFE9]">

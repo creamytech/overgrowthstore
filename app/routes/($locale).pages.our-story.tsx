@@ -49,14 +49,14 @@ export default function OurStory() {
         
         <div className="relative z-10 text-center px-6 max-w-4xl">
           <span className="font-mono text-[10px] text-[#B55A3C] tracking-[0.5em] uppercase block mb-8">
-            Origin Document № 001
+            Est. 2024
           </span>
           <h1 className="font-heading text-6xl md:text-8xl lg:text-9xl text-[#F2EFE9] tracking-[0.08em] uppercase mb-8">
-            The Genesis
+            Our Story
           </h1>
           <div className="w-32 h-px bg-gradient-to-r from-transparent via-[#B55A3C] to-transparent mx-auto mb-8" />
           <p className="font-mono text-sm text-[#F2EFE9]/50 max-w-md mx-auto leading-relaxed">
-            Origin coordinates of the Overgrowth movement — where endings become beginnings
+            Limited edition streetwear for those who value quality over quantity
           </p>
         </div>
         
@@ -66,7 +66,7 @@ export default function OurStory() {
         </div>
       </section>
 
-      {/* CHAPTER I - Philosophy */}
+      {/* CHAPTER I - The Beginning */}
       <section className="py-24 md:py-32">
         <div className="max-w-6xl mx-auto px-6 md:px-12">
           <div className="grid lg:grid-cols-[1fr,2fr] gap-16 items-start">
@@ -76,7 +76,7 @@ export default function OurStory() {
                 <span className="w-16 h-16 bg-[#1a472a] text-[#F2EFE9] flex items-center justify-center font-heading text-2xl">I</span>
                 <div>
                   <span className="font-mono text-[9px] text-[#8A8A84] uppercase tracking-[0.3em] block">Chapter One</span>
-                  <span className="font-heading text-xl text-[#1a472a] uppercase">Philosophy</span>
+                  <span className="font-heading text-xl text-[#1a472a] uppercase">The Beginning</span>
                 </div>
               </div>
               
@@ -96,25 +96,25 @@ export default function OurStory() {
             {/* Content */}
             <div className="space-y-8">
               <h2 className="font-heading text-4xl md:text-5xl text-[#1a472a] uppercase tracking-[0.05em] leading-tight">
-                The world did not end.<br />
-                <span className="text-[#B55A3C]">It grew wild again.</span>
+                Born from a simple<br />
+                <span className="text-[#B55A3C]">frustration.</span>
               </h2>
               
               <div className="space-y-6 font-mono text-sm text-[#8A8A84] leading-relaxed">
                 <p className="text-lg text-[#1a472a]/70">
-                  Cities cracked, concrete split, and the forgotten roots beneath us finally tasted sunlight.
-                  Nature returned not as ruin — but as a renaissance.
+                  We got tired of seeing the same mass-produced pieces everywhere. 
+                  The same fits. The same graphics. The same lack of intention.
                 </p>
                 <p>
-                  Overgrowth was born from the belief that every remnant has a second life.
-                  A gas station becomes a garden. A skeleton becomes a symbol of what can bloom after loss.
+                  Overgrowth started as an experiment: what if we made pieces we actually wanted to wear? 
+                  What if we prioritized quality over scale, and authenticity over trends?
                 </p>
                 
                 {/* Pull quote */}
                 <blockquote className="border-l-4 border-[#B55A3C] pl-6 py-4 my-8 bg-[#1a472a]/5">
                   <p className="font-heading text-xl text-[#1a472a] italic">
-                    "We do not mourn endings.<br />
-                    We document what grows after."
+                    "We don't chase trends.<br />
+                    We build pieces that outlast them."
                   </p>
                 </blockquote>
               </div>
@@ -123,34 +123,35 @@ export default function OurStory() {
         </div>
       </section>
 
-      {/* CHAPTER II - Aesthetic */}
+      {/* CHAPTER II - The Philosophy */}
       <section className="py-24 md:py-32 bg-[#0a0a0a]">
         <div className="max-w-6xl mx-auto px-6 md:px-12">
           <div className="grid lg:grid-cols-[2fr,1fr] gap-16 items-start">
             {/* Content */}
             <div className="space-y-8 order-2 lg:order-1">
               <h2 className="font-heading text-4xl md:text-5xl text-[#F2EFE9] uppercase tracking-[0.05em] leading-tight">
-                Where memory and<br />
-                <span className="text-[#B55A3C]">moss intertwine.</span>
+                Scarcity is<br />
+                <span className="text-[#B55A3C]">intentional.</span>
               </h2>
               
               <div className="space-y-6 font-mono text-sm text-[#F2EFE9]/60 leading-relaxed">
                 <p>
-                  Steel softened by vines. History becomes habitat.
-                  The familiar becomes strange again — and therefore wondrous.
+                  Every piece we release is limited. Not for hype—for purpose. 
+                  Small batches mean we can obsess over every detail without compromise.
                 </p>
                 <p>
-                  Soft fabrics meet aged textures. Fresh blooms meet weathered landmarks.
+                  When something sells out, it's archived forever. No restocks. No reprints. 
+                  What you own is genuinely one of a kind.
                 </p>
               </div>
               
               {/* Color palette */}
               <div className="grid grid-cols-4 gap-4 pt-8">
                 {[
-                  {name: 'Brick', color: '#B55A3C', desc: 'pulse of action'},
-                  {name: 'Cream', color: '#F2EFE9', desc: 'paper of recovery'},
-                  {name: 'Dark Green', color: '#1a472a', desc: 'weight of truth', dark: true},
-                  {name: 'Moss', color: '#3E5F4B', desc: 'life creeping in'},
+                  {name: 'Brick', color: '#B55A3C', desc: 'energy & action'},
+                  {name: 'Cream', color: '#F2EFE9', desc: 'clean & timeless'},
+                  {name: 'Dark Green', color: '#1a472a', desc: 'growth & depth', dark: true},
+                  {name: 'Moss', color: '#3E5F4B', desc: 'nature & calm'},
                 ].map((item) => (
                   <div key={item.name} className="text-center">
                     <div 
@@ -169,7 +170,7 @@ export default function OurStory() {
               <div className="flex items-center gap-4 mb-6 lg:justify-end">
                 <div className="text-right">
                   <span className="font-mono text-[9px] text-[#F2EFE9]/50 uppercase tracking-[0.3em] block">Chapter Two</span>
-                  <span className="font-heading text-xl text-[#F2EFE9] uppercase">Aesthetic</span>
+                  <span className="font-heading text-xl text-[#F2EFE9] uppercase">Philosophy</span>
                 </div>
                 <span className="w-16 h-16 bg-[#B55A3C] text-[#F2EFE9] flex items-center justify-center font-heading text-2xl">II</span>
               </div>
@@ -178,7 +179,7 @@ export default function OurStory() {
         </div>
       </section>
 
-      {/* CHAPTER III - Materials */}
+      {/* CHAPTER III - The Craft */}
       <section className="py-24 md:py-32">
         <div className="max-w-6xl mx-auto px-6 md:px-12">
           <div className="text-center mb-16">
@@ -187,16 +188,16 @@ export default function OurStory() {
             </div>
             <span className="font-mono text-[9px] text-[#8A8A84] uppercase tracking-[0.3em] block mb-4">Chapter Three</span>
             <h2 className="font-heading text-4xl md:text-5xl text-[#1a472a] uppercase tracking-[0.05em]">
-              Materials We Favor
+              What We Believe
             </h2>
           </div>
           
-          {/* Materials Grid - Bento style */}
+          {/* Values Grid - Bento style */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              {name: 'Premium Cotton', desc: '240 GSM heavyweight, built to last decades', icon: '◯'},
+              {name: 'Premium Quality', desc: 'Heavyweight cotton that actually lasts', icon: '◯'},
               {name: 'Limited Runs', desc: 'Small batches only—no mass production', icon: '∞'},
-              {name: 'Artisan Craft', desc: 'Each piece reviewed before release', icon: '◇'},
+              {name: 'Artisan Craft', desc: 'Every piece reviewed before it ships', icon: '◇'},
               {name: 'No Reprints', desc: 'Once sold out, archived forever', icon: '△'},
             ].map((item, i) => (
               <div 
@@ -227,18 +228,18 @@ export default function OurStory() {
         
         <div className="relative max-w-4xl mx-auto px-6 text-center">
           <p className="font-heading text-3xl md:text-5xl text-[#F2EFE9]/80 italic mb-4 leading-tight">
-            "The world did not vanish.
+            "Quality over quantity.
           </p>
           <p className="font-heading text-3xl md:text-5xl text-[#B55A3C] italic mb-8">
-            It took root."
+            Always."
           </p>
           <p className="font-mono text-[10px] text-[#F2EFE9]/30 uppercase tracking-[0.3em] mb-12">
-            — Field Notes: Entry 001
+            — The Overgrowth Team
           </p>
           
           <Button asChild className="px-12 py-6 bg-[#B55A3C] text-[#F2EFE9] hover:bg-[#9A4A30] font-mono text-xs uppercase tracking-[0.2em] transition-all duration-300">
             <Link to="/products">
-              Enter the Archive →
+              Shop the Collection →
             </Link>
           </Button>
         </div>

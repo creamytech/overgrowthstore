@@ -317,7 +317,7 @@ export default function Product() {
                       </div>
                       <div className="space-y-1">
                         <span className="text-[#8A8A84]/60 block text-[9px] uppercase tracking-wider">Weight</span>
-                        <span>240 GSM Heavyweight</span>
+                        <span>Heavyweight Cotton</span>
                       </div>
                       <div className="space-y-1">
                         <span className="text-[#8A8A84]/60 block text-[9px] uppercase tracking-wider">Structure</span>
