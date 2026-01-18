@@ -135,6 +135,9 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
                 : 'calc(env(safe-area-inset-top) + 1.5rem)',
               paddingLeft: 'max(env(safe-area-inset-left), 1.5rem)',
               paddingRight: 'max(env(safe-area-inset-right), 1.5rem)',
+              WebkitTransform: 'translateZ(0)',
+              transform: 'translateZ(0)',
+              isolation: 'isolate',
             }}
           >
             <div className="flex justify-between items-center w-full max-w-7xl mx-auto">

@@ -80,6 +80,7 @@
    ============================================ */
 
 /* Paper texture overlay on body - guaranteed to work on all pages */
+/* z-index must be below header (z-1000) to prevent Safari stacking issues */
 body::after {
   content: '' !important;
   position: fixed !important;
@@ -87,12 +88,14 @@ body::after {
   left: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
-  z-index: 9998 !important;
+  z-index: 50 !important; /* Below header (1000) */
   pointer-events: none !important;
   background-image: url('/assets/texture_archive_paper.jpg') !important;
   background-repeat: repeat !important;
   background-size: cover !important;
   opacity: 0.08 !important;
+  -webkit-transform: translateZ(0); /* Safari stacking context fix */
+  transform: translateZ(0);
 }
 
 /* Legacy class (keep for compatibility) */
