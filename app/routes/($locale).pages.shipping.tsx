@@ -31,8 +31,7 @@ const returnsInfo = [
     answer: 'We don\'t accept returns due to the scarcity of each product. Every piece is part of a limited run, and once it\'s gone, it\'s gone forever.',
   },
   {
-    question: 'What if my item arrives damaged?',
-    answer: 'If you receive a damaged or defective item, contact us immediately at hello@overgrowth.co with photos of the damage. We\'ll work with you to make it right.',
+    answer: 'If you receive a damaged or defective item, contact us immediately at customerservice@overgrowth.co with photos of the damage. We\'ll work with you to make it right.',
   },
   {
     question: 'Can I exchange an item?',
@@ -144,10 +143,10 @@ export default function ShippingReturns() {
               Still have questions?
             </p>
             <a 
-              href="mailto:hello@overgrowth.co"
+              href="mailto:customerservice@overgrowth.co"
               className="font-heading text-xl text-[#0a0a0a] hover:text-[#B55A3C] transition-colors"
             >
-              hello@overgrowth.co
+              customerservice@overgrowth.co
             </a>
           </div>
         </div>

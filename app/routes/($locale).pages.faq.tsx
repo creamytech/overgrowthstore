@@ -65,7 +65,7 @@ const faqCategories = [
       },
       {
         q: 'What if my item arrives damaged?',
-        a: 'If you receive a damaged or defective item, contact us immediately at hello@overgrowth.co with photos. We\'ll work with you to make it right.',
+        a: 'If you receive a damaged or defective item, contact us immediately at customerservice@overgrowth.co with photos. We\'ll work with you to make it right.',
       },
       {
         q: 'Can I exchange for a different size?',
@@ -105,7 +105,7 @@ const faqCategories = [
       },
       {
         q: 'Do you offer gift cards?',
-        a: "We're working on adding gift cards soon. In the meantime, you can contact us at hello@overgrowth.co to arrange a gift for someone special.",
+        a: "We're working on adding gift cards soon. In the meantime, you can contact us at customerservice@overgrowth.co to arrange a gift for someone special.",
       },
     ],
   },

@@ -127,10 +127,10 @@ export default function Contact() {
                     Email
                   </span>
                   <a 
-                    href="mailto:hello@overgrowth.co" 
+                    href="mailto:customerservice@overgrowth.co" 
                     className="font-heading text-2xl text-[#1a472a] hover:text-[#B55A3C] transition-colors"
                   >
-                    hello@overgrowth.co
+                    customerservice@overgrowth.co
                   </a>
                 </div>
                 

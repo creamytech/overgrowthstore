@@ -182,7 +182,7 @@ export default function SizeGuide() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-[#B55A3C]">•</span>
-                Questions? Email us at hello@overgrowth.co
+                Questions? Email us at customerservice@overgrowth.co
               </li>
             </ul>
           </div>

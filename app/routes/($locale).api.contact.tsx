@@ -40,7 +40,7 @@ export async function action({request, context}: ActionFunctionArgs) {
       },
       body: JSON.stringify({
         from: 'Overgrowth Contact <hello@news.overgrowth.co>', // Verified domain in Resend
-        to: ['hello@overgrowth.co'], // Your email address
+        to: ['customerservice@overgrowth.co'], // Your email address
         reply_to: email,
         subject: `[Contact Form] ${subject || 'New Message'}`,
         html: `
