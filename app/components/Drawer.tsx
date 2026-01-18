@@ -61,7 +61,7 @@ export function Drawer({
                 leaveTo={offScreen[openFrom]}
               >
                 <Dialog.Panel 
-                  className={`w-screen max-w-md text-left align-middle transition-all transform h-screen-dynamic bg-[#0a0a0a] border-${openFrom === 'left' ? 'r' : 'l'} border-[#F2EFE9]/10`}
+                  className={`w-screen max-w-md text-left align-middle transition-all transform h-full bg-[#0a0a0a] border-${openFrom === 'left' ? 'r' : 'l'} border-[#F2EFE9]/10`}
                 >
                   
                   {/* Edge accent line - Brick */}
