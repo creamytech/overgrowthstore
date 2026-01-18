@@ -136,13 +136,13 @@ function Layout({children}: {children?: React.ReactNode}) {
   const isPasswordPage = location.pathname.includes('/password');
 
   return (
-    <html lang={locale.language} style={{backgroundColor: '#0a0a0a'}}>
+    <html lang={locale.language} style={{backgroundColor: '#F2EFE9'}}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-        {/* iOS Safari theme color - controls status bar and overscroll color */}
-        <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: light)" />
-        <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+        {/* iOS Safari theme color - use cream to match page content */}
+        <meta name="theme-color" content="#F2EFE9" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#F2EFE9" media="(prefers-color-scheme: dark)" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />

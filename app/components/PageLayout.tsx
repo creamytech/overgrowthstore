@@ -126,7 +126,7 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
             role="banner" 
             className={`fixed top-0 left-0 w-full transition-all duration-500 z-[1000] px-6 md:px-12 ${
                 isScrolled 
-                ? 'bg-[#0a0a0a]/95 backdrop-blur-sm pt-4 pb-3 border-b border-[#F2EFE9]/10' 
+                ? 'bg-[#0a0a0a] backdrop-blur-sm pt-4 pb-3 border-b border-[#F2EFE9]/10' 
                 : 'bg-transparent pt-6 pb-5 border-b border-transparent'
             }`}
             style={{
