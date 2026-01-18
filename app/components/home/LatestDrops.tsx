@@ -1,7 +1,7 @@
 import {Link} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
 import {motion} from 'framer-motion';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useMemo, memo} from 'react';
 import {TiltCard} from '~/components/ui/tilt-card';
 
 // Configure your drop date here (UTC time)
@@ -14,9 +14,32 @@ interface TimeLeft {
   seconds: number;
 }
 
-function useCountdown(targetDate: Date) {
+// Check if drop is locked (only updates when state changes)
+function useLockState(targetDate: Date) {
+  const [isLocked, setIsLocked] = useState(() => {
+    return new Date().getTime() < targetDate.getTime();
+  });
+
+  useEffect(() => {
+    const checkLock = () => {
+      const now = new Date().getTime();
+      const target = targetDate.getTime();
+      if (now >= target && isLocked) {
+        setIsLocked(false);
+      }
+    };
+
+    checkLock();
+    const timer = setInterval(checkLock, 1000);
+    return () => clearInterval(timer);
+  }, [targetDate, isLocked]);
+
+  return isLocked;
+}
+
+// Countdown timer display component - matches DropHero style
+const CountdownTimer = memo(function CountdownTimer({ targetDate }: { targetDate: Date }) {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
-  const [isLocked, setIsLocked] = useState(true);
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -25,7 +48,6 @@ function useCountdown(targetDate: Date) {
       const difference = target - now;
 
       if (difference <= 0) {
-        setIsLocked(false);
         setTimeLeft(null);
         return;
       }
@@ -43,8 +65,34 @@ function useCountdown(targetDate: Date) {
     return () => clearInterval(timer);
   }, [targetDate]);
 
-  return { timeLeft, isLocked };
-}
+  if (!timeLeft) return null;
+
+  return (
+    <div className="flex flex-col items-end">
+      <span className="font-mono text-[9px] text-[#F2EFE9]/40 uppercase tracking-wider mb-3">
+        Drop Unlocks In
+      </span>
+      <div className="flex items-center gap-4 md:gap-6">
+        {[
+          { value: timeLeft.days, label: 'Days' },
+          { value: timeLeft.hours, label: 'Hrs' },
+          { value: timeLeft.minutes, label: 'Min' },
+          { value: timeLeft.seconds, label: 'Sec' },
+        ].map((unit, i) => (
+          <div key={unit.label} className="flex items-center gap-2">
+            <span className="font-heading text-xl md:text-2xl text-[#F2EFE9] tabular-nums">
+              {String(unit.value).padStart(2, '0')}
+            </span>
+            <span className="font-mono text-[8px] text-[#F2EFE9]/40 uppercase tracking-wider">
+              {unit.label}
+            </span>
+            {i < 3 && <span className="text-[#F2EFE9]/20 ml-2">:</span>}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+});
 
 // Lock icon component
 function LockIcon({className}: {className?: string}) {
@@ -60,7 +108,7 @@ function LockIcon({className}: {className?: string}) {
  * Features a hero product with supporting grid layout and countdown lock
  */
 export function LatestDrops({products, title = "Current Drop"}: {products: any[], title?: string}) {
-  const { timeLeft, isLocked } = useCountdown(DROP_DATE);
+  const isLocked = useLockState(DROP_DATE);
   
   if (!products || products.length === 0) return null;
 
@@ -233,31 +281,8 @@ export function LatestDrops({products, title = "Current Drop"}: {products: any[]
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            {isLocked && timeLeft ? (
-              <div className="flex flex-col items-end">
-                <span className="font-mono text-[9px] text-[#F2EFE9]/40 uppercase tracking-wider mb-3">
-                  Drop Unlocks In
-                </span>
-                <div className="flex gap-3">
-                  {[
-                    { value: timeLeft.days, label: 'D' },
-                    { value: timeLeft.hours, label: 'H' },
-                    { value: timeLeft.minutes, label: 'M' },
-                    { value: timeLeft.seconds, label: 'S' },
-                  ].map((unit, i) => (
-                    <div key={i} className="text-center">
-                      <div className="w-12 h-12 md:w-14 md:h-14 bg-[#1a1a1a] border border-[#B55A3C]/30 flex items-center justify-center">
-                        <span className="font-heading text-xl md:text-2xl text-[#F2EFE9]">
-                          {unit.value.toString().padStart(2, '0')}
-                        </span>
-                      </div>
-                      <span className="font-mono text-[9px] text-[#F2EFE9]/30 mt-1 block">
-                        {unit.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            {isLocked ? (
+              <CountdownTimer targetDate={DROP_DATE} />
             ) : (
               <Link 
                 to="/products" 
