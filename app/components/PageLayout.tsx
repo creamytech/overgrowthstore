@@ -142,8 +142,8 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
           >
             {/* iOS Notch Fill - only shows when scrolled to match header background */}
             <div 
-              className={`absolute top-0 left-0 right-0 -z-10 transition-opacity duration-500 ${
-                isScrolled ? 'bg-[#0a0a0a]/95 opacity-100' : 'opacity-0'
+              className={`absolute top-0 left-0 right-0 -z-10 transition-all duration-500 ${
+                isScrolled ? 'bg-[#0a0a0a] opacity-100' : 'bg-transparent opacity-0'
               }`}
               style={{
                 height: 'env(safe-area-inset-top)',
