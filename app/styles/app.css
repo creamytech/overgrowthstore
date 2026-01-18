@@ -4,48 +4,66 @@
 
 /* Paper texture overlay - in base layer for guaranteed processing */
 @layer base {
-  /* iOS Safari safe-area overlays */
+  /* ============================================
+     iOS SAFARI SAFE-AREA SYSTEM
+     Paints both notch (top) and home bar (bottom)
+     ============================================ */
+  
   html {
     background-color: #0a0a0a;
     overscroll-behavior: none;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
   }
   
   body {
     background-color: #0a0a0a;
     overscroll-behavior-y: none;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
   }
 
-  /* iOS Safe-Area Top Overlay */
+  /* iOS Safe-Area Top Overlay - Paints the notch area */
   .safe-area-top-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: env(safe-area-inset-top);
-    z-index: 9999;
+    height: env(safe-area-inset-top, 0px);
+    z-index: 2147483647; /* Max z-index */
     pointer-events: none;
-    background-color: transparent;
-    transition: background-color 0.5s ease;
+    background-color: #0a0a0a;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: background-color;
+    transition: background-color 0.3s ease;
   }
 
-  /* iOS Safe-Area Bottom Overlay */
+  /* iOS Safe-Area Bottom Overlay - Paints the home bar area */
   .safe-area-bottom-overlay {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: env(safe-area-inset-bottom);
-    z-index: 9999;
+    height: env(safe-area-inset-bottom, 0px);
+    z-index: 2147483647; /* Max z-index */
     pointer-events: none;
     background-color: #0a0a0a;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
   }
 
-  /* When scrolled, top overlay matches navbar background */
+  /* Default state (not scrolled) - top is transparent to show hero content */
+  html[data-scrolled="false"] .safe-area-top-overlay {
+    background-color: transparent;
+  }
+
+  /* Scrolled state - top matches navbar */
   html[data-scrolled="true"] .safe-area-top-overlay {
     background-color: #0a0a0a;
   }
 
-  /* Body texture overlay */
+  /* Body texture overlay - below safe areas */
   body::after {
     content: '';
     position: fixed;
