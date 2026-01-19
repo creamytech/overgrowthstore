@@ -2,6 +2,7 @@ import {useParams, Form, Await, useRouteLoaderData, useLocation} from '@remix-ru
 import {Suspense, useEffect, useState, useRef} from 'react';
 import {motion, useScroll, useTransform} from 'framer-motion';
 import {CartForm} from '@shopify/hydrogen';
+import {Search} from 'lucide-react';
 
 import {type LayoutQuery} from 'storefrontapi.generated';
 import {Heading} from '~/components/Text';
@@ -23,6 +24,8 @@ import type {RootLoader} from '~/root';
 import {Separator} from '~/components/ui/separator';
 import {Button} from '~/components/ui/button';
 import GlowingBorderButton from '~/components/glowing-border-button';
+import {AnnouncementBar} from '~/components/AnnouncementBar';
+import {SearchDialog} from '~/components/SearchDialog';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -36,6 +39,9 @@ export function PageLayout({children, layout}: LayoutProps) {
   const {headerMenu, footerMenu} = layout || {};
   return (
     <div className="relative bg-[#F2EFE9] min-h-screen">
+      {/* Announcement Bar - Top of page */}
+      <AnnouncementBar />
+      
       {headerMenu && layout?.shop.name && (
         <Header title={layout.shop.name} menu={headerMenu} />
       )}
@@ -69,6 +75,9 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
     openDrawer: openMenu,
     closeDrawer: closeMenu,
   } = useDrawer();
+
+  // Search dialog state
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   // Sync menu state to html for safe-area styling
   useEffect(() => {
@@ -125,6 +134,7 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
       {menu && (
         <MenuDrawer isOpen={isMenuOpen} onClose={closeMenu} menu={menu} />
       )}
+      <SearchDialog isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
       {/* Dark Header - consistent with drawer */}
       {/* isDarkHero: true when on a page with dark hero AND not scrolled past it */}
@@ -185,8 +195,19 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
                 />
               </Link>
 
-              {/* Right: Cart Icon */}
-              <div className="flex items-center gap-6">
+              {/* Right: Search, Account, Cart Icons */}
+              <div className="flex items-center gap-4 md:gap-6">
+                {/* Search Button */}
+                <button
+                  onClick={() => setIsSearchOpen(true)}
+                  className={`transition-colors ${
+                    (isDarkHero || isScrolled) ? 'text-[#F2EFE9]/70 hover:text-[#F2EFE9]' : 'text-[#8A8A84] hover:text-[#B55A3C]'
+                  }`}
+                  aria-label="Search"
+                >
+                  <Search className="w-5 h-5" />
+                </button>
+
                 <Link 
                   to="/account" 
                   className={`hidden md:block transition-colors ${

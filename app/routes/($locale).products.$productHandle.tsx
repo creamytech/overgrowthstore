@@ -19,6 +19,7 @@ import {
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 import clsx from 'clsx';
+import {motion, AnimatePresence} from 'framer-motion';
 
 import type {ProductFragment} from 'storefrontapi.generated';
 import {Link} from '~/components/Link';
@@ -156,28 +157,37 @@ export default function Product() {
         <div className="lg:w-[60%] relative bg-[#0a0a0a]">
           {/* Main Image */}
           <div className="sticky top-0 h-screen flex items-center justify-center p-8 lg:p-16">
-            {activeImage && (
-              <div className="relative w-full h-full max-w-2xl mx-auto">
-                <Image
-                  data={activeImage}
-                  sizes="(min-width: 1024px) 60vw, 100vw"
-                  className="w-full h-full object-contain"
-                />
+            <AnimatePresence mode="wait">
+              {activeImage && (
+                <motion.div 
+                  key={activeImage.id || activeImage.url}
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.98 }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                  className="relative w-full h-full max-w-2xl mx-auto"
+                >
+                  <Image
+                    data={activeImage}
+                    sizes="(min-width: 1024px) 60vw, 100vw"
+                    className="w-full h-full object-contain"
+                  />
                 
-                {/* Specimen Corner Markers */}
-                <div className="absolute top-0 left-0 w-12 h-12 border-l-2 border-t-2 border-[#F2EFE9]/20" />
-                <div className="absolute top-0 right-0 w-12 h-12 border-r-2 border-t-2 border-[#F2EFE9]/20" />
-                <div className="absolute bottom-0 left-0 w-12 h-12 border-l-2 border-b-2 border-[#F2EFE9]/20" />
-                <div className="absolute bottom-0 right-0 w-12 h-12 border-r-2 border-b-2 border-[#F2EFE9]/20" />
+                  {/* Specimen Corner Markers */}
+                  <div className="absolute top-0 left-0 w-12 h-12 border-l-2 border-t-2 border-[#F2EFE9]/20" />
+                  <div className="absolute top-0 right-0 w-12 h-12 border-r-2 border-t-2 border-[#F2EFE9]/20" />
+                  <div className="absolute bottom-0 left-0 w-12 h-12 border-l-2 border-b-2 border-[#F2EFE9]/20" />
+                  <div className="absolute bottom-0 right-0 w-12 h-12 border-r-2 border-b-2 border-[#F2EFE9]/20" />
                 
-                {/* Item ID Tag */}
-                <div className="absolute bottom-3 left-3 bg-black/80 px-2 py-1 backdrop-blur-sm">
-                  <span className="font-mono text-[10px] text-[#F2EFE9]/70 uppercase tracking-wider">
-                    {selectedVariant?.sku ? `Item № ${selectedVariant.sku}` : `View ${activeIndex + 1}/${media.nodes.length}`}
-                  </span>
-                </div>
-              </div>
-            )}
+                  {/* Item ID Tag */}
+                  <div className="absolute bottom-3 left-3 bg-black/80 px-2 py-1 backdrop-blur-sm">
+                    <span className="font-mono text-[10px] text-[#F2EFE9]/70 uppercase tracking-wider">
+                      {selectedVariant?.sku ? `Item № ${selectedVariant.sku}` : `View ${activeIndex + 1}/${media.nodes.length}`}
+                    </span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
           
           {/* Thumbnail Strip - Vertical on left side */}
