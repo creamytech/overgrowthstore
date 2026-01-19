@@ -241,7 +241,7 @@ function Layout({children}: {children?: React.ReactNode}) {
           paddingRight: 'env(safe-area-inset-right)',
         }}
       >
-        {/* iOS Safe-Area Top Overlay - Hardcoded 47px for notch */}
+        {/* iOS Safe-Area Top Overlay - Status bar only */}
         <div 
           aria-hidden="true"
           style={{
@@ -249,13 +249,13 @@ function Layout({children}: {children?: React.ReactNode}) {
             top: 0,
             left: 0,
             right: 0,
-            height: '47px',
-            zIndex: 2147483647,
+            height: '20px',
+            zIndex: 49,
             pointerEvents: 'none',
             backgroundColor: '#0a0a0a',
           }}
         />
-        {/* iOS Safe-Area Bottom Overlay - Hardcoded 34px for home bar */}
+        {/* iOS Safe-Area Bottom Overlay - Home indicator only */}
         <div 
           aria-hidden="true"
           style={{
@@ -263,8 +263,8 @@ function Layout({children}: {children?: React.ReactNode}) {
             bottom: 0,
             left: 0,
             right: 0,
-            height: '34px',
-            zIndex: 2147483647,
+            height: '20px',
+            zIndex: 49,
             pointerEvents: 'none',
             backgroundColor: '#0a0a0a',
           }}
