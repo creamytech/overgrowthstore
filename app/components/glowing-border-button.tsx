@@ -31,15 +31,14 @@ const GlowingBorderButton = ({
           "bg-[#1a1a1a]"
         )}
       >
-        {/* Rotating Border Beam */}
+        {/* Rotating Border Glow - Conic gradient for smooth perimeter trace */}
         <div className="absolute inset-0 overflow-hidden">
           <div
-            className={cn(
-              "absolute left-1/2 top-1/2 h-[500%] w-[80px] -translate-x-1/2 -translate-y-1/2 animate-[spin_3s_linear_infinite]",
-              "[background:linear-gradient(to_right,transparent_20%,#B55A3C_50%,#B55A3C_60%,transparent_80%)]",
-              "blur-[2px]"
-            )}
-          ></div>
+            className="absolute inset-[-100%] animate-[spin_4s_linear_infinite]"
+            style={{
+              background: 'conic-gradient(from 0deg, transparent, #B55A3C 10%, #B55A3C 15%, transparent 25%)',
+            }}
+          />
         </div>
 
         {/* Inner Content */}

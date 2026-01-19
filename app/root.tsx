@@ -139,7 +139,6 @@ function Layout({children}: {children?: React.ReactNode}) {
     <html lang={locale.language} style={{backgroundColor: '#0a0a0a'}} data-scrolled="false">
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
         {/* iOS Safari theme color */}
         <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
@@ -155,6 +154,8 @@ function Layout({children}: {children?: React.ReactNode}) {
           rel="stylesheet" 
         />
         <Meta />
+        {/* CRITICAL: viewport-fit=cover MUST come AFTER <Meta /> to override framework defaults */}
+        <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
         <Links />
         
         
