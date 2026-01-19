@@ -195,7 +195,7 @@ function Layout({children}: {children?: React.ReactNode}) {
           paddingRight: 'env(safe-area-inset-right)',
         }}
       >
-        {/* iOS Safe-Area Top Overlay */}
+        {/* iOS Safe-Area Top Overlay - RED FOR TESTING */}
         <div 
           aria-hidden="true"
           style={{
@@ -206,10 +206,10 @@ function Layout({children}: {children?: React.ReactNode}) {
             height: 'env(safe-area-inset-top)',
             zIndex: 2147483647,
             pointerEvents: 'none',
-            background: '#0a0a0a',
+            background: 'red',
           }}
         />
-        {/* iOS Safe-Area Bottom Overlay */}
+        {/* iOS Safe-Area Bottom Overlay - BLUE FOR TESTING */}
         <div 
           aria-hidden="true"
           style={{
@@ -220,7 +220,7 @@ function Layout({children}: {children?: React.ReactNode}) {
             height: 'env(safe-area-inset-bottom)',
             zIndex: 2147483647,
             pointerEvents: 'none',
-            background: '#0a0a0a',
+            background: 'blue',
           }}
         />
         {/* Global Paper Texture Overlay - extends into safe areas */}
