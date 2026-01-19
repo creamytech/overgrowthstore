@@ -241,7 +241,7 @@ function Layout({children}: {children?: React.ReactNode}) {
           paddingRight: 'env(safe-area-inset-right)',
         }}
       >
-        {/* iOS Safe-Area Top Overlay - Matches footer color and texture */}
+        {/* iOS Safe-Area Top Overlay - Solid black like footer */}
         <div 
           aria-hidden="true"
           style={{
@@ -249,17 +249,13 @@ function Layout({children}: {children?: React.ReactNode}) {
             top: 0,
             left: 0,
             right: 0,
-            height: '10px',
+            height: '15px',
             zIndex: 9999,
             pointerEvents: 'none',
             backgroundColor: '#0a0a0a',
-            backgroundImage: "url('/assets/texture_archive_paper.jpg')",
-            backgroundRepeat: 'repeat',
-            backgroundSize: '300px',
-            opacity: 1,
           }}
         />
-        {/* iOS Safe-Area Bottom Overlay - Matches footer color and texture */}
+        {/* iOS Safe-Area Bottom Overlay - Solid black like footer */}
         <div 
           aria-hidden="true"
           style={{
@@ -267,14 +263,10 @@ function Layout({children}: {children?: React.ReactNode}) {
             bottom: 0,
             left: 0,
             right: 0,
-            height: '10px',
+            height: '15px',
             zIndex: 9999,
             pointerEvents: 'none',
             backgroundColor: '#0a0a0a',
-            backgroundImage: "url('/assets/texture_archive_paper.jpg')",
-            backgroundRepeat: 'repeat',
-            backgroundSize: '300px',
-            opacity: 1,
           }}
         />
         {/* Global Paper Texture Overlay - extends into safe areas */}
