@@ -195,34 +195,10 @@ function Layout({children}: {children?: React.ReactNode}) {
           paddingRight: 'env(safe-area-inset-right)',
         }}
       >
-        {/* iOS Safe-Area Top Overlay - RED FOR TESTING */}
-        <div 
-          aria-hidden="true"
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 'env(safe-area-inset-top)',
-            zIndex: 2147483647,
-            pointerEvents: 'none',
-            background: 'red',
-          }}
-        />
-        {/* iOS Safe-Area Bottom Overlay - BLUE FOR TESTING */}
-        <div 
-          aria-hidden="true"
-          style={{
-            position: 'fixed',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: 'env(safe-area-inset-bottom)',
-            zIndex: 2147483647,
-            pointerEvents: 'none',
-            background: 'blue',
-          }}
-        />
+        {/* iOS Safe-Area Top Overlay */}
+        <div className="SAFE_TEST_TOP" aria-hidden="true" />
+        {/* iOS Safe-Area Bottom Overlay */}
+        <div className="SAFE_TEST_BOTTOM" aria-hidden="true" />
         {/* Global Paper Texture Overlay - extends into safe areas */}
         <div 
           aria-hidden="true"
