@@ -29,14 +29,10 @@
     top: 0;
     left: 0;
     right: 0;
-    height: env(safe-area-inset-top, 0px);
-    z-index: 2147483647; /* Max z-index */
+    height: env(safe-area-inset-top);
+    z-index: 2147483647;
     pointer-events: none;
-    background-color: #0a0a0a;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    will-change: background-color;
-    transition: background-color 0.3s ease;
+    background: #0a0a0a !important;
   }
 
   /* iOS Safe-Area Bottom Overlay - Paints the home bar area */
@@ -45,31 +41,10 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: env(safe-area-inset-bottom, 0px);
-    z-index: 2147483647; /* Max z-index */
+    height: env(safe-area-inset-bottom);
+    z-index: 2147483647;
     pointer-events: none;
-    background-color: #0a0a0a;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-  }
-
-  /* Default state (not scrolled) - top is transparent to show hero content */
-  html[data-scrolled="false"] .safe-area-top-overlay {
-    background-color: transparent;
-  }
-
-  /* Scrolled state - top matches navbar */
-  html[data-scrolled="true"] .safe-area-top-overlay {
-    background-color: #0a0a0a;
-  }
-
-  /* Menu Open State - Force both overlays to be opaque black */
-  html[data-menu-open="true"] .safe-area-top-overlay {
-    background-color: #0a0a0a !important;
-  }
-  
-  html[data-menu-open="true"] .safe-area-bottom-overlay {
-    background-color: #0a0a0a !important;
+    background: #0a0a0a !important;
   }
 
   /* Body texture overlay - extends into safe areas */
