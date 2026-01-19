@@ -195,10 +195,6 @@ function Layout({children}: {children?: React.ReactNode}) {
           paddingRight: 'env(safe-area-inset-right)',
         }}
       >
-        {/* DIAGNOSTIC: Red/Blue safe area test bars */}
-        <div className="SAFE_TEST_TOP" aria-hidden="true" />
-        <div className="SAFE_TEST_BOTTOM" aria-hidden="true" />
-        
         {/* iOS Safe-Area Top Overlay - syncs with navbar scroll state */}
         <div 
           className="safe-area-top-overlay"
