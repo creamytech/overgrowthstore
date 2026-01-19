@@ -23,7 +23,7 @@
     min-height: -webkit-fill-available;
   }
 
-  /* iOS Safe-Area Overlays - Hardcoded for iPhone compatibility */
+  /* iOS Safe-Area Overlays - Uses JS-calculated values for iOS 18/26 Safari bug */
   .SAFE_TEST_TOP,
   .SAFE_TEST_BOTTOM {
     position: fixed;
@@ -36,14 +36,23 @@
 
   .SAFE_TEST_TOP {
     top: 0;
-    /* iPhone notch/dynamic island height - 47px for notch, 59px for dynamic island */
-    height: env(safe-area-inset-top, 47px);
+    /* Use JS-set variable for iOS, fallback to env() for other devices */
+    height: var(--ios-safe-top, env(safe-area-inset-top, 0px));
   }
 
   .SAFE_TEST_BOTTOM {
     bottom: 0;
-    /* iPhone home bar height */
-    height: env(safe-area-inset-bottom, 34px);
+    /* Use JS-set variable for iOS, fallback to env() for other devices */
+    height: var(--ios-safe-bottom, env(safe-area-inset-bottom, 0px));
+  }
+
+  /* iOS-specific: ensure overlays show even when env() fails */
+  html.ios-device .SAFE_TEST_TOP {
+    height: var(--ios-safe-top, 47px);
+  }
+  
+  html.ios-device .SAFE_TEST_BOTTOM {
+    height: var(--ios-safe-bottom, 34px);
   }
 
   /* iOS Safe-Area Top Overlay - Paints the notch area */

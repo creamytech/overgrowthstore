@@ -187,6 +187,52 @@ function Layout({children}: {children?: React.ReactNode}) {
           />
         </noscript>
         {/* End Meta Pixel Code */}
+        
+        {/* iOS Safari Safe Area JavaScript Fix for iOS 18/26 bug */}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              // Detect iOS Safari
+              var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+              var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+              
+              if (isIOS) {
+                // Calculate safe area heights based on device
+                var screenHeight = window.screen.height;
+                var screenWidth = window.screen.width;
+                var pixelRatio = window.devicePixelRatio || 1;
+                
+                // iPhone safe area heights (in CSS pixels)
+                var safeAreaTop = 0;
+                var safeAreaBottom = 0;
+                
+                // Dynamic Island iPhones (14 Pro and later): ~59px top, ~34px bottom
+                // Notch iPhones (X-14): ~47px top, ~34px bottom  
+                // Non-notch iPhones: ~20px top (status bar), ~0px bottom
+                
+                if (screenHeight >= 844) {
+                  // Modern iPhones with notch or dynamic island
+                  safeAreaTop = screenHeight >= 932 ? 59 : 47; // Dynamic island vs notch
+                  safeAreaBottom = 34;
+                } else if (screenHeight >= 812) {
+                  // iPhone X/XS/11 Pro size
+                  safeAreaTop = 44;
+                  safeAreaBottom = 34;
+                } else {
+                  // Older iPhones
+                  safeAreaTop = 20;
+                  safeAreaBottom = 0;
+                }
+                
+                // Set CSS custom properties
+                document.documentElement.style.setProperty('--ios-safe-top', safeAreaTop + 'px');
+                document.documentElement.style.setProperty('--ios-safe-bottom', safeAreaBottom + 'px');
+                document.documentElement.classList.add('ios-device');
+              }
+            })();
+          `
+        }} />
       </head>
       <body 
         className="antialiased text-ink bg-[#0a0a0a] selection:bg-rust selection:text-paper"
