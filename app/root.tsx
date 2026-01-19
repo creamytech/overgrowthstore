@@ -241,7 +241,7 @@ function Layout({children}: {children?: React.ReactNode}) {
           paddingRight: 'env(safe-area-inset-right)',
         }}
       >
-        {/* iOS Safe-Area Top Overlay - Status bar only */}
+        {/* iOS Safe-Area Top Overlay - Matches page background with texture */}
         <div 
           aria-hidden="true"
           style={{
@@ -249,13 +249,17 @@ function Layout({children}: {children?: React.ReactNode}) {
             top: 0,
             left: 0,
             right: 0,
-            height: '20px',
+            height: '10px',
             zIndex: 9999,
             pointerEvents: 'none',
             backgroundColor: '#0a0a0a',
+            backgroundImage: "url('/assets/texture_archive_paper.jpg')",
+            backgroundRepeat: 'repeat',
+            backgroundSize: 'cover',
+            backgroundBlendMode: 'overlay',
           }}
         />
-        {/* iOS Safe-Area Bottom Overlay - Home indicator only */}
+        {/* iOS Safe-Area Bottom Overlay - Matches page background with texture */}
         <div 
           aria-hidden="true"
           style={{
@@ -263,10 +267,14 @@ function Layout({children}: {children?: React.ReactNode}) {
             bottom: 0,
             left: 0,
             right: 0,
-            height: '20px',
+            height: '10px',
             zIndex: 9999,
             pointerEvents: 'none',
             backgroundColor: '#0a0a0a',
+            backgroundImage: "url('/assets/texture_archive_paper.jpg')",
+            backgroundRepeat: 'repeat',
+            backgroundSize: 'cover',
+            backgroundBlendMode: 'overlay',
           }}
         />
         {/* Global Paper Texture Overlay - extends into safe areas */}
