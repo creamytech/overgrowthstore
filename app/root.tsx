@@ -250,7 +250,7 @@ function Layout({children}: {children?: React.ReactNode}) {
             left: 0,
             right: 0,
             height: '20px',
-            zIndex: 49,
+            zIndex: 9999,
             pointerEvents: 'none',
             backgroundColor: '#0a0a0a',
           }}
@@ -264,7 +264,7 @@ function Layout({children}: {children?: React.ReactNode}) {
             left: 0,
             right: 0,
             height: '20px',
-            zIndex: 49,
+            zIndex: 9999,
             pointerEvents: 'none',
             backgroundColor: '#0a0a0a',
           }}
