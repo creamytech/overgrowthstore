@@ -23,6 +23,32 @@
     min-height: -webkit-fill-available;
   }
 
+  /* ============================================
+     DIAGNOSTIC: Red/Blue test bars
+     If you see red (top) and blue (bottom), env() works.
+     If not, viewport-fit or transform issue.
+     ============================================ */
+  .SAFE_TEST_TOP,
+  .SAFE_TEST_BOTTOM {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 2147483647;
+    pointer-events: none;
+  }
+
+  .SAFE_TEST_TOP {
+    top: 0;
+    height: env(safe-area-inset-top);
+    background: red !important;
+  }
+
+  .SAFE_TEST_BOTTOM {
+    bottom: 0;
+    height: env(safe-area-inset-bottom);
+    background: blue !important;
+  }
+
   /* iOS Safe-Area Top Overlay - Paints the notch area */
   .safe-area-top-overlay {
     position: fixed;
