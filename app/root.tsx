@@ -195,15 +195,33 @@ function Layout({children}: {children?: React.ReactNode}) {
           paddingRight: 'env(safe-area-inset-right)',
         }}
       >
-        {/* iOS Safe-Area Top Overlay - syncs with navbar scroll state */}
+        {/* iOS Safe-Area Top Overlay */}
         <div 
-          className="safe-area-top-overlay"
           aria-hidden="true"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 'env(safe-area-inset-top)',
+            zIndex: 2147483647,
+            pointerEvents: 'none',
+            background: '#0a0a0a',
+          }}
         />
-        {/* iOS Safe-Area Bottom Overlay - syncs with navbar scroll state */}
+        {/* iOS Safe-Area Bottom Overlay */}
         <div 
-          className="safe-area-bottom-overlay"
           aria-hidden="true"
+          style={{
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 'env(safe-area-inset-bottom)',
+            zIndex: 2147483647,
+            pointerEvents: 'none',
+            background: '#0a0a0a',
+          }}
         />
         {/* Global Paper Texture Overlay - extends into safe areas */}
         <div 
