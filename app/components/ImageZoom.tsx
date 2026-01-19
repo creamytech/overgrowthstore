@@ -13,8 +13,8 @@ interface ImageZoomProps {
   image: {
     url: string;
     altText?: string | null;
-    width?: number;
-    height?: number;
+    width?: number | null;
+    height?: number | null;
   };
   isOpen: boolean;
   onClose: () => void;

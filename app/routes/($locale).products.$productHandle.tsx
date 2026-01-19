@@ -53,6 +53,10 @@ import {
   TooltipTrigger,
 } from '~/components/ui/tooltip';
 import {Alert, AlertDescription} from '~/components/ui/alert';
+import {StickyAddToCart} from '~/components/StickyAddToCart';
+import {InventoryAlert} from '~/components/InventoryDisplay';
+import {ReviewSection} from '~/components/ReviewSection';
+import {ImageZoomDialog} from '~/components/ImageZoom';
 
 export const headers = routeHeaders;
 
@@ -137,6 +141,7 @@ export default function Product() {
   
   const [activeImage, setActiveImage] = useState(initialImage);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isZoomOpen, setIsZoomOpen] = useState(false);
 
   useEffect(() => {
     if (selectedVariant?.image) {
@@ -165,13 +170,23 @@ export default function Product() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.98 }}
                   transition={{ duration: 0.3, ease: 'easeOut' }}
-                  className="relative w-full h-full max-w-2xl mx-auto"
+                  className="relative w-full h-full max-w-2xl mx-auto cursor-zoom-in group"
+                  onClick={() => setIsZoomOpen(true)}
                 >
                   <Image
                     data={activeImage}
                     sizes="(min-width: 1024px) 60vw, 100vw"
                     className="w-full h-full object-contain"
                   />
+                
+                  {/* Zoom Hint Overlay */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center pointer-events-none">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-black/60 rounded-full p-3">
+                      <svg className="w-5 h-5 text-[#F2EFE9]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                      </svg>
+                    </div>
+                  </div>
                 
                   {/* Specimen Corner Markers */}
                   <div className="absolute top-0 left-0 w-12 h-12 border-l-2 border-t-2 border-[#F2EFE9]/20" />
@@ -188,6 +203,15 @@ export default function Product() {
                 </motion.div>
               )}
             </AnimatePresence>
+            
+            {/* Image Zoom Dialog */}
+            {activeImage && (
+              <ImageZoomDialog
+                image={activeImage}
+                isOpen={isZoomOpen}
+                onClose={() => setIsZoomOpen(false)}
+              />
+            )}
           </div>
           
           {/* Thumbnail Strip - Vertical on left side */}
@@ -399,6 +423,16 @@ export default function Product() {
           )}
         </Await>
       </Suspense>
+
+      {/* Customer Reviews Section */}
+      <ReviewSection productId={product.id} productTitle={title} />
+
+      {/* Sticky Add to Cart for Mobile */}
+      <StickyAddToCart
+        selectedVariant={selectedVariant}
+        productTitle={title}
+        show={!isOutOfStock}
+      />
 
       <Analytics.ProductView
         data={{

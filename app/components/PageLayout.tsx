@@ -24,7 +24,6 @@ import type {RootLoader} from '~/root';
 import {Separator} from '~/components/ui/separator';
 import {Button} from '~/components/ui/button';
 import GlowingBorderButton from '~/components/glowing-border-button';
-import {AnnouncementBar} from '~/components/AnnouncementBar';
 import {SearchDialog} from '~/components/SearchDialog';
 
 type LayoutProps = {
@@ -39,9 +38,6 @@ export function PageLayout({children, layout}: LayoutProps) {
   const {headerMenu, footerMenu} = layout || {};
   return (
     <div className="relative bg-[#F2EFE9] min-h-screen">
-      {/* Announcement Bar - Top of page */}
-      <AnnouncementBar />
-      
       {headerMenu && layout?.shop.name && (
         <Header title={layout.shop.name} menu={headerMenu} />
       )}
