@@ -154,8 +154,23 @@ function Layout({children}: {children?: React.ReactNode}) {
           rel="stylesheet" 
         />
         <Meta />
-        {/* CRITICAL: viewport-fit=cover MUST come AFTER <Meta /> to override framework defaults */}
+        {/* CRITICAL: viewport-fit=cover MUST be set - use script to guarantee override */}
         <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              var viewport = document.querySelector('meta[name="viewport"]');
+              if (viewport) {
+                viewport.setAttribute('content', 'width=device-width,initial-scale=1,viewport-fit=cover');
+              } else {
+                var meta = document.createElement('meta');
+                meta.name = 'viewport';
+                meta.content = 'width=device-width,initial-scale=1,viewport-fit=cover';
+                document.head.appendChild(meta);
+              }
+            })();
+          `
+        }} />
         <Links />
         
         
