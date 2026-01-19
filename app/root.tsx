@@ -241,7 +241,7 @@ function Layout({children}: {children?: React.ReactNode}) {
           paddingRight: 'env(safe-area-inset-right)',
         }}
       >
-        {/* iOS Safe-Area Top Overlay - Matches page background with texture */}
+        {/* iOS Safe-Area Top Overlay - Matches navbar with backdrop blur */}
         <div 
           aria-hidden="true"
           style={{
@@ -252,14 +252,12 @@ function Layout({children}: {children?: React.ReactNode}) {
             height: '10px',
             zIndex: 9999,
             pointerEvents: 'none',
-            backgroundColor: '#0a0a0a',
-            backgroundImage: "url('/assets/texture_archive_paper.jpg')",
-            backgroundRepeat: 'repeat',
-            backgroundSize: 'cover',
-            backgroundBlendMode: 'overlay',
+            backgroundColor: 'rgba(10, 10, 10, 0.95)',
+            backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)',
           }}
         />
-        {/* iOS Safe-Area Bottom Overlay - Matches page background with texture */}
+        {/* iOS Safe-Area Bottom Overlay - Matches navbar with backdrop blur */}
         <div 
           aria-hidden="true"
           style={{
@@ -270,11 +268,9 @@ function Layout({children}: {children?: React.ReactNode}) {
             height: '10px',
             zIndex: 9999,
             pointerEvents: 'none',
-            backgroundColor: '#0a0a0a',
-            backgroundImage: "url('/assets/texture_archive_paper.jpg')",
-            backgroundRepeat: 'repeat',
-            backgroundSize: 'cover',
-            backgroundBlendMode: 'overlay',
+            backgroundColor: 'rgba(10, 10, 10, 0.95)',
+            backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)',
           }}
         />
         {/* Global Paper Texture Overlay - extends into safe areas */}
