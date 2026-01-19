@@ -241,7 +241,7 @@ function Layout({children}: {children?: React.ReactNode}) {
           paddingRight: 'env(safe-area-inset-right)',
         }}
       >
-        {/* iOS Safe-Area Top Overlay - Matches navbar with backdrop blur */}
+        {/* iOS Safe-Area Top Overlay - Matches footer color and texture */}
         <div 
           aria-hidden="true"
           style={{
@@ -252,12 +252,14 @@ function Layout({children}: {children?: React.ReactNode}) {
             height: '10px',
             zIndex: 9999,
             pointerEvents: 'none',
-            backgroundColor: 'rgba(10, 10, 10, 0.95)',
-            backdropFilter: 'blur(4px)',
-            WebkitBackdropFilter: 'blur(4px)',
+            backgroundColor: '#0a0a0a',
+            backgroundImage: "url('/assets/texture_archive_paper.jpg')",
+            backgroundRepeat: 'repeat',
+            backgroundSize: '300px',
+            opacity: 1,
           }}
         />
-        {/* iOS Safe-Area Bottom Overlay - Matches navbar with backdrop blur */}
+        {/* iOS Safe-Area Bottom Overlay - Matches footer color and texture */}
         <div 
           aria-hidden="true"
           style={{
@@ -268,9 +270,11 @@ function Layout({children}: {children?: React.ReactNode}) {
             height: '10px',
             zIndex: 9999,
             pointerEvents: 'none',
-            backgroundColor: 'rgba(10, 10, 10, 0.95)',
-            backdropFilter: 'blur(4px)',
-            WebkitBackdropFilter: 'blur(4px)',
+            backgroundColor: '#0a0a0a',
+            backgroundImage: "url('/assets/texture_archive_paper.jpg')",
+            backgroundRepeat: 'repeat',
+            backgroundSize: '300px',
+            opacity: 1,
           }}
         />
         {/* Global Paper Texture Overlay - extends into safe areas */}
