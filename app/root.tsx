@@ -241,9 +241,10 @@ function Layout({children}: {children?: React.ReactNode}) {
           paddingRight: 'env(safe-area-inset-right)',
         }}
       >
-        {/* iOS Safe-Area Top Overlay - Solid black like footer */}
+        {/* iOS Safe-Area Top Overlay - Mobile only */}
         <div 
           aria-hidden="true"
+          className="lg:hidden"
           style={{
             position: 'fixed',
             top: 0,
@@ -255,9 +256,10 @@ function Layout({children}: {children?: React.ReactNode}) {
             backgroundColor: '#0a0a0a',
           }}
         />
-        {/* iOS Safe-Area Bottom Overlay - Solid black like footer */}
+        {/* iOS Safe-Area Bottom Overlay - Mobile only */}
         <div 
           aria-hidden="true"
+          className="lg:hidden"
           style={{
             position: 'fixed',
             bottom: 0,
