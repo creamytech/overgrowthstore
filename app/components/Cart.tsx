@@ -164,7 +164,7 @@ function CartLines({
     >
       <ul className="grid gap-6">
         {currentLines.map((line) => (
-          <CartLineItem key={line.id} line={line as CartLine} />
+          <CartLineItem key={line.id} line={line as CartLine} layout={layout} />
         ))}
       </ul>
     </section>
@@ -241,7 +241,7 @@ type OptimisticData = {
 };
 
 
-function CartLineItem({line}: {line: CartLine}) {
+function CartLineItem({line, layout = 'drawer'}: {line: CartLine; layout?: Layouts}) {
   const optimisticData = useOptimisticData<OptimisticData>(line?.id);
 
   if (!line?.id) return null;
@@ -250,10 +250,18 @@ function CartLineItem({line}: {line: CartLine}) {
 
   if (typeof quantity === 'undefined' || !merchandise?.product) return null;
 
+  // Conditional colors based on layout
+  const isDrawer = layout === 'drawer';
+  const borderColor = isDrawer ? 'border-[#F2EFE9]/10' : 'border-[#1a472a]/10';
+  const imageBg = isDrawer ? 'bg-[#1a1a1a]' : 'bg-[#F2EFE9]';
+  const imageBorder = isDrawer ? 'border-[#F2EFE9]/10' : 'border-[#1a472a]/10';
+  const titleColor = isDrawer ? 'text-[#F2EFE9]' : 'text-[#1a472a]';
+  const optionColor = isDrawer ? 'text-[#F2EFE9]/40' : 'text-[#8A8A84]';
+
   return (
     <li
       key={id}
-      className="relative group py-6 border-b border-[#1a472a]/10"
+      className={`relative group py-6 border-b ${borderColor}`}
       style={{
         display: optimisticData?.action === 'remove' ? 'none' : 'block',
       }}
@@ -261,7 +269,7 @@ function CartLineItem({line}: {line: CartLine}) {
       <div className="flex gap-5">
         {/* Image with corner markers */}
         <div className="relative flex-shrink-0">
-          <div className="w-24 h-28 bg-[#F2EFE9] border border-[#1a472a]/10 overflow-hidden">
+          <div className={`w-24 h-28 ${imageBg} border ${imageBorder} overflow-hidden`}>
             {merchandise.image && (
               <Image
                 width={96}
@@ -280,7 +288,7 @@ function CartLineItem({line}: {line: CartLine}) {
         <div className="flex-grow flex flex-col justify-between">
           {/* Top: Title + Options */}
           <div>
-            <h3 className="font-heading text-base text-[#1a472a] uppercase tracking-wide mb-1">
+            <h3 className={`font-heading text-base ${titleColor} uppercase tracking-wide mb-1`}>
               {merchandise?.product?.handle ? (
                 <Link to={`/products/${merchandise.product.handle}`} className="hover:text-[#B55A3C] transition-colors">
                   {merchandise?.product?.title || ''}
@@ -292,7 +300,7 @@ function CartLineItem({line}: {line: CartLine}) {
 
             <div className="flex flex-wrap gap-x-3 gap-y-1">
               {(merchandise?.selectedOptions || []).map((option) => (
-                <span key={option.name} className="font-mono text-[10px] text-[#8A8A84] uppercase tracking-wide">
+                <span key={option.name} className={`font-mono text-[10px] ${optionColor} uppercase tracking-wide`}>
                   {option.name}: <span className="text-[#B55A3C]">{option.value}</span>
                 </span>
               ))}
@@ -328,7 +336,7 @@ function ItemRemoveButton({lineId}: {lineId: CartLine['id']}) {
       }}
     >
       <button
-        className="text-[#8A8A84] hover:text-[#B55A3C] transition-colors"
+        className="text-[#F2EFE9]/50 hover:text-[#B55A3C] transition-colors"
         type="submit"
       >
         <span className="sr-only">Remove</span>
@@ -356,12 +364,12 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
       <label htmlFor={`quantity-${lineId}`} className="sr-only">
         Quantity, {optimisticQuantity}
       </label>
-      <div className="flex items-center border border-[#1a472a]/20">
+      <div className="flex items-center border border-[#F2EFE9]/20">
         <UpdateCartButton lines={[{id: lineId, quantity: prevQuantity}]}>
           <button
             name="decrease-quantity"
             aria-label="Decrease quantity"
-            className="w-8 h-8 flex items-center justify-center text-[#8A8A84] hover:text-[#B55A3C] hover:bg-[#1a472a]/5 transition-colors disabled:opacity-30"
+            className="w-8 h-8 flex items-center justify-center text-[#F2EFE9]/50 hover:text-[#B55A3C] hover:bg-[#F2EFE9]/5 transition-colors disabled:opacity-30"
             value={prevQuantity}
             disabled={optimisticQuantity <= 1}
           >
@@ -373,13 +381,13 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
           </button>
         </UpdateCartButton>
 
-        <div className="px-3 text-center text-[#1a472a] font-mono text-xs min-w-[2rem]" data-test="item-quantity">
+        <div className="px-3 text-center text-[#F2EFE9] font-mono text-xs min-w-[2rem]" data-test="item-quantity">
           {optimisticQuantity}
         </div>
 
         <UpdateCartButton lines={[{id: lineId, quantity: nextQuantity}]}>
           <button
-            className="w-8 h-8 flex items-center justify-center text-[#8A8A84] hover:text-[#B55A3C] hover:bg-[#1a472a]/5 transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-[#F2EFE9]/50 hover:text-[#B55A3C] hover:bg-[#F2EFE9]/5 transition-colors"
             name="increase-quantity"
             value={nextQuantity}
             aria-label="Increase quantity"
