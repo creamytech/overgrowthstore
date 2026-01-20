@@ -48,11 +48,11 @@
 
   /* iOS-specific: ensure overlays show even when env() fails */
   html.ios-device .SAFE_TEST_TOP {
-    height: var(--ios-safe-top, 47px);
+    height: var(--ios-safe-top, 44px);
   }
   
   html.ios-device .SAFE_TEST_BOTTOM {
-    height: var(--ios-safe-bottom, 34px);
+    height: var(--ios-safe-bottom, 31px);
   }
 
   /* iOS Safe-Area Top Overlay - Paints the notch area */
