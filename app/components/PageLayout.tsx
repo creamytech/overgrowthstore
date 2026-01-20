@@ -187,24 +187,14 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
                 />
               </Link>
 
-              {/* Right: Cart Icon - Active when cart drawer is open */}
+              {/* Right: Cart Icon - Active when cart drawer is open OR items in cart */}
               <div className="flex items-center gap-4 md:gap-6">
-
-                <button
-                  onClick={openCart}
-                  className="relative group"
-                  aria-label="Open Cart"
-                >
-                  <img 
-                    src={isCartOpen ? '/assets/CartActive.svg' : '/assets/CartInactive.svg'}
-                    alt="Cart"
-                    className={`transition-all duration-300 group-hover:scale-110 ${isScrolled ? 'w-8 h-8' : 'w-10 h-10'}`}
-                    style={{
-                      filter: (isDarkHero || isScrolled) ? 'brightness(0) invert(1)' : 'none',
-                    }}
-                  />
-                  <CartBadge isLight={isDarkHero || isScrolled} />
-                </button>
+                <CartIcon 
+                  isOpen={isCartOpen} 
+                  onClick={openCart} 
+                  isScrolled={isScrolled}
+                  isDarkHero={isDarkHero}
+                />
               </div>
             </div>
           </header>
@@ -236,6 +226,55 @@ function CartBadge({isLight = false}: {isLight?: boolean}) {
   );
 }
 
+function CartIcon({
+  isOpen,
+  onClick,
+  isScrolled,
+  isDarkHero,
+}: {
+  isOpen: boolean;
+  onClick: () => void;
+  isScrolled: boolean;
+  isDarkHero: boolean;
+}) {
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  
+  return (
+    <Suspense fallback={
+      <button onClick={onClick} className="relative group" aria-label="Open Cart">
+        <img 
+          src="/assets/CartInactive.svg"
+          alt="Cart"
+          className={`transition-all duration-300 group-hover:scale-110 ${isScrolled ? 'w-8 h-8' : 'w-10 h-10'}`}
+          style={{ filter: (isDarkHero || isScrolled) ? 'brightness(0) invert(1)' : 'none' }}
+        />
+      </button>
+    }>
+      <Await resolve={rootData?.cart}>
+        {(cart) => {
+          const hasItems = (cart?.totalQuantity || 0) > 0;
+          const isActive = isOpen || hasItems;
+          
+          return (
+            <button
+              onClick={onClick}
+              className="relative group"
+              aria-label="Open Cart"
+            >
+              <img 
+                src={isActive ? '/assets/CartActive.svg' : '/assets/CartInactive.svg'}
+                alt="Cart"
+                className={`transition-all duration-300 group-hover:scale-110 ${isScrolled ? 'w-8 h-8' : 'w-10 h-10'}`}
+                style={{ filter: (isDarkHero || isScrolled) ? 'brightness(0) invert(1)' : 'none' }}
+              />
+              <CartBadge isLight={isDarkHero || isScrolled} />
+            </button>
+          );
+        }}
+      </Await>
+    </Suspense>
+  );
+}
 
 function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
   const rootData = useRouteLoaderData<RootLoader>('root');
