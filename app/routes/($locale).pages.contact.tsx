@@ -95,7 +95,7 @@ export default function Contact() {
           <div className="inline-flex items-center gap-4 mb-6">
             <div className="w-8 h-px bg-[#B55A3C]" />
             <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase">
-              Recovery Station
+              We're Here to Help
             </span>
             <div className="w-8 h-px bg-[#B55A3C]" />
           </div>
@@ -105,7 +105,7 @@ export default function Contact() {
           </h1>
           
           <p className="font-mono text-sm text-[#F2EFE9]/50 max-w-md mx-auto">
-            Questions about artifacts, orders, or the archive? Our recovery team responds within 24-48 hours.
+            Questions about your order? Need help with sizing? Our team responds within 24-48 hours.
           </p>
         </div>
       </section>

@@ -62,7 +62,7 @@ export default function Homepage() {
               <div className="w-12 h-px bg-[#B55A3C]" />
             </div>
             <h2 className="font-heading text-4xl md:text-5xl text-[#1a472a] uppercase tracking-[0.08em] mb-6">
-              What We Stand For
+              Why Collectors Choose Us
             </h2>
             <p className="font-mono text-sm text-[#8A8A84] max-w-2xl mx-auto">
               In a world of infinite replicas, we choose scarcity. Each piece is a limited artifact—never reprinted, always earned.
@@ -76,18 +76,18 @@ export default function Homepage() {
               {
                 value: "50",
                 title: "Pieces Per Drop",
-                description: "Every drop is produced in small batches. When it sells out, it enters the archive—forever.",
+                description: "Small batches mean real exclusivity. When it sells out, it's gone—and you own something nobody else can get.",
               },
               {
                 value: "0",
                 title: "Restocks Ever",
-                description: "We never reprint. Each piece enters the permanent archive when it sells out.",
+                description: "What you own is genuinely rare. No reprints, no second chances. The archive is final.",
                 accent: true,
               },
               {
                 value: "100%",
                 title: "Premium Cotton",
-                description: "Heavyweight construction. Built to outlast trends and fast fashion.",
+                description: "Heavyweight fabric that actually lasts. Built for years of wear, not seasons.",
               },
             ]}
           />
@@ -98,13 +98,13 @@ export default function Homepage() {
       <section className="py-20 md:py-28 bg-[#0a0a0a]">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase block mb-6">
-            Join The Archive
+            Get First Access
           </span>
           <h2 className="font-heading text-3xl md:text-5xl text-[#F2EFE9] uppercase tracking-wide mb-6">
-            Never Miss A Drop
+            Drops Sell Out Fast
           </h2>
           <p className="font-mono text-sm text-[#F2EFE9]/50 mb-10 max-w-lg mx-auto">
-            Get exclusive early access to new releases, behind-the-scenes content, and members-only drops.
+            Our last drop sold out in under 4 hours. Get early access and a head start on the next release.
           </p>
           
           <HomepageNewsletterForm />

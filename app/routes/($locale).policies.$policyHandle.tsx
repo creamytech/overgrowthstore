@@ -97,8 +97,11 @@ export default function Policies() {
                     <div className="w-2 h-2 border border-rust/40 rotate-45" />
                     <div className="w-12 h-px bg-dark-green/20" />
                 </div>
-                <p className="font-body text-xs text-dark-green/40 italic">
+                <p className="font-body text-xs text-dark-green/40 italic mb-4">
                     Questions? Contact us anytime.
+                </p>
+                <p className="font-mono text-[10px] text-dark-green/30 uppercase tracking-wider">
+                    Overgrowth is a DBA of Pixel Boba LLC
                 </p>
             </div>
 

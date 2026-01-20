@@ -63,7 +63,7 @@ export default function OurStory() {
           </h1>
           <div className="w-32 h-px bg-gradient-to-r from-transparent via-[#B55A3C] to-transparent mx-auto mb-8" />
           <p className="font-mono text-sm text-[#F2EFE9]/50 max-w-md mx-auto leading-relaxed">
-            Limited edition streetwear for those who value quality over quantity
+            For people who are done settling for mass-produced pieces that everyone else owns
           </p>
         </div>
         
@@ -198,7 +198,7 @@ export default function OurStory() {
               The Journey
             </h2>
             <p className="font-mono text-sm text-[#8A8A84] max-w-xl mx-auto">
-              From concept to your hands—every step matters.
+              This is what it takes to create something worth owning.
             </p>
           </div>
           
@@ -208,22 +208,22 @@ export default function OurStory() {
               {
                 step: 'Step 01',
                 title: 'Design',
-                content: 'Every piece starts with an idea—inspired by nature, crafted with intention. We sketch, refine, and obsess until it feels right.',
+                content: 'Every piece starts with an obsession. We sketch, refine, and reject until it feels like something worth owning.',
               },
               {
                 step: 'Step 02',
                 title: 'Source',
-                content: 'Premium heavyweight cotton, sourced responsibly. No shortcuts. No compromises on materials.',
+                content: 'Heavyweight cotton you can actually feel the difference in. No cheap materials, no shortcuts.',
               },
               {
                 step: 'Step 03',
                 title: 'Create',
-                content: 'Small batch production means every piece gets the attention it deserves. Quality control at every stage.',
+                content: 'Small batch production means your piece gets the attention it deserves. We check every one before it ships.',
               },
               {
                 step: 'Step 04',
                 title: 'Release',
-                content: 'Limited drops. Once it\'s gone, it enters the archive forever. No restocks, no reprints.',
+                content: 'Limited drops only. Once it sells out, it\'s gone forever—and you own something nobody else can get.',
               },
             ]}
             className="mb-20"
@@ -240,10 +240,10 @@ export default function OurStory() {
           {/* Values Grid - Bento style */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              {name: 'Premium Quality', desc: 'Heavyweight cotton that actually lasts', icon: '◯'},
-              {name: 'Limited Runs', desc: 'Small batches only—no mass production', icon: '∞'},
-              {name: 'Artisan Craft', desc: 'Every piece reviewed before it ships', icon: '◇'},
-              {name: 'No Reprints', desc: 'Once sold out, archived forever', icon: '△'},
+              {name: 'Built to Last', desc: 'Heavyweight cotton that outlives trends', icon: '◯'},
+              {name: 'Genuinely Limited', desc: 'When it sells out, it\'s gone forever', icon: '∞'},
+              {name: 'Hand-Checked', desc: 'Every piece inspected before it ships to you', icon: '◇'},
+              {name: 'Never Reprinted', desc: 'What you own stays exclusive', icon: '△'},
             ].map((item, i) => (
               <div 
                 key={item.name} 
@@ -339,7 +339,7 @@ export default function OurStory() {
           </p>
           
           <Link to="/products">
-            <ShimmerButton text="Shop the Collection →" className="px-12 py-5" />
+            <ShimmerButton text="See the Collection →" className="px-12 py-5" />
           </Link>
         </div>
       </section>

@@ -61,7 +61,7 @@ function home({url}: {url: Request['url']}): SeoConfig {
   return {
     title: 'Home',
     titleTemplate: '%s | Overgrowth',
-    description: 'Limited edition streetwear artifacts. Heavyweight cotton. Artisan construction.',
+    description: 'Limited edition streetwear. Heavyweight cotton. Small batches. Never restocked. Est. 2026.',
     url,
     robots: {
       noIndex: false,
@@ -310,8 +310,8 @@ function listCollections({
 }): SeoConfig {
   return {
     title: 'Collections',
-    titleTemplate: '%s | Collections',
-    description: 'All hydrogen collections',
+    titleTemplate: '%s | Overgrowth',
+    description: 'Browse Overgrowth\'s limited edition collections. Small batch streetwear, never restocked.',
     url,
     jsonLd: collectionsJsonLd({collections, url}),
   };
@@ -437,8 +437,8 @@ function policies({
     });
   return {
     title: 'Policies',
-    titleTemplate: '%s | Policies',
-    description: 'Hydroge store policies',
+    titleTemplate: '%s | Overgrowth',
+    description: 'Overgrowth store policies including privacy, shipping, and returns.',
     jsonLd: [
       {
         '@context': 'https://schema.org',
@@ -448,7 +448,7 @@ function policies({
       {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
-        description: 'Hydrogen store policies',
+        description: 'Overgrowth store policies including privacy, shipping, and returns.',
         name: 'Policies',
         url,
       },

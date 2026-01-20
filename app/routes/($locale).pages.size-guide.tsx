@@ -2,7 +2,10 @@ import type {MetaFunction} from '@remix-run/react';
 import {Spotlight} from '~/components/ui/spotlight';
 
 export const meta: MetaFunction = () => {
-  return [{title: 'Size Guide | Overgrowth'}];
+  return [
+    {title: 'Size Guide | Overgrowth'},
+    {name: 'description', content: 'Find your perfect fit. Relaxed, slightly oversized silhouettes. Size charts and model references for all Overgrowth pieces.'},
+  ];
 };
 
 const sizeData = {

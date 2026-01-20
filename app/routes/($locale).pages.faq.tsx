@@ -42,16 +42,16 @@ const faqCategories = [
     title: 'Shipping',
     questions: [
       {
-        q: 'How long does shipping take?',
-        a: 'All items are made to order. Please allow 3-4 weeks for your order to be crafted and delivered to your address. Tracking is included with every order.',
+        q: 'When will my order arrive?',
+        a: 'Each piece is made to order—your order is crafted just for you. Allow 3-4 weeks for production and delivery. You\'ll receive tracking the moment it ships.',
       },
       {
-        q: 'Where do you ship?',
-        a: 'We currently ship within the United States only.',
+        q: 'Do you ship internationally?',
+        a: 'We currently ship within the United States only. International shipping is coming soon—join our newsletter to be the first to know.',
       },
       {
-        q: 'How can I track my order?',
-        a: 'Once your order ships, you\'ll receive an email with tracking information. You can also check your order status in your account.',
+        q: 'How do I track my order?',
+        a: 'Once your order ships, you\'ll get an email with tracking. You can also check your order status anytime in your account.',
       },
     ],
   },
@@ -60,16 +60,16 @@ const faqCategories = [
     title: 'Returns',
     questions: [
       {
-        q: 'What is your return policy?',
-        a: 'We don\'t accept returns due to the scarcity of each product. Every piece is part of a limited run, and once sold, it\'s gone forever.',
+        q: 'Do you accept returns?',
+        a: 'Because each piece is genuinely limited, we can\'t accept returns. Once it sells out, it\'s gone—so we make sure you love what you order. Check our size guide before purchasing.',
       },
       {
         q: 'What if my item arrives damaged?',
-        a: 'If you receive a damaged or defective item, contact us immediately at customerservice@overgrowth.co with photos. We\'ll work with you to make it right.',
+        a: 'If something arrives damaged or defective, we\'ll make it right. Email customerservice@overgrowth.co with photos and we\'ll take care of you.',
       },
       {
         q: 'Can I exchange for a different size?',
-        a: 'Unfortunately, due to the limited nature of our products, we cannot offer exchanges. Please check our size guide before ordering.',
+        a: 'Due to limited quantities, we can\'t offer exchanges. Our size guide has detailed measurements to help you get the right fit the first time.',
       },
     ],
   },
@@ -79,15 +79,15 @@ const faqCategories = [
     questions: [
       {
         q: 'How do your pieces fit?',
-        a: 'Most of our pieces are designed with a relaxed, slightly oversized fit. Check the size guide on each product page for detailed measurements.',
+        a: 'Our pieces have a relaxed, slightly oversized fit—designed to drape well without feeling baggy. Check the size guide on each product for exact measurements.',
       },
       {
         q: 'What materials do you use?',
-        a: 'We prioritize organic cotton, recycled fibers, and sustainable materials. Each product page lists specific fabric compositions.',
+        a: 'Heavyweight premium cotton. Each product page shows specific fabric details, but everything we make is built to last.',
       },
       {
-        q: 'How should I care for my items?',
-        a: 'Machine wash cold, hang dry. Avoid bleach. This helps maintain the quality and extends the life of your garment.',
+        q: 'How should I care for my pieces?',
+        a: 'Machine wash cold, hang dry, skip the bleach. Simple care keeps the quality intact for years.',
       },
     ],
   },
@@ -97,15 +97,15 @@ const faqCategories = [
     questions: [
       {
         q: 'What payment methods do you accept?',
-        a: 'We accept all major credit cards, PayPal, Apple Pay, Google Pay, and Shop Pay.',
+        a: 'All major credit cards, PayPal, Apple Pay, Google Pay, and Shop Pay.',
       },
       {
-        q: 'Can I modify or cancel my order?',
-        a: 'Orders can be modified or cancelled within 1 hour of placement. After that, please contact us immediately and we\'ll do our best to help.',
+        q: 'Can I change or cancel my order?',
+        a: 'You have 1 hour after placing your order to make changes. After that, reach out immediately and we\'ll do what we can.',
       },
       {
         q: 'Do you offer gift cards?',
-        a: "We're working on adding gift cards soon. In the meantime, you can contact us at customerservice@overgrowth.co to arrange a gift for someone special.",
+        a: 'Gift cards are coming soon. For now, email customerservice@overgrowth.co and we\'ll help you set up a gift.',
       },
     ],
   },

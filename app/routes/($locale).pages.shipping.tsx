@@ -3,25 +3,28 @@ import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '~/co
 import {Spotlight} from '~/components/ui/spotlight';
 
 export const meta: MetaFunction = () => {
-  return [{title: 'Shipping & Returns | Overgrowth'}];
+  return [
+    {title: 'Shipping & Returns | Overgrowth'},
+    {name: 'description', content: 'Free shipping on orders $150+. Made to order, delivered in 3-4 weeks. All sales final due to limited edition scarcity.'},
+  ];
 };
 
 const shippingInfo = [
   {
-    question: 'How long does shipping take?',
-    answer: 'All items are made to order. Please allow 3-4 weeks for your order to be crafted and delivered. You\'ll receive tracking information once your order ships.',
+    question: 'When will my order arrive?',
+    answer: 'Each piece is made to order—crafted just for you. Allow 3-4 weeks for production and delivery. You\'ll receive tracking the moment it ships.',
   },
   {
-    question: 'Where do you ship?',
-    answer: 'We currently ship within the United States only.',
+    question: 'Do you ship internationally?',
+    answer: 'We currently ship within the United States only. International shipping is coming soon.',
   },
   {
-    question: 'How much does shipping cost?',
-    answer: 'Free shipping on all orders over $150. Standard shipping is $8.',
+    question: 'How much is shipping?',
+    answer: 'Free shipping on orders over $150. Standard shipping is $8 for smaller orders.',
   },
   {
-    question: 'Can I track my order?',
-    answer: 'Yes, you\'ll receive a tracking number via email once your order ships. You can also track your order through your account dashboard.',
+    question: 'How do I track my order?',
+    answer: 'You\'ll get a tracking number via email once your order ships. You can also check status anytime in your account.',
   },
 ];
 
@@ -31,6 +34,7 @@ const returnsInfo = [
     answer: 'We don\'t accept returns due to the scarcity of each product. Every piece is part of a limited run, and once it\'s gone, it\'s gone forever.',
   },
   {
+    question: 'What if my item arrives damaged?',
     answer: 'If you receive a damaged or defective item, contact us immediately at customerservice@overgrowth.co with photos of the damage. We\'ll work with you to make it right.',
   },
   {

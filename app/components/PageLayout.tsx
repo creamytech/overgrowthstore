@@ -485,22 +485,31 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
           paddingBottom: 'calc(env(safe-area-inset-bottom) + 1.5rem)',
         }}
       >
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="font-mono text-[9px] text-[#F2EFE9]/30 tracking-wider">
-            © {new Date().getFullYear()} OVERGROWTH
+        <div className="max-w-7xl mx-auto flex flex-col items-center gap-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 w-full">
+            <div className="font-mono text-[9px] text-[#F2EFE9]/30 tracking-wider">
+              © {new Date().getFullYear()} OVERGROWTH
+            </div>
+            
+            <div className="flex gap-6 font-mono text-[9px] text-[#F2EFE9]/30 tracking-wider">
+              <Link to="/policies/terms-of-service" className="hover:text-[#F2EFE9]/60 transition-colors">
+                Terms
+              </Link>
+              <Link to="/policies/privacy-policy" className="hover:text-[#F2EFE9]/60 transition-colors">
+                Privacy
+              </Link>
+            </div>
           </div>
           
-          <div className="flex gap-6 font-mono text-[9px] text-[#F2EFE9]/30 tracking-wider">
-            <Link to="/policies/terms-of-service" className="hover:text-[#F2EFE9]/60 transition-colors">
-              Terms
-            </Link>
-            <Link to="/policies/privacy-policy" className="hover:text-[#F2EFE9]/60 transition-colors">
-              Privacy
-            </Link>
-            <Link to="/policies/shipping-policy" className="hover:text-[#F2EFE9]/60 transition-colors">
-              Shipping
-            </Link>
-          </div>
+          {/* Pixel Boba attribution */}
+          <a 
+            href="https://www.pixelboba.com" 
+            target="_blank" 
+            rel="noreferrer"
+            className="font-mono text-[8px] text-[#F2EFE9]/40 hover:text-[#F2EFE9]/60 tracking-wider transition-colors"
+          >
+            An in-house project by Pixel Boba
+          </a>
         </div>
       </div>
     </footer>
