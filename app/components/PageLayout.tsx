@@ -154,14 +154,14 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
           >
             <div className="flex justify-between items-center w-full max-w-7xl mx-auto">
                 
-              {/* Left: Menu Icon - Blooms when menu is open */}
+              {/* Left: Menu Icon - Active when menu is open */}
               <button
                 onClick={isMenuOpen ? closeMenu : openMenu}
                 className="group flex items-center gap-3"
                 aria-label={isMenuOpen ? 'Close Menu' : 'Open Menu'}
               >
                 <img 
-                  src={isMenuOpen ? '/assets/icon_menu_bloom.png' : '/assets/icon_menu_bud.png'}
+                  src={isMenuOpen ? '/assets/MenuActive.svg' : '/assets/MenuInactive.svg'}
                   alt="Menu"
                   className={`transition-all duration-300 ${isScrolled ? 'w-8 h-8' : 'w-10 h-10'}`}
                   style={{
@@ -187,7 +187,7 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
                 />
               </Link>
 
-              {/* Right: Cart Icon */}
+              {/* Right: Cart Icon - Active when cart drawer is open */}
               <div className="flex items-center gap-4 md:gap-6">
 
                 <button
@@ -196,7 +196,7 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
                   aria-label="Open Cart"
                 >
                   <img 
-                    src="/assets/icon_cart_woven.png"
+                    src={isCartOpen ? '/assets/CartActive.svg' : '/assets/CartInactive.svg'}
                     alt="Cart"
                     className={`transition-all duration-300 group-hover:scale-110 ${isScrolled ? 'w-8 h-8' : 'w-10 h-10'}`}
                     style={{
