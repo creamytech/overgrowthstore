@@ -69,20 +69,20 @@ export function Drawer({
                     className={`absolute top-0 bottom-0 w-px ${openFrom === 'left' ? 'right-0' : 'left-0'} bg-gradient-to-b from-transparent via-[#B55A3C]/30 to-transparent`}
                   />
 
-                  <div className="relative z-10 h-full flex flex-col px-8 md:px-12 py-12">
+                  <div className="relative z-10 h-full flex flex-col px-6 md:px-12 py-8 md:py-12">
                     
                     {/* Header */}
                     {heading && (
-                      <header className="mb-12 text-center">
-                        <span className="font-mono text-[9px] text-[#F2EFE9]/40 tracking-[0.3em] uppercase block mb-3">
+                      <header className="mb-6 md:mb-12 text-center">
+                        <span className="font-mono text-[9px] text-[#F2EFE9]/40 tracking-[0.3em] uppercase block mb-2 md:mb-3">
                           {variant === 'menu' ? '— Navigate' : '— Items'}
                         </span>
                         <Dialog.Title>
-                          <h2 className="font-heading text-2xl md:text-3xl tracking-[0.15em] text-[#F2EFE9] uppercase">
+                          <h2 className="font-heading text-xl md:text-3xl tracking-[0.15em] text-[#F2EFE9] uppercase">
                             {heading}
                           </h2>
                         </Dialog.Title>
-                        <Separator className="w-12 mx-auto mt-6 bg-[#B55A3C]" />
+                        <Separator className="w-12 mx-auto mt-4 md:mt-6 bg-[#B55A3C]" />
                       </header>
                     )}
                     

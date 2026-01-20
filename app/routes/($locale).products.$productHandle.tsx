@@ -55,7 +55,6 @@ import {
 import {Alert, AlertDescription} from '~/components/ui/alert';
 import {StickyAddToCart} from '~/components/StickyAddToCart';
 import {InventoryAlert} from '~/components/InventoryDisplay';
-import {ReviewSection} from '~/components/ReviewSection';
 import {ImageZoomDialog} from '~/components/ImageZoom';
 
 export const headers = routeHeaders;
@@ -424,8 +423,6 @@ export default function Product() {
         </Await>
       </Suspense>
 
-      {/* Customer Reviews Section */}
-      <ReviewSection productId={product.id} productTitle={title} />
 
       {/* Sticky Add to Cart for Mobile */}
       <StickyAddToCart

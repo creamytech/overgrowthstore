@@ -2,7 +2,6 @@ import {useParams, Form, Await, useRouteLoaderData, useLocation} from '@remix-ru
 import {Suspense, useEffect, useState, useRef} from 'react';
 import {motion, useScroll, useTransform} from 'framer-motion';
 import {CartForm} from '@shopify/hydrogen';
-import {Search} from 'lucide-react';
 
 import {type LayoutQuery} from 'storefrontapi.generated';
 import {Heading} from '~/components/Text';
@@ -24,7 +23,6 @@ import type {RootLoader} from '~/root';
 import {Separator} from '~/components/ui/separator';
 import {Button} from '~/components/ui/button';
 import GlowingBorderButton from '~/components/glowing-border-button';
-import {SearchDialog} from '~/components/SearchDialog';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -72,8 +70,6 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
     closeDrawer: closeMenu,
   } = useDrawer();
 
-  // Search dialog state
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   // Sync menu state to html for safe-area styling
   useEffect(() => {
@@ -130,7 +126,7 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
       {menu && (
         <MenuDrawer isOpen={isMenuOpen} onClose={closeMenu} menu={menu} />
       )}
-      <SearchDialog isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+
 
       {/* Dark Header - consistent with drawer */}
       {/* isDarkHero: true when on a page with dark hero AND not scrolled past it */}
@@ -191,18 +187,8 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
                 />
               </Link>
 
-              {/* Right: Search, Account, Cart Icons */}
+              {/* Right: Account, Cart Icons */}
               <div className="flex items-center gap-4 md:gap-6">
-                {/* Search Button */}
-                <button
-                  onClick={() => setIsSearchOpen(true)}
-                  className={`transition-colors ${
-                    (isDarkHero || isScrolled) ? 'text-[#F2EFE9]/70 hover:text-[#F2EFE9]' : 'text-[#8A8A84] hover:text-[#B55A3C]'
-                  }`}
-                  aria-label="Search"
-                >
-                  <Search className="w-5 h-5" />
-                </button>
 
                 <Link 
                   to="/account" 
@@ -315,23 +301,23 @@ function MenuMobileNav({
           target={item.target}
           onClick={onClose}
           className={({isActive}) =>
-            `group relative block py-6 border-b border-[#F2EFE9]/10 hover:bg-[#F2EFE9]/5 transition-all duration-300 ${
+            `group relative block py-4 md:py-6 border-b border-[#F2EFE9]/10 hover:bg-[#F2EFE9]/5 transition-all duration-300 ${
               isActive ? 'bg-[#B55A3C]/10 border-[#B55A3C]/30' : ''
             }`
           }
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4 md:gap-6">
               <span className="font-mono text-[10px] text-[#B55A3C] tracking-wide opacity-0 group-hover:opacity-100 transition-opacity">
                 {(index + 1).toString().padStart(2, '0')}
               </span>
               
-              <span className="font-heading text-3xl md:text-4xl tracking-[0.08em] text-[#F2EFE9] group-hover:text-[#B55A3C] transition-colors uppercase">
+              <span className="font-heading text-2xl md:text-4xl tracking-[0.08em] text-[#F2EFE9] group-hover:text-[#B55A3C] transition-colors uppercase">
                 {item.title}
               </span>
             </div>
 
-            <span className="font-heading text-2xl text-[#B55A3C] opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+            <span className="font-heading text-xl md:text-2xl text-[#B55A3C] opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
               →
             </span>
           </div>
@@ -342,8 +328,8 @@ function MenuMobileNav({
       ))}
       
       {/* Quick Links */}
-      <div className="mt-8 pt-8 border-t border-[#F2EFE9]/10">
-        <span className="font-mono text-[9px] text-[#F2EFE9]/30 tracking-[0.3em] uppercase block mb-4">
+      <div className="mt-6 pt-6 border-t border-[#F2EFE9]/10">
+        <span className="font-mono text-[9px] text-[#F2EFE9]/30 tracking-[0.3em] uppercase block mb-3">
           Quick Access
         </span>
         <div className="flex gap-6">
