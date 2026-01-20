@@ -100,7 +100,7 @@ function CartDiscounts({
       <UpdateDiscountForm discountCodes={codes}>
         <div className="flex gap-2 mt-4">
           <input
-            className="flex-1 bg-[#1a1a1a] border border-[#F2EFE9]/20 px-4 py-3 font-mono text-xs text-[#F2EFE9] placeholder:text-[#F2EFE9]/30 focus:outline-none focus:border-[#B55A3C] uppercase tracking-wide"
+            className="flex-1 bg-white border border-[#1a472a]/20 px-4 py-3 font-mono text-xs text-[#1a472a] placeholder:text-[#8A8A84] focus:outline-none focus:border-[#B55A3C] uppercase tracking-wide"
             type="text"
             name="discountCode"
             placeholder="Discount code"
@@ -186,9 +186,9 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
       <div className="text-center">
         <Link 
           to="/products" 
-          className="inline-flex items-center gap-2 font-mono text-[10px] text-[#F2EFE9]/50 hover:text-[#B55A3C] uppercase tracking-[0.2em] transition-colors group"
+          className="inline-flex items-center gap-2 font-mono text-[10px] text-[#8A8A84] hover:text-[#B55A3C] uppercase tracking-[0.2em] transition-colors group"
         >
-          <span className="w-4 h-px bg-[#F2EFE9]/30 group-hover:bg-[#B55A3C] transition-colors" />
+          <span className="w-4 h-px bg-[#8A8A84]/50 group-hover:bg-[#B55A3C] transition-colors" />
           Continue Browsing
         </Link>
       </div>
@@ -217,7 +217,7 @@ function CartSummary({
       </h2>
       <dl className="grid gap-4">
         <div className="flex items-center justify-between">
-          <dt className="font-mono text-xs uppercase tracking-[0.2em] text-[#F2EFE9]/50">Subtotal</dt>
+          <dt className="font-mono text-xs uppercase tracking-[0.2em] text-[#8A8A84]">Subtotal</dt>
           <dd className="font-heading text-lg text-[#B55A3C]" data-test="subtotal">
             {cost?.subtotalAmount?.amount ? (
               <Money data={cost?.subtotalAmount} />
@@ -228,7 +228,7 @@ function CartSummary({
         </div>
       </dl>
       
-      <Separator className="bg-[#F2EFE9]/10 my-2" />
+      <Separator className="bg-[#1a472a]/10 my-2" />
       
       {children}
     </section>
@@ -253,7 +253,7 @@ function CartLineItem({line}: {line: CartLine}) {
   return (
     <li
       key={id}
-      className="relative group py-6 border-b border-[#F2EFE9]/10"
+      className="relative group py-6 border-b border-[#1a472a]/10"
       style={{
         display: optimisticData?.action === 'remove' ? 'none' : 'block',
       }}
@@ -261,7 +261,7 @@ function CartLineItem({line}: {line: CartLine}) {
       <div className="flex gap-5">
         {/* Image with corner markers */}
         <div className="relative flex-shrink-0">
-          <div className="w-24 h-28 bg-[#1a1a1a] border border-[#F2EFE9]/10 overflow-hidden">
+          <div className="w-24 h-28 bg-[#F2EFE9] border border-[#1a472a]/10 overflow-hidden">
             {merchandise.image && (
               <Image
                 width={96}
@@ -280,7 +280,7 @@ function CartLineItem({line}: {line: CartLine}) {
         <div className="flex-grow flex flex-col justify-between">
           {/* Top: Title + Options */}
           <div>
-            <h3 className="font-heading text-base text-[#F2EFE9] uppercase tracking-wide mb-1">
+            <h3 className="font-heading text-base text-[#1a472a] uppercase tracking-wide mb-1">
               {merchandise?.product?.handle ? (
                 <Link to={`/products/${merchandise.product.handle}`} className="hover:text-[#B55A3C] transition-colors">
                   {merchandise?.product?.title || ''}
@@ -292,7 +292,7 @@ function CartLineItem({line}: {line: CartLine}) {
 
             <div className="flex flex-wrap gap-x-3 gap-y-1">
               {(merchandise?.selectedOptions || []).map((option) => (
-                <span key={option.name} className="font-mono text-[10px] text-[#F2EFE9]/40 uppercase tracking-wide">
+                <span key={option.name} className="font-mono text-[10px] text-[#8A8A84] uppercase tracking-wide">
                   {option.name}: <span className="text-[#B55A3C]">{option.value}</span>
                 </span>
               ))}
@@ -328,7 +328,7 @@ function ItemRemoveButton({lineId}: {lineId: CartLine['id']}) {
       }}
     >
       <button
-        className="text-[#F2EFE9]/40 hover:text-[#B55A3C] transition-colors"
+        className="text-[#8A8A84] hover:text-[#B55A3C] transition-colors"
         type="submit"
       >
         <span className="sr-only">Remove</span>
@@ -356,12 +356,12 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
       <label htmlFor={`quantity-${lineId}`} className="sr-only">
         Quantity, {optimisticQuantity}
       </label>
-      <div className="flex items-center border border-[#F2EFE9]/20">
+      <div className="flex items-center border border-[#1a472a]/20">
         <UpdateCartButton lines={[{id: lineId, quantity: prevQuantity}]}>
           <button
             name="decrease-quantity"
             aria-label="Decrease quantity"
-            className="w-8 h-8 flex items-center justify-center text-[#F2EFE9]/50 hover:text-[#B55A3C] hover:bg-[#F2EFE9]/5 transition-colors disabled:opacity-30"
+            className="w-8 h-8 flex items-center justify-center text-[#8A8A84] hover:text-[#B55A3C] hover:bg-[#1a472a]/5 transition-colors disabled:opacity-30"
             value={prevQuantity}
             disabled={optimisticQuantity <= 1}
           >
@@ -373,13 +373,13 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
           </button>
         </UpdateCartButton>
 
-        <div className="px-3 text-center text-[#F2EFE9] font-mono text-xs min-w-[2rem]" data-test="item-quantity">
+        <div className="px-3 text-center text-[#1a472a] font-mono text-xs min-w-[2rem]" data-test="item-quantity">
           {optimisticQuantity}
         </div>
 
         <UpdateCartButton lines={[{id: lineId, quantity: nextQuantity}]}>
           <button
-            className="w-8 h-8 flex items-center justify-center text-[#F2EFE9]/50 hover:text-[#B55A3C] hover:bg-[#F2EFE9]/5 transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-[#8A8A84] hover:text-[#B55A3C] hover:bg-[#1a472a]/5 transition-colors"
             name="increase-quantity"
             value={nextQuantity}
             aria-label="Increase quantity"
