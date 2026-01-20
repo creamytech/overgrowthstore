@@ -187,17 +187,8 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
                 />
               </Link>
 
-              {/* Right: Account, Cart Icons */}
+              {/* Right: Cart Icon */}
               <div className="flex items-center gap-4 md:gap-6">
-
-                <Link 
-                  to="/account" 
-                  className={`hidden md:block transition-colors ${
-                    (isDarkHero || isScrolled) ? 'text-[#F2EFE9]/70 hover:text-[#F2EFE9]' : 'text-[#8A8A84] hover:text-[#B55A3C]'
-                  }`}
-                >
-                  <IconAccount className="w-5 h-5" />
-                </Link>
 
                 <button
                   onClick={openCart}
