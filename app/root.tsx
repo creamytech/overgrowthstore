@@ -250,10 +250,11 @@ function Layout({children}: {children?: React.ReactNode}) {
             top: 0,
             left: 0,
             right: 0,
-            height: '10px',
+            height: 'var(--ios-safe-top, 0px)',
             zIndex: 9999,
             pointerEvents: 'none',
             backgroundColor: '#0a0a0a',
+            transition: 'height 0.2s ease',
           }}
         />
         {/* iOS Safe-Area Bottom Overlay - Mobile only */}
@@ -265,10 +266,11 @@ function Layout({children}: {children?: React.ReactNode}) {
             bottom: 0,
             left: 0,
             right: 0,
-            height: '10px',
+            height: 'var(--ios-safe-bottom, 0px)',
             zIndex: 9999,
             pointerEvents: 'none',
             backgroundColor: '#0a0a0a',
+            transition: 'height 0.2s ease',
           }}
         />
         {/* Global Paper Texture Overlay - extends into safe areas */}

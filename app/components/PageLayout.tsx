@@ -161,7 +161,7 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
                 aria-label={isMenuOpen ? 'Close Menu' : 'Open Menu'}
               >
                 <img 
-                  src={isMenuOpen ? '/assets/MenuActive.svg' : '/assets/MenuInactive.svg'}
+                  src="/assets/Menu.png"
                   alt="Menu"
                   className={`transition-all duration-300 ${isScrolled ? 'w-8 h-8' : 'w-10 h-10'}`}
                   style={{
@@ -243,7 +243,7 @@ function CartIcon({
     <Suspense fallback={
       <button onClick={onClick} className="relative group" aria-label="Open Cart">
         <img 
-          src="/assets/CartInactive.svg"
+          src="/assets/CartInactive.png"
           alt="Cart"
           className={`transition-all duration-300 group-hover:scale-110 ${isScrolled ? 'w-8 h-8' : 'w-10 h-10'}`}
           style={{ filter: (isDarkHero || isScrolled) ? 'brightness(0) invert(1)' : 'none' }}
@@ -262,7 +262,7 @@ function CartIcon({
               aria-label="Open Cart"
             >
               <img 
-                src={isActive ? '/assets/CartActive.svg' : '/assets/CartInactive.svg'}
+                src={isActive ? '/assets/CartActive.png' : '/assets/CartInactive.png'}
                 alt="Cart"
                 className={`transition-all duration-300 group-hover:scale-110 ${isScrolled ? 'w-8 h-8' : 'w-10 h-10'}`}
                 style={{ filter: (isDarkHero || isScrolled) ? 'brightness(0) invert(1)' : 'none' }}
