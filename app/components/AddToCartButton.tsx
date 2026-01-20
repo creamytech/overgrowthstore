@@ -2,8 +2,10 @@ import {CartForm, type OptimisticCartLineInput} from '@shopify/hydrogen';
 import type {FetcherWithComponents} from '@remix-run/react';
 import {useEffect, useRef} from 'react';
 import {toast} from 'sonner';
+import {Loader2} from 'lucide-react';
 
-import {Button} from '~/components/Button';
+import {Button} from '~/components/ui/button';
+import {cn} from '~/lib/utils';
 
 export function AddToCartButton({
   children,
@@ -87,43 +89,35 @@ function AddToCartButtonInner({
     prevState.current = fetcher.state;
   }, [fetcher.state, fetcher.data, productTitle]);
 
+  const isLoading = fetcher.state !== 'idle';
+  
+  // Map legacy variants to shadcn variants
+  const shadcnVariant = 
+    variant === 'primary' ? 'default' :
+    variant === 'secondary' ? 'secondary' :
+    variant === 'inline' ? 'link' : 
+    'default';
+
   return (
     <Button
-      as="button"
       type="submit"
-      width={width}
-      variant={variant}
-      className={`${className} relative overflow-hidden`}
-      disabled={disabled ?? fetcher.state !== 'idle'}
+      variant={shadcnVariant}
+      className={cn(
+        width === 'full' && 'w-full',
+        className
+      )}
+      disabled={disabled ?? isLoading}
       {...props}
     >
-      {fetcher.state !== 'idle' ? (
-         <div className="absolute inset-0 flex items-center justify-center bg-[#1a472a] z-50">
-            {/* Gentle gradient background */}
-            <div 
-                className="absolute inset-0 opacity-30"
-                style={{
-                    background: 'linear-gradient(90deg, #3E5F4B 0%, #1a472a 50%, #3E5F4B 100%)',
-                    backgroundSize: '200% 100%',
-                    animation: 'shimmer 1.5s ease-in-out infinite'
-                }}
-            />
-            <style>{`
-                @keyframes shimmer {
-                    0% { background-position: 200% 0; }
-                    100% { background-position: -200% 0; }
-                }
-            `}</style>
-            
-            {/* Text */}
-            <span className="relative z-10 font-mono text-xs tracking-[0.2em] uppercase text-[#F2EFE9]">
-                Processing...
-            </span>
-         </div>
-      ) : (
+      {isLoading ? (
         <>
-          {children}
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          <span className="font-mono text-xs tracking-wider uppercase">
+            Adding...
+          </span>
         </>
+      ) : (
+        children
       )}
     </Button>
   );

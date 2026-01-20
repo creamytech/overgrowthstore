@@ -1,4 +1,5 @@
 import {flattenConnection, Image, Money, useMoney} from '@shopify/hydrogen';
+import {useState, useEffect} from 'react';
 import type {MoneyV2, Product} from '@shopify/hydrogen/storefront-api-types';
 import type {ProductCardFragment} from 'storefrontapi.generated';
 import {Link} from '~/components/Link';
@@ -42,8 +43,25 @@ export function ProductCard({
   if (!firstVariant) return null;
   const {image, price, compareAtPrice} = firstVariant;
 
+  // Drop Date Logic
+  const [isLive, setIsLive] = useState(false);
+  
+  useEffect(() => {
+    const checkLive = () => {
+      const dropDate = new Date('2026-01-23T13:00:00-05:00');
+      setIsLive(new Date() >= dropDate);
+    };
+    
+    checkLive();
+    // Check every second to unlock in real-time
+    const interval = setInterval(checkLive, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   if (label) {
     cardLabel = label;
+  } else if (!isLive) {
+    cardLabel = 'Locked';
   } else if (isDiscounted(price as MoneyV2, compareAtPrice as MoneyV2)) {
     cardLabel = 'Sale';
   } else if (isNewArrival(product.publishedAt)) {
@@ -81,7 +99,8 @@ export function ProductCard({
                 'object-cover w-full h-full',
                 'transition-all duration-700 ease-out',
                 'group-hover:scale-[1.02]',
-                isSoldOut && 'grayscale opacity-50'
+                isSoldOut && 'grayscale opacity-50',
+                !isLive && 'grayscale-[0.5]' // Partial grayscale for locked items
               )}
               sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
               data={image}
@@ -90,8 +109,8 @@ export function ProductCard({
             />
           )}
           
-          {/* Hover second image */}
-          {product.images?.nodes[1] && (
+          {/* Hover second image - only if live */}
+          {product.images?.nodes[1] && isLive && (
             <Image
               className="absolute inset-0 object-cover w-full h-full transition-opacity duration-700 opacity-0 group-hover:opacity-100"
               sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
@@ -99,6 +118,18 @@ export function ProductCard({
               alt={product.images.nodes[1].altText || `Picture of ${product.title}`}
               loading="lazy"
             />
+          )}
+          
+          {/* Locked Overlay */}
+          {!isLive && (
+             <div className="absolute inset-0 flex items-center justify-center bg-black/20 z-10 pointer-events-none">
+                <div className="w-12 h-12 rounded-full border border-[#F2EFE9]/40 flex items-center justify-center backdrop-blur-sm">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F2EFE9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                     <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                   </svg>
+                </div>
+             </div>
           )}
 
           {/* Item number - top left */}
@@ -116,13 +147,15 @@ export function ProductCard({
               <Badge 
                 className={cn(
                   "text-[9px] tracking-[0.15em] uppercase",
-                  cardLabel === 'Sale' ? "bg-[#B55A3C] text-[#F2EFE9]" : "bg-[#1a472a] text-[#F2EFE9]"
+                  cardLabel === 'Sale' ? "bg-[#B55A3C] text-[#F2EFE9]" : 
+                  cardLabel === 'Locked' ? "bg-[#0a0a0a] text-[#F2EFE9] border border-[#F2EFE9]/20" :
+                  "bg-[#1a472a] text-[#F2EFE9]"
                 )}
               >
                 {cardLabel}
               </Badge>
             )}
-            {isSoldOut && (
+            {isSoldOut && isLive && (
               <Badge 
                 variant="outline"
                 className="text-[9px] tracking-[0.15em] border-[#1a472a]/30 text-[#8A8A84] bg-[#F2EFE9]/90"
@@ -132,8 +165,8 @@ export function ProductCard({
             )}
           </div>
 
-          {/* Scarcity indicator with Tooltip */}
-          {!isSoldOut && firstVariant.quantityAvailable && firstVariant.quantityAvailable <= 3 && (
+          {/* Scarcity indicator with Tooltip - only if live */}
+          {isLive && !isSoldOut && firstVariant.quantityAvailable && firstVariant.quantityAvailable <= 3 && (
             <div className="absolute bottom-3 left-3 z-10">
               <TooltipProvider>
                 <Tooltip>

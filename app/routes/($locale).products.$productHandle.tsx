@@ -146,6 +146,38 @@ export default function Product() {
     }
   }, [selectedVariant]);
 
+  // Drop Timer Logic
+  const [timeLeft, setTimeLeft] = useState<{days: number; hours: number; minutes: number; seconds: number} | null>(null);
+  const [isLive, setIsLive] = useState(false);
+
+  useEffect(() => {
+    // Target Date: Jan 23rd, 2026, 1:00 PM EST
+    const dropDate = new Date('2026-01-23T13:00:00-05:00');
+
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const distance = dropDate.getTime() - now;
+
+      if (distance < 0) {
+        setIsLive(true);
+        setTimeLeft(null);
+        return;
+      }
+
+      setIsLive(false);
+      setTimeLeft({
+        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((distance % (1000 * 60)) / 1000),
+      });
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#F2EFE9]">
       
@@ -294,11 +326,44 @@ export default function Product() {
 
             {/* Product Options & Add to Cart */}
             <div className="space-y-6">
+              
+              {/* Drop Timer Display */}
+              {!isLive && timeLeft && (
+                <div className="w-full p-6 border border-[#B55A3C]/20 bg-[#B55A3C]/5 mb-6">
+                  <div className="flex flex-col items-center justify-center gap-4">
+                     <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#B55A3C] animate-pulse">
+                        Drop Incoming
+                     </span>
+                     <div className="flex items-center gap-4 md:gap-6">
+                        {[
+                          {value: timeLeft.days, label: 'Days'},
+                          {value: timeLeft.hours, label: 'Hrs'},
+                          {value: timeLeft.minutes, label: 'Min'},
+                          {value: timeLeft.seconds, label: 'Sec'},
+                        ].map(({value, label}, i) => (
+                          <div key={label} className="flex flex-col items-center">
+                            <span className="font-heading text-2xl md:text-3xl text-[#1a472a] tabular-nums leading-none">
+                              {value.toString().padStart(2, '0')}
+                            </span>
+                            <span className="font-mono text-[8px] text-[#8A8A84] uppercase tracking-wider mt-1">
+                              {label}
+                            </span>
+                          </div>
+                        ))}
+                     </div>
+                     <span className="font-mono text-[9px] text-[#1a472a]/60 uppercase tracking-widest">
+                        Jan 23 — 1:00 PM EST
+                     </span>
+                  </div>
+                </div>
+              )}
+
               <ProductForm
                 productOptions={productOptions}
                 selectedVariant={selectedVariant}
                 storeDomain={storeDomain}
                 product={product}
+                isLive={isLive}
               />
             </div>
 
@@ -407,7 +472,7 @@ export default function Product() {
       <StickyAddToCart
         selectedVariant={selectedVariant}
         productTitle={title}
-        show={!isOutOfStock}
+        show={!isOutOfStock && isLive}
       />
 
       <Analytics.ProductView
@@ -434,11 +499,13 @@ function ProductForm({
   selectedVariant,
   storeDomain,
   product,
+  isLive = true,
 }: {
   productOptions: MappedProductOptions[];
   selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
   storeDomain: string;
   product: ProductFragment;
+  isLive?: boolean;
 }) {
   const isOutOfStock = !selectedVariant?.availableForSale;
 
@@ -476,7 +543,14 @@ function ProductForm({
       {/* Add to Cart */}
       {selectedVariant && (
         <div className="pt-4">
-          {isOutOfStock ? (
+          {!isLive ? (
+            <Button 
+               disabled 
+               className="w-full py-6 font-mono text-xs uppercase tracking-[0.2em] bg-[#0a0a0a] text-[#F2EFE9] hover:bg-[#0a0a0a] opacity-90 cursor-not-allowed"
+            >
+               Available Jan 23 · 1PM EST
+            </Button>
+          ) : isOutOfStock ? (
             <Button 
               disabled 
               variant="outline" 

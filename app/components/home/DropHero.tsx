@@ -37,9 +37,8 @@ export function DropHero() {
 
   // Countdown timer
   useEffect(() => {
-    const dropDate = new Date();
-    dropDate.setDate(dropDate.getDate() + (5 + 7 - dropDate.getDay()) % 7);
-    dropDate.setHours(12, 0, 0, 0);
+    // Target Date: Jan 23rd, 2026, 1:00 PM EST
+    const dropDate = new Date('2026-01-23T13:00:00-05:00');
 
     const updateCountdown = () => {
       const now = new Date().getTime();
