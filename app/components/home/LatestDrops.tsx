@@ -4,8 +4,8 @@ import {motion} from 'framer-motion';
 import {useState, useEffect, useMemo, memo} from 'react';
 import {TiltCard} from '~/components/ui/tilt-card';
 
-// Configure your drop date here (UTC time)
-const DROP_DATE = new Date('2026-01-20T18:00:00Z'); // Jan 20, 2026 at 6PM UTC
+// Configure your drop date here - Jan 23rd, 2026 at 1:00 PM EST
+const DROP_DATE = new Date('2026-01-23T13:00:00-05:00');
 
 interface TimeLeft {
   days: number;
