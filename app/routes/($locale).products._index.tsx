@@ -99,9 +99,9 @@ export default function AllProducts() {
           }} />
         </div>
         
-        {/* Corner accents */}
-        <div className="absolute top-8 left-8 w-24 h-24 border-l-2 border-t-2 border-[#F2EFE9]/20" />
-        <div className="absolute top-8 right-8 w-24 h-24 border-r-2 border-t-2 border-[#F2EFE9]/20" />
+        {/* Corner accents - hidden on mobile */}
+        <div className="hidden md:block absolute top-8 left-8 w-24 h-24 border-l-2 border-t-2 border-[#F2EFE9]/20" />
+        <div className="hidden md:block absolute top-8 right-8 w-24 h-24 border-r-2 border-t-2 border-[#F2EFE9]/20" />
         
         <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 text-center">
           {/* Archive badge */}
