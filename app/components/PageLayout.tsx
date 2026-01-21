@@ -323,57 +323,60 @@ function MenuMobileNav({
   onClose: () => void;
 }) {
   return (
-    <nav className="flex flex-col gap-0">
-      {(menu?.items || []).map((item, index) => (
-        <Link
-          key={item.id}
-          to={item.to}
-          target={item.target}
-          onClick={onClose}
-          className={({isActive}) =>
-            `group relative block py-4 md:py-6 border-b border-[#F2EFE9]/10 hover:bg-[#F2EFE9]/5 transition-all duration-300 ${
-              isActive ? 'bg-[#B55A3C]/10 border-[#B55A3C]/30' : ''
-            }`
-          }
-        >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4 md:gap-6">
-              <span className="font-mono text-[10px] text-[#B55A3C] tracking-wide opacity-0 group-hover:opacity-100 transition-opacity">
-                {(index + 1).toString().padStart(2, '0')}
-              </span>
-              
-              <span className="font-heading text-2xl md:text-4xl tracking-[0.08em] text-[#F2EFE9] group-hover:text-[#B55A3C] transition-colors uppercase">
-                {item.title}
+    <nav className="flex flex-col h-full">
+      {/* Main Menu Items - Takes up available space */}
+      <div className="flex-1 flex flex-col justify-start">
+        {(menu?.items || []).map((item, index) => (
+          <Link
+            key={item.id}
+            to={item.to}
+            target={item.target}
+            onClick={onClose}
+            className={({isActive}) =>
+              `group relative block py-5 md:py-6 border-b border-[#F2EFE9]/10 hover:bg-[#F2EFE9]/5 transition-all duration-300 ${
+                isActive ? 'bg-[#B55A3C]/10 border-[#B55A3C]/30' : ''
+              }`
+            }
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <span className="font-mono text-xs text-[#B55A3C] tracking-wide w-6 opacity-60 group-hover:opacity-100 transition-opacity">
+                  {(index + 1).toString().padStart(2, '0')}
+                </span>
+                
+                <span className="font-heading text-3xl md:text-4xl tracking-[0.08em] text-[#F2EFE9] group-hover:text-[#B55A3C] transition-colors uppercase">
+                  {item.title}
+                </span>
+              </div>
+
+              <span className="font-heading text-2xl md:text-3xl text-[#B55A3C] opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+                →
               </span>
             </div>
-
-            <span className="font-heading text-xl md:text-2xl text-[#B55A3C] opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
-              →
-            </span>
-          </div>
-          
-          {/* Hover accent line */}
-          <div className="absolute bottom-0 left-0 w-0 h-px bg-[#B55A3C] group-hover:w-full transition-all duration-500" />
-        </Link>
-      ))}
+            
+            {/* Hover accent line */}
+            <div className="absolute bottom-0 left-0 w-0 h-px bg-[#B55A3C] group-hover:w-full transition-all duration-500" />
+          </Link>
+        ))}
+      </div>
       
-      {/* Quick Links */}
-      <div className="mt-6 pt-6 border-t border-[#F2EFE9]/10">
-        <span className="font-mono text-[9px] text-[#F2EFE9]/30 tracking-[0.3em] uppercase block mb-3">
+      {/* Quick Links - Fixed at bottom with more prominence */}
+      <div className="mt-auto pt-8 border-t border-[#F2EFE9]/10">
+        <span className="font-mono text-[10px] text-[#F2EFE9]/40 tracking-[0.3em] uppercase block mb-4">
           Quick Access
         </span>
-        <div className="flex gap-6">
+        <div className="flex gap-8">
           <Link 
             to="/account" 
             onClick={onClose}
-            className="font-mono text-sm text-[#F2EFE9]/50 hover:text-[#B55A3C] transition-colors"
+            className="font-mono text-base text-[#F2EFE9]/60 hover:text-[#B55A3C] transition-colors"
           >
             Account
           </Link>
           <Link 
             to="/pages/faq" 
             onClick={onClose}
-            className="font-mono text-sm text-[#F2EFE9]/50 hover:text-[#B55A3C] transition-colors"
+            className="font-mono text-base text-[#F2EFE9]/60 hover:text-[#B55A3C] transition-colors"
           >
             Help
           </Link>

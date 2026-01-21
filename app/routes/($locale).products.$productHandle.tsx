@@ -414,6 +414,21 @@ export default function Product() {
                     <p className="font-mono text-[10px] text-[#8A8A84]/50 mt-4 italic">
                       Constructed with premium heavyweight cotton. No reprints. When it's gone, it's archived.
                     </p>
+                    
+                    {/* Visual Note / Sample Disclaimer */}
+                    <div className="mt-6 pt-4 border-t border-[#1a472a]/10">
+                      <div className="flex items-start gap-2">
+                        <span className="text-[#B55A3C] text-xs mt-0.5">◆</span>
+                        <div>
+                          <span className="font-mono text-[9px] text-[#B55A3C] uppercase tracking-wider block mb-1">
+                            Visual Note
+                          </span>
+                          <p className="font-mono text-[10px] text-[#8A8A84]/70 leading-relaxed">
+                            Images shown are generated from sample artifacts. Final production pieces may exhibit minor variations in color saturation, texture, and print positioning. Each piece is unique.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </AccordionContent>
                 </AccordionItem>
 
