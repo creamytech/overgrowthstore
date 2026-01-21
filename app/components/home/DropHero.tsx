@@ -96,7 +96,7 @@ export function DropHero() {
         <img 
           src="/assets/Wordmark Logo.svg" 
           alt="Overgrowth" 
-          className="h-16 md:h-24 lg:h-32 w-auto mx-auto mb-6"
+          className="h-24 md:h-40 lg:h-56 w-auto mx-auto mb-6"
           style={{ filter: 'brightness(0) invert(1)' }}
         />
         <p className="font-mono text-sm text-[#F2EFE9]/60 max-w-lg mx-auto">
