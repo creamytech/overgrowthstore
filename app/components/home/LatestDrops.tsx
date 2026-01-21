@@ -107,7 +107,7 @@ function LockIcon({className}: {className?: string}) {
  * LatestDrops - Premium bento-style grid showcasing recent products
  * Features a hero product with supporting grid layout and countdown lock
  */
-export function LatestDrops({products, title = "Current Drop"}: {products: any[], title?: string}) {
+export function LatestDrops({products, title = "Current Drop", onLockedClick}: {products: any[], title?: string, onLockedClick?: () => void}) {
   const isLocked = useLockState(DROP_DATE);
   
   if (!products || products.length === 0) return null;
@@ -307,9 +307,12 @@ export function LatestDrops({products, title = "Current Drop"}: {products: any[]
             className="relative group"
           >
             {isLocked ? (
-              <div className="block cursor-not-allowed">
+              <button 
+                onClick={onLockedClick}
+                className="block w-full text-left cursor-pointer hover:opacity-95 transition-opacity"
+              >
                 <HeroContent />
-              </div>
+              </button>
             ) : (
               <TiltCard intensity={25} containerClassName="relative h-full">
                 <Link to={`/products/${heroProduct.handle}`} className="block">
@@ -331,9 +334,12 @@ export function LatestDrops({products, title = "Current Drop"}: {products: any[]
                 className="group"
               >
                 {isLocked ? (
-                  <div className="block cursor-not-allowed">
+                  <button 
+                    onClick={onLockedClick}
+                    className="block w-full text-left cursor-pointer hover:opacity-95 transition-opacity"
+                  >
                     <GridProductContent product={product} />
-                  </div>
+                  </button>
                 ) : (
                   <TiltCard intensity={20} containerClassName="relative">
                     <Link to={`/products/${product.handle}`} className="block">

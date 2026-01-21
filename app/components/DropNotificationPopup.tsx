@@ -22,13 +22,31 @@ const POPUP_STORAGE_KEY = 'overgrowth_popup_dismissed';
 const POPUP_DELAY_DESKTOP_MS = 10000; // 10 seconds on desktop
 const POPUP_DELAY_MOBILE_MS = 3000; // 3 seconds on mobile
 
-export function DropNotificationPopup() {
-  const [isOpen, setIsOpen] = useState(false);
+interface DropNotificationPopupProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+export function DropNotificationPopup({ open: externalOpen, onOpenChange }: DropNotificationPopupProps = {}) {
+  const [internalOpen, setInternalOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const isDesktop = useMediaQuery('(min-width: 768px)');
 
+  // Use external open state if provided, otherwise use internal
+  const isOpen = externalOpen !== undefined ? externalOpen : internalOpen;
+  const setIsOpen = (value: boolean) => {
+    if (onOpenChange) {
+      onOpenChange(value);
+    } else {
+      setInternalOpen(value);
+    }
+  };
+
   useEffect(() => {
+    // Skip auto-open if externally controlled
+    if (externalOpen !== undefined) return;
+    
     // Check if user has already dismissed the popup
     const dismissed = localStorage.getItem(POPUP_STORAGE_KEY);
     if (dismissed) return;
@@ -38,11 +56,11 @@ export function DropNotificationPopup() {
     
     // Show popup after delay
     const timer = setTimeout(() => {
-      setIsOpen(true);
+      setInternalOpen(true);
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [isDesktop]);
+  }, [isDesktop, externalOpen]);
 
   const handleClose = () => {
     setIsOpen(false);
