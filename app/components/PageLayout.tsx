@@ -324,8 +324,8 @@ function MenuMobileNav({
 }) {
   return (
     <nav className="flex flex-col h-full">
-      {/* Main Menu Items - Takes up available space */}
-      <div className="flex-1 flex flex-col justify-start">
+      {/* Main Menu Items - Centered */}
+      <div className="flex-1 flex flex-col justify-center">
         {(menu?.items || []).map((item, index) => (
           <Link
             key={item.id}
@@ -338,34 +338,32 @@ function MenuMobileNav({
               }`
             }
           >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <span className="font-mono text-xs text-[#B55A3C] tracking-wide w-6 opacity-60 group-hover:opacity-100 transition-opacity">
-                  {(index + 1).toString().padStart(2, '0')}
-                </span>
-                
-                <span className="font-heading text-3xl md:text-4xl tracking-[0.08em] text-[#F2EFE9] group-hover:text-[#B55A3C] transition-colors uppercase">
-                  {item.title}
-                </span>
-              </div>
+            <div className="flex items-center justify-center gap-4">
+              <span className="font-mono text-xs text-[#B55A3C] tracking-wide opacity-60 group-hover:opacity-100 transition-opacity">
+                {(index + 1).toString().padStart(2, '0')}
+              </span>
+              
+              <span className="font-heading text-3xl md:text-4xl tracking-[0.08em] text-[#F2EFE9] group-hover:text-[#B55A3C] transition-colors uppercase">
+                {item.title}
+              </span>
 
-              <span className="font-heading text-2xl md:text-3xl text-[#B55A3C] opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+              <span className="font-heading text-2xl md:text-3xl text-[#B55A3C] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 →
               </span>
             </div>
             
-            {/* Hover accent line */}
-            <div className="absolute bottom-0 left-0 w-0 h-px bg-[#B55A3C] group-hover:w-full transition-all duration-500" />
+            {/* Hover accent line - centered */}
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-px bg-[#B55A3C] group-hover:w-1/2 transition-all duration-500" />
           </Link>
         ))}
       </div>
       
-      {/* Quick Links - Fixed at bottom with more prominence */}
-      <div className="mt-auto pt-8 border-t border-[#F2EFE9]/10">
+      {/* Quick Links - Centered */}
+      <div className="mt-auto pt-8 border-t border-[#F2EFE9]/10 text-center">
         <span className="font-mono text-[10px] text-[#F2EFE9]/40 tracking-[0.3em] uppercase block mb-4">
           Quick Access
         </span>
-        <div className="flex gap-8">
+        <div className="flex justify-center gap-8">
           <Link 
             to="/account" 
             onClick={onClose}

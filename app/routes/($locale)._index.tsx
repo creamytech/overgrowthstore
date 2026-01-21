@@ -104,7 +104,7 @@ export default function Homepage() {
             Drops Sell Out Fast
           </h2>
           <p className="font-mono text-sm text-[#F2EFE9]/50 mb-10 max-w-lg mx-auto">
-            Our last drop sold out in under 4 hours. Get early access and a head start on the next release.
+            Limited drops. No restocks. Sign up to get first access when pieces go live.
           </p>
           
           <HomepageNewsletterForm />
