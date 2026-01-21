@@ -90,11 +90,15 @@ export function DropHero() {
         }} />
       </div>
 
-      {/* Hero Content - SEO H1 */}
+      {/* Hero Content - SEO H1 + Wordmark Logo */}
       <div className="relative z-10 text-center px-6">
-        <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl text-[#F2EFE9] uppercase tracking-[0.1em] mb-4">
-          Overgrowth
-        </h1>
+        <h1 className="sr-only">Overgrowth - Limited Edition Streetwear</h1>
+        <img 
+          src="/assets/Wordmark Logo.svg" 
+          alt="Overgrowth" 
+          className="h-16 md:h-24 lg:h-32 w-auto mx-auto mb-6"
+          style={{ filter: 'brightness(0) invert(1)' }}
+        />
         <p className="font-mono text-sm text-[#F2EFE9]/60 max-w-lg mx-auto">
           Limited edition streetwear. Never restocked.
         </p>
