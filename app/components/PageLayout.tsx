@@ -447,7 +447,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
         <div className="flex flex-col justify-center items-center lg:items-start p-8 md:p-12 lg:p-16 text-center lg:text-left">
           
           {/* Newsletter */}
-          <div className="mb-16 w-full max-w-sm">
+          <div id="newsletter" className="mb-16 w-full max-w-sm">
             <span className="font-mono text-[9px] text-[#F2EFE9]/30 tracking-[0.3em] uppercase block mb-4">
               Join The Archive
             </span>

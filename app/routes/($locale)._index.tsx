@@ -8,7 +8,6 @@ import {PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
 import {seoPayload} from '~/lib/seo.server';
 import {StatsCards} from '~/components/stats-cards';
 import GlowingBorderButton from '~/components/glowing-border-button';
-import {DropNotificationPopup} from '~/components/DropNotificationPopup';
 
 export const meta = ({matches}: MetaArgs<typeof loader>) => {
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
@@ -34,7 +33,21 @@ export async function loader({context, request}: LoaderFunctionArgs) {
 
 export default function Homepage() {
   const {featuredProducts} = useLoaderData<typeof loader>();
-  const [signupPopupOpen, setSignupPopupOpen] = useState(false);
+  
+  // Scroll to newsletter when locked product is clicked
+  const scrollToNewsletter = () => {
+    const newsletter = document.getElementById('newsletter');
+    if (newsletter) {
+      newsletter.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Focus the email input after scrolling
+      setTimeout(() => {
+        const emailInput = newsletter.querySelector('input[type="email"]');
+        if (emailInput) {
+          (emailInput as HTMLInputElement).focus();
+        }
+      }, 800);
+    }
+  };
   
   return (
     <div className="home">
@@ -47,17 +60,11 @@ export default function Homepage() {
             <LatestDrops 
               products={data?.products?.nodes || []} 
               title="OG-NYC-001"
-              onLockedClick={() => setSignupPopupOpen(true)}
+              onLockedClick={scrollToNewsletter}
             />
           )}
         </Await>
       </Suspense>
-      
-      {/* Signup Popup - triggered by locked product clicks */}
-      <DropNotificationPopup 
-        open={signupPopupOpen} 
-        onOpenChange={setSignupPopupOpen} 
-      />
       
       {/* Why Overgrowth - Brand Pillars with StatsCards */}
       <section className="py-24 md:py-32 bg-[#F2EFE9] relative overflow-hidden">
