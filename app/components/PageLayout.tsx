@@ -388,37 +388,35 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
   const footerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: footerRef,
-    offset: ["start end", "start 0.6"]
+    offset: ["start end", "start 0.3"]
   });
   
-  // Animate scaleY from 0 to 1 as user scrolls to footer
-  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
+  // Footer content slides up from behind the divider
+  const footerY = useTransform(scrollYProgress, [0, 1], [100, 0]);
+  const footerOpacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
   
   return (
     <footer ref={footerRef} className="relative bg-[#0a0a0a] text-[#F2EFE9]">
       
-      {/* Decorative Divider with scroll-triggered growth animation */}
-      <div className="w-full bg-[#0a0a0a] overflow-hidden">
-        <motion.div
-          style={{ 
-            scaleY, 
-            opacity,
-            transformOrigin: 'top center',
-          }}
-          className="w-full"
-        >
-          <img 
-            src="/assets/FooterDivider1.svg" 
-            alt="" 
-            className="w-full h-auto"
-            style={{ filter: 'brightness(0) invert(1)' }}
-          />
-        </motion.div>
+      {/* Decorative Divider - Static, sits on top */}
+      <div className="relative z-10 w-full bg-[#0a0a0a]">
+        <img 
+          src="/assets/FooterDivider1.svg" 
+          alt="" 
+          className="w-full h-auto"
+          style={{ filter: 'brightness(0) invert(1)' }}
+        />
       </div>
       
-      {/* Main Footer Content */}
-      <div className="grid lg:grid-cols-[1.2fr,1fr]">
+      {/* Main Footer Content - Slides up from behind the divider */}
+      <motion.div 
+        style={{ 
+          y: footerY,
+          opacity: footerOpacity,
+        }}
+        className="relative z-0"
+      >
+        <div className="grid lg:grid-cols-[1.2fr,1fr]">
         
         {/* Left: Brand Statement */}
         <div className="relative flex flex-col justify-center items-center lg:items-start p-8 md:p-12 lg:p-16 border-b lg:border-b-0 lg:border-r border-[#F2EFE9]/10 text-center lg:text-left">
@@ -516,7 +514,8 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
             </div>
           </div>
         </div>
-      </div>
+        </div>
+      </motion.div>
 
       {/* Bottom Bar */}
       <div 
