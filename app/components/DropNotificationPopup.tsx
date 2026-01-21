@@ -184,16 +184,32 @@ export function DropNotificationPopup({ open: externalOpen, onOpenChange }: Drop
     );
   }
 
-  // Mobile: drawer sliding up from bottom - simplified for keyboard
+  // Mobile: simple fixed overlay (avoids Drawer/vaul iOS keyboard issues)
+  if (!isOpen) return null;
+
   return (
-    <Drawer 
-      open={isOpen} 
-      onOpenChange={(open) => !open && handleClose()}
-      shouldScaleBackground={false}
-    >
-      <DrawerContent className="bg-[#0a0a0a] border-t border-[#F2EFE9]/10 text-[#F2EFE9]">
-        {/* Compact header */}
-        <div className="pt-4 pb-2 px-4 text-center">
+    <div className="fixed inset-0 z-50">
+      {/* Backdrop */}
+      <div 
+        className="absolute inset-0 bg-black/80"
+        onClick={handleClose}
+      />
+      
+      {/* Content - fixed to top to avoid keyboard issues */}
+      <div className="absolute top-0 left-0 right-0 bg-[#0a0a0a] border-b border-[#F2EFE9]/10 p-6 pt-12 safe-area-inset-top">
+        {/* Close button */}
+        <button 
+          onClick={handleClose}
+          className="absolute top-4 right-4 text-[#F2EFE9]/50 hover:text-[#F2EFE9] p-2"
+          aria-label="Close"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        
+        {/* Header */}
+        <div className="text-center mb-4">
           <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase">
             Get Notified
           </span>
@@ -202,11 +218,9 @@ export function DropNotificationPopup({ open: externalOpen, onOpenChange }: Drop
           </h3>
         </div>
         
-        {/* Form - positioned near top so it stays visible with keyboard */}
-        <div className="px-4 pb-6 pt-2">
-          {formContent}
-        </div>
-      </DrawerContent>
-    </Drawer>
+        {/* Form */}
+        {formContent}
+      </div>
+    </div>
   );
 }
