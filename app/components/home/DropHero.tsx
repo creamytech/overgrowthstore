@@ -90,6 +90,19 @@ export function DropHero() {
         }} />
       </div>
 
+      {/* Hero Content - SEO H1 */}
+      <div className="relative z-10 text-center px-6">
+        <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.5em] uppercase block mb-4">
+          Est. 2026
+        </span>
+        <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl text-[#F2EFE9] uppercase tracking-[0.1em] mb-4">
+          Overgrowth
+        </h1>
+        <p className="font-mono text-sm text-[#F2EFE9]/60 max-w-lg mx-auto">
+          Limited edition streetwear. Never restocked.
+        </p>
+      </div>
+
 
       {/* Bottom Countdown Bar */}
       <div className="absolute bottom-0 left-0 right-0 z-20">

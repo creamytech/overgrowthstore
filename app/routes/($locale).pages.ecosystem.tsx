@@ -3,6 +3,14 @@ import {Link} from '~/components/Link';
 import {motion} from 'framer-motion';
 import {Icons} from '~/components/InlineIcons';
 import {MovingBorderButton} from '~/components/ui/moving-border';
+import type {MetaFunction} from '@remix-run/react';
+
+export const meta: MetaFunction = () => {
+  return [
+    {title: 'The Ecosystem | Loyalty Rewards | Overgrowth'},
+    {name: 'description', content: 'Join the Overgrowth Ecosystem. Earn points on every purchase, unlock exclusive rewards, and get first access to limited drops.'},
+  ];
+};
 
 export async function loader({request, context}: LoaderFunctionArgs) {
   return json({});
