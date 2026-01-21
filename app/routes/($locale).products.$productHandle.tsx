@@ -394,7 +394,13 @@ export default function Product() {
                       </div>
                       <div className="space-y-1">
                         <span className="text-[#8A8A84]/60 block text-[9px] uppercase tracking-wider">Weight</span>
-                        <span>Heavyweight Cotton</span>
+                        <span>
+                          {product.title.toLowerCase().includes('hoodie') ? '430 GSM Ultra-Heavyweight' :
+                           product.title.toLowerCase().includes('crewneck') ? '420 GSM Heavyweight' :
+                           product.title.toLowerCase().includes('tee') || product.title.toLowerCase().includes('t-shirt') ? '275 GSM Heavyweight' :
+                           product.title.toLowerCase().includes('cap') || product.title.toLowerCase().includes('hat') ? 'Premium Corduroy' :
+                           'Heavyweight Cotton'}
+                        </span>
                       </div>
                       <div className="space-y-1">
                         <span className="text-[#8A8A84]/60 block text-[9px] uppercase tracking-wider">Structure</span>
@@ -418,7 +424,7 @@ export default function Product() {
                   <AccordionContent>
                     <div className="font-mono text-xs text-[#8A8A84] space-y-2">
                       <p>• Free shipping on orders $150+</p>
-                      <p>• Standard recovery: 5-7 business days</p>
+                      <p>• Standard recovery: 3-4 weeks (made to order)</p>
                       <p>• No returns (due to scarcity of each product)</p>
                     </div>
                   </AccordionContent>

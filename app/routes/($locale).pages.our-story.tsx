@@ -88,12 +88,12 @@ export default function OurStory() {
               </div>
               
               {/* Visual element */}
-              <div className="hidden lg:block aspect-square bg-[#1a472a]/5 border border-[#1a472a]/10 relative mt-8">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <svg className="w-32 h-32 text-[#1a472a]/10" viewBox="0 0 24 24">
-                    <path fill="none" stroke="currentColor" strokeWidth="0.5" d="M12 22V12m0 0c0-4 4-8 8-8-1 4-4 8-8 8m0 0c0-4-4-8-8-8 1 4 4 8 8 8"/>
-                  </svg>
-                </div>
+              <div className="hidden lg:block aspect-square bg-[#1a472a]/5 border border-[#1a472a]/10 relative mt-8 overflow-hidden">
+                <img 
+                  src="/assets/story.jpeg" 
+                  alt="Overgrowth Story" 
+                  className="w-full h-full object-cover"
+                />
                 <span className="absolute bottom-3 left-3 font-mono text-[8px] text-[#8A8A84]/40 tracking-widest uppercase">
                   Fig. 1
                 </span>
