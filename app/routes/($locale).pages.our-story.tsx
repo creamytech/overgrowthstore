@@ -285,7 +285,7 @@ export default function OurStory() {
               <div className="space-y-4">
                 <h4 className="font-heading text-xl text-[#1a472a] uppercase">First Release</h4>
                 <p className="font-mono text-sm text-[#8A8A84] leading-relaxed">
-                  Our inaugural collection launched with 50 pieces. Sold out in hours.
+                  Our inaugural collection launched in strictly limited quantities. Sold out in hours.
                   Each piece now lives in the permanent archive.
                 </p>
               </div>

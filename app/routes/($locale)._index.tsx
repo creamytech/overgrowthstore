@@ -74,7 +74,7 @@ export default function Homepage() {
             className="bg-transparent"
             cards={[
               {
-                value: "50",
+                value: "Limited",
                 title: "Pieces Per Drop",
                 description: "Small batches mean real exclusivity. When it sells out, it's gone. You own something nobody else can get.",
               },

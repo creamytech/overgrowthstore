@@ -152,7 +152,7 @@ export function DropNotificationPopup() {
             </DialogTitle>
             
             <DialogDescription className="font-mono text-sm text-[#F2EFE9]/50 mt-4">
-              Our next drop is coming soon. Limited to 50 pieces. Once they're gone, they're archived forever.
+              Our next drop is coming soon. Strictly limited quantities. Once they're gone, they're archived forever.
             </DialogDescription>
           </DialogHeader>
           
@@ -180,7 +180,7 @@ export function DropNotificationPopup() {
           </DrawerTitle>
           
           <DrawerDescription className="font-mono text-sm text-[#F2EFE9]/50 mt-2">
-            Our next drop is coming soon. Limited to 50 pieces.
+            Our next drop is coming soon. Strictly limited.
           </DrawerDescription>
         </DrawerHeader>
         
