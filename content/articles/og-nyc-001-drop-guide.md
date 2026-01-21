@@ -1,6 +1,6 @@
 # The OG-NYC-001 Drop: Your Complete Guide
 
-**January 23rd, 2026 — 1:00 PM EST**
+**January 23rd, 2026 / 1:00 PM EST**
 
 The vault opens for exactly one window. Here's everything you need to know.
 
@@ -10,7 +10,7 @@ The vault opens for exactly one window. Here's everything you need to know.
 
 OG-NYC-001 is Overgrowth's inaugural limited collection. Named for its origin point and catalog number, this drop represents the first official artifacts to emerge from our archive.
 
-Every piece in this collection is a one-time production. No restocks. No second runs. Once the last item sells, the design enters the permanent archive—never to be reproduced.
+Every piece in this collection is a one-time production. No restocks. No second runs. Once the last item sells, the design enters the permanent archive. Never to be reproduced.
 
 This isn't artificial scarcity. It's the foundation of what makes Overgrowth different: you own something finite.
 
@@ -79,7 +79,7 @@ The countdown timer on every product page will hit zero at exactly 1:00 PM EST. 
 
 2. **Save your payment info.** Apple Pay, Shop Pay, or saved cards mean faster checkout.
 
-3. **Know your size.** Check the [Size Guide](/pages/size-guide) before drop day. There are no returns—sizing mistakes are permanent.
+3. **Know your size.** Check the [Size Guide](/pages/size-guide) before drop day. There are no returns, so sizing mistakes are permanent.
 
 4. **Pick your priorities.** You probably can't get everything. Decide what's non-negotiable.
 

@@ -176,7 +176,7 @@ export default function Article() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-heading text-lg text-[#1a472a]/60 uppercase tracking-wider mb-1">
-                  — Field Notes Archive
+                  [ Field Notes Archive ]
                 </p>
                 <p className="font-mono text-[10px] text-[#8A8A84] uppercase tracking-widest">
                   Overgrowth · Est. 2026

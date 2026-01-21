@@ -43,11 +43,11 @@ const faqCategories = [
     questions: [
       {
         q: 'When will my order arrive?',
-        a: 'Each piece is made to order—your order is crafted just for you. Allow 3-4 weeks for production and delivery. You\'ll receive tracking the moment it ships.',
+        a: 'Each piece is made to order. Your order is crafted just for you. Allow 3-4 weeks for production and delivery. You\'ll receive tracking the moment it ships.',
       },
       {
         q: 'Do you ship internationally?',
-        a: 'We currently ship within the United States only. International shipping is coming soon—join our newsletter to be the first to know.',
+        a: 'We currently ship within the United States only. International shipping is coming soon. Join our newsletter to be the first to know.',
       },
       {
         q: 'How do I track my order?',
@@ -61,7 +61,7 @@ const faqCategories = [
     questions: [
       {
         q: 'Do you accept returns?',
-        a: 'Because each piece is genuinely limited, we can\'t accept returns. Once it sells out, it\'s gone—so we make sure you love what you order. Check our size guide before purchasing.',
+        a: 'Because each piece is genuinely limited, we can\'t accept returns. Once it sells out, it\'s gone. So make sure you love what you order. Check our size guide before purchasing.',
       },
       {
         q: 'What if my item arrives damaged?',
@@ -79,7 +79,7 @@ const faqCategories = [
     questions: [
       {
         q: 'How do your pieces fit?',
-        a: 'Our pieces have a relaxed, slightly oversized fit—designed to drape well without feeling baggy. Check the size guide on each product for exact measurements.',
+        a: 'Our pieces have a relaxed, slightly oversized fit. Designed to drape well without feeling baggy. Check the size guide on each product for exact measurements.',
       },
       {
         q: 'What materials do you use?',

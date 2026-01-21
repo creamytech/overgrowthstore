@@ -1,5 +1,5 @@
 {% capture email_title %}Arrival Finalized{% endcapture %}
-{% capture email_body %}The recovery is complete. Your specimens have been deposited in your district.{% endcapture %}
+{% capture email_body %}The recovery is complete. Your artifacts have been deposited in your district.{% endcapture %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +53,7 @@
             </div>
 
             <!-- Items in this shipment -->
-            <h3 class="heading" style="font-size: 16px; margin: 40px 0 10px 0;">Recovered Specimens</h3>
+            <h3 class="heading" style="font-size: 16px; margin: 40px 0 10px 0;">Recovered Artifacts</h3>
             <table class="line-item-table" role="presentation">
               {% for line in fulfillment.fulfillment_line_items %}
                 {% unless line.line_item.nested_line_child? %}
@@ -95,7 +95,7 @@
         <tr>
           <td style="padding: 40px; background-color: #0a0a0a; color: #8b9b78; text-align: center;">
             <p class="body-text" style="color: #8b9b78; font-size: 12px; margin: 0">&copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. All Rights Reserved.</p>
-            <p class="body-text" style="color: #8b9b78; font-size: 10px; margin: 10px 0 0 0; text-transform: uppercase; letter-spacing: 2px;">District 07 // Archive Division</p>
+            <p class="body-text" style="color: #8b9b78; font-size: 10px; margin: 10px 0 0 0; text-transform: uppercase; letter-spacing: 2px;">The Archive // Est. 2026</p>
           </td>
         </tr>
       </table>

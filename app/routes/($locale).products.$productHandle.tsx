@@ -298,7 +298,7 @@ export default function Product() {
               {selectedVariant?.availableForSale && (
                 <Alert className="mt-4 bg-[#B55A3C]/10 border-[#B55A3C]/30">
                   <AlertDescription className="font-mono text-xs text-[#B55A3C]">
-                    ⚠ Limited stock — no restocks once sold out
+                    ⚠ Limited stock | No restocks once sold out
                   </AlertDescription>
                 </Alert>
               )}
@@ -352,7 +352,7 @@ export default function Product() {
                         ))}
                      </div>
                      <span className="font-mono text-[9px] text-[#1a472a]/60 uppercase tracking-widest">
-                        Jan 23 — 1:00 PM EST
+                        Jan 23 / 1:00 PM EST
                      </span>
                   </div>
                 </div>
@@ -406,7 +406,7 @@ export default function Product() {
                       </div>
                     </div>
                     <p className="font-mono text-[10px] text-[#8A8A84]/50 mt-4 italic">
-                      Constructed with premium heavyweight cotton. No reprints—when it's gone, it's archived.
+                      Constructed with premium heavyweight cotton. No reprints. When it's gone, it's archived.
                     </p>
                   </AccordionContent>
                 </AccordionItem>
@@ -419,7 +419,7 @@ export default function Product() {
                     <div className="font-mono text-xs text-[#8A8A84] space-y-2">
                       <p>• Free shipping on orders $150+</p>
                       <p>• Standard recovery: 5-7 business days</p>
-                      <p>• No returns — due to the scarcity of each product</p>
+                      <p>• No returns (due to scarcity of each product)</p>
                     </div>
                   </AccordionContent>
                 </AccordionItem>

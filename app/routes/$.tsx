@@ -98,7 +98,7 @@ export default function NotFound() {
         {/* Footer quote */}
         <div className="mt-12">
           <p className="font-body text-xs text-dark-green/30 italic">
-            "Not all who wander are lost — but perhaps this page is."
+            "Not all who wander are lost. But perhaps this page is."
           </p>
         </div>
       </div>

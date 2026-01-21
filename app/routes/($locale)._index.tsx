@@ -65,7 +65,7 @@ export default function Homepage() {
               Why Collectors Choose Us
             </h2>
             <p className="font-mono text-sm text-[#8A8A84] max-w-2xl mx-auto">
-              In a world of infinite replicas, we choose scarcity. Each piece is a limited artifact—never reprinted, always earned.
+              In a world of infinite replicas, we choose scarcity. Each piece is a limited artifact. Never reprinted, always earned.
             </p>
           </div>
           
@@ -76,7 +76,7 @@ export default function Homepage() {
               {
                 value: "50",
                 title: "Pieces Per Drop",
-                description: "Small batches mean real exclusivity. When it sells out, it's gone—and you own something nobody else can get.",
+                description: "Small batches mean real exclusivity. When it sells out, it's gone. You own something nobody else can get.",
               },
               {
                 value: "0",

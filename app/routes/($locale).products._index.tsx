@@ -118,7 +118,7 @@ export default function AllProducts() {
           </h1>
           
           <p className="font-mono text-sm text-[#F2EFE9]/60 max-w-xl mx-auto leading-relaxed">
-            Premium streetwear in limited runs. No reprints—when they're gone, they're archived.
+            Premium streetwear in limited runs. No reprints. When they're gone, they're archived.
           </p>
         </div>
       </section>

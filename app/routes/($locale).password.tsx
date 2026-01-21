@@ -181,7 +181,7 @@ export default function EmailSignupPage() {
                 {/* System Status Near Form */}
                 <div className="flex items-center gap-2 mb-2 opacity-60">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                  <span className="font-heading text-[9px] uppercase tracking-widest text-[#1a472a]">Signal Active — NYC Node 01</span>
+                  <span className="font-heading text-[9px] uppercase tracking-widest text-[#1a472a]">Signal Active | NYC Node 01</span>
                 </div>
 
                 <div className="flex flex-col gap-4 md:gap-3">
@@ -324,7 +324,7 @@ export default function EmailSignupPage() {
               className="w-full bg-[#c05a34] text-[#f4f1ea] py-4 px-6 font-heading text-xs tracking-widest uppercase flex items-center justify-center gap-3 shadow-[0_-10px_30px_rgba(0,0,0,0.1)] border-t border-[#a34a2a]/30"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-              Signal Active — Secure Access
+              Signal Active | Secure Access
             </button>
           </motion.div>
         )}

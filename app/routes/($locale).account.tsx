@@ -201,7 +201,7 @@ function EmptyOrders() {
   return (
     <div className="text-center py-12">
       <span className="font-mono text-[10px] text-[#8A8A84]/60 tracking-[0.3em] uppercase block mb-4">
-        — Empty —
+        [ Empty ]
       </span>
       <h3 className="font-heading text-xl text-[#1a472a] uppercase tracking-[0.1em] mb-2">
         No Orders Yet

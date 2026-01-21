@@ -176,7 +176,7 @@ export function ProductCard({
                     </span>
                   </TooltipTrigger>
                   <TooltipContent className="bg-[#1a472a] text-[#F2EFE9] border-none">
-                    <p className="font-mono text-[10px]">Limited availability — act fast</p>
+                    <p className="font-mono text-[10px]">Limited availability | act fast</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

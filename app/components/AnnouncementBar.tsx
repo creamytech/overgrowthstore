@@ -12,7 +12,7 @@ interface AnnouncementMessage {
 const announcements: AnnouncementMessage[] = [
   {
     id: '1',
-    text: '🔥 OG-NYC-001 dropping soon — Only 50 pieces available',
+    text: '🔥 OG-NYC-001 dropping soon | Only 50 pieces available',
     link: '/',
     linkText: 'View Drop',
   },
@@ -24,7 +24,7 @@ const announcements: AnnouncementMessage[] = [
   },
   {
     id: '3',
-    text: '⚡ Join the archive — Get early access to drops',
+    text: '⚡ Join the archive | Get early access to drops',
     link: '#newsletter',
     linkText: 'Subscribe',
   },

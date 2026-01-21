@@ -12,7 +12,7 @@ export const meta: MetaFunction = () => {
 const shippingInfo = [
   {
     question: 'When will my order arrive?',
-    answer: 'Each piece is made to order—crafted just for you. Allow 3-4 weeks for production and delivery. You\'ll receive tracking the moment it ships.',
+    answer: 'Each piece is made to order. Crafted just for you. Allow 3-4 weeks for production and delivery. You\'ll receive tracking the moment it ships.',
   },
   {
     question: 'Do you ship internationally?',

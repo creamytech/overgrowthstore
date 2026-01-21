@@ -22,7 +22,7 @@ export function FeaturedProducts({products, title = "Fresh Recoveries"}: Feature
         {/* Section Header */}
         <div className="text-center mb-20">
           <span className="specimen-number block mb-6">
-            — Specimens —
+            [ Specimens ]
           </span>
           <h2 className="font-heading text-3xl md:text-4xl text-[#1a472a] tracking-[0.12em] mb-6 uppercase">
             {title}

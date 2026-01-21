@@ -143,7 +143,7 @@ export default function OurStory() {
               
               <div className="space-y-6 font-mono text-sm text-[#F2EFE9]/60 leading-relaxed">
                 <p>
-                  Every piece we release is limited. Not for hype—for purpose. 
+                  Every piece we release is limited. Not for hype. For purpose. 
                   Small batches mean we can obsess over every detail without compromise.
                 </p>
                 <p>
@@ -223,7 +223,7 @@ export default function OurStory() {
               {
                 step: 'Step 04',
                 title: 'Release',
-                content: 'Limited drops only. Once it sells out, it\'s gone forever—and you own something nobody else can get.',
+                content: 'Limited drops only. Once it sells out, it\'s gone forever. You own something nobody else can get.',
               },
             ]}
             className="mb-20"
@@ -274,7 +274,7 @@ export default function OurStory() {
                 <h4 className="font-heading text-xl text-[#1a472a] uppercase">The Beginning</h4>
                 <p className="font-mono text-sm text-[#8A8A84] leading-relaxed">
                   Overgrowth was founded with a simple mission: create limited edition pieces 
-                  that prioritize quality over quantity. No restocks, no reprints—ever.
+                  that prioritize quality over quantity. No restocks, no reprints. Ever.
                 </p>
               </div>
             ),
@@ -335,7 +335,7 @@ export default function OurStory() {
             Always."
           </p>
           <p className="font-mono text-[10px] text-[#F2EFE9]/30 uppercase tracking-[0.3em] mb-12">
-            — The Overgrowth Team
+            - The Overgrowth Team
           </p>
           
           <Link to="/products">

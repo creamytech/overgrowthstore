@@ -88,7 +88,7 @@ export default function Search() {
         {/* Header */}
         <div className="text-center mb-12">
           <span className="font-mono text-[10px] text-[#8A8A84] tracking-[0.3em] uppercase block mb-6">
-            — Find Artifacts —
+            [ Find Artifacts ]
           </span>
           <h1 className="font-heading text-4xl md:text-5xl text-[#1a472a] tracking-[0.12em] uppercase mb-4">
             Search
@@ -197,7 +197,7 @@ function NoResults({
       {noResults && (
         <div className="text-center py-16">
           <span className="font-mono text-[10px] text-[#8A8A84]/60 tracking-[0.3em] uppercase block mb-4">
-            — Empty —
+            [ Empty ]
           </span>
           <h2 className="font-heading text-2xl text-[#1a472a] uppercase tracking-[0.1em] mb-2">
             No Results Found
@@ -214,7 +214,7 @@ function NoResults({
       {!searchTerm && (
         <div className="text-center py-16">
           <span className="font-mono text-[10px] text-[#8A8A84]/60 tracking-[0.3em] uppercase block mb-4">
-            — Ready —
+            [ Ready ]
           </span>
           <p className="font-mono text-sm text-[#8A8A84]">
             Enter a search term to find artifacts
@@ -235,7 +235,7 @@ function NoResults({
               <div className="mt-16 border-t border-[#1a472a]/10 pt-12">
                 <div className="text-center mb-8">
                   <span className="font-mono text-[10px] text-[#8A8A84] tracking-[0.3em] uppercase block mb-3">
-                    — Suggested —
+                    [ Suggested ]
                   </span>
                   <h3 className="font-heading text-lg text-[#1a472a] uppercase tracking-[0.1em]">
                     Popular Artifacts

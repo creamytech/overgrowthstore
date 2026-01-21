@@ -88,7 +88,7 @@ export function ConfirmRecoveryDialog({
           <>
             <AlertDialogHeader className="text-center">
               <span className="font-mono text-[9px] text-[#8A8A84] tracking-[0.3em] uppercase block mb-2">
-                — Confirm —
+                [ Confirm ]
               </span>
               <AlertDialogTitle className="font-heading text-2xl text-[#1a472a] uppercase tracking-[0.1em]">
                 Confirm Recovery?

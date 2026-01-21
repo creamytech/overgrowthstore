@@ -75,7 +75,7 @@ export function Drawer({
                     {heading && (
                       <header className="mb-6 md:mb-12 text-center">
                         <span className="font-mono text-[9px] text-[#F2EFE9]/40 tracking-[0.3em] uppercase block mb-2 md:mb-3">
-                          {variant === 'menu' ? '— Navigate' : '— Items'}
+                          {variant === 'menu' ? '[ Navigate ]' : '[ Items ]'}
                         </span>
                         <Dialog.Title>
                           <h2 className="font-heading text-xl md:text-3xl tracking-[0.15em] text-[#F2EFE9] uppercase">

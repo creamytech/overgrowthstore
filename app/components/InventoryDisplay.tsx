@@ -90,7 +90,7 @@ export function InventoryAlert({
       <Alert className="bg-[#8A8A84]/10 border-[#8A8A84]/30">
         <Clock className="h-4 w-4 text-[#8A8A84]" />
         <AlertDescription className="font-mono text-xs text-[#8A8A84]">
-          This specimen has been archived — no longer available
+          This specimen has been archived. No longer available.
         </AlertDescription>
       </Alert>
     );
@@ -101,7 +101,7 @@ export function InventoryAlert({
       <Alert className="bg-[#B55A3C]/10 border-[#B55A3C]/30">
         <AlertTriangle className="h-4 w-4 text-[#B55A3C]" />
         <AlertDescription className="font-mono text-xs text-[#B55A3C]">
-          ⚠ Only {quantityAvailable} remaining — no restocks once sold out
+          ⚠ Only {quantityAvailable} remaining | No restocks once sold out
         </AlertDescription>
       </Alert>
     );
@@ -111,7 +111,7 @@ export function InventoryAlert({
     return (
       <Alert className="bg-[#B55A3C]/10 border-[#B55A3C]/30">
         <AlertDescription className="font-mono text-xs text-[#B55A3C]">
-          ⚠ Limited stock — no restocks once sold out
+          ⚠ Limited stock | No restocks once sold out
         </AlertDescription>
       </Alert>
     );
