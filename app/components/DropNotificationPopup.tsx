@@ -184,34 +184,26 @@ export function DropNotificationPopup({ open: externalOpen, onOpenChange }: Drop
     );
   }
 
-  // Mobile: drawer sliding up from bottom
+  // Mobile: drawer sliding up from bottom - simplified for keyboard
   return (
     <Drawer 
       open={isOpen} 
       onOpenChange={(open) => !open && handleClose()}
       shouldScaleBackground={false}
-      handleOnly={true}
     >
-      <DrawerContent className="bg-[#0a0a0a] border-t border-[#F2EFE9]/10 text-[#F2EFE9] max-h-[85vh]">
-        <DrawerHeader className="text-center pt-2">
-          <div className="flex items-center justify-center gap-4 mb-2">
-            <div className="w-8 h-px bg-[#B55A3C]" />
-            <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase">
-              Incoming Drop
-            </span>
-            <div className="w-8 h-px bg-[#B55A3C]" />
-          </div>
-          
-          <DrawerTitle className="font-heading text-2xl text-[#F2EFE9] uppercase tracking-[0.08em]">
-            OG-NYC-001
-          </DrawerTitle>
-          
-          <DrawerDescription className="font-mono text-sm text-[#F2EFE9]/50 mt-2">
-            Our next drop is coming soon. Strictly limited.
-          </DrawerDescription>
-        </DrawerHeader>
+      <DrawerContent className="bg-[#0a0a0a] border-t border-[#F2EFE9]/10 text-[#F2EFE9]">
+        {/* Compact header */}
+        <div className="pt-4 pb-2 px-4 text-center">
+          <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase">
+            Get Notified
+          </span>
+          <h3 className="font-heading text-xl text-[#F2EFE9] uppercase tracking-[0.08em] mt-1">
+            OG-NYC-001 Drop
+          </h3>
+        </div>
         
-        <div className="mt-6 px-4 pb-8">
+        {/* Form - positioned near top so it stays visible with keyboard */}
+        <div className="px-4 pb-6 pt-2">
           {formContent}
         </div>
       </DrawerContent>
