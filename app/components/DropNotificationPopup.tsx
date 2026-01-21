@@ -186,8 +186,13 @@ export function DropNotificationPopup({ open: externalOpen, onOpenChange }: Drop
 
   // Mobile: drawer sliding up from bottom
   return (
-    <Drawer open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-      <DrawerContent className="bg-[#0a0a0a] border-t border-[#F2EFE9]/10 text-[#F2EFE9]">
+    <Drawer 
+      open={isOpen} 
+      onOpenChange={(open) => !open && handleClose()}
+      shouldScaleBackground={false}
+      handleOnly={true}
+    >
+      <DrawerContent className="bg-[#0a0a0a] border-t border-[#F2EFE9]/10 text-[#F2EFE9] max-h-[85vh]">
         <DrawerHeader className="text-center pt-2">
           <div className="flex items-center justify-center gap-4 mb-2">
             <div className="w-8 h-px bg-[#B55A3C]" />
@@ -206,7 +211,7 @@ export function DropNotificationPopup({ open: externalOpen, onOpenChange }: Drop
           </DrawerDescription>
         </DrawerHeader>
         
-        <div className="mt-6 px-4 pb-6">
+        <div className="mt-6 px-4 pb-8">
           {formContent}
         </div>
       </DrawerContent>
