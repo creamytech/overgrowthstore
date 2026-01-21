@@ -385,21 +385,11 @@ function MenuMobileNav({
 }
 
 function Footer({menu}: {menu?: EnhancedMenu}) {
-  const footerRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: footerRef,
-    offset: ["start end", "start 0.3"]
-  });
-  
-  // Footer content slides up from behind the divider
-  const footerY = useTransform(scrollYProgress, [0, 1], [100, 0]);
-  const footerOpacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
-  
   return (
-    <footer ref={footerRef} className="relative bg-[#0a0a0a] text-[#F2EFE9]">
+    <footer className="relative bg-[#0a0a0a] text-[#F2EFE9]">
       
-      {/* Decorative Divider - Static, sits on top */}
-      <div className="relative z-10 w-full bg-[#0a0a0a]">
+      {/* Decorative Divider - Static */}
+      <div className="w-full bg-[#0a0a0a]">
         <img 
           src="/assets/FooterDivider1.svg" 
           alt="" 
@@ -408,15 +398,8 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
         />
       </div>
       
-      {/* Main Footer Content - Slides up from behind the divider */}
-      <motion.div 
-        style={{ 
-          y: footerY,
-          opacity: footerOpacity,
-        }}
-        className="relative z-0"
-      >
-        <div className="grid lg:grid-cols-[1.2fr,1fr]">
+      {/* Main Footer Content */}
+      <div className="grid lg:grid-cols-[1.2fr,1fr]">
         
         {/* Left: Brand Statement */}
         <div className="relative flex flex-col justify-center items-center lg:items-start p-8 md:p-12 lg:p-16 border-b lg:border-b-0 lg:border-r border-[#F2EFE9]/10 text-center lg:text-left">
@@ -514,8 +497,7 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
             </div>
           </div>
         </div>
-        </div>
-      </motion.div>
+      </div>
 
       {/* Bottom Bar */}
       <div 
