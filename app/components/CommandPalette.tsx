@@ -58,17 +58,6 @@ export function CommandPalette({products = [], collections = []}: CommandPalette
 
   return (
     <>
-      {/* Quick Find button - fixed bottom right */}
-      <button
-        onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-[999] hidden md:flex items-center gap-3 px-4 py-3 bg-[#F2EFE9] border border-[#1a472a]/20 shadow-lg hover:shadow-xl transition-all group hover:border-[#B55A3C]/50"
-      >
-        <span className="font-mono text-[11px] text-[#1a472a] tracking-wide uppercase">Quick Find</span>
-        <kbd className="font-mono text-[10px] text-[#8A8A84] bg-[#1a472a]/10 px-2 py-1 border border-[#1a472a]/10">
-          ⌘K
-        </kbd>
-      </button>
-
       <CommandDialog open={open} onOpenChange={setOpen}>
         <div className="bg-[#F2EFE9] border-[#1a472a]/20">
           <CommandInput 
