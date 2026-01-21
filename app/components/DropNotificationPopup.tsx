@@ -53,13 +53,18 @@ export function DropNotificationPopup() {
     setStatus('loading');
 
     try {
+      // Use FormData like footer/homepage forms
+      const formData = new FormData();
+      formData.append('email', email);
+      
       const response = await fetch('/api/newsletter', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: formData,
       });
 
-      if (response.ok) {
+      const data = await response.json() as { success?: boolean };
+
+      if (data.success) {
         setStatus('success');
         // Close after success message
         setTimeout(() => {
@@ -73,64 +78,51 @@ export function DropNotificationPopup() {
     }
   };
 
-  // Shared content for both dialog and drawer
-  const PopupContent = () => (
-    <>
-      {/* Corner accents - only on desktop */}
-      {isDesktop && (
-        <>
-          <div className="absolute top-3 left-3 w-6 h-6 border-l-2 border-t-2 border-[#B55A3C]" />
-          <div className="absolute top-3 right-3 w-6 h-6 border-r-2 border-t-2 border-[#B55A3C]" />
-          <div className="absolute bottom-3 left-3 w-6 h-6 border-l-2 border-b-2 border-[#B55A3C]" />
-          <div className="absolute bottom-3 right-3 w-6 h-6 border-r-2 border-b-2 border-[#B55A3C]" />
-        </>
-      )}
-
-      <div className="mt-6 px-4 pb-6">
-        {status === 'success' ? (
-          <div className="text-center py-4">
-            <div className="w-12 h-12 mx-auto mb-4 border-2 border-[#B55A3C] flex items-center justify-center">
-              <svg className="w-6 h-6 text-[#B55A3C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <p className="font-mono text-sm text-[#F2EFE9]/70">
-              You're on the list. We'll notify you first.
-            </p>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                required
-                className="w-full px-4 py-3 bg-[#1a1a1a] border border-[#F2EFE9]/20 text-[#F2EFE9] font-mono text-sm placeholder:text-[#F2EFE9]/30 focus:border-[#B55A3C] focus:outline-none transition-colors"
-              />
-            </div>
-            
-            <div className="flex justify-center">
-              <GlowingBorderButton
-                type="submit"
-                text={status === 'loading' ? 'Joining...' : 'Notify Me'}
-              />
-            </div>
-            
-            {status === 'error' && (
-              <p className="font-mono text-xs text-red-400 text-center">
-                Something went wrong. Please try again.
-              </p>
-            )}
-            
-            <p className="font-mono text-[10px] text-[#F2EFE9]/30 text-center">
-              No spam. Drop notifications only.
-            </p>
-          </form>
-        )}
+  // Form content - inline to prevent re-render focus issues
+  const formContent = status === 'success' ? (
+    <div className="text-center py-4">
+      <div className="w-12 h-12 mx-auto mb-4 border-2 border-[#B55A3C] flex items-center justify-center">
+        <svg className="w-6 h-6 text-[#B55A3C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        </svg>
       </div>
-    </>
+      <p className="font-mono text-sm text-[#F2EFE9]/70">
+        You're on the list. We'll notify you first.
+      </p>
+    </div>
+  ) : (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter your email"
+          required
+          autoComplete="email"
+          // font-size: 16px prevents iOS zoom on focus
+          className="w-full px-4 py-3 bg-[#1a1a1a] border border-[#F2EFE9]/20 text-[#F2EFE9] font-mono text-base placeholder:text-[#F2EFE9]/30 focus:border-[#B55A3C] focus:outline-none transition-colors"
+          style={{ fontSize: '16px' }} // Explicit 16px to ensure no iOS zoom
+        />
+      </div>
+      
+      <div className="flex justify-center">
+        <GlowingBorderButton
+          type="submit"
+          text={status === 'loading' ? 'Joining...' : 'Notify Me'}
+        />
+      </div>
+      
+      {status === 'error' && (
+        <p className="font-mono text-xs text-red-400 text-center">
+          Something went wrong. Please try again.
+        </p>
+      )}
+      
+      <p className="font-mono text-[10px] text-[#F2EFE9]/30 text-center">
+        No spam. Drop notifications only.
+      </p>
+    </form>
   );
 
   // Desktop: centered dialog
@@ -138,6 +130,12 @@ export function DropNotificationPopup() {
     return (
       <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
         <DialogContent className="sm:max-w-md bg-[#0a0a0a] border border-[#F2EFE9]/10 text-[#F2EFE9]">
+          {/* Corner accents */}
+          <div className="absolute top-3 left-3 w-6 h-6 border-l-2 border-t-2 border-[#B55A3C]" />
+          <div className="absolute top-3 right-3 w-6 h-6 border-r-2 border-t-2 border-[#B55A3C]" />
+          <div className="absolute bottom-3 left-3 w-6 h-6 border-l-2 border-b-2 border-[#B55A3C]" />
+          <div className="absolute bottom-3 right-3 w-6 h-6 border-r-2 border-b-2 border-[#B55A3C]" />
+          
           <DialogHeader className="text-center">
             <div className="flex items-center justify-center gap-4 mb-4">
               <div className="w-8 h-px bg-[#B55A3C]" />
@@ -156,7 +154,9 @@ export function DropNotificationPopup() {
             </DialogDescription>
           </DialogHeader>
           
-          <PopupContent />
+          <div className="mt-6 px-4 pb-6">
+            {formContent}
+          </div>
         </DialogContent>
       </Dialog>
     );
@@ -184,7 +184,9 @@ export function DropNotificationPopup() {
           </DrawerDescription>
         </DrawerHeader>
         
-        <PopupContent />
+        <div className="mt-6 px-4 pb-6">
+          {formContent}
+        </div>
       </DrawerContent>
     </Drawer>
   );
