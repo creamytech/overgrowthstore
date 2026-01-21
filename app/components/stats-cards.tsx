@@ -63,7 +63,7 @@ export function StatsCards({
           {/* Value */}
           <div className="overflow-hidden">
             <h2 className={cn(
-              "font-heading text-4xl md:text-5xl tracking-tight leading-none",
+              "font-heading text-3xl md:text-4xl tracking-tight leading-none",
               card.accent ? "text-[#F2EFE9]" : "text-[#1a472a]"
             )}>
               {card.value}
