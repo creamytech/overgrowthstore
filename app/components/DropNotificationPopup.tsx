@@ -19,7 +19,8 @@ import {
 import GlowingBorderButton from '~/components/glowing-border-button';
 
 const POPUP_STORAGE_KEY = 'overgrowth_popup_dismissed';
-const POPUP_DELAY_MS = 10000; // 10 seconds
+const POPUP_DELAY_DESKTOP_MS = 10000; // 10 seconds on desktop
+const POPUP_DELAY_MOBILE_MS = 3000; // 3 seconds on mobile
 
 export function DropNotificationPopup() {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,13 +33,16 @@ export function DropNotificationPopup() {
     const dismissed = localStorage.getItem(POPUP_STORAGE_KEY);
     if (dismissed) return;
 
+    // Use shorter delay on mobile
+    const delay = isDesktop ? POPUP_DELAY_DESKTOP_MS : POPUP_DELAY_MOBILE_MS;
+    
     // Show popup after delay
     const timer = setTimeout(() => {
       setIsOpen(true);
-    }, POPUP_DELAY_MS);
+    }, delay);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [isDesktop]);
 
   const handleClose = () => {
     setIsOpen(false);
