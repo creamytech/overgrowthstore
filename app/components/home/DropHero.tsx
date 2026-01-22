@@ -1,5 +1,6 @@
 import {useEffect, useState, useRef} from 'react';
 import {Link} from '@remix-run/react';
+import {motion} from 'framer-motion';
 import {Badge} from '~/components/ui/badge';
 import {Button} from '~/components/ui/button';
 import {Separator} from '~/components/ui/separator';
@@ -120,9 +121,21 @@ export function DropHero() {
                   {value: timeLeft.seconds, label: 'Sec'},
                 ].map(({value, label}, i) => (
                   <div key={label} className="flex items-center gap-2">
-                    <span className="font-heading text-2xl md:text-3xl text-[#F2EFE9] tabular-nums">
-                      {value.toString().padStart(2, '0')}
-                    </span>
+                    {label === 'Sec' ? (
+                      <motion.span 
+                        key={value}
+                        initial={{ scale: 1.1, opacity: 0.7 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.2 }}
+                        className="font-heading text-2xl md:text-3xl text-[#B55A3C] tabular-nums"
+                      >
+                        {value.toString().padStart(2, '0')}
+                      </motion.span>
+                    ) : (
+                      <span className="font-heading text-2xl md:text-3xl text-[#F2EFE9] tabular-nums">
+                        {value.toString().padStart(2, '0')}
+                      </span>
+                    )}
                     <span className="font-mono text-[8px] text-[#F2EFE9]/40 uppercase tracking-wider">
                       {label}
                     </span>
