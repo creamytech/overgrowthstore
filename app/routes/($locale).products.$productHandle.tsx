@@ -19,6 +19,7 @@ import {
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 import clsx from 'clsx';
+import {motion} from 'framer-motion';
 
 import type {ProductFragment} from 'storefrontapi.generated';
 import {Link} from '~/components/Link';
@@ -54,7 +55,7 @@ import {
 import {Alert, AlertDescription} from '~/components/ui/alert';
 import {StickyAddToCart} from '~/components/StickyAddToCart';
 import {InventoryAlert} from '~/components/InventoryDisplay';
-import {Truck, AlertCircle, ChevronLeft, ChevronRight} from 'lucide-react';
+import {Truck, AlertCircle, ChevronLeft, ChevronRight, Link2, Check, Sparkles} from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -125,7 +126,8 @@ export const meta = ({matches}: MetaArgs<typeof loader>) => {
 export default function Product() {
   const {product, shop, recommended, variants, storeDomain} =
     useLoaderData<typeof loader>();
-  const {media, title, vendor, descriptionHtml} = product;
+  const {media, title, vendor, descriptionHtml, collections} = product;
+  const collectionName = collections?.nodes?.[0]?.title || vendor || 'Overgrowth';
 
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
@@ -175,6 +177,10 @@ export default function Product() {
   // Drop Timer Logic
   const [timeLeft, setTimeLeft] = useState<{days: number; hours: number; minutes: number; seconds: number} | null>(null);
   const [isLive, setIsLive] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  // Get first collection for link
+  const firstCollection = collections?.nodes?.[0];
 
   useEffect(() => {
     // Target Date: Jan 23rd, 2026, 1:00 PM EST
@@ -307,16 +313,72 @@ export default function Product() {
             
             {/* Archive Header */}
             <div className="mb-8">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-px bg-[#B55A3C]" />
-                <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase">
-                  {isOutOfStock ? 'Archived' : 'Available'}
-                </span>
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-px bg-[#B55A3C]" />
+                  <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase">
+                    {!isLive ? 'Dropping Soon' : isOutOfStock ? 'Archived' : 'Available'}
+                  </span>
+                </div>
+                
+                {/* Social Sharing */}
+                <div className="flex items-center gap-2">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => {
+                            window.open(
+                              `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out ${title} from Overgrowth`)}&url=${encodeURIComponent(window.location.href)}`,
+                              '_blank'
+                            );
+                          }}
+                          className="w-8 h-8 rounded-full flex items-center justify-center bg-[#1a472a]/5 text-[#8A8A84] hover:bg-[#1a472a]/10 hover:text-[#1a472a] transition-all"
+                        >
+                          {/* X Logo */}
+                          <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                          </svg>
+
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>Share on X</TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(window.location.href);
+                            setCopied(true);
+                            setTimeout(() => setCopied(false), 2000);
+                          }}
+                          className="w-8 h-8 rounded-full flex items-center justify-center bg-[#1a472a]/5 text-[#8A8A84] hover:bg-[#1a472a]/10 hover:text-[#1a472a] transition-all"
+                        >
+                          {copied ? <Check className="w-3.5 h-3.5 text-[#1a472a]" /> : <Link2 className="w-3.5 h-3.5" />}
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>{copied ? 'Copied!' : 'Copy link'}</TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
               </div>
-              
-              <span className="font-mono text-[10px] text-[#8A8A84] tracking-[0.3em] uppercase block mb-4">
-                {vendor || 'Overgrowth'} Collection
-              </span>
+
+              {/* Clickable Collection Breadcrumb */}
+              {firstCollection ? (
+                <Link 
+                  to={`/collections/${firstCollection.handle}`}
+                  className="font-mono text-[10px] text-[#8A8A84] tracking-[0.3em] uppercase block mb-4 hover:text-[#B55A3C] transition-colors"
+                >
+                  ← {collectionName}
+                </Link>
+              ) : (
+                <span className="font-mono text-[10px] text-[#8A8A84] tracking-[0.3em] uppercase block mb-4">
+                  {collectionName}
+                </span>
+              )}
               
               <h1 className="font-heading text-4xl md:text-5xl xl:text-6xl text-[#1a472a] tracking-[0.05em] uppercase leading-none mb-6">
                 {title}
@@ -336,8 +398,8 @@ export default function Product() {
                 )}
               </div>
               
-              {/* Low Stock Warning - shows for available items to create urgency */}
-              {selectedVariant?.availableForSale && (
+              {/* Low Stock Warning - only shows AFTER drop for available items */}
+              {isLive && selectedVariant?.availableForSale && (
                 <Alert className="mt-4 bg-[#B55A3C]/10 border-[#B55A3C]/30">
                   <AlertDescription className="font-mono text-xs text-[#B55A3C] flex items-center gap-2">
                     <AlertCircle className="w-3.5 h-3.5" />
@@ -346,19 +408,29 @@ export default function Product() {
                 </Alert>
               )}
               
-              {/* Ships in March Callout */}
-              <div className="mt-4">
-                <Badge 
-                  variant="outline" 
-                  className="bg-[#1a472a]/5 border-[#1a472a]/10 text-[#1a472a]/70 rounded-none px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.1em] flex items-center gap-2 w-fit"
-                >
-                  <Truck className="w-3.5 h-3.5" />
-                  Ships in March
-                </Badge>
-              </div>
-              
+              {/* Pre-drop Badges */}
+              {!isLive && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Badge 
+                    variant="outline" 
+                    className="bg-[#B55A3C]/5 border-[#B55A3C]/20 text-[#B55A3C] rounded-none px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.1em] flex items-center gap-2 w-fit"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    Exclusive Drop
+                  </Badge>
+                  <Badge 
+                    variant="outline" 
+                    className="bg-[#1a472a]/5 border-[#1a472a]/10 text-[#1a472a]/70 rounded-none px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.1em] flex items-center gap-2 w-fit"
+                  >
+                    <Truck className="w-3.5 h-3.5" />
+                    Ships in March
+                  </Badge>
+                </div>
+              )}
+
 
             </div>
+
 
             {/* Product Options & Add to Cart */}
             <div className="space-y-6">
@@ -376,17 +448,30 @@ export default function Product() {
                           {value: timeLeft.hours, label: 'Hrs'},
                           {value: timeLeft.minutes, label: 'Min'},
                           {value: timeLeft.seconds, label: 'Sec'},
-                        ].map(({value, label}, i) => (
+                        ].map(({value, label}) => (
                           <div key={label} className="flex flex-col items-center">
-                            <span className="font-heading text-2xl md:text-3xl text-[#1a472a] tabular-nums leading-none">
-                              {value.toString().padStart(2, '0')}
-                            </span>
+                            {label === 'Sec' ? (
+                              <motion.span 
+                                key={value}
+                                initial={{ scale: 1.1, opacity: 0.7 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{ duration: 0.2 }}
+                                className="font-heading text-2xl md:text-3xl text-[#B55A3C] tabular-nums leading-none"
+                              >
+                                {value.toString().padStart(2, '0')}
+                              </motion.span>
+                            ) : (
+                              <span className="font-heading text-2xl md:text-3xl text-[#1a472a] tabular-nums leading-none">
+                                {value.toString().padStart(2, '0')}
+                              </span>
+                            )}
                             <span className="font-mono text-[8px] text-[#8A8A84] uppercase tracking-wider mt-1">
                               {label}
                             </span>
                           </div>
                         ))}
                      </div>
+
                      <span className="font-mono text-[9px] text-[#1a472a]/60 uppercase tracking-widest">
                         Jan 23 / 1:00 PM EST
                      </span>
@@ -684,6 +769,12 @@ const PRODUCT_FRAGMENT = `#graphql
     description
     encodedVariantExistence
     encodedVariantAvailability
+    collections(first: 1) {
+      nodes {
+        title
+        handle
+      }
+    }
     options {
       name
       optionValues {
@@ -717,6 +808,7 @@ const PRODUCT_FRAGMENT = `#graphql
       }
     }
   }
+
   ${PRODUCT_VARIANT_FRAGMENT}
 ` as const;
 
