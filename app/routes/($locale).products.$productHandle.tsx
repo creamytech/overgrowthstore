@@ -252,20 +252,22 @@ export default function Product() {
                 <>
                   <button
                     onClick={() => carouselApi?.scrollPrev()}
-                    className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 flex items-center justify-center text-[#F2EFE9]/40 hover:text-[#F2EFE9] transition-colors duration-200"
+                    className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full flex items-center justify-center bg-[#B55A3C] text-[#F2EFE9] hover:bg-[#9A4A30] transition-all duration-200"
                     aria-label="Previous image"
                   >
-                    <ChevronLeft className="w-8 h-8" strokeWidth={1} />
+                    <ChevronLeft className="w-5 h-5" strokeWidth={2} />
                   </button>
                   <button
                     onClick={() => carouselApi?.scrollNext()}
-                    className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 flex items-center justify-center text-[#F2EFE9]/40 hover:text-[#F2EFE9] transition-colors duration-200"
+                    className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full flex items-center justify-center bg-[#B55A3C] text-[#F2EFE9] hover:bg-[#9A4A30] transition-all duration-200"
                     aria-label="Next image"
                   >
-                    <ChevronRight className="w-8 h-8" strokeWidth={1} />
+                    <ChevronRight className="w-5 h-5" strokeWidth={2} />
                   </button>
+
                 </>
               )}
+
             </Carousel>
             
             {/* Slide Counter & Dots */}
