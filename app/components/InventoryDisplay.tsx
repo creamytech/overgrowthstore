@@ -101,7 +101,7 @@ export function InventoryAlert({
       <Alert className="bg-[#B55A3C]/10 border-[#B55A3C]/30">
         <AlertTriangle className="h-4 w-4 text-[#B55A3C]" />
         <AlertDescription className="font-mono text-xs text-[#B55A3C]">
-          ⚠ Only {quantityAvailable} remaining | No restocks once sold out
+          Only {quantityAvailable} remaining | No restocks once sold out
         </AlertDescription>
       </Alert>
     );
@@ -110,8 +110,9 @@ export function InventoryAlert({
   if (availableForSale) {
     return (
       <Alert className="bg-[#B55A3C]/10 border-[#B55A3C]/30">
+        <AlertTriangle className="h-4 w-4 text-[#B55A3C]" />
         <AlertDescription className="font-mono text-xs text-[#B55A3C]">
-          ⚠ Limited stock | No restocks once sold out
+          Limited stock | No restocks once sold out
         </AlertDescription>
       </Alert>
     );

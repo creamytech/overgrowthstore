@@ -35,16 +35,14 @@ type LayoutProps = {
 export function PageLayout({children, layout}: LayoutProps) {
   const {headerMenu, footerMenu} = layout || {};
   return (
-    <div className="relative bg-[#F2EFE9] min-h-screen">
+    <div className="relative bg-[#F2EFE9] min-h-screen flex flex-col">
       {headerMenu && layout?.shop.name && (
         <Header title={layout.shop.name} menu={headerMenu} />
       )}
-      <div className="flex flex-col min-h-screen relative z-10">
-        <div className="">
-          <a href="#mainContent" className="sr-only">
-            Skip to content
-          </a>
-        </div>
+      <div className="flex-grow flex flex-col relative z-10">
+        <a href="#mainContent" className="sr-only">
+          Skip to content
+        </a>
         <main role="main" id="mainContent" className="flex-grow">
           {children}
         </main>

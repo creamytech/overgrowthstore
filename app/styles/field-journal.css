@@ -39,7 +39,7 @@ body::after {
   left: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
-  z-index: 9998 !important;
+  z-index: 50 !important;
   pointer-events: none !important;
   background-image: url('/assets/texture_archive_paper.jpg') !important;
   background-repeat: repeat !important;

@@ -55,6 +55,7 @@ import {
 import {Alert, AlertDescription} from '~/components/ui/alert';
 import {StickyAddToCart} from '~/components/StickyAddToCart';
 import {InventoryAlert} from '~/components/InventoryDisplay';
+import {Truck, Ruler, AlertCircle} from 'lucide-react';
 
 export const headers = routeHeaders;
 
@@ -297,11 +298,23 @@ export default function Product() {
               {/* Low Stock Warning - shows for available items to create urgency */}
               {selectedVariant?.availableForSale && (
                 <Alert className="mt-4 bg-[#B55A3C]/10 border-[#B55A3C]/30">
-                  <AlertDescription className="font-mono text-xs text-[#B55A3C]">
-                    ⚠ Limited stock | No restocks once sold out
+                  <AlertDescription className="font-mono text-xs text-[#B55A3C] flex items-center gap-2">
+                    <AlertCircle className="w-3.5 h-3.5" />
+                    Limited stock | No restocks once sold out
                   </AlertDescription>
                 </Alert>
               )}
+              
+              {/* Ships in March Callout */}
+              <div className="mt-4">
+                <Badge 
+                  variant="outline" 
+                  className="bg-[#1a472a]/5 border-[#1a472a]/10 text-[#1a472a]/70 rounded-none px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.1em] flex items-center gap-2 w-fit"
+                >
+                  <Truck className="w-3.5 h-3.5" />
+                  Ships in March
+                </Badge>
+              </div>
               
               {/* Size Guide Link */}
               <div className="mt-4">
@@ -312,7 +325,7 @@ export default function Product() {
                         to="/pages/size-guide" 
                         className="inline-flex items-center gap-2 font-mono text-[10px] text-[#8A8A84] hover:text-[#B55A3C] uppercase tracking-wider transition-colors"
                       >
-                        <span>📏</span>
+                        <Ruler className="w-3 h-3" />
                         Size Guide
                       </Link>
                     </TooltipTrigger>
