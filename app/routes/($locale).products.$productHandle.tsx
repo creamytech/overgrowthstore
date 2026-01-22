@@ -1,4 +1,4 @@
-import {useRef, Suspense, useState, useEffect} from 'react';
+import {useRef, Suspense, useState, useEffect, useCallback} from 'react';
 import {
   defer,
   type MetaArgs,
@@ -19,7 +19,6 @@ import {
 } from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
 import clsx from 'clsx';
-import {motion, AnimatePresence} from 'framer-motion';
 
 import type {ProductFragment} from 'storefrontapi.generated';
 import {Link} from '~/components/Link';
@@ -56,6 +55,13 @@ import {Alert, AlertDescription} from '~/components/ui/alert';
 import {StickyAddToCart} from '~/components/StickyAddToCart';
 import {InventoryAlert} from '~/components/InventoryDisplay';
 import {Truck, AlertCircle, ChevronLeft, ChevronRight} from 'lucide-react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from '~/components/ui/carousel';
+
 
 export const headers = routeHeaders;
 
@@ -140,6 +146,25 @@ export default function Product() {
   
   const [activeImage, setActiveImage] = useState(initialImage);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+
+  // Sync carousel with active index
+  const onCarouselSelect = useCallback(() => {
+    if (!carouselApi) return;
+    const index = carouselApi.selectedScrollSnap();
+    setActiveIndex(index);
+    const med = media.nodes[index];
+    const image = med?.__typename === 'MediaImage' ? med.image : null;
+    if (image) setActiveImage(image);
+  }, [carouselApi, media.nodes]);
+
+  useEffect(() => {
+    if (!carouselApi) return;
+    carouselApi.on('select', onCarouselSelect);
+    return () => {
+      carouselApi.off('select', onCarouselSelect);
+    };
+  }, [carouselApi, onCarouselSelect]);
 
   useEffect(() => {
     if (selectedVariant?.image) {
@@ -179,34 +204,6 @@ export default function Product() {
     return () => clearInterval(interval);
   }, []);
 
-  // Keyboard navigation for gallery
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (media.nodes.length <= 1) return;
-      
-      if (e.key === 'ArrowLeft') {
-        const newIndex = activeIndex === 0 ? media.nodes.length - 1 : activeIndex - 1;
-        const med = media.nodes[newIndex];
-        const image = med.__typename === 'MediaImage' ? med.image : null;
-        if (image) {
-          setActiveImage(image);
-          setActiveIndex(newIndex);
-        }
-      } else if (e.key === 'ArrowRight') {
-        const newIndex = activeIndex === media.nodes.length - 1 ? 0 : activeIndex + 1;
-        const med = media.nodes[newIndex];
-        const image = med.__typename === 'MediaImage' ? med.image : null;
-        if (image) {
-          setActiveImage(image);
-          setActiveIndex(newIndex);
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeIndex, media.nodes]);
-
 
   return (
     <div className="min-h-screen bg-[#F2EFE9]">
@@ -218,102 +215,89 @@ export default function Product() {
       {/* HERO SECTION - Full bleed immersive product display */}
       <section className="relative min-h-[calc(100vh-80px)] flex flex-col lg:flex-row">
         
-        {/* Left: Full-height Image Gallery */}
+        {/* Left: Full-height Image Gallery with Swipe Support */}
         <div className="lg:w-[60%] relative bg-[#0a0a0a] overflow-hidden">
-          {/* Main Image with Arrow Navigation */}
-          <div className="sticky top-0 h-screen flex items-center justify-center px-12 py-8 lg:px-20 lg:py-16">
-            {/* Left Arrow */}
-            {media.nodes.length > 1 && (
-              <button
-                onClick={() => {
-                  const newIndex = activeIndex === 0 ? media.nodes.length - 1 : activeIndex - 1;
-                  const med = media.nodes[newIndex];
+          <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
+            {/* Carousel with swipe support */}
+            <Carousel 
+              setApi={setCarouselApi}
+              opts={{
+                loop: true,
+                align: 'center',
+              }}
+              className="w-full h-full max-h-screen"
+            >
+              <CarouselContent className="h-full -ml-0">
+                {media.nodes.map((med, i) => {
                   const image = med.__typename === 'MediaImage' ? med.image : null;
-                  if (image) {
-                    setActiveImage(image);
-                    setActiveIndex(newIndex);
-                  }
-                }}
-                className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 flex items-center justify-center text-[#F2EFE9]/40 hover:text-[#F2EFE9] transition-colors duration-200"
-                aria-label="Previous image"
-              >
-                <ChevronLeft className="w-8 h-8" strokeWidth={1} />
-              </button>
-            )}
+                  if (!image) return null;
+                  
+                  return (
+                    <CarouselItem key={med.id || i} className="h-full pl-0 flex items-center justify-center">
+                      <div className="w-full h-full flex items-center justify-center p-4 lg:p-8">
+                        <Image
+                          data={image}
+                          sizes="(min-width: 1024px) 55vw, 95vw"
+                          className="max-w-full max-h-[85vh] w-auto h-auto object-contain"
+                        />
+                      </div>
+                    </CarouselItem>
 
-            
-            <AnimatePresence mode="popLayout" initial={false}>
-              {activeImage && (
-                <motion.div 
-                  key={activeImage.id || activeImage.url}
-                  initial={{ x: 100, opacity: 1 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: -100, opacity: 1 }}
-                  transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-                  className="relative w-full h-full max-w-2xl mx-auto flex items-center justify-center"
-                >
-                  <Image
-                    data={activeImage}
-                    sizes="(min-width: 1024px) 60vw, 100vw"
-                    className="w-full h-full object-contain"
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            
-            {/* Right Arrow */}
-            {media.nodes.length > 1 && (
-              <button
-                onClick={() => {
-                  const newIndex = activeIndex === media.nodes.length - 1 ? 0 : activeIndex + 1;
-                  const med = media.nodes[newIndex];
-                  const image = med.__typename === 'MediaImage' ? med.image : null;
-                  if (image) {
-                    setActiveImage(image);
-                    setActiveIndex(newIndex);
-                  }
-                }}
-                className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 flex items-center justify-center text-[#F2EFE9]/40 hover:text-[#F2EFE9] transition-colors duration-200"
-                aria-label="Next image"
-              >
-                <ChevronRight className="w-8 h-8" strokeWidth={1} />
-              </button>
-            )}
-
-          </div>
-          
-          {/* Thumbnail Dots - Bottom of gallery */}
-          {media.nodes.length > 1 && (
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-              {media.nodes.map((med, i) => {
-                const image = med.__typename === 'MediaImage' ? med.image : null;
-                if (!image) return null;
-                
-                const isActive = activeIndex === i;
-
-                return (
+                  );
+                })}
+              </CarouselContent>
+              
+              {/* Arrow Navigation */}
+              {media.nodes.length > 1 && (
+                <>
                   <button
-                    key={med.id || image.id}
-                    onClick={() => {
-                      setActiveImage(image);
-                      setActiveIndex(i);
-                    }}
-                    className={clsx(
-                      'w-2 h-2 rounded-full transition-all duration-300',
-                      isActive 
-                        ? 'bg-[#B55A3C] scale-110' 
-                        : 'bg-[#F2EFE9]/30 hover:bg-[#F2EFE9]/60'
-                    )}
-                    aria-label={`View image ${i + 1}`}
-                  />
-                );
-              })}
-            </div>
-          )}
-
-
+                    onClick={() => carouselApi?.scrollPrev()}
+                    className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 flex items-center justify-center text-[#F2EFE9]/40 hover:text-[#F2EFE9] transition-colors duration-200"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft className="w-8 h-8" strokeWidth={1} />
+                  </button>
+                  <button
+                    onClick={() => carouselApi?.scrollNext()}
+                    className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 flex items-center justify-center text-[#F2EFE9]/40 hover:text-[#F2EFE9] transition-colors duration-200"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight className="w-8 h-8" strokeWidth={1} />
+                  </button>
+                </>
+              )}
+            </Carousel>
+            
+            {/* Slide Counter & Dots */}
+            {media.nodes.length > 1 && (
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 z-20">
+                <span className="font-mono text-[10px] text-[#F2EFE9]/50 uppercase tracking-wider">
+                  {activeIndex + 1} / {media.nodes.length}
+                </span>
+                <div className="flex gap-2">
+                  {media.nodes.map((med, i) => {
+                    const isActive = activeIndex === i;
+                    return (
+                      <button
+                        key={med.id || i}
+                        onClick={() => carouselApi?.scrollTo(i)}
+                        className={clsx(
+                          'w-2 h-2 rounded-full transition-all duration-300',
+                          isActive 
+                            ? 'bg-[#B55A3C] scale-110' 
+                            : 'bg-[#F2EFE9]/30 hover:bg-[#F2EFE9]/60'
+                        )}
+                        aria-label={`View image ${i + 1}`}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
+
+
 
         {/* Right: Product Info Panel - Cream background */}
         <div className="lg:w-[40%] bg-[#F2EFE9] relative">
