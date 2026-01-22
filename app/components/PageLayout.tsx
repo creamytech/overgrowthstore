@@ -479,9 +479,6 @@ function Footer({menu}: {menu?: EnhancedMenu}) {
                 Help
               </span>
               <nav className="flex flex-col gap-3">
-                <Link to="/pages/size-guide" className="font-mono text-sm text-[#F2EFE9]/50 hover:text-[#B55A3C] transition-colors">
-                  Size Guide
-                </Link>
                 <Link to="/pages/shipping" className="font-mono text-sm text-[#F2EFE9]/50 hover:text-[#B55A3C] transition-colors">
                   Shipping & Returns
                 </Link>

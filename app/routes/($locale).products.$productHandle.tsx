@@ -55,7 +55,7 @@ import {
 import {Alert, AlertDescription} from '~/components/ui/alert';
 import {StickyAddToCart} from '~/components/StickyAddToCart';
 import {InventoryAlert} from '~/components/InventoryDisplay';
-import {Truck, Ruler, AlertCircle} from 'lucide-react';
+import {Truck, AlertCircle, ChevronLeft, ChevronRight} from 'lucide-react';
 
 export const headers = routeHeaders;
 
@@ -179,60 +179,118 @@ export default function Product() {
     return () => clearInterval(interval);
   }, []);
 
+  // Keyboard navigation for gallery
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (media.nodes.length <= 1) return;
+      
+      if (e.key === 'ArrowLeft') {
+        const newIndex = activeIndex === 0 ? media.nodes.length - 1 : activeIndex - 1;
+        const med = media.nodes[newIndex];
+        const image = med.__typename === 'MediaImage' ? med.image : null;
+        if (image) {
+          setActiveImage(image);
+          setActiveIndex(newIndex);
+        }
+      } else if (e.key === 'ArrowRight') {
+        const newIndex = activeIndex === media.nodes.length - 1 ? 0 : activeIndex + 1;
+        const med = media.nodes[newIndex];
+        const image = med.__typename === 'MediaImage' ? med.image : null;
+        if (image) {
+          setActiveImage(image);
+          setActiveIndex(newIndex);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeIndex, media.nodes]);
+
+
   return (
     <div className="min-h-screen bg-[#F2EFE9]">
       
       {/* Dark header spacer for navbar consistency */}
       <div className="h-20 bg-[#0a0a0a] w-full" />
+
       
       {/* HERO SECTION - Full bleed immersive product display */}
       <section className="relative min-h-[calc(100vh-80px)] flex flex-col lg:flex-row">
         
         {/* Left: Full-height Image Gallery */}
-        <div className="lg:w-[60%] relative bg-[#0a0a0a]">
-          {/* Main Image */}
-          <div className="sticky top-0 h-screen flex items-center justify-center p-8 lg:p-16">
-            <AnimatePresence mode="wait">
+        <div className="lg:w-[60%] relative bg-[#0a0a0a] overflow-hidden">
+          {/* Main Image with Arrow Navigation */}
+          <div className="sticky top-0 h-screen flex items-center justify-center px-12 py-8 lg:px-20 lg:py-16">
+            {/* Left Arrow */}
+            {media.nodes.length > 1 && (
+              <button
+                onClick={() => {
+                  const newIndex = activeIndex === 0 ? media.nodes.length - 1 : activeIndex - 1;
+                  const med = media.nodes[newIndex];
+                  const image = med.__typename === 'MediaImage' ? med.image : null;
+                  if (image) {
+                    setActiveImage(image);
+                    setActiveIndex(newIndex);
+                  }
+                }}
+                className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 flex items-center justify-center text-[#F2EFE9]/40 hover:text-[#F2EFE9] transition-colors duration-200"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="w-8 h-8" strokeWidth={1} />
+              </button>
+            )}
+
+            
+            <AnimatePresence mode="popLayout" initial={false}>
               {activeImage && (
                 <motion.div 
                   key={activeImage.id || activeImage.url}
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.98 }}
-                  transition={{ duration: 0.3, ease: 'easeOut' }}
-                  className="relative w-full h-full max-w-2xl mx-auto"
+                  initial={{ x: 100, opacity: 1 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: -100, opacity: 1 }}
+                  transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                  className="relative w-full h-full max-w-2xl mx-auto flex items-center justify-center"
                 >
                   <Image
                     data={activeImage}
                     sizes="(min-width: 1024px) 60vw, 100vw"
                     className="w-full h-full object-contain"
                   />
-                
-                  {/* Specimen Corner Markers */}
-                  <div className="absolute top-0 left-0 w-12 h-12 border-l-2 border-t-2 border-[#F2EFE9]/20" />
-                  <div className="absolute top-0 right-0 w-12 h-12 border-r-2 border-t-2 border-[#F2EFE9]/20" />
-                  <div className="absolute bottom-0 left-0 w-12 h-12 border-l-2 border-b-2 border-[#F2EFE9]/20" />
-                  <div className="absolute bottom-0 right-0 w-12 h-12 border-r-2 border-b-2 border-[#F2EFE9]/20" />
-                
-                  {/* Item ID Tag */}
-                  <div className="absolute bottom-3 left-3 bg-black/80 px-2 py-1 backdrop-blur-sm">
-                    <span className="font-mono text-[10px] text-[#F2EFE9]/70 uppercase tracking-wider">
-                      {selectedVariant?.sku ? `Item № ${selectedVariant.sku}` : `View ${activeIndex + 1}/${media.nodes.length}`}
-                    </span>
-                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
+
+            
+            {/* Right Arrow */}
+            {media.nodes.length > 1 && (
+              <button
+                onClick={() => {
+                  const newIndex = activeIndex === media.nodes.length - 1 ? 0 : activeIndex + 1;
+                  const med = media.nodes[newIndex];
+                  const image = med.__typename === 'MediaImage' ? med.image : null;
+                  if (image) {
+                    setActiveImage(image);
+                    setActiveIndex(newIndex);
+                  }
+                }}
+                className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 flex items-center justify-center text-[#F2EFE9]/40 hover:text-[#F2EFE9] transition-colors duration-200"
+                aria-label="Next image"
+              >
+                <ChevronRight className="w-8 h-8" strokeWidth={1} />
+              </button>
+            )}
+
           </div>
           
-          {/* Thumbnail Strip - Vertical on left side */}
+          {/* Thumbnail Dots - Bottom of gallery */}
           {media.nodes.length > 1 && (
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-20">
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
               {media.nodes.map((med, i) => {
                 const image = med.__typename === 'MediaImage' ? med.image : null;
                 if (!image) return null;
                 
-                const isActive = activeImage?.id === image.id;
+                const isActive = activeIndex === i;
 
                 return (
                   <button
@@ -242,22 +300,19 @@ export default function Product() {
                       setActiveIndex(i);
                     }}
                     className={clsx(
-                      'relative w-14 h-16 border-2 transition-all duration-300 overflow-hidden',
+                      'w-2 h-2 rounded-full transition-all duration-300',
                       isActive 
-                        ? 'border-[#B55A3C] opacity-100' 
-                        : 'border-[#F2EFE9]/20 opacity-40 hover:opacity-80'
+                        ? 'bg-[#B55A3C] scale-110' 
+                        : 'bg-[#F2EFE9]/30 hover:bg-[#F2EFE9]/60'
                     )}
-                  >
-                    <Image
-                      data={image}
-                      sizes="56px"
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
+                    aria-label={`View image ${i + 1}`}
+                  />
                 );
               })}
             </div>
           )}
+
+
         </div>
 
         {/* Right: Product Info Panel - Cream background */}
@@ -316,25 +371,7 @@ export default function Product() {
                 </Badge>
               </div>
               
-              {/* Size Guide Link */}
-              <div className="mt-4">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Link 
-                        to="/pages/size-guide" 
-                        className="inline-flex items-center gap-2 font-mono text-[10px] text-[#8A8A84] hover:text-[#B55A3C] uppercase tracking-wider transition-colors"
-                      >
-                        <Ruler className="w-3 h-3" />
-                        Size Guide
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent className="bg-[#0a0a0a] text-[#F2EFE9] border-[#F2EFE9]/20">
-                      <p className="font-mono text-xs">View measurements & fit guide</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
+
             </div>
 
             {/* Product Options & Add to Cart */}
@@ -502,12 +539,16 @@ export default function Product() {
       </Suspense>
 
 
-      {/* Sticky Add to Cart for Mobile */}
+      {/* Sticky Add to Cart - Kith style */}
       <StickyAddToCart
-        selectedVariant={selectedVariant}
+        selectedVariant={selectedVariant ? {
+          ...selectedVariant,
+          image: selectedVariant.image || (media.nodes[0]?.__typename === 'MediaImage' ? media.nodes[0].image : null),
+        } : null}
         productTitle={title}
         show={!isOutOfStock && isLive}
       />
+
 
       <Analytics.ProductView
         data={{
