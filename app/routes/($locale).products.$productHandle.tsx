@@ -223,7 +223,7 @@ export default function Product() {
         
         {/* Left: Full-height Image Gallery with Swipe Support */}
         <div className="lg:w-[60%] relative bg-[#0a0a0a] overflow-hidden">
-          <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
+          <div className="sticky top-0 h-[calc(100vh-80px)] lg:h-screen flex flex-col items-center justify-center overflow-hidden">
             {/* Carousel with swipe support */}
             <Carousel 
               setApi={setCarouselApi}
@@ -233,8 +233,8 @@ export default function Product() {
               }}
               className="w-full h-full max-h-screen"
             >
-              <CarouselContent className="h-full -ml-0">
-                {media.nodes.map((med, i) => {
+              <CarouselContent className="h-full -ml-0" viewportClassName="h-full">
+                {media.nodes.map((med: any, i: number) => {
                   const image = med.__typename === 'MediaImage' ? med.image : null;
                   if (!image) return null;
                   
@@ -283,7 +283,7 @@ export default function Product() {
                   {activeIndex + 1} / {media.nodes.length}
                 </span>
                 <div className="flex gap-2">
-                  {media.nodes.map((med, i) => {
+                  {media.nodes.map((med: any, i: number) => {
                     const isActive = activeIndex === i;
                     return (
                       <button

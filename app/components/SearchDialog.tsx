@@ -72,10 +72,10 @@ export function SearchDialog({
     setIsLoading(true);
     try {
       const response = await fetch(`/api/products?query=${encodeURIComponent(searchQuery)}&count=8`);
-      if (response.ok) {
-        const data = await response.json();
-        setResults(data.products || []);
-      }
+        if (response.ok) {
+          const data = (await response.json()) as {products: SearchResult[]};
+          setResults(data.products || []);
+        }
     } catch (error) {
       console.error('Search error:', error);
     } finally {
