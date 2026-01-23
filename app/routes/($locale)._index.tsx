@@ -59,7 +59,7 @@ export default function Homepage() {
           {(data) => (
             <LatestDrops 
               products={data?.products?.nodes || []} 
-              title="OG-NYC-001"
+              title="THE ARCHIVE"
               onLockedClick={scrollToNewsletter}
             />
           )}

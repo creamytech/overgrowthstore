@@ -12,7 +12,7 @@ interface AnnouncementMessage {
 const announcements: AnnouncementMessage[] = [
   {
     id: '1',
-    text: '🔥 OG-NYC-001 dropping soon | Strictly limited quantities',
+    text: '🔥 OG-NYC-001 Live Now | Limited Availability',
     link: '/',
     linkText: 'View Drop',
   },

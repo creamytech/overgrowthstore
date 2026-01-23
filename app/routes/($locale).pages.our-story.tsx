@@ -283,10 +283,10 @@ export default function OurStory() {
             title: 'Drop 01',
             content: (
               <div className="space-y-4">
-                <h4 className="font-heading text-xl text-[#B55A3C] uppercase">Coming Soon</h4>
+                <h4 className="font-heading text-xl text-[#B55A3C] uppercase">Collection Live</h4>
                 <p className="font-mono text-sm text-[#8A8A84] leading-relaxed">
-                  OG-NYC-001 launches January 23rd, 2026. Strictly limited quantities.
-                  Once it sells out, each piece enters the permanent archive.
+                  OG-NYC-001 launched January 23rd, 2026. Strictly limited quantities.
+                  As pieces sell out, they enter the permanent archive.
                 </p>
               </div>
             ),

@@ -48,7 +48,7 @@ export function StickyAddToCart({
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          className="fixed bottom-0 left-0 right-0 z-[9998] bg-[#F2EFE9] border-t border-[#1a472a]/10 shadow-lg"
+          className="fixed bottom-0 left-0 right-0 z-[9998] bg-[#F2EFE9] border-t border-[#1a472a]/10 shadow-lg lg:hidden"
           style={{
             paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.5rem)',
           }}
@@ -97,9 +97,10 @@ export function StickyAddToCart({
                 <AddToCartButton
                   lines={[{merchandiseId: selectedVariant.id, quantity: 1}]}
                   variant="primary"
+                  asChild
                 >
-                  <div className="px-6 py-3 bg-[#B55A3C] text-[#F2EFE9] hover:bg-[#9A4A30] transition-colors font-mono text-[10px] uppercase tracking-[0.15em]">
-                    Add to Cart
+                  <div className="px-6 py-3 bg-[#B55A3C] text-[#F2EFE9] hover:bg-[#9A4A30] transition-colors font-mono text-[10px] uppercase tracking-[0.15em] text-center">
+                    Recover Artifact
                   </div>
                 </AddToCartButton>
               )}

@@ -290,13 +290,13 @@ export function DropNotificationPopup({ open: externalOpen, onOpenChange }: Drop
             <div className="flex items-center justify-center gap-4 mb-2">
               <div className="w-8 h-px bg-[#B55A3C]" />
               <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase animate-pulse">
-                Drop Incoming
+                Artifacts Live
               </span>
               <div className="w-8 h-px bg-[#B55A3C]" />
             </div>
             
             <DialogTitle className="font-heading text-3xl md:text-4xl text-[#F2EFE9] uppercase tracking-[0.08em]">
-              OG-NYC-001
+              THE ARCHIVE
             </DialogTitle>
             
             {/* Countdown Timer */}
@@ -308,7 +308,7 @@ export function DropNotificationPopup({ open: externalOpen, onOpenChange }: Drop
             <UrgencyBadges />
             
             <DialogDescription className="font-mono text-xs text-[#F2EFE9]/50 text-center">
-              Get reminded when the drop goes live. Limited pieces, no restocks.
+              The archive has been recovered. Join for early access to upcoming artifacts and limited drops.
             </DialogDescription>
 
           </DialogHeader>
@@ -348,10 +348,10 @@ export function DropNotificationPopup({ open: externalOpen, onOpenChange }: Drop
         {/* Header */}
         <div className="text-center mb-3">
           <span className="font-mono text-[9px] text-[#B55A3C] tracking-[0.4em] uppercase animate-pulse">
-            Drop Incoming
+            Artifacts Live
           </span>
           <h3 className="font-heading text-xl text-[#F2EFE9] uppercase tracking-[0.08em] mt-1">
-            OG-NYC-001
+            THE ARCHIVE
           </h3>
         </div>
         

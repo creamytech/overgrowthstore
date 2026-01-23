@@ -15,6 +15,7 @@ export function AddToCartButton({
   width = 'full',
   disabled,
   productTitle,
+  asChild = false,
   ...props
 }: {
   children: React.ReactNode;
@@ -24,6 +25,7 @@ export function AddToCartButton({
   width?: 'auto' | 'full';
   disabled?: boolean;
   productTitle?: string;
+  asChild?: boolean;
   [key: string]: any;
 }) {
   return (
@@ -43,6 +45,7 @@ export function AddToCartButton({
             variant={variant}
             width={width}
             productTitle={productTitle}
+            asChild={asChild}
             {...props}
           >
             {children}
@@ -61,6 +64,7 @@ function AddToCartButtonInner({
   width,
   disabled,
   productTitle,
+  asChild,
   ...props
 }: {
   fetcher: FetcherWithComponents<any>;
@@ -70,6 +74,7 @@ function AddToCartButtonInner({
   width?: 'auto' | 'full';
   disabled?: boolean;
   productTitle?: string;
+  asChild?: boolean;
   [key: string]: any;
 }) {
   const prevState = useRef(fetcher.state);
@@ -107,17 +112,20 @@ function AddToCartButtonInner({
         className
       )}
       disabled={disabled ?? isLoading}
+      asChild={asChild}
       {...props}
     >
-      {isLoading ? (
-        <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          <span className="font-mono text-xs tracking-wider uppercase">
-            Adding...
-          </span>
-        </>
-      ) : (
-        children
+      {asChild ? children : (
+        isLoading ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <span className="font-mono text-xs tracking-wider uppercase">
+              Adding...
+            </span>
+          </>
+        ) : (
+          children
+        )
       )}
     </Button>
   );

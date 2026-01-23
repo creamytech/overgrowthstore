@@ -309,7 +309,7 @@ export default function Product() {
 
         {/* Right: Product Info Panel - Cream background */}
         <div className="lg:w-[40%] bg-[#F2EFE9] relative">
-          <div className="sticky top-0 min-h-screen flex flex-col justify-center p-8 lg:p-12 xl:p-16">
+          <div className="sticky top-0 min-h-screen flex flex-col p-8 lg:p-12 xl:p-16 py-12 md:py-24">
             
             {/* Archive Header */}
             <div className="mb-8">
@@ -408,9 +408,9 @@ export default function Product() {
                 </Alert>
               )}
               
-              {/* Pre-drop Badges */}
-              {!isLive && (
-                <div className="mt-4 flex flex-wrap gap-2">
+              {/* Product Badges */}
+              <div className="mt-4 flex flex-wrap gap-2">
+                {!isLive && (
                   <Badge 
                     variant="outline" 
                     className="bg-[#B55A3C]/5 border-[#B55A3C]/20 text-[#B55A3C] rounded-none px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.1em] flex items-center gap-2 w-fit"
@@ -418,15 +418,15 @@ export default function Product() {
                     <Sparkles className="w-3.5 h-3.5" />
                     Exclusive Drop
                   </Badge>
-                  <Badge 
-                    variant="outline" 
-                    className="bg-[#1a472a]/5 border-[#1a472a]/10 text-[#1a472a]/70 rounded-none px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.1em] flex items-center gap-2 w-fit"
-                  >
-                    <Truck className="w-3.5 h-3.5" />
-                    Ships in March
-                  </Badge>
-                </div>
-              )}
+                )}
+                <Badge 
+                  variant="outline" 
+                  className="bg-[#1a472a]/5 border-[#1a472a]/10 text-[#1a472a]/70 rounded-none px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.1em] flex items-center gap-2 w-fit"
+                >
+                  <Truck className="w-3.5 h-3.5" />
+                  Ships in March
+                </Badge>
+              </div>
 
 
             </div>
@@ -440,7 +440,7 @@ export default function Product() {
                 <div className="w-full p-6 border border-[#B55A3C]/20 bg-[#B55A3C]/5 mb-6">
                   <div className="flex flex-col items-center justify-center gap-4">
                      <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#B55A3C] animate-pulse">
-                        Drop Incoming
+                        Discovery Incoming
                      </span>
                      <div className="flex items-center gap-4 md:gap-6">
                         {[
@@ -709,8 +709,9 @@ function ProductForm({
               lines={[{merchandiseId: selectedVariant.id!, quantity: 1}]}
               variant="primary"
               className="w-full"
+              asChild
             >
-              <div className="w-full py-6 bg-[#B55A3C] text-[#F2EFE9] hover:bg-[#9A4A30] transition-all duration-300 font-mono text-xs uppercase tracking-[0.2em] text-center">
+              <div className="w-full py-6 bg-[#B55A3C] text-[#F2EFE9] hover:bg-[#9A4A30] transition-all duration-300 font-mono text-xs uppercase tracking-[0.2em] text-center cursor-pointer">
                 Recover This Artifact
               </div>
             </AddToCartButton>
