@@ -16,8 +16,28 @@ export async function action({request, context}: ActionFunctionArgs) {
       return json({success: false, error: 'Email is required'}, {status: 400});
     }
 
-    // Validate phone format if provided
-    const phoneValue = typeof phone === 'string' && phone.trim() ? phone.trim() : null;
+    // Format phone to E.164 if provided
+    let phoneValue: string | null = null;
+    if (typeof phone === 'string' && phone.trim()) {
+      // Remove all non-digit characters except +
+      let cleaned = phone.trim().replace(/[^+\d]/g, '');
+      
+      // If it starts with a digit (no +), assume US and add +1
+      if (cleaned && !cleaned.startsWith('+')) {
+        // If it's 10 digits, it's a US number without country code
+        if (cleaned.length === 10) {
+          cleaned = '+1' + cleaned;
+        } else if (cleaned.length === 11 && cleaned.startsWith('1')) {
+          cleaned = '+' + cleaned;
+        } else {
+          // Add + prefix for other cases
+          cleaned = '+' + cleaned;
+        }
+      }
+      
+      phoneValue = cleaned;
+      console.log('[Newsletter] Formatted phone:', phone, '->', phoneValue);
+    }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -100,6 +120,8 @@ export async function action({request, context}: ActionFunctionArgs) {
       body: JSON.stringify({query: mutation, variables}),
     });
 
+    console.log('[Newsletter] Admin API called with phone:', phoneValue);
+
     if (!response.ok) {
       console.error('Admin API Error:', response.status, await response.text());
       return json({success: false, error: 'Failed to subscribe. Please try again.'}, {status: 500});
@@ -108,12 +130,14 @@ export async function action({request, context}: ActionFunctionArgs) {
     const result = await response.json() as {
       data?: {
         customerCreate?: {
-          customer?: {id: string; email: string};
+          customer?: {id: string; email: string; phone?: string};
           userErrors?: Array<{field: string[]; message: string}>;
         };
       };
       errors?: Array<{message: string}>;
     };
+
+    console.log('[Newsletter] Admin API result:', JSON.stringify(result, null, 2));
 
     // Check for GraphQL errors
     if (result.errors?.length) {
@@ -132,17 +156,24 @@ export async function action({request, context}: ActionFunctionArgs) {
       );
 
       if (isEmailTaken) {
-        // Treat as success - they're already signed up
+        console.log('[Newsletter] Customer exists, attempting to update with phone...');
+        // If they exist and we have a phone, try to update them
+        if (phoneValue) {
+          await updateCustomerPhone(adminApiUrl, adminApiToken, email, phoneValue);
+        }
         return json({success: true, message: 'You\'re already on the list!'});
       }
 
+      console.log('[Newsletter] User errors:', userErrors);
       return json({success: false, error: userErrors[0].message}, {status: 400});
     }
 
+    console.log('[Newsletter] Customer created successfully with phone:', result.data?.customerCreate?.customer?.phone);
     return json({success: true, message: 'Welcome to the Overgrowth.'});
   } catch (error) {
     console.error('Newsletter API Error:', error);
     return json({success: false, error: 'Something went wrong. Please try again.'}, {status: 500});
+
   }
 }
 
@@ -221,5 +252,98 @@ async function handleStorefrontFallback(
     console.error('[Newsletter] Storefront Fallback Error:', error?.message || error);
     console.error('[Newsletter] Error stack:', error?.stack);
     return json({success: false, error: error?.message || 'Failed to subscribe.'}, {status: 500});
+  }
+}
+
+/**
+ * Update existing customer with phone number and SMS consent
+ */
+async function updateCustomerPhone(adminApiUrl: string, adminApiToken: string, email: string, phone: string) {
+  try {
+    console.log('[Newsletter] Updating existing customer phone for:', email);
+    
+    // First, find the customer by email
+    const searchQuery = `
+      query findCustomer($query: String!) {
+        customers(first: 1, query: $query) {
+          nodes {
+            id
+          }
+        }
+      }
+    `;
+    
+    const searchResponse = await fetch(adminApiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Access-Token': adminApiToken,
+      },
+      body: JSON.stringify({
+        query: searchQuery,
+        variables: { query: `email:${email}` }
+      }),
+    });
+    
+    const searchResult = await searchResponse.json() as {
+      data?: { customers?: { nodes?: Array<{id: string}> } };
+    };
+    
+    const customerId = searchResult.data?.customers?.nodes?.[0]?.id;
+    
+    if (!customerId) {
+      console.log('[Newsletter] Customer not found for update');
+      return;
+    }
+    
+    console.log('[Newsletter] Found customer:', customerId);
+    
+    // Update the customer with phone
+    const updateMutation = `
+      mutation customerUpdate($input: CustomerInput!) {
+        customerUpdate(input: $input) {
+          customer {
+            id
+            phone
+            smsMarketingConsent {
+              marketingState
+            }
+          }
+          userErrors {
+            field
+            message
+          }
+        }
+      }
+    `;
+    
+    const updateResponse = await fetch(adminApiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Access-Token': adminApiToken,
+      },
+      body: JSON.stringify({
+        query: updateMutation,
+        variables: {
+          input: {
+            id: customerId,
+            phone,
+            smsMarketingConsent: {
+              marketingState: 'SUBSCRIBED',
+              consentUpdatedAt: new Date().toISOString(),
+            },
+            tags: ['Overgrowth Vault', 'SMS Opt-in'],
+            note: `SMS consent given via website popup. Phone: ${phone}`,
+          }
+        }
+      }),
+    });
+    
+    const updateResult = await updateResponse.json();
+    console.log('[Newsletter] Customer update result:', JSON.stringify(updateResult, null, 2));
+    
+  } catch (error) {
+    console.error('[Newsletter] Error updating customer phone:', error);
   }
 }
