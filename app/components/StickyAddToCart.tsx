@@ -66,16 +66,23 @@ export function StickyAddToCart({
             )}
             
             {/* Product Info */}
-            <div className="flex-1 min-w-0">
-              <h3 className="font-heading text-sm text-[#1a472a] uppercase tracking-wide truncate">
-                {productTitle}
-              </h3>
-              <div className="flex items-center gap-2 mt-0.5">
-                <span className="font-mono text-xs text-[#1a472a]/70">
-                  <Money withoutTrailingZeros data={selectedVariant.price} />
-                </span>
+              <div 
+                className="flex-1 min-w-0 flex flex-col cursor-pointer"
+                onClick={onSelectSize}
+              >
+                <h3 className="font-heading text-sm text-[#1a472a] uppercase tracking-wide truncate">
+                  {productTitle}
+                </h3>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <span className="font-mono text-[10px] text-[#B55A3C] uppercase tracking-wider">
+                    {selectedVariant.title !== 'Default Title' ? selectedVariant.title : ''}
+                  </span>
+                  <span className="font-mono text-[10px] text-[#1a472a]/40">|</span>
+                  <span className="font-mono text-[10px] text-[#1a472a]/70">
+                    <Money withoutTrailingZeros data={selectedVariant.price} />
+                  </span>
+                </div>
               </div>
-            </div>
 
             {/* CTA Button */}
             <div className="flex-shrink-0">

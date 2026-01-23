@@ -618,6 +618,12 @@ export default function Product() {
         } : null}
         productTitle={title}
         show={!isOutOfStock && isLive}
+        onSelectSize={() => {
+          const form = document.querySelector('form');
+          if (form) {
+            form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }}
       />
 
 
