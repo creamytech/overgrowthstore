@@ -74,10 +74,14 @@ export function StickyAddToCart({
                   {productTitle}
                 </h3>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <span className="font-mono text-[10px] text-[#B55A3C] uppercase tracking-wider">
-                    {selectedVariant.title !== 'Default Title' ? selectedVariant.title : ''}
-                  </span>
-                  <span className="font-mono text-[10px] text-[#1a472a]/40">|</span>
+                  {hasSelectedSize && selectedVariant.title !== 'Default Title' && (
+                    <>
+                      <span className="font-mono text-[10px] text-[#B55A3C] uppercase tracking-wider">
+                        {selectedVariant.title}
+                      </span>
+                      <span className="font-mono text-[10px] text-[#1a472a]/40">|</span>
+                    </>
+                  )}
                   <span className="font-mono text-[10px] text-[#1a472a]/70">
                     <Money withoutTrailingZeros data={selectedVariant.price} />
                   </span>
@@ -106,9 +110,12 @@ export function StickyAddToCart({
                   variant="primary"
                   asChild
                 >
-                  <div className="px-6 py-3 bg-[#B55A3C] text-[#F2EFE9] hover:bg-[#9A4A30] transition-colors font-mono text-[10px] uppercase tracking-[0.15em] text-center">
+                  <button 
+                    type="submit"
+                    className="px-6 py-3 bg-[#B55A3C] text-[#F2EFE9] hover:bg-[#9A4A30] transition-colors font-mono text-[10px] uppercase tracking-[0.15em] text-center cursor-pointer min-w-[140px]"
+                  >
                     Recover Artifact
-                  </div>
+                  </button>
                 </AddToCartButton>
               )}
             </div>

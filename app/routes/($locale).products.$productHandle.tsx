@@ -4,7 +4,7 @@ import {
   type MetaArgs,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-import {useLoaderData, Await} from '@remix-run/react';
+import {useLoaderData, Await, useLocation} from '@remix-run/react';
 import {
   getSeoMeta,
   Money,
@@ -116,6 +116,7 @@ async function loadCriticalData({
     storeDomain: shop.primaryDomain.url,
     recommended,
     seo,
+    isExplicitVariant: selectedOptions.length > 0,
   };
 }
 
@@ -140,6 +141,12 @@ export default function Product() {
     ...product,
     selectedOrFirstAvailableVariant: selectedVariant,
   });
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : location.search);
+  const hasSelectedSize = product.options.every(opt => 
+    opt.optionValues.length <= 1 || searchParams.has(opt.name)
+  );
 
   const isOutOfStock = !selectedVariant?.availableForSale;
 
@@ -619,11 +626,19 @@ export default function Product() {
         productTitle={title}
         show={!isOutOfStock && isLive}
         onSelectSize={() => {
-          const form = document.querySelector('form');
-          if (form) {
-            form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          const formName = product.options[0]?.name || 'Size';
+          const selector = `h4:contains("${formName}")`; // This won't work with querySelector
+          // Fallback to scrolling to the first option header
+          const headers = Array.from(document.querySelectorAll('h4'));
+          const targetHeader = headers.find(h => h.textContent?.includes(formName));
+          if (targetHeader) {
+            targetHeader.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } else {
+            const form = document.querySelector('form');
+            if (form) form.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }
         }}
+        hasSelectedSize={hasSelectedSize}
       />
 
 
