@@ -187,7 +187,7 @@ async function handleStorefrontFallback(
   lastName?: string | null,
   phone?: string | null
 ) {
-  console.log('[Newsletter] Using Storefront API fallback for:', email, phone ? '(with phone)' : '');
+  console.log('[Newsletter] Using Storefront API fallback for:', email, phone ? '(with phone: ' + phone + ')' : '');
   
   try {
     const CUSTOMER_CREATE_MUTATION = `#graphql
@@ -196,6 +196,7 @@ async function handleStorefrontFallback(
           customer {
             id
             email
+            phone
             acceptsMarketing
           }
           customerUserErrors {
@@ -210,12 +211,13 @@ async function handleStorefrontFallback(
     // Generate a strong password that meets Shopify requirements (5+ chars)
     const randomPassword = 'Ovg!' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
     
-    console.log('[Newsletter] Calling storefront.mutate...');
+    console.log('[Newsletter] Calling storefront.mutate with phone:', phone);
     
     const result = await context.storefront.mutate(CUSTOMER_CREATE_MUTATION, {
       variables: {
         input: {
           email,
+          phone: phone || undefined,
           firstName: firstName || undefined,
           lastName: lastName || undefined,
           password: randomPassword,
@@ -223,6 +225,7 @@ async function handleStorefrontFallback(
         },
       },
     });
+
 
     console.log('[Newsletter] Mutation result:', JSON.stringify(result, null, 2));
 
