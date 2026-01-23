@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from '~/components/ui/dialog';
 import GlowingBorderButton from '~/components/glowing-border-button';
-import { AlertCircle, Clock, Users } from 'lucide-react';
+import { AlertCircle, Users, Smartphone } from 'lucide-react';
 
 const POPUP_STORAGE_KEY = 'overgrowth_popup_dismissed';
 const POPUP_DELAY_DESKTOP_MS = 10000; // 10 seconds on desktop
@@ -28,6 +28,8 @@ interface DropNotificationPopupProps {
 export function DropNotificationPopup({ open: externalOpen, onOpenChange }: DropNotificationPopupProps = {}) {
   const [internalOpen, setInternalOpen] = useState(false);
   const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [phone, setPhone] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [timeLeft, setTimeLeft] = useState<{days: number; hours: number; minutes: number; seconds: number} | null>(null);
   const [isLive, setIsLive] = useState(false);
@@ -104,6 +106,12 @@ export function DropNotificationPopup({ open: externalOpen, onOpenChange }: Drop
       // Use FormData like footer/homepage forms
       const formData = new FormData();
       formData.append('email', email);
+      if (firstName) {
+        formData.append('firstName', firstName);
+      }
+      if (phone) {
+        formData.append('phone', phone);
+      }
       
       const response = await fetch('/api/newsletter', {
         method: 'POST',
@@ -203,22 +211,51 @@ export function DropNotificationPopup({ open: externalOpen, onOpenChange }: Drop
       </p>
     </div>
   ) : (
-    <form onSubmit={handleSubmit} className="space-y-4 text-center">
-      <div>
+    <form onSubmit={handleSubmit} className="space-y-3 text-center">
+      {/* First Name & Email Row */}
+      <div className="flex gap-2">
+        <input
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          placeholder="First name"
+          autoComplete="given-name"
+          className="w-2/5 px-4 py-3 bg-[#1a1a1a] border border-[#F2EFE9]/10 text-[#F2EFE9] font-mono text-base placeholder:text-[#F2EFE9]/20 focus:border-[#B55A3C] focus:outline-none transition-colors text-center"
+          style={{ fontSize: '16px' }}
+        />
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
+          placeholder="Email address"
           required
           autoComplete="email"
-          // font-size: 16px prevents iOS zoom on focus
-          className="w-full px-4 py-3 bg-[#1a1a1a] border border-[#F2EFE9]/20 text-[#F2EFE9] font-mono text-base placeholder:text-[#F2EFE9]/30 focus:border-[#B55A3C] focus:outline-none transition-colors text-center"
-          style={{ fontSize: '16px' }} // Explicit 16px to ensure no iOS zoom
+          className="w-3/5 px-4 py-3 bg-[#1a1a1a] border border-[#F2EFE9]/20 text-[#F2EFE9] font-mono text-base placeholder:text-[#F2EFE9]/30 focus:border-[#B55A3C] focus:outline-none transition-colors text-center"
+          style={{ fontSize: '16px' }}
         />
       </div>
       
-      <div className="flex justify-center">
+      {/* Phone - Optional */}
+      <div>
+        <div className="relative">
+          <input
+            type="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder="Phone (optional, for SMS)"
+            autoComplete="tel"
+            className="w-full px-4 py-3 bg-[#1a1a1a] border border-[#F2EFE9]/10 text-[#F2EFE9] font-mono text-base placeholder:text-[#F2EFE9]/20 focus:border-[#B55A3C] focus:outline-none transition-colors text-center"
+            style={{ fontSize: '16px' }}
+          />
+        </div>
+        {phone && (
+          <p className="font-mono text-[9px] text-[#F2EFE9]/30 mt-1">
+            By adding phone, you agree to SMS alerts. Msg & data rates apply.
+          </p>
+        )}
+      </div>
+      
+      <div className="flex justify-center pt-1">
         <GlowingBorderButton
           type="submit"
           text={status === 'loading' ? 'Joining...' : 'Get Drop Reminder'}

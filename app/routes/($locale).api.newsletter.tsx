@@ -2,18 +2,22 @@ import {json, type ActionFunctionArgs} from '@shopify/remix-oxygen';
 
 /**
  * Newsletter API - Uses Shopify Admin API to create customers with marketing consent
- * POST /api/newsletter with FormData containing 'email'
+ * POST /api/newsletter with FormData containing 'email' and optional 'phone'
  */
 export async function action({request, context}: ActionFunctionArgs) {
   try {
     const formData = await request.formData();
     const email = formData.get('email');
+    const phone = formData.get('phone');
     const firstName = formData.get('firstName');
     const lastName = formData.get('lastName');
 
     if (!email || typeof email !== 'string') {
       return json({success: false, error: 'Email is required'}, {status: 400});
     }
+
+    // Validate phone format if provided
+    const phoneValue = typeof phone === 'string' && phone.trim() ? phone.trim() : null;
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -27,7 +31,7 @@ export async function action({request, context}: ActionFunctionArgs) {
     if (!env.SHOPIFY_ADMIN_API_ACCESS_TOKEN) {
       console.error('SHOPIFY_ADMIN_API_ACCESS_TOKEN is not configured');
       // Fallback to Storefront API if Admin API not configured
-      return handleStorefrontFallback(email, context, firstName as string, lastName as string);
+      return handleStorefrontFallback(email, context, firstName as string, lastName as string, phoneValue);
     }
 
     const shopDomain = env.PUBLIC_STORE_DOMAIN;
@@ -43,7 +47,11 @@ export async function action({request, context}: ActionFunctionArgs) {
           customer {
             id
             email
+            phone
             emailMarketingConsent {
+              marketingState
+            }
+            smsMarketingConsent {
               marketingState
             }
             tags
@@ -56,16 +64,30 @@ export async function action({request, context}: ActionFunctionArgs) {
       }
     `;
 
+    // Build tags array
+    const tags = ['Overgrowth Vault'];
+    if (phoneValue) {
+      tags.push('SMS Opt-in');
+    }
+
     const variables = {
       input: {
         email,
+        phone: phoneValue,
         firstName: typeof firstName === 'string' ? firstName : undefined,
         lastName: typeof lastName === 'string' ? lastName : undefined,
         emailMarketingConsent: {
           marketingState: 'SUBSCRIBED',
           consentUpdatedAt: new Date().toISOString(),
         },
-        tags: ['Overgrowth Vault'],
+        ...(phoneValue ? {
+          smsMarketingConsent: {
+            marketingState: 'SUBSCRIBED',
+            consentUpdatedAt: new Date().toISOString(),
+          },
+        } : {}),
+        tags,
+        note: phoneValue ? `SMS consent given via website popup. Phone: ${phoneValue}` : undefined,
       },
     };
 
@@ -127,8 +149,14 @@ export async function action({request, context}: ActionFunctionArgs) {
 /**
  * Fallback to Storefront API if Admin API is not configured
  */
-async function handleStorefrontFallback(email: string, context: any, firstName?: string | null, lastName?: string | null) {
-  console.log('[Newsletter] Using Storefront API fallback for:', email);
+async function handleStorefrontFallback(
+  email: string, 
+  context: any, 
+  firstName?: string | null, 
+  lastName?: string | null,
+  phone?: string | null
+) {
+  console.log('[Newsletter] Using Storefront API fallback for:', email, phone ? '(with phone)' : '');
   
   try {
     const CUSTOMER_CREATE_MUTATION = `#graphql
